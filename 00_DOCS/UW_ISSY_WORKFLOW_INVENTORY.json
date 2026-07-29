@@ -1,0 +1,34 @@
+{
+  "project": "BTF_UW-Issy_Route_Monitor",
+  "status": "mise_en_place_created",
+  "workflows": [
+    {
+      "workstream": "01_ROUTE_CONDITIONS",
+      "status": "not_started"
+    },
+    {
+      "workstream": "02_WEATHER",
+      "status": "not_started"
+    },
+    {
+      "workstream": "03_AIR_QUALITY",
+      "status": "not_started"
+    },
+    {
+      "workstream": "04_WILDFIRE",
+      "status": "not_started"
+    },
+    {
+      "workstream": "05_FLOOD_CONDITIONS",
+      "status": "not_started"
+    },
+    {
+      "workstream": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "status": "not_started"
+    },
+    {
+      "workstream": "07_GOVERNMENT_SAFETY_ALERTS",
+      "status": "not_started"
+    }
+  ]
+}
