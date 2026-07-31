@@ -36,7 +36,7 @@ Status:
 
 ### 2.3 n8n folder and tag conventions
 
-- The complete UW–Issaquah monitoring system MUST use one n8n project/folder named exactly `UW_ISSY_ROUTE_MONITOR`.
+- The complete UW–Issaquah monitoring system MUST use one n8n project/folder named exactly `UW-ISSY ROUTE MONITOR`.
 - Required tag vocabulary is:
   - `uw_issy`
   - `connector`
@@ -83,7 +83,7 @@ Status:
 The absolute Hetzner runtime root is approved and binding.
 
 - Runtime root MUST be:
-  - `/srv/uw_issy_route_monitor/`
+  - `/srv/uw-issy-route-monitor`
 - Runtime root MUST contain:
   - `raw/`
   - `normalized/`
@@ -100,8 +100,8 @@ The absolute Hetzner runtime root is approved and binding.
   - `handoff/`
 - Every artifact-class directory above MUST contain lane-specific subdirectories.
 - Example:
-  - `/srv/uw_issy_route_monitor/raw/02_WEATHER/`
-  - `/srv/uw_issy_route_monitor/published/07_GOVERNMENT_SAFETY_ALERTS/`
+  - `/srv/uw-issy-route-monitor/raw/02_WEATHER/`
+  - `/srv/uw-issy-route-monitor/published/07_GOVERNMENT_SAFETY_ALERTS/`
 
 ### 3.2 Local repository paths
 
@@ -745,7 +745,7 @@ Canonical owners:
 
 Default policy values are configuration defaults, not final scientific truth:
 - `01_ROUTE_CONDITIONS`: `OPEN`
-- `02_WEATHER`: `10 minutes` for active alerts; `30 minutes` for current observations; `60 minutes` for short-term forecasts; slower forecast products use documented source-specific overrides
+- `02_WEATHER`: every `15 minutes` in `America/Los_Angeles` for the complete workflow; source-specific due logic is deferred unless later approved as an optimization
 - `03_AIR_QUALITY`: base 90 minutes for current observations; 12 hours for smoke forecast; 15 minutes for formal alerts
 - `04_WILDFIRE`: 15 minutes for alerts/incidents; 60 minutes for smoke polygons; 6 hours for burn bans
 - `05_FLOOD_CONDITIONS`: 30 minutes for gauges; 15 minutes for flood alerts; 6 hours for forecast issue freshness
@@ -856,19 +856,14 @@ Manifest and data publication MUST NOT leave an inconsistent snapshot.
 ### 11.4 Initial Weather schedule policy
 
 For the first production-capable `02_WEATHER` release:
-- active weather alerts MUST be checked every `10 minutes`
-- current observations MUST be checked every `30 minutes`
-- short-term forecasts MUST be checked every `60 minutes`
-- slower forecast products MUST use a documented source-specific cadence based on actual publication frequency
+- the complete Weather connector workflow MUST run every `15 minutes` in `America/Los_Angeles`
 - manual execution MUST be supported
-- unattended activation MUST remain deferred until validation is complete
-
-Implementation flexibility:
-- the first Weather implementation MAY use one `10-minute` n8n workflow schedule with per-source due logic
-- when that model is used, unnecessary requests MUST be skipped deterministically
-- source-health output MUST distinguish `skipped_as_not_due` from `not_run` and `failed`
-- execution evidence MUST record which sources were due and which were skipped
-- rate limits and source publication cadences MUST be respected
+- overlapping executions MUST be prevented
+- retries MUST be bounded
+- source-specific timeouts MUST remain required
+- a failed execution MUST preserve the existing published and last-known-good snapshots
+- the Weather connector MUST NOT build or deploy the site
+- source-specific due logic MAY be considered later as an optimization, but it is not the approved initial scheduling architecture
 
 ## 12. Source Retention, Logging, Evidence
 
@@ -878,27 +873,26 @@ Implementation flexibility:
 
 | Artifact class | Default retention |
 | --- | --- |
-| raw source responses | `14 days` |
-| normalized artifacts | `30 days` |
-| candidate artifacts | `30 days` |
-| published snapshots | `90 days` |
-| last-known-good snapshots | retain current plus `12` prior valid versions |
-| health records | `90 days` |
+| successful raw source responses | `14 days` |
+| failed or anomalous raw responses | `30 days` |
+| normalized intermediate artifacts | `14 days` |
+| candidate artifacts | `14 days` |
+| quarantined invalid artifacts | `90 days` |
 | execution evidence | `180 days` |
-| validation results | `180 days` |
-| quarantine records | `90 days` |
-| logs | `90 days` |
-| fixtures | retained until intentionally superseded |
-| schemas | retained indefinitely in version control |
-| manifests | retained indefinitely in version control |
-| workflow-08 handoff records | `90 days` |
+| source and connector health history | `90 days` |
+| published immutable snapshots | `90 days` |
+| active last-known-good snapshot | until superseded by a newer valid LKG |
+| runtime logs | `30 days` |
+| test fixtures | retained in Git until intentionally removed |
+| connector manifests and schemas | permanently versioned |
 
 - Retention cleanup MUST NOT delete:
-  - the current published artifact
-  - the current last-known-good artifact
-  - artifacts referenced by an unresolved incident
-  - artifacts required to reproduce the latest production deployment
+  - the snapshot referenced by `current.json`
+  - the active last-known-good snapshot
+  - a snapshot needed to reproduce the latest deployed site state
+  - evidence associated with an unresolved incident
   - committed schemas or manifests
+- The retention policy MUST be reviewed after `60` to `90` days of runtime storage evidence.
 - Logs MUST avoid credential values.
 - Execution evidence MUST include hashes for every candidate and published artifact written.
 

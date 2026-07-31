@@ -1137,3 +1137,51 @@ Result: PARTIAL
 - no deployment, push, CDM reference-project modification, source-registry edit, GPX edit, public production-output edit, or Cloudflare resource change was performed in this task
 
 **Result:** the shared connector standard exists, six implementation decisions are now approved and recorded, the repository runtime structure is approved, and the first executable connector build specification may now proceed. `02_WEATHER` remains the intended first executable specification. Cloudflare and workflow-08 deployment decisions remain deferred.
+
+
+## 2026-07-31 PDT — Pre-Weather architecture baseline correction
+
+**Objective:** correct four values recorded incorrectly in commit `0afce56` (`Resolve initial UW–Issaquah connector architecture decisions`) while preserving the valid decision categories and repository structure approved before executable connector work begins. Documentation-correction only.
+
+**Incorrect recorded values from `0afce56`:**
+- Hetzner runtime root recorded as `/srv/uw_issy_route_monitor/`
+- n8n project/folder name recorded as `UW_ISSY_ROUTE_MONITOR`
+- initial Weather schedule recorded as active alerts every `10 minutes`, current observations every `30 minutes`, short-term forecasts every `60 minutes`
+- initial retention policy recorded with normalized artifacts `30 days`, candidate artifacts `30 days`, current plus `12` prior LKG versions, logs `90 days`, separate validation-results retention, and separate workflow-08 handoff retention
+
+**Corrected authoritative values recorded by this task:**
+- Hetzner runtime root: `/srv/uw-issy-route-monitor`
+- n8n project/folder name: `UW-ISSY ROUTE MONITOR`
+- initial Weather schedule: full `02_WEATHER` workflow every `15 minutes` in `America/Los_Angeles`, with manual execution supported, overlap prevention required, bounded retries required, source-specific timeouts required, and published/LKG preservation required on failure
+- initial retention policy:
+  - successful raw source responses `14 days`
+  - failed or anomalous raw responses `30 days`
+  - normalized intermediate artifacts `14 days`
+  - candidate artifacts `14 days`
+  - quarantined invalid artifacts `90 days`
+  - execution evidence `180 days`
+  - source and connector health history `90 days`
+  - published immutable snapshots `90 days`
+  - active last-known-good snapshot until superseded by a newer valid LKG
+  - runtime logs `30 days`
+  - test fixtures retained in Git until intentionally removed
+  - connector manifests and schemas permanently versioned
+
+**Files changed:**
+- `00_CONNECTORS/00_OPEN_CONNECTOR_ARCHITECTURE_DECISIONS.md`
+- `00_CONNECTORS/00_SHARED_AUTONOMOUS_CONNECTOR_BUILD_STANDARD.md`
+- `00_DOCS/UW_ISSY_CONNECTOR_MISE_EN_PLACE_ASSESSMENT.md`
+- `00_PROJECT_STATUS.md`
+- `00_PROJECT_BUILDLOG.md`
+
+**Validation performed:**
+- reviewed commit `0afce56` directly with `git show --stat --oneline` and `git show --no-ext-diff` against the five governed files
+- searched the five governed files before editing for runtime-root, n8n-name, Weather-cadence, and retention variants
+- confirmed the six pre-Weather decision categories remain resolved and unrelated decisions remain open
+- confirmed `Workflow 08` remains the only writer to `public/data/`
+- confirmed WSDOT remains optional and non-blocking for the first Weather release
+- confirmed no workflow JSON was created or modified
+- confirmed no source registry, GPX, `public/data`, application code, deployment code, Cloudflare resource, or CDM reference-project file was modified
+- confirmed this task is documentation-only and created no connector, workflow, runtime output, or deployment
+
+**Commit note:** intended commit message is `Correct pre-Weather architecture decision values`. The final local commit hash is recorded in the completion report for this task.

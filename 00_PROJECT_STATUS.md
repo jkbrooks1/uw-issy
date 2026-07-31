@@ -4,7 +4,7 @@
 
 ## Current phase
 
-Architecture documentation and repository mise-en-place are approved for the first executable connector build specification.
+Architecture documentation is corrected and approved as the pre-Weather baseline for the first executable connector build specification.
 
 ## Project root
 
@@ -19,16 +19,17 @@ Canonical GPX:
 ## Architecture status
 
 - shared connector standard exists in `00_CONNECTORS/00_SHARED_AUTONOMOUS_CONNECTOR_BUILD_STANDARD.md`
-- six connector implementation decisions are now approved and recorded in `00_CONNECTORS/00_OPEN_CONNECTOR_ARCHITECTURE_DECISIONS.md`
+- six pre-Weather connector implementation decision categories remain approved and recorded in `00_CONNECTORS/00_OPEN_CONNECTOR_ARCHITECTURE_DECISIONS.md`
+- four recorded values from commit `0afce56` were corrected before connector implementation
 - the repository runtime structure is approved under `data/connectors/`
-- the first executable connector build specification may now proceed
+- the architecture baseline is now ready for the `02_WEATHER_EXECUTABLE_BUILD_SPEC.md` task
 - `02_WEATHER` remains the intended first executable specification
 - Cloudflare deployment decisions remain deferred
 - workflow-08 deployment and notification decisions remain deferred
 
 ## Approved runtime structure
 
-- Hetzner runtime root: `/srv/uw_issy_route_monitor/`
+- Hetzner runtime root: `/srv/uw-issy-route-monitor`
 - local repository mirror: `data/connectors/`
 - site-facing public output remains `public/data/`, owned only by workflow `08`
 
@@ -37,7 +38,8 @@ Canonical GPX:
 - governance and connector architecture documents are in place
 - lane research corpus exists for connectors `01` through `07`
 - approved empty connector runtime directories now exist locally
-- no n8n workflow was created or modified in this task
+- Weather has not been built
+- no n8n workflow was created, imported, executed, activated, or modified in this task
 - no deployment was performed in this task
 
 ## Next phase

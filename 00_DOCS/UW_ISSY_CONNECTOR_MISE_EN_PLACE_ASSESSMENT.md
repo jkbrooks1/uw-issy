@@ -30,7 +30,7 @@ The repository already contains the expected research corpus and governance stru
 
 The final Hetzner connector runtime root is approved:
 
-`/srv/uw_issy_route_monitor/`
+`/srv/uw-issy-route-monitor`
 
 Required artifact-class directories under that root:
 
@@ -51,7 +51,7 @@ Required artifact-class directories under that root:
 Every artifact-class directory MUST contain lane-specific subdirectories.
 
 Example:
-- `/srv/uw_issy_route_monitor/raw/02_WEATHER/`
+- `/srv/uw-issy-route-monitor/raw/02_WEATHER/`
 
 ### 2.2 Approved local repository mirror
 
@@ -231,7 +231,7 @@ Approved next-order migration logic:
 
 ## 8. Bottom Line
 
-The implementation root is now approved.
+The implementation root is now approved for documentation-baseline purposes, with the corrected pre-Weather runtime root, scheduling, retention, and n8n naming values now aligned before connector implementation.
 
 - the canonical route remains under `data/route/`
 - the approved connector-runtime mirror is `data/connectors/`
