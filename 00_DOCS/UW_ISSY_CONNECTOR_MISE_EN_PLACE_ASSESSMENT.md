@@ -1,19 +1,20 @@
 # UW–Issaquah Connector Mise En Place Assessment
 
-Assessment date: Thursday, July 30, 2026
+Assessment date: Friday, July 31, 2026
 
 Scope:
-- repository structure only
+- documentation and repository mise-en-place only
 - no file moves or deletions performed
-- minimal-change recommendation set
+- no n8n workflow created or modified
+- approved implementation-root decisions now recorded
 
 ## 1. Current Observations
 
-The repository already contains the expected research corpus and governance structure, but the implementation-side directories are partly overlapping:
+The repository already contains the expected research corpus and governance structure. The implementation-side roots are still overlapping, but the target runtime structure is now approved.
 
-- clear documentation roots already exist: `00_CONNECTORS`, `00_DOCS`, `00_PLANNING_DOCS`, `00_AS-BUILT`
-- the canonical route location is clear: `data/route/UnivWA-Issaquah.gpx`
-- implementation/runtime roots are not yet consolidated:
+- canonical documentation roots already exist: `00_CONNECTORS`, `00_DOCS`, `00_PLANNING_DOCS`, `00_AS-BUILT`
+- the canonical route location remains `data/route/UnivWA-Issaquah.gpx`
+- existing overlap areas remain in place for later controlled migration:
   - `data/monitoring`
   - `data/route-monitoring`
   - `ONGOING_ROUTE_MONITORING/data`
@@ -21,128 +22,122 @@ The repository already contains the expected research corpus and governance stru
   - `scripts/route-monitoring`
   - `tests/fixtures`
   - `tests/route-monitoring-fixtures`
-- app/deploy/build/worker/db/examples are present but mostly not yet populated in this project
+- app/deploy/build/worker/db/examples remain present but are not changed by this task
 
-## 2. Directory Classification
+## 2. Approved Runtime And Repository Contract
+
+### 2.1 Approved Hetzner runtime root
+
+The final Hetzner connector runtime root is approved:
+
+`/srv/uw_issy_route_monitor/`
+
+Required artifact-class directories under that root:
+
+- `raw/`
+- `normalized/`
+- `candidate/`
+- `published/`
+- `last_known_good/`
+- `health/`
+- `evidence/`
+- `logs/`
+- `quarantine/`
+- `fixtures/`
+- `schemas/`
+- `manifests/`
+- `handoff/`
+
+Every artifact-class directory MUST contain lane-specific subdirectories.
+
+Example:
+- `/srv/uw_issy_route_monitor/raw/02_WEATHER/`
+
+### 2.2 Approved local repository mirror
+
+The approved local repository implementation mirror is:
+
+```text
+data/connectors/
+  raw/
+  normalized/
+  candidate/
+  published/
+  last_known_good/
+  health/
+  evidence/
+  logs/
+  quarantine/
+  fixtures/
+  schemas/
+  manifests/
+  handoff/
+```
+
+Every `data/connectors/<artifact-class>/` directory MUST contain lane-specific subdirectories once executable connector work begins.
+
+Related implementation roots approved in this task:
+
+- `scripts/connectors/`
+- `tests/fixtures/connectors/`
+
+### 2.3 Publication trust boundary
+
+- Connectors `01` through `07` MUST write only internal connector artifacts under the approved Hetzner runtime root and its local repository mirror
+- connectors `01` through `07` MUST NOT write directly to `public/data/`
+- workflow `08` alone owns site-facing artifact generation under `public/data/`
+- connector-published artifacts and rider-facing public artifacts are separate trust boundaries
+
+## 3. Directory Classification
 
 ### Governance and design roots
 
 | Path | Classification | Assessment |
 | --- | --- | --- |
-| `00_CONNECTORS/` | `KEEP` | canonical lane research and future shared connector docs root |
+| `00_CONNECTORS/` | `KEEP` | canonical lane research and shared connector-doc root |
 | `00_DOCS/` | `KEEP` | canonical cross-lane design/synthesis root |
 | `00_PLANNING_DOCS/` | `KEEP` | valid work-order and planning root |
-| `00_AS-BUILT/` | `KEEP` | valid future as-built root; currently placeholder-only by lane |
+| `00_AS-BUILT/` | `KEEP` | valid future implementation record root |
 
 ### Runtime and data roots
 
 | Path | Classification | Assessment |
 | --- | --- | --- |
 | `data/route/` | `KEEP` | canonical route source and archive location |
-| `data/monitoring/` | `REPURPOSE` | should become internal generated shared monitoring/config/runtime data only if needed |
-| `data/route-monitoring/` | `CONSOLIDATE` | overlaps with `ONGOING_ROUTE_MONITORING/data` and should become the single internal connector-runtime tree if adopted |
-| `ONGOING_ROUTE_MONITORING/` | `RENAME` | current name is descriptive but duplicates future runtime concepts already better expressed under `data/connectors/` or `data/route-monitoring/` |
-| `public/data/` | `KEEP` | final site-consumed generated data should land here only through workflow 08 |
+| `data/connectors/` | `APPROVED_TARGET` | approved local connector-runtime mirror created in this task |
+| `data/monitoring/` | `REPURPOSE_LATER` | existing overlap root; do not expand further |
+| `data/route-monitoring/` | `CONSOLIDATE_LATER` | existing overlap root; do not expand further |
+| `ONGOING_ROUTE_MONITORING/data` | `CONSOLIDATE_LATER` | existing overlap root; do not expand further |
+| `public/data/` | `KEEP` | site-facing output owned only by workflow 08 |
 
 ### Script and test roots
 
 | Path | Classification | Assessment |
 | --- | --- | --- |
 | `scripts/` | `KEEP` | correct root for project scripts |
-| `scripts/route-monitoring/` | `CONSOLIDATE` | overlaps conceptually with `ONGOING_ROUTE_MONITORING/workflows` and future connector runtime logic |
+| `scripts/connectors/` | `APPROVED_TARGET` | approved connector-implementation script namespace created in this task |
+| `scripts/route-monitoring/` | `CONSOLIDATE_LATER` | existing overlap root; do not delete or rename in this task |
 | `scripts/audit/` | `KEEP` | useful audit namespace |
 | `scripts/lib/` | `KEEP` | useful shared-library namespace |
-| `tests/fixtures/` | `CONSOLIDATE` | should become the general fixture root unless a strong reason for a second fixture tree remains |
-| `tests/route-monitoring-fixtures/` | `CONSOLIDATE` | likely should become a subdirectory under a single `tests/fixtures/` tree |
+| `tests/fixtures/` | `KEEP` | general fixture root |
+| `tests/fixtures/connectors/` | `APPROVED_TARGET` | approved connector fixture namespace created in this task |
+| `tests/route-monitoring-fixtures/` | `CONSOLIDATE_LATER` | existing overlap root; do not delete or rename in this task |
 
 ### Site/app roots
 
 | Path | Classification | Assessment |
 | --- | --- | --- |
 | `app/` | `KEEP` | valid site/app root |
-| `build/` | `DEFER` | keep empty placeholder for now; final role depends on workflow-08 output strategy |
-| `deploy/` | `DEFER` | keep placeholder; exact deployment strategy unresolved |
-| `worker/` | `DEFER` | keep placeholder until it is clear whether a worker is truly needed |
-| `db/` | `DEFER` | no current evidence that a database is needed for first connector wave |
-| `examples/` | `REMOVE_LATER` | no current documented purpose in this project |
-| `docs/` | `CONSOLIDATE` | overlaps with `00_DOCS`; should become either export/reference docs only or be folded conceptually into `00_DOCS` later |
+| `build/` | `DEFER` | keep placeholder; workflow-08 build specifics still deferred |
+| `deploy/` | `DEFER` | keep placeholder; deployment strategy still deferred |
+| `worker/` | `DEFER` | keep placeholder until needed |
+| `db/` | `DEFER` | no current evidence first connector wave needs a database |
+| `examples/` | `DEFER` | unchanged by this task |
+| `docs/` | `CONSOLIDATE_LATER` | overlapping doc root; unchanged by this task |
 
-## 3. Overlap Assessment
+## 4. Approved Target Tree
 
-### 3.1 `data/monitoring` vs `data/route-monitoring` vs `ONGOING_ROUTE_MONITORING/data`
-
-Current state:
-- all three imply generated monitoring/runtime data
-- none is yet clearly designated as the single implementation root
-
-Recommendation:
-- do not create a fourth parallel data root
-- target one internal runtime tree only
-- preferred target: `data/connectors/` for connector implementation artifacts, with `data/route/` remaining separate for route source
-
-Classification:
-- `data/monitoring`: `REPURPOSE`
-- `data/route-monitoring`: `CONSOLIDATE`
-- `ONGOING_ROUTE_MONITORING/data`: `RENAME`
-
-### 3.2 `public/data` vs internal runtime data
-
-Current state:
-- `public/data` should be public site-consumption output
-- it should not also become the lane-connector scratch or candidate directory
-
-Recommendation:
-- `public/data` remains publish-only
-- lanes 01–07 should write internal candidate/published artifacts elsewhere
-- workflow 08 alone should write site-facing `public/data`
-
-Classification:
-- `public/data`: `KEEP`
-
-### 3.3 `build`, `deploy`, and `worker`
-
-Current state:
-- present but not yet substantively used
-
-Recommendation:
-- keep them as placeholders only
-- do not grow them until workflow-08 architecture decisions are resolved
-
-Classification:
-- all three: `DEFER`
-
-### 3.4 `tests/fixtures` vs `tests/route-monitoring-fixtures`
-
-Current state:
-- two fixture roots create needless ambiguity
-
-Recommendation:
-- future migration should standardize on `tests/fixtures/`
-- route-monitoring-specific fixtures can become `tests/fixtures/route-monitoring/`
-
-Classification:
-- both current roots: `CONSOLIDATE`
-
-### 3.5 `00_AS-BUILT` vs `00_DOCS` vs `docs`
-
-Current state:
-- `00_DOCS` is already the active canonical design/synthesis root
-- `00_AS-BUILT` is clearly the future implementation record root
-- `docs/` is redundant unless kept strictly for generated exports or public/reference docs
-
-Recommendation:
-- keep `00_DOCS` as canonical project docs
-- reserve `00_AS-BUILT` for implementation-complete artifacts only
-- treat `docs/` as non-canonical reference/export area if retained at all
-
-Classification:
-- `00_DOCS`: `KEEP`
-- `00_AS-BUILT`: `KEEP`
-- `docs`: `CONSOLIDATE`
-
-## 4. Proposed Target Tree
-
-This is a recommended target tree for later implementation, not a command to move files now.
+This is now the approved implementation target tree for connector runtime structure. It is not a command to move existing overlapping directories in this task.
 
 ```text
 /
@@ -169,10 +164,12 @@ This is a recommended target tree for later implementation, not a command to mov
       last_known_good/
       health/
       evidence/
+      logs/
       quarantine/
+      fixtures/
+      schemas/
       manifests/
       handoff/
-      schemas/
   public/
     data/
   scripts/
@@ -188,58 +185,56 @@ This is a recommended target tree for later implementation, not a command to mov
   worker/
 ```
 
-## 5. New Directories Actually Required
+## 5. Directories Created In This Task
 
-Not to be created in this phase, but required later:
+Created as empty tracked placeholders only:
 
-| Path | Classification | Why |
-| --- | --- | --- |
-| `data/connectors/raw/` | `CREATE` | raw landed artifacts |
-| `data/connectors/normalized/` | `CREATE` | normalized lane outputs before candidate/published split |
-| `data/connectors/candidate/` | `CREATE` | candidate artifacts |
-| `data/connectors/published/` | `CREATE` | internal published lane outputs |
-| `data/connectors/last_known_good/` | `CREATE` | explicit LKG storage |
-| `data/connectors/health/` | `CREATE` | source-health and connector-health records if not colocated |
-| `data/connectors/evidence/` | `CREATE` | execution evidence and validation results |
-| `data/connectors/quarantine/` | `CREATE` | invalid or non-publishable artifacts |
-| `data/connectors/manifests/` | `CREATE` | connector manifests and policy files |
-| `data/connectors/handoff/` | `CREATE` | workflow-08 handoff records |
-| `data/connectors/schemas/` | `CREATE` | JSON schemas and validators |
-| `scripts/connectors/` | `CREATE` | future shared connector utilities |
+- `data/connectors/raw/`
+- `data/connectors/normalized/`
+- `data/connectors/candidate/`
+- `data/connectors/published/`
+- `data/connectors/last_known_good/`
+- `data/connectors/health/`
+- `data/connectors/evidence/`
+- `data/connectors/logs/`
+- `data/connectors/quarantine/`
+- `data/connectors/fixtures/`
+- `data/connectors/schemas/`
+- `data/connectors/manifests/`
+- `data/connectors/handoff/`
+- `scripts/connectors/`
+- `tests/fixtures/connectors/`
 
-## 6. Directories That Should Not Be Created Yet
+No existing files were moved into them in this task.
 
-| Path | Classification | Why |
-| --- | --- | --- |
-| `data/connectors/deployments/` | `DEFER` | deployment evidence path should be decided together with workflow-08 strategy |
-| `data/connectors/cache/` | `DEFER` | no approved caching policy yet |
-| `infra/` or `ops/` | `DEFER` | would create another parallel governance root without a current need |
-| any second route-monitoring runtime tree | `DEFER` | existing overlap is already too high |
+## 6. Controlled Migration Boundaries
+
+This task does NOT move, delete, rename, or repoint any of the following:
+
+- `data/monitoring`
+- `data/route-monitoring`
+- `ONGOING_ROUTE_MONITORING`
+- `tests/route-monitoring-fixtures`
+- `scripts/route-monitoring`
+- `docs`
+
+Those migrations remain later controlled tasks after executable connector work exists and path references can be updated intentionally.
 
 ## 7. Minimal Migration Plan
 
-Principle:
-- preserve Git history
-- do not break current references
-- avoid parallel roots
+Approved next-order migration logic:
 
-Suggested order:
-1. Approve the target runtime root and publication contract first.
-2. Create `data/connectors/` only after the contract is approved.
-3. Migrate future implementation outputs into `data/connectors/` rather than adding more under `ONGOING_ROUTE_MONITORING/` or `data/route-monitoring/`.
-4. Once live implementation exists, repoint fixture and script references gradually:
-   - `tests/route-monitoring-fixtures/` -> `tests/fixtures/route-monitoring/`
-   - `scripts/route-monitoring/` -> `scripts/connectors/` or a clearly bounded subdirectory
-5. After references are updated and stable, deprecate overlapping roots:
-   - `ONGOING_ROUTE_MONITORING/`
-   - `data/route-monitoring/`
-   - possibly `docs/` if it remains redundant
+1. future connector implementation work should land under `data/connectors/`, `scripts/connectors/`, and `tests/fixtures/connectors/`
+2. connectors `01` through `07` should publish only internal connector artifacts, never directly to `public/data/`
+3. workflow `08` should remain the only site-facing publication workflow
+4. once executable connector work exists and references are stable, the overlap roots can be consolidated deliberately in a later task
 
 ## 8. Bottom Line
 
-Minimum-change recommendation:
-- keep the governance and research structure
-- keep `data/route/` and `public/data/`
-- do not build another parallel runtime tree
-- consolidate future implementation work under a single `data/connectors/` root
-- treat `ONGOING_ROUTE_MONITORING/`, `data/route-monitoring/`, `tests/route-monitoring-fixtures/`, and `docs/` as overlap areas to resolve later, not as templates to expand further now
+The implementation root is now approved.
+
+- the canonical route remains under `data/route/`
+- the approved connector-runtime mirror is `data/connectors/`
+- workflow `08` alone owns `public/data/`
+- overlapping legacy roots remain untouched for now
+- the first executable connector build specification may proceed without further repository-structure guesswork

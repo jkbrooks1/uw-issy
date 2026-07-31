@@ -1,40 +1,49 @@
 # UW–Issaquah Open Connector Architecture Decisions
 
-Unresolved decisions found during the July 30, 2026 documentation audit.
+Updated on Friday, July 31, 2026 to record the project owner's approved implementation decisions required before the first executable connector build specification is authored.
 
 Classification:
-- `BLOCKING`: must be resolved before one or more production connectors or workflow 08 can be considered complete
+- `RESOLVED`: owner-approved and binding for implementation
+- `BLOCKING`: still must be resolved before one or more production connectors or workflow 08 can be considered complete
 - `NON_BLOCKING`: important, but a connector can be designed or partially built without final resolution
 - `DEFERRED`: legitimate future decision, but not required before connector design begins
 
 ## Decision Register
 
 ### DEC-001
-- Classification: `BLOCKING`
+- Classification: `RESOLVED` (was `BLOCKING`)
 - Question: What is the final Hetzner runtime root for raw, candidate, published, LKG, evidence, and quarantine outputs?
 - Why it matters: atomic publication, same-filesystem rename, and workflow-08 discovery all depend on final path design.
-- Evidence available: current repo only has placeholder/overlapping local directories; the UW research set does not define a final production runtime root.
-- Options:
+- Evidence available: current repo only has placeholder/overlapping local directories; the UW research set did not previously define a final production runtime root.
+- Options considered:
   - define one dedicated `<hetzner_runtime_root>/uw_issy_route_monitor/`
   - reuse a broader existing monitoring root
-- Recommendation: dedicated project-scoped runtime root.
+- Original recommendation: dedicated project-scoped runtime root.
 - Decision owner: project owner
 - Deadline or phase: before first live connector workflow writes production-like artifacts
-- Whether `02_WEATHER` can proceed before resolution: yes for design-only and local prototype work, no for final publication wiring
+- Whether `02_WEATHER` could proceed before resolution: yes for design-only and local prototype work, no for final publication wiring
+- Resolution date: `2026-07-31`
+- Approved decision: use absolute Hetzner runtime root `/srv/uw_issy_route_monitor/` with required artifact-class directories `raw/`, `normalized/`, `candidate/`, `published/`, `last_known_good/`, `health/`, `evidence/`, `logs/`, `quarantine/`, `fixtures/`, `schemas/`, `manifests/`, and `handoff/`; every artifact-class directory MUST contain lane-specific subdirectories such as `/srv/uw_issy_route_monitor/raw/02_WEATHER/`
+- Implementation consequence: all connector manifests, publication logic, evidence paths, retention jobs, and workflow-08 discovery logic MUST target this exact runtime root and lane-subdirectory pattern
+- Validation still required: confirm the exact tree exists on Hetzner before the first executable connector is marked production-capable; confirm same-filesystem atomic rename behavior for candidate/published promotion
 
 ### DEC-002
-- Classification: `BLOCKING`
+- Classification: `RESOLVED` (was `BLOCKING`)
 - Question: What is the final published production output path contract for lanes 01–07 and workflow 08?
 - Why it matters: candidate/published/LKG separation and workflow-08 handoff need stable locations.
-- Evidence available: current project has `public/data`, `data/monitoring`, `data/route-monitoring`, and `ONGOING_ROUTE_MONITORING/data`, but no agreed production publication contract.
-- Options:
+- Evidence available: current project had `public/data`, `data/monitoring`, `data/route-monitoring`, and `ONGOING_ROUTE_MONITORING/data`, but no agreed production publication contract.
+- Options considered:
   - `data/connectors/published/<lane>/`
   - `public/data/` direct lane writes
   - hybrid internal published + workflow-08-generated public site data
-- Recommendation: internal published lane outputs under `data/connectors/published/`, then workflow 08 generates `public/data/`.
+- Original recommendation: internal published lane outputs under `data/connectors/published/`, then workflow 08 generates `public/data/`.
 - Decision owner: project owner plus implementation owner
 - Deadline or phase: before workflow build
-- Whether `02_WEATHER` can proceed before resolution: yes for connector design, no for final production handoff
+- Whether `02_WEATHER` could proceed before resolution: yes for connector design, no for final production handoff
+- Resolution date: `2026-07-31`
+- Approved decision: connectors `01` through `07` MUST write internal connector artifacts only under the approved Hetzner runtime root and, in the local repository mirror, under `data/connectors/{raw,normalized,candidate,published,last_known_good,health,evidence,logs,quarantine,fixtures,schemas,manifests,handoff}/<lane>/`; connectors MUST NOT write directly to `public/data/`; workflow 08 alone owns generation of site-facing artifacts under `public/data/`
+- Implementation consequence: connector executable specifications MUST treat connector-published artifacts and rider-facing public site artifacts as separate trust boundaries; workflow 08 becomes the only component allowed to materialize `public/data/`
+- Validation still required: confirm every connector manifest, publication record, and workflow-08 handoff path points to `data/connectors/` internally and never to `public/data/`
 
 ### DEC-003
 - Classification: `BLOCKING`
@@ -50,30 +59,38 @@ Classification:
 - Whether `02_WEATHER` can proceed before resolution: yes for implementation with configurable thresholds
 
 ### DEC-004
-- Classification: `BLOCKING`
+- Classification: `RESOLVED` (was `BLOCKING`)
 - Question: What retention periods apply to raw responses, candidate artifacts, evidence bundles, quarantine files, and LKG files?
 - Why it matters: storage growth, forensic value, and privacy/licensing boundaries depend on it.
-- Evidence available: CDM retained evidence and raw artifacts, but this audit did not find a single reusable numeric retention policy.
-- Options:
+- Evidence available: CDM retained evidence and raw artifacts, but this audit did not previously find a single reusable numeric retention policy.
+- Options considered:
   - fixed day-based retention per artifact class
   - size-based rotation plus minimum retention
-- Recommendation: define per-artifact-class retention with longer retention for evidence and LKG than for raw transient payloads.
+- Original recommendation: define per-artifact-class retention with longer retention for evidence and LKG than for raw transient payloads.
 - Decision owner: project owner
 - Deadline or phase: before first live production run
-- Whether `02_WEATHER` can proceed before resolution: yes for code design; no for final operational sign-off
+- Whether `02_WEATHER` could proceed before resolution: yes for code design; no for final operational sign-off
+- Resolution date: `2026-07-31`
+- Approved decision: initial retention periods are `14 days` raw source responses, `30 days` normalized artifacts, `30 days` candidate artifacts, `90 days` published snapshots, `current plus 12 prior valid versions` for last-known-good snapshots, `90 days` health records, `180 days` execution evidence, `180 days` validation results, `90 days` quarantine records, `90 days` logs, fixtures retained until intentionally superseded, schemas retained indefinitely in version control, manifests retained indefinitely in version control, and workflow-08 handoff records retained `90 days`; retention MUST be configurable and cleanup MUST NOT delete the current published artifact, the current last-known-good artifact, artifacts referenced by an unresolved incident, artifacts needed to reproduce the latest production deployment, or committed schemas/manifests
+- Implementation consequence: cleanup jobs, manifests, and operational docs MUST use these exact defaults and MUST expose them as configuration rather than hard-coded irreversible constants
+- Validation still required: confirm the same values appear identically in the shared standard, manifests, and future cleanup implementation; verify keep-rules for incident-linked and latest-deployment artifacts before cleanup is automated
 
 ### DEC-005
-- Classification: `BLOCKING`
+- Classification: `RESOLVED` (was `BLOCKING`)
 - Question: What is the authoritative schedule frequency for each lane and for workflow 08?
 - Why it matters: freshness, rate limiting, and deploy cadence all depend on it.
-- Evidence available: lane docs suggest cadences but no global approved scheduler contract exists.
-- Options:
+- Evidence available: lane docs suggested cadences but no global approved scheduler contract previously existed.
+- Options considered:
   - lane-specific schedules only
   - synchronized workflow-08 schedule after connector windows
-- Recommendation: approve lane-specific fetch schedules plus a separate workflow-08 cadence.
+- Original recommendation: approve lane-specific fetch schedules plus a separate workflow-08 cadence.
 - Decision owner: project owner
 - Deadline or phase: before live scheduling
-- Whether `02_WEATHER` can proceed before resolution: yes for workflow design
+- Whether `02_WEATHER` could proceed before resolution: yes for workflow design
+- Resolution date: `2026-07-31`
+- Approved decision: the initial `02_WEATHER` scheduling policy is every `10 minutes` for active weather alerts, every `30 minutes` for current observations, every `60 minutes` for short-term forecasts, slower source-specific schedules for products that publish less frequently, manual execution supported, and workflow activation deferred until validation is complete; the first implementation MAY use one `10-minute` workflow schedule with per-source due logic if unnecessary requests are skipped deterministically, source-health distinguishes `skipped_as_not_due` from `not_run` and `failed`, execution evidence records which sources were due and skipped, and rate limits/source publication cadences are respected
+- Implementation consequence: the first Weather executable specification MAY be one workflow or multiple workflows, but it MUST implement due-for-refresh logic per source branch and MUST record skip state explicitly
+- Validation still required: confirm the same numeric cadence values appear identically in the shared standard and future Weather manifest; confirm workflow evidence and source-health output differentiate `skipped_as_not_due`
 
 ### DEC-006
 - Classification: `BLOCKING`
@@ -89,18 +106,22 @@ Classification:
 - Whether `02_WEATHER` can proceed before resolution: yes individually
 
 ### DEC-007
-- Classification: `BLOCKING`
+- Classification: `RESOLVED` (was `BLOCKING`)
 - Question: Will WSDOT credentialed sources be used in the first production wave, and if so in which lanes?
 - Why it matters: environment configuration, source-health expectations, and scope commitments change depending on that answer.
 - Evidence available: WSDOT appears in lane 02, 05, 06, and 07 research as optional, blocked, or secondary.
-- Options:
+- Options considered:
   - no WSDOT in first wave
   - WSDOT only in 02
   - selective WSDOT in 02/05/06/07
-- Recommendation: keep WSDOT out of first mandatory deploy gates unless the credential is available and retested.
+- Original recommendation: keep WSDOT out of first mandatory deploy gates unless the credential is available and retested.
 - Decision owner: project owner
 - Deadline or phase: before workflow build for affected lanes
-- Whether `02_WEATHER` can proceed before resolution: yes
+- Whether `02_WEATHER` could proceed before resolution: yes
+- Resolution date: `2026-07-31`
+- Approved decision: WSDOT credentialed sources are NOT mandatory for the first production-capable `02_WEATHER` release; the initial Weather connector MUST operate without WSDOT; WSDOT MAY be added later only after credential availability is confirmed, authentication is retested successfully, source output is semantically validated, and failure behavior is proven non-blocking for valid non-WSDOT Weather publication; the Weather manifest MUST distinguish required non-WSDOT sources from optional WSDOT sources
+- Implementation consequence: first-release Weather manifests, validation gates, and source-health expectations MUST treat WSDOT as optional and non-blocking
+- Validation still required: confirm the first executable Weather specification and manifest place all WSDOT sources in `optional_sources` only, with no release gate depending on them
 
 ### DEC-008
 - Classification: `BLOCKING`
@@ -130,17 +151,21 @@ Classification:
 - Whether `02_WEATHER` can proceed before resolution: yes
 
 ### DEC-010
-- Classification: `BLOCKING`
+- Classification: `RESOLVED` (was `BLOCKING`)
 - Question: What are the final production n8n project/folder/tag names?
 - Why it matters: naming discipline, run discovery, and audits depend on it.
-- Evidence available: none final in the UW repo.
-- Options:
+- Evidence available: none final in the UW repo before owner approval.
+- Options considered:
   - one UW project folder with per-lane tags
   - per-lane folders
-- Recommendation: single project folder plus lane and lifecycle tags.
+- Original recommendation: single project folder plus lane and lifecycle tags.
 - Decision owner: implementation owner and project owner
 - Deadline or phase: before import into production n8n
-- Whether `02_WEATHER` can proceed before resolution: yes
+- Whether `02_WEATHER` could proceed before resolution: yes
+- Resolution date: `2026-07-31`
+- Approved decision: use one n8n project/folder for the complete system named exactly `UW_ISSY_ROUTE_MONITOR`; required tags are `uw_issy`, `connector`, `workflow_08`, `lane_01_route_conditions`, `lane_02_weather`, `lane_03_air_quality`, `lane_04_wildfire`, `lane_05_flood_conditions`, `lane_06_trail_infrastructure_status`, `lane_07_government_safety_alerts`, `candidate_only`, `no_direct_deploy`, `production`, `disabled`, and `active`; workflows `01` through `07` MUST carry `uw_issy`, `connector`, their lane tag, `no_direct_deploy`, and the applicable lifecycle/environment tag; workflow `08` MUST carry `uw_issy`, `workflow_08`, and the applicable lifecycle/environment tag
+- Implementation consequence: all future exported workflows, audit references, and operational runbooks MUST use this exact project/folder name and tag vocabulary
+- Validation still required: confirm the final n8n imports use this exact folder name and exact tag spellings with no alias drift
 
 ### DEC-011
 - Classification: `BLOCKING`
@@ -236,14 +261,32 @@ Classification:
 
 ## Summary
 
-Blocking decisions still open: 13
+Resolved on `2026-07-31`:
+- `DEC-001` runtime root
+- `DEC-002` publication path and trust boundary
+- `DEC-004` retention policy
+- `DEC-005` initial Weather schedule policy
+- `DEC-007` WSDOT first-release status
+- `DEC-010` n8n project/folder/tag organization
 
-Most important blockers before production connector implementation:
-- final runtime and publication roots
-- final freshness and deployment-gate policy
-- workflow-08 deployment target and notification model
-- lane-06 final label approval
+Blocking decisions still open: `7`
 
-02_WEATHER can proceed before full resolution:
-- yes, for documentation, schema design, validator design, and even connector implementation against configurable settings
-- no, for final production publication wiring and deploy-capable workflow-08 integration
+Most important blockers that remain before workflow-08 deployment work:
+- final freshness thresholds and lane-specific overrides
+- mandatory versus optional deployment-gate matrix
+- lane-06 final user-facing label
+- workflow-08 cross-lane severity mapping
+- Cloudflare project/domain/environment decision
+- branch/deployment strategy
+- failure notification channel
+
+What this approval unlocks immediately:
+- the shared connector standard now has approved runtime, publication, retention, WSDOT, scheduling, and n8n-organization values
+- the repository runtime mirror can be created under `data/connectors/`
+- the first executable connector build specification may proceed
+- `02_WEATHER` remains the intended first executable specification
+
+What remains deferred:
+- Cloudflare deployment specifics
+- workflow-08 notification design
+- workflow-08 deployment-gate policy

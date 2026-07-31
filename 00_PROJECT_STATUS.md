@@ -1,10 +1,10 @@
 # UW–Issaquah Route Monitor — Project Status
 
-**Last updated:** 2026-07-28 17:18:37 PDT
+**Last updated:** 2026-07-31 PDT
 
 ## Current phase
 
-Initial mise en place created.
+Architecture documentation and repository mise-en-place are approved for the first executable connector build specification.
 
 ## Project root
 
@@ -12,28 +12,37 @@ Initial mise en place created.
 
 ## Canonical route
 
-Expected canonical GPX:
+Canonical GPX:
 
 `data/route/UnivWA-Issaquah.gpx`
 
+## Architecture status
+
+- shared connector standard exists in `00_CONNECTORS/00_SHARED_AUTONOMOUS_CONNECTOR_BUILD_STANDARD.md`
+- six connector implementation decisions are now approved and recorded in `00_CONNECTORS/00_OPEN_CONNECTOR_ARCHITECTURE_DECISIONS.md`
+- the repository runtime structure is approved under `data/connectors/`
+- the first executable connector build specification may now proceed
+- `02_WEATHER` remains the intended first executable specification
+- Cloudflare deployment decisions remain deferred
+- workflow-08 deployment and notification decisions remain deferred
+
+## Approved runtime structure
+
+- Hetzner runtime root: `/srv/uw_issy_route_monitor/`
+- local repository mirror: `data/connectors/`
+- site-facing public output remains `public/data/`, owned only by workflow `08`
+
 ## Current status
 
-- Project directory structure created
-- Seven workstream folders created
-- Documentation structure created
-- Route-monitoring structure created
-- Script, test, build, and deployment folders created
-- Project rules created
-- Project build log initialized
-- Git repository initialized
-- GPX copy attempted from common local locations
+- governance and connector architecture documents are in place
+- lane research corpus exists for connectors `01` through `07`
+- approved empty connector runtime directories now exist locally
+- no n8n workflow was created or modified in this task
+- no deployment was performed in this task
 
 ## Next phase
 
-1. Validate the GPX.
-2. Derive route GeoJSON.
-3. Calculate route distance and elevation.
-4. Divide the route into operational monitoring sections.
-5. Identify jurisdictions and trail owners.
-6. Create the Washington source registry.
-7. Define normalized connector contracts.
+1. Author the first executable connector build specification for `02_WEATHER`.
+2. Keep WSDOT optional and non-blocking in that first Weather specification.
+3. Define executable manifests, validators, and evidence outputs against the approved `data/connectors/` structure.
+4. Leave Cloudflare and workflow-08 deployment design deferred until their remaining open decisions are resolved.

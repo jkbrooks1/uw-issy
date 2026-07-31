@@ -1045,3 +1045,95 @@ Result: PARTIAL
 **Known limitations carried forward from the 5 workstreams (not resolved by synthesis, since synthesis cannot invent missing research):** no verified live Sammamish River gauge (05); no unattended public evacuation feed (04); Seattle-side waterway-infrastructure coverage remains weak (06); eastside municipal government-alert coverage remains weak (07); several credentials remain untested (`WSDOT_TRAVELER_API_ACCESS_CODE`, `NASA_FIRMS_MAP_KEY`, FEMA IPAWS). Full detail in each workstream's own `SOURCE_GAPS.md` and in the consolidated Full Report.
 
 **Next recommended action:** project owner reviews the Executive Summary and, in particular, decides whether to approve the workstream 06 display-label recommendation (`WATERWAY_AND_CROSSING_STATUS`) and the recommended build order, before a coding-agent session begins production implementation using `UW_ISSY_IMPLEMENTATION_HANDOFF_03_07.md`.
+
+
+## 2026-07-29 20:24:27 PDT — Shared autonomous connector architecture standard (v2 iteration) COMPLETE
+
+**Objective:** per the project owner's "WHOLE-JOB CODEX PROMPT: UW-Issaquah Shared Autonomous Connector Architecture and Reference-Build Readiness," establish the shared engineering contract every UW-Issy connector must follow before further production workflows are built. Architecture/governance/documentation only — no n8n workflow was built, modified, imported, or executed; nothing was deployed; no commit was made (per explicit project-owner instruction to commit only if separately instructed); no credential value was tested, printed, or rotated.
+
+**Repositories inspected:**
+- `/Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor` (this project, read-write for the approved doc paths only)
+- `/Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_local_CDM_STATUS_PAGE_PROJECT` (V1, read-only reference)
+- `/Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_local_CDM_STATUS_PAGE_PROJECT_V2_CONNECTOR_UI` (V2, read-only reference)
+
+**Important discovery mid-job:** a differently-structured, differently-located set of 4 of these same 6 deliverables already existed in this repository, committed at 2026-07-29 19:28:29 (commit `f2eba7c`) by a process this session could not identify with certainty (no corresponding build-log entry describing that work was found). Per explicit project-owner instruction ("redo, do not replace, give them a version number"), this session's outputs are versioned `_v2` (or, for the mise-en-place assessment, distinguished by a `_v2` suffix at the same path) and do NOT delete, overwrite, or modify the pre-existing v1 files at `00_CONNECTORS/00_CDM_CONNECTOR_LESSONS_APPLIED.md`, `00_CONNECTORS/00_SHARED_AUTONOMOUS_CONNECTOR_BUILD_STANDARD.md`, `00_CONNECTORS/00_OPEN_CONNECTOR_ARCHITECTURE_DECISIONS.md`, or `00_DOCS/UW_ISSY_CONNECTOR_MISE_EN_PLACE_ASSESSMENT.md` (v1). Reconciling the two sets is recorded as the highest-priority open item (Decision D12) in this session's own decisions register.
+
+**Files created in `00_DOCS/`:**
+- `00_CDM_CONNECTOR_LESSONS_APPLIED_v2.md` — 22-lesson living register (18 VALIDATED, 1 REJECTED_APPROACH, 1 OPEN, 1 PROVISIONAL), each citing exact CDM V1/V2 file + location + date, gathered via a read-only Explore-agent audit of both CDM repositories against 20 required lesson categories
+- `00_SHARED_AUTONOMOUS_CONNECTOR_BUILD_STANDARD_v2.md` — the central deliverable: lettered sections A-S covering connector identity, directory contract, execution lifecycle, publication lifecycle, common envelope (DECIDED snake_case), event dedup (Workflow-08-only cross-workstream merging), source health, freshness, failure/degraded-state, last-known-good, validation, execution evidence, manifest, scheduling, credentials, build logging, completion definition (9-state maturity ladder), Workflow 08 handoff, and reference-connector requirement
+- `00_OPEN_CONNECTOR_ARCHITECTURE_DECISIONS_v2.md` — 12 tracked decisions (3 DECIDED, 4 RECOMMENDED, 1 BLOCKED, 4 OPEN including the highest-priority D12 reconciliation item), each with evidence, options, risks, and a recommended default only where evidence supports one
+- `UW_ISSY_CONNECTOR_MISE_EN_PLACE_ASSESSMENT_v2.md` — direct repository audit finding this project is 100% research-phase / 0% build-phase across all 7 workstreams (zero n8n workflow JSON anywhere in the repo, no package.json, empty scripts/tests/app scaffold directories); full per-workstream maturity table; 02_WEATHER selected as reference-connector candidate but classified NOT_REFERENCE_READY pending remediation; go/no-go: GO once Decision D12 is resolved
+- `00_CONNECTOR_GLOSSARY.md` — first version, no prior file at this name; canonical terms with preferred-vs-deprecated-synonym notes where this project already has drift (e.g. connector vs. producer)
+
+**File revised in place (this session's own prior work, not a collision):**
+- `UW_ISSY_IMPLEMENTATION_HANDOFF_03_07.md` — restructured into 5 explicit phases (0: read architecture + close blocking decisions; 1: remediate 02_WEATHER as reference connector; 2: build 03-07, unchanged source-specific detail preserved verbatim; 3: production-host verification; 4-5: Workflow 08 and site deploy, explicitly out of scope) — no prior per-workstream research detail was discarded
+
+**Validation performed:**
+- File presence: all 6 confirmed present and non-empty
+- Placeholder/TODO/TBD scan: zero hits across all 6 files
+- Path/reference check: all in-repo paths cited resolve; the only "missing" hits were paths correctly cited as CDM V1/V2 evidence locations (e.g. `app/route-display.mjs`), never claimed to exist in this repository
+- Secret-pattern scan (API key/token/private-key regexes): zero hits across all 6 files
+- Confirmed neither CDM repository was modified: the Explore agent used for CDM evidence-gathering is tool-restricted to read-only access, no Write/Edit call against any CDM path was made this session, and a 30-minute-window file-modification check found no CDM files touched by this session (unrelated pre-existing uncommitted changes and `.wrangler` dev-cache activity in CDM V1 predate and are unrelated to this session's read-only audit)
+- Confirmed no application code, workflow, deployment config, credential, or environment file was modified — only the 6 documentation files above plus this build-log entry
+
+**Files intentionally not changed:** the optional `00_SHARED_CONNECTOR_CONTRACT.schema.json` deliverable was not created — the illustrative JSON envelope embedded in the build standard's §E was judged sufficient given no implementation has begun yet; creating a separate formal JSON Schema file now would not materially reduce ambiguity before Decision D12 (which document set is authoritative) is resolved. The pre-existing v1 architecture-document set at `00_CONNECTORS/` was left untouched per explicit instruction.
+
+**Deployment status:** none. No website deployed, no workflow activated, no schedule started.
+
+**Credential status:** no credential value was tested, printed, copied, or rotated. Only environment-variable names were referenced (all already documented in `UW_ISSY_CONNECTOR_ENV_REQUIREMENTS_03_07.md` from the prior research cycle).
+
+**Git result:** no commit made this session, per explicit project-owner instruction ("create a local commit only if instructed"). Working tree currently has these 6 new/modified files plus the pre-existing untracked research files from the prior 03-07 research cycle; branch `main`, 2 prior commits (`ce843a2`, `f2eba7c`) unchanged.
+
+**Overall result: PASS WITH BLOCKERS.** All 6 required deliverables (of the job's required 6; the 7th, optional, JSON Schema file was judged unnecessary — see above) exist, are evidence-grounded, and are internally validated. The blocker is Decision D12 — this session's v2 architecture-document set and the pre-existing v1 set both currently exist; the project owner must decide which is authoritative before any coding agent begins implementation against either one.
+
+
+## 2026-07-31 PDT — Initial connector architecture decisions resolved and runtime mirror approved
+
+**Objective:** record the project owner's approved implementation decisions required before the first executable connector build specification is created, update the architecture documents accordingly, and create the approved local repository runtime skeleton. Documentation and repository-mise-en-place only.
+
+**Owner-approved decisions recorded in this task:**
+- Hetzner runtime root: `/srv/uw_issy_route_monitor/`
+- required Hetzner artifact classes: `raw/`, `normalized/`, `candidate/`, `published/`, `last_known_good/`, `health/`, `evidence/`, `logs/`, `quarantine/`, `fixtures/`, `schemas/`, `manifests/`, `handoff/`
+- lane-specific subdirectories required under every artifact class
+- internal publication model: connectors `01` through `07` write only internal connector artifacts under the approved runtime root and the local repository mirror; workflow `08` alone owns `public/data/`
+- local repository runtime mirror: `data/connectors/{raw,normalized,candidate,published,last_known_good,health,evidence,logs,quarantine,fixtures,schemas,manifests,handoff}/`
+- n8n project/folder name: `UW_ISSY_ROUTE_MONITOR`
+- required tags: `uw_issy`, `connector`, `workflow_08`, `lane_01_route_conditions`, `lane_02_weather`, `lane_03_air_quality`, `lane_04_wildfire`, `lane_05_flood_conditions`, `lane_06_trail_infrastructure_status`, `lane_07_government_safety_alerts`, `candidate_only`, `no_direct_deploy`, `production`, `disabled`, `active`
+- WSDOT decision for first Weather release: optional only, non-blocking, not mandatory for first production-capable `02_WEATHER`
+- initial retention policy: raw `14 days`; normalized `30 days`; candidate `30 days`; published `90 days`; last-known-good current plus `12` prior valid versions; health `90 days`; execution evidence `180 days`; validation results `180 days`; quarantine `90 days`; logs `90 days`; fixtures until intentionally superseded; schemas and manifests indefinite in version control; workflow-08 handoff `90 days`
+- initial Weather schedule policy: active alerts every `10 minutes`; current observations every `30 minutes`; short-term forecasts every `60 minutes`; slower products on documented source-specific cadence; manual execution supported; activation deferred until validation completes; a single `10-minute` workflow with per-source due logic is allowed if `skipped_as_not_due` is distinguished from `not_run` and `failed`
+
+**Documents updated:**
+- `00_CONNECTORS/00_OPEN_CONNECTOR_ARCHITECTURE_DECISIONS.md`
+- `00_CONNECTORS/00_SHARED_AUTONOMOUS_CONNECTOR_BUILD_STANDARD.md`
+- `00_DOCS/UW_ISSY_CONNECTOR_MISE_EN_PLACE_ASSESSMENT.md`
+- `00_PROJECT_STATUS.md`
+- `00_PROJECT_BUILDLOG.md`
+
+**Directories created in this task:**
+- `data/connectors/raw/`
+- `data/connectors/normalized/`
+- `data/connectors/candidate/`
+- `data/connectors/published/`
+- `data/connectors/last_known_good/`
+- `data/connectors/health/`
+- `data/connectors/evidence/`
+- `data/connectors/logs/`
+- `data/connectors/quarantine/`
+- `data/connectors/fixtures/`
+- `data/connectors/schemas/`
+- `data/connectors/manifests/`
+- `data/connectors/handoff/`
+- `scripts/connectors/`
+- `tests/fixtures/connectors/`
+
+**Validation performed:**
+- confirmed the six approved decisions are marked resolved only in `DEC-001`, `DEC-002`, `DEC-004`, `DEC-005`, `DEC-007`, and `DEC-010`
+- confirmed unrelated Cloudflare, branch/deployment, workflow-08 notification, lane-gate, severity, and lane-06 label decisions remain open
+- confirmed `/srv/uw_issy_route_monitor/`, `data/connectors/`, `UW_ISSY_ROUTE_MONITOR`, `public/data/`, and `skipped_as_not_due` are represented consistently across the updated docs
+- corrected one stale internal Weather cadence table so the approved `10/30/60` schedule values are identical wherever they now appear
+- confirmed the local directory tree was created without moving or deleting `data/monitoring`, `data/route-monitoring`, `ONGOING_ROUTE_MONITORING`, `tests/route-monitoring-fixtures`, `scripts/route-monitoring`, or `docs`
+- no n8n workflow file was created or modified
+- no deployment, push, CDM reference-project modification, source-registry edit, GPX edit, public production-output edit, or Cloudflare resource change was performed in this task
+
+**Result:** the shared connector standard exists, six implementation decisions are now approved and recorded, the repository runtime structure is approved, and the first executable connector build specification may now proceed. `02_WEATHER` remains the intended first executable specification. Cloudflare and workflow-08 deployment decisions remain deferred.

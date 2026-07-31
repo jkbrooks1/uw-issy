@@ -36,15 +36,33 @@ Status:
 
 ### 2.3 n8n folder and tag conventions
 
-- Final n8n folder names are not yet resolved and remain an open decision.
-- Until resolved, all design docs MUST refer to:
-  - folder class: `UW_ISSY_CONNECTORS`
-  - tags: `uw_issy`, lane id tag, environment tag, and lifecycle tag
-- Minimum tags SHOULD be:
+- The complete UW–Issaquah monitoring system MUST use one n8n project/folder named exactly `UW_ISSY_ROUTE_MONITOR`.
+- Required tag vocabulary is:
   - `uw_issy`
-  - `01_route_conditions` through `08_assemble_validate_build_deploy`
+  - `connector`
+  - `workflow_08`
+  - `lane_01_route_conditions`
+  - `lane_02_weather`
+  - `lane_03_air_quality`
+  - `lane_04_wildfire`
+  - `lane_05_flood_conditions`
+  - `lane_06_trail_infrastructure_status`
+  - `lane_07_government_safety_alerts`
   - `candidate_only`
-  - `no_direct_deploy` for workflows 01–07
+  - `no_direct_deploy`
+  - `production`
+  - `disabled`
+  - `active`
+- Workflows `01` through `07` MUST carry:
+  - `uw_issy`
+  - `connector`
+  - their lane tag
+  - `no_direct_deploy`
+  - the applicable lifecycle/environment tag
+- Workflow `08` MUST carry:
+  - `uw_issy`
+  - `workflow_08`
+  - the applicable lifecycle/environment tag
 
 ### 2.4 Exported workflow filename conventions
 
@@ -62,8 +80,10 @@ Status:
 
 ### 3.1 Hetzner runtime paths
 
-These are required logical directories; the final absolute root is an open decision.
+The absolute Hetzner runtime root is approved and binding.
 
+- Runtime root MUST be:
+  - `/srv/uw_issy_route_monitor/`
 - Runtime root MUST contain:
   - `raw/`
   - `normalized/`
@@ -76,10 +96,12 @@ These are required logical directories; the final absolute root is an open decis
   - `quarantine/`
   - `fixtures/`
   - `schemas/`
+  - `manifests/`
   - `handoff/`
-
-- Final Hetzner absolute root remains open. Until resolved, documentation MUST refer to it as:
-  - `<hetzner_runtime_root>/uw_issy_route_monitor/`
+- Every artifact-class directory above MUST contain lane-specific subdirectories.
+- Example:
+  - `/srv/uw_issy_route_monitor/raw/02_WEATHER/`
+  - `/srv/uw_issy_route_monitor/published/07_GOVERNMENT_SAFETY_ALERTS/`
 
 ### 3.2 Local repository paths
 
@@ -88,7 +110,7 @@ These are required logical directories; the final absolute root is an open decis
   - `00_DOCS/`
 - Canonical route:
   - `data/route/UnivWA-Issaquah.gpx`
-- Proposed local implementation roots:
+- Approved local implementation mirror:
   - `data/connectors/raw/`
   - `data/connectors/normalized/`
   - `data/connectors/candidate/`
@@ -96,13 +118,19 @@ These are required logical directories; the final absolute root is an open decis
   - `data/connectors/last_known_good/`
   - `data/connectors/health/`
   - `data/connectors/evidence/`
+  - `data/connectors/logs/`
   - `data/connectors/quarantine/`
+  - `data/connectors/fixtures/`
+  - `data/connectors/schemas/`
   - `data/connectors/manifests/`
   - `data/connectors/handoff/`
-  - `tests/connectors/fixtures/`
-  - `data/connectors/schemas/`
-
-These paths are proposed target paths for future implementation and MUST NOT be assumed to already exist unless created intentionally in a later phase.
+  - `scripts/connectors/`
+  - `tests/fixtures/connectors/`
+- Every `data/connectors/*/` artifact-class directory MUST contain lane-specific subdirectories.
+- Connectors `01` through `07` MUST write only to these internal connector paths and to the approved Hetzner runtime mirror.
+- Connectors `01` through `07` MUST NOT write directly to `public/data/`.
+- Workflow `08` alone owns generation of site-facing artifacts under `public/data/`.
+- Connector-published artifacts and rider-facing public site artifacts are separate trust boundaries and MUST be treated as such in manifests, validators, and workflow-08 handoff records.
 
 ## 4. Canonical Shared Envelope
 
@@ -354,17 +382,24 @@ Allowed `status` values:
 - `stale`
 - `blocked`
 - `not_run`
+- `skipped_as_not_due`
 - `empty_but_valid`
 
 Null behavior:
 - `http_status` MAY be `null` when the failure happened before HTTP response
 - `last_observation_at` MAY be `null`
+- `skipped_as_not_due` MUST be used only when a source branch was intentionally evaluated and skipped because its cadence window was not due; it MUST NOT be reused for failures or for workflows that never evaluated the source at all
 
 Validation failure behavior:
 - malformed source-health record MUST fail connector validation
 
 Publication scope:
 - both internal and published with connector output
+
+Weather cadence behavior:
+- for a multi-branch Weather workflow, `skipped_as_not_due` is distinct from `not_run`
+- `not_run` means the source branch did not execute or was unavailable to execute
+- `skipped_as_not_due` means the branch executed its due check, determined the source was not due, and intentionally skipped the fetch
 
 Example JSON:
 
@@ -710,7 +745,7 @@ Canonical owners:
 
 Default policy values are configuration defaults, not final scientific truth:
 - `01_ROUTE_CONDITIONS`: `OPEN`
-- `02_WEATHER`: base 60 minutes for observations; 15 minutes for active alerts; forecast-specific per-source overrides
+- `02_WEATHER`: `10 minutes` for active alerts; `30 minutes` for current observations; `60 minutes` for short-term forecasts; slower forecast products use documented source-specific overrides
 - `03_AIR_QUALITY`: base 90 minutes for current observations; 12 hours for smoke forecast; 15 minutes for formal alerts
 - `04_WILDFIRE`: 15 minutes for alerts/incidents; 60 minutes for smoke polygons; 6 hours for burn bans
 - `05_FLOOD_CONDITIONS`: 30 minutes for gauges; 15 minutes for flood alerts; 6 hours for forecast issue freshness
@@ -818,10 +853,52 @@ Manifest and data publication MUST NOT leave an inconsistent snapshot.
 - `semantic_validation_failed`
 - `route_relevance_unconfirmed`
 
+### 11.4 Initial Weather schedule policy
+
+For the first production-capable `02_WEATHER` release:
+- active weather alerts MUST be checked every `10 minutes`
+- current observations MUST be checked every `30 minutes`
+- short-term forecasts MUST be checked every `60 minutes`
+- slower forecast products MUST use a documented source-specific cadence based on actual publication frequency
+- manual execution MUST be supported
+- unattended activation MUST remain deferred until validation is complete
+
+Implementation flexibility:
+- the first Weather implementation MAY use one `10-minute` n8n workflow schedule with per-source due logic
+- when that model is used, unnecessary requests MUST be skipped deterministically
+- source-health output MUST distinguish `skipped_as_not_due` from `not_run` and `failed`
+- execution evidence MUST record which sources were due and which were skipped
+- rate limits and source publication cadences MUST be respected
+
 ## 12. Source Retention, Logging, Evidence
 
+- Retention defaults MUST be configurable rather than hard-coded irreversibly.
 - Raw responses MAY be retained when licensing and storage policy allow.
-- Response retention periods remain open decisions.
+- Default retention policy is:
+
+| Artifact class | Default retention |
+| --- | --- |
+| raw source responses | `14 days` |
+| normalized artifacts | `30 days` |
+| candidate artifacts | `30 days` |
+| published snapshots | `90 days` |
+| last-known-good snapshots | retain current plus `12` prior valid versions |
+| health records | `90 days` |
+| execution evidence | `180 days` |
+| validation results | `180 days` |
+| quarantine records | `90 days` |
+| logs | `90 days` |
+| fixtures | retained until intentionally superseded |
+| schemas | retained indefinitely in version control |
+| manifests | retained indefinitely in version control |
+| workflow-08 handoff records | `90 days` |
+
+- Retention cleanup MUST NOT delete:
+  - the current published artifact
+  - the current last-known-good artifact
+  - artifacts referenced by an unresolved incident
+  - artifacts required to reproduce the latest production deployment
+  - committed schemas or manifests
 - Logs MUST avoid credential values.
 - Execution evidence MUST include hashes for every candidate and published artifact written.
 
@@ -919,19 +996,26 @@ Post-deployment verification:
   - evidence retention paths
   - rollback procedure
 
-## 17. Unresolved Values Handled By This Standard
+## 17. First-release source policy for 02_WEATHER
+
+- WSDOT credentialed sources are NOT mandatory for the first production-capable `02_WEATHER` release.
+- The initial Weather connector MUST be able to operate and publish valid non-WSDOT output without any WSDOT source succeeding.
+- The Weather manifest MUST distinguish:
+  - required non-WSDOT sources
+  - optional WSDOT sources
+- WSDOT sources MAY be added later only after:
+  - credential availability is confirmed
+  - authentication is retested successfully
+  - source output is semantically validated
+  - failure behavior is proven non-blocking for valid non-WSDOT publication
+
+## 18. Unresolved Values Handled By This Standard
 
 This standard intentionally does not invent final values for:
-- final Hetzner runtime root
-- final production publication path
 - final freshness thresholds where research is incomplete
-- retention periods
-- schedule frequency
 - mandatory vs optional deployment gates
-- WSDOT credential use
 - lane 06 user-facing label final approval
 - final severity taxonomy mapping across lanes
-- production n8n folder/tag names
 - Cloudflare Pages project and domain
 - branch/deployment strategy
 - workflow-08 failure notification mechanism
