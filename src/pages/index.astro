@@ -1,5 +1,62 @@
 ---
+// Buildspec section 28 — server-render everything that doesn't need the
+// browser. The public package is read directly from disk at build time
+// (this is a static build; there is no running server to self-fetch from
+// during `astro build`), then normalized through the same adapters the
+// buildspec requires the browser to use if it ever needs to re-derive
+// state client-side.
 import "../styles/route-status.css";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
+import SiteHeader from "../components/site/SiteHeader.astro";
+import SiteFooter from "../components/site/SiteFooter.astro";
+import DashboardHeading from "../components/route-status/DashboardHeading.astro";
+import FreshnessNotice from "../components/route-status/FreshnessNotice.astro";
+import CurrentRouteState from "../components/route-status/CurrentRouteState.astro";
+import MonitoringSources from "../components/route-status/MonitoringSources.astro";
+import RouteImpacts from "../components/route-status/RouteImpacts.astro";
+import CurrentRouteAlerts from "../components/route-status/CurrentRouteAlerts.astro";
+import SystemHealthDisclosure from "../components/route-status/SystemHealthDisclosure.astro";
+import RouteMap from "../components/route-status/RouteMap.svelte";
+
+import { normalizeDashboardData } from "../lib/route-status/normalize-dashboard-data";
+import { normalizeRouteEvents } from "../lib/route-status/normalize-route-events";
+import type { DashboardDataFile, RouteEventsFile, SystemHealthFile } from "../lib/route-status/types";
+
+const publicDataDir = join(process.cwd(), "public", "data");
+
+function readJson<T>(fileName: string): T | null {
+  try {
+    return JSON.parse(readFileSync(join(publicDataDir, fileName), "utf8")) as T;
+  } catch {
+    return null;
+  }
+}
+
+const dashboardDataFile = readJson<DashboardDataFile>("dashboard-data.json");
+const routeEventsFile = readJson<RouteEventsFile>("route-events.geojson");
+const systemHealth = readJson<SystemHealthFile>("system-health.json");
+
+const packageAvailable = dashboardDataFile !== null && routeEventsFile !== null;
+
+const summary = dashboardDataFile
+  ? normalizeDashboardData(dashboardDataFile)
+  : {
+      displayTier: "unknown" as const,
+      displayTierLabel: "Status unknown",
+      activeEventCount: 0,
+      overallMessage: null,
+      lastUpdatedLabel: null,
+      laneSummaries: [],
+      routeImpacts: null,
+    };
+
+const { events } = routeEventsFile
+  ? normalizeRouteEvents(routeEventsFile)
+  : { events: [], gaps: [] };
+
+const hasSourceFailures = (systemHealth?.failedLaneIds.length ?? 0) > 0;
 ---
 
 <html lang="en">
@@ -7,8 +64,47 @@ import "../styles/route-status.css";
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>UW–Issy Route Status | BikeTourFrance.net</title>
+    <meta
+      name="description"
+      content="Current conditions on the University of Washington to Issaquah cycling route: weather, air quality, wildfire, flood, trail infrastructure, and safety alerts."
+    />
   </head>
   <body>
-    <h1>UW–Issy Route Status</h1>
+    <SiteHeader />
+    <main class="page-frame">
+      <DashboardHeading summary={summary} />
+
+      <div class="dashboard-layout">
+        <div class="item-freshness">
+          <FreshnessNotice summary={summary} systemHealth={packageAvailable ? systemHealth : null} />
+        </div>
+
+        <div class="item-route-state">
+          <CurrentRouteState summary={summary} />
+        </div>
+
+        <section class="panel item-route-map" aria-labelledby="route-map-heading">
+          <h2 class="panel__heading" id="route-map-heading">Route map</h2>
+          <RouteMap client:only="svelte" routeDisplayTier={summary.displayTier} />
+        </section>
+
+        <div class="item-route-alerts">
+          <CurrentRouteAlerts events={events} hasSourceFailures={hasSourceFailures} />
+        </div>
+
+        <div class="item-monitoring-sources">
+          <MonitoringSources laneSummaries={summary.laneSummaries} systemHealth={systemHealth} />
+        </div>
+
+        <div class="item-route-impacts">
+          <RouteImpacts routeImpacts={summary.routeImpacts} />
+        </div>
+
+        <div class="item-system-health">
+          <SystemHealthDisclosure systemHealth={systemHealth} />
+        </div>
+      </div>
+    </main>
+    <SiteFooter />
   </body>
 </html>

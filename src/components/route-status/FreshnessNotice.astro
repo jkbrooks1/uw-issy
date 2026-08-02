@@ -1,0 +1,47 @@
+---
+// Buildspec section 19 — freshness and source notices.
+import type { RouteWideSummary } from "../../lib/route-status/normalize-dashboard-data";
+import type { SystemHealthFile } from "../../lib/route-status/types";
+
+type Props = {
+  summary: RouteWideSummary;
+  systemHealth: SystemHealthFile | null;
+};
+
+const { summary, systemHealth } = Astro.props;
+
+const failedLabels =
+  systemHealth?.failedLaneIds
+    .map((id) => systemHealth.lanes.find((l) => l.laneId === id)?.laneLabel ?? id)
+    .filter(Boolean) ?? [];
+
+const isPackageMissing = systemHealth === null;
+const hasFailures = failedLabels.length > 0;
+---
+
+{
+  isPackageMissing ? (
+    <div class="freshness-notice freshness-notice--failure" role="status">
+      <p>Current route status data is not available.</p>
+    </div>
+  ) : hasFailures ? (
+    <div class="freshness-notice freshness-notice--failure" role="status">
+      <p>Some route sources could not be checked. Available route data is shown below.</p>
+      <ul>
+        {failedLabels.map((label) => (
+          <li>{label}</li>
+        ))}
+      </ul>
+    </div>
+  ) : (
+    <div class="freshness-notice" role="status">
+      <p>
+        {summary.lastUpdatedLabel ? (
+          <>Current as of {summary.lastUpdatedLabel}.</>
+        ) : (
+          <>Current.</>
+        )}
+      </p>
+    </div>
+  )
+}

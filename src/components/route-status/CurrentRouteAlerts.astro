@@ -1,0 +1,32 @@
+---
+// Buildspec section 24 — "Current route alerts" heading plus empty-state
+// text rules, wrapping the desktop table and mobile list.
+import type { DashboardEventWithUnknownLane } from "../../lib/route-status/types";
+import EventTable from "./EventTable.astro";
+import EventListMobile from "./EventListMobile.astro";
+
+type Props = {
+  events: DashboardEventWithUnknownLane[];
+  hasSourceFailures: boolean;
+};
+
+const { events, hasSourceFailures } = Astro.props;
+---
+
+<section class="panel" aria-labelledby="current-route-alerts-heading">
+  <h2 class="panel__heading" id="current-route-alerts-heading">Current route alerts</h2>
+  {
+    events.length === 0 ? (
+      <p class="empty-note">
+        {hasSourceFailures
+          ? "No active route events were returned, but one or more sources could not be checked."
+          : "No active route events were found in the latest valid update."}
+      </p>
+    ) : (
+      <>
+        <EventTable events={events} />
+        <EventListMobile events={events} />
+      </>
+    )
+  }
+</section>

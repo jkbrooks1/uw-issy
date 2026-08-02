@@ -1,0 +1,36 @@
+---
+// Buildspec section 24.3 — mobile stacked event list. A real <details>
+// disclosure serves as the "clear detail button" — not a hidden whole-card
+// click target.
+import type { DashboardEventWithUnknownLane } from "../../lib/route-status/types";
+import { formatPacificTime } from "../../lib/route-status/format-time";
+import EventDetail from "./EventDetail.astro";
+
+type Props = {
+  events: DashboardEventWithUnknownLane[];
+};
+
+const { events } = Astro.props;
+---
+
+<div class="event-list-mobile">
+  {
+    events.map((event) => (
+      <article class="event-card">
+        <h3 class="event-card__title">{event.title}</h3>
+        <p class="event-card__meta">{event.laneLabel}</p>
+        <p class="event-card__meta">
+          {event.locationLabel ?? event.routeSegmentLabel ?? event.routeSegmentId ?? "Location not available"}
+        </p>
+        <p class="event-card__meta">
+          {formatPacificTime(event.reportedAt) ?? "Report time not available"}
+        </p>
+        <span class={`tier-badge tier-badge--${event.displayTier}`}>{event.displayTier}</span>
+        <details>
+          <summary class="event-card__link">View details</summary>
+          <EventDetail event={event} />
+        </details>
+      </article>
+    ))
+  }
+</div>

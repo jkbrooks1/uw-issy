@@ -1,0 +1,29 @@
+---
+// Buildspec section 18 — current route state panel.
+import type { RouteWideSummary } from "../../lib/route-status/normalize-dashboard-data";
+
+type Props = {
+  summary: RouteWideSummary;
+};
+
+const { summary } = Astro.props;
+
+const ICONS: Record<string, string> = {
+  normal: "✓", // check
+  watch: "◯", // circle (eye/caution stand-in)
+  alert: "⚠", // warning triangle
+  unknown: "?",
+};
+---
+
+<section class="panel" aria-labelledby="current-route-state-heading">
+  <h2 class="panel__heading" id="current-route-state-heading">Current route state</h2>
+  <p class={`route-state__value tier-${summary.displayTier}`}>
+    <span class="route-state__icon" aria-hidden="true">{ICONS[summary.displayTier]}</span>
+    <span>{summary.displayTierLabel}</span>
+  </p>
+  <p class="route-state__count">
+    Active route events: <strong>{summary.activeEventCount}</strong>
+  </p>
+  {summary.overallMessage && <p class="route-state__reason">{summary.overallMessage}</p>}
+</section>

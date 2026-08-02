@@ -1,0 +1,78 @@
+---
+// Buildspec section 23.8 / 24 — full detail fields for one event. Omits any
+// field that is null rather than showing a blank or invented value.
+import type { DashboardEventWithUnknownLane } from "../../lib/route-status/types";
+import { formatPacificTime } from "../../lib/route-status/format-time";
+
+type Props = {
+  event: DashboardEventWithUnknownLane;
+};
+
+const { event } = Astro.props;
+
+const reportedLabel = formatPacificTime(event.reportedAt);
+const fromLabel = formatPacificTime(event.effectiveFrom);
+const untilLabel = formatPacificTime(event.effectiveUntil);
+---
+
+<dl class="map-popup">
+  {event.summary && (
+    <>
+      <dt>Summary</dt>
+      <dd>{event.summary}</dd>
+    </>
+  )}
+  {(event.locationLabel || event.routeSegmentLabel || event.routeSegmentId) && (
+    <>
+      <dt>Location or route part</dt>
+      <dd>{event.locationLabel ?? event.routeSegmentLabel ?? event.routeSegmentId}</dd>
+    </>
+  )}
+  {event.routeEffect && (
+    <>
+      <dt>Route effect</dt>
+      <dd>{event.routeEffect}</dd>
+    </>
+  )}
+  {reportedLabel && (
+    <>
+      <dt>Reported</dt>
+      <dd>{reportedLabel}</dd>
+    </>
+  )}
+  {(fromLabel || untilLabel) && (
+    <>
+      <dt>Effective</dt>
+      <dd>
+        {fromLabel ?? "Unknown start"}
+        {untilLabel ? ` through ${untilLabel}` : ""}
+      </dd>
+    </>
+  )}
+  {event.sourceName && (
+    <>
+      <dt>Source</dt>
+      <dd>
+        {event.sourceUrl ? (
+          <a href={event.sourceUrl} target="_blank" rel="noopener noreferrer">
+            {event.sourceName}
+          </a>
+        ) : (
+          event.sourceName
+        )}
+      </dd>
+    </>
+  )}
+  {event.isStale && (
+    <>
+      <dt>Note</dt>
+      <dd>Data may be out of date</dd>
+    </>
+  )}
+  {event.isLastKnownGood && (
+    <>
+      <dt>Note</dt>
+      <dd>Showing last known data</dd>
+    </>
+  )}
+</dl>

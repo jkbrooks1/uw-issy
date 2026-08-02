@@ -1,0 +1,50 @@
+---
+// Buildspec section 24.1 — desktop event table. Real semantic table with
+// header scope, per buildspec section 26 accessibility requirements.
+import type { DashboardEventWithUnknownLane } from "../../lib/route-status/types";
+import { formatPacificTime } from "../../lib/route-status/format-time";
+import EventDetail from "./EventDetail.astro";
+
+type Props = {
+  events: DashboardEventWithUnknownLane[];
+};
+
+const { events } = Astro.props;
+---
+
+<div class="event-table-wrap">
+  <table class="event-table">
+    <caption class="route-map-sr-desc">Current route events for the UW–Issy route</caption>
+    <thead>
+      <tr>
+        <th scope="col">Event</th>
+        <th scope="col">Source type</th>
+        <th scope="col">Location or route part</th>
+        <th scope="col">Time</th>
+        <th scope="col">State</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        events.map((event) => (
+          <tr>
+            <td>
+              <details>
+                <summary>{event.title}</summary>
+                <EventDetail event={event} />
+              </details>
+            </td>
+            <td>{event.laneLabel}</td>
+            <td>{event.locationLabel ?? event.routeSegmentLabel ?? event.routeSegmentId ?? "—"}</td>
+            <td>{formatPacificTime(event.reportedAt) ?? "—"}</td>
+            <td>
+              <span class={`tier-badge tier-badge--${event.displayTier}`}>
+                {event.displayTier}
+              </span>
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

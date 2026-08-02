@@ -1,0 +1,32 @@
+---
+// Buildspec section 14 — header. Only three visible actions allowed: logo,
+// email, main site. Both links must work without JavaScript (plain <a>).
+const LOGO_URL =
+  "https://pub-40b24fc600d44d828529b84a0d97ded7.r2.dev/BTF_LOGO_White_on_Transparent.png";
+const MAIN_SITE_URL = "https://biketourfrance.net";
+const EMAIL_HREF = "mailto:contact@biketourfrance.net";
+---
+
+<header class="site-header">
+  <div class="page-frame site-header__inner">
+    <a
+      class="site-header__logo"
+      href={MAIN_SITE_URL}
+      aria-label="BikeTourFrance.net main site"
+    >
+      <img src={LOGO_URL} alt="BikeTourFrance.net" width="160" height="40" />
+    </a>
+    <div class="site-header__actions">
+      <a class="site-header__email" href={EMAIL_HREF} aria-label="Email BikeTourFrance.net">
+        Email
+      </a>
+      <a
+        class="site-header__main-site"
+        href={MAIN_SITE_URL}
+        aria-label="Go to the BikeTourFrance.net main site"
+      >
+        Main site
+      </a>
+    </div>
+  </div>
+</header>

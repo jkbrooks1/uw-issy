@@ -1,0 +1,135 @@
+name: Build, validate, and deploy
+
+# Buildspec section 31 — implements the 20-step GitHub Actions build
+# contract in order. Any validation, test, or check failing here must fail
+# the whole run; nothing here is allowed to silently pass through a failure.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+env:
+  CLOUDFLARE_ACCOUNT_ID: 84f228323707bc1d08ba30d9f76146be
+  PAGES_PROJECT_NAME: uw-issy
+  CANONICAL_GPX: data/route/UnivWA-Issaquah.gpx
+  ROUTE_GEOJSON: public/routes/UnivWA-Issaquah.geojson
+  EVIDENCE_SNAPSHOT: data/connectors/evidence/workflow08-status-snapshot-20260802T162329Z.json
+  PUBLIC_DATA_DIR: public/data
+
+jobs:
+  build-validate-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Check out the repo.
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      # 2. Install from the lock file.
+      - name: Install from lock file
+        run: npm ci
+
+      # 3. Confirm the canonical GPX exists.
+      - name: Confirm canonical GPX exists
+        run: test -f "$CANONICAL_GPX"
+
+      # 4. Validate the GPX.
+      - name: Validate GPX
+        run: node scripts/validate-route-source.mjs "$CANONICAL_GPX"
+
+      # 5. Convert GPX to GeoJSON.
+      - name: Convert GPX to GeoJSON
+        run: node scripts/convert-route-gpx-to-geojson.mjs "$CANONICAL_GPX" "$ROUTE_GEOJSON"
+
+      # 6. Validate the route GeoJSON.
+      - name: Validate route GeoJSON
+        run: node scripts/validate-route-geojson.mjs "$ROUTE_GEOJSON"
+
+      # Build the four-file public monitoring package from the approved
+      # Workflow 08 evidence input (buildspec 37.9). This step also covers
+      # steps 7-10 by construction, then 7-10 below re-validate the result.
+      - name: Build public monitoring package
+        run: node scripts/build-public-package-snapshot.mjs "$EVIDENCE_SNAPSHOT" "$PUBLIC_DATA_DIR"
+
+      # 7-10. Validate dashboard-data.json, route-events.geojson,
+      # system-health.json, release-manifest.json (one combined validator
+      # checks all four files' schemas together).
+      # 11. Confirm cross-file IDs match.
+      # 12. Confirm release IDs match.
+      - name: Validate public monitoring package (all four files, cross-file IDs, release IDs)
+        run: node scripts/validate-public-package.mjs "$PUBLIC_DATA_DIR"
+
+      # 13. Run unit tests.
+      - name: Run unit tests
+        run: npm test
+
+      - name: Type check
+        run: npm run typecheck
+
+      # 14. Run app build.
+      - name: Build app
+        run: npm run build
+
+      # 15. Confirm required built assets exist.
+      - name: Confirm required built assets exist
+        run: |
+          set -e
+          test -f dist/index.html
+          test -f "dist/routes/UnivWA-Issaquah.geojson"
+          test -f "dist/data/dashboard-data.json"
+          test -f "dist/data/route-events.geojson"
+          test -f "dist/data/system-health.json"
+          test -f "dist/data/release-manifest.json"
+          test -n "$(find dist/_astro -maxdepth 1 -iname 'RouteMap.*.js' -print -quit)"
+          test -n "$(find dist/_astro -maxdepth 1 -iname 'RouteMap.*.css' -print -quit)"
+          echo "PASS: all required built assets present"
+
+      # 16. Check public output for secret-like content.
+      - name: Scan built output for secret-like content
+        run: node scripts/check-public-output-for-secrets.mjs dist
+
+      # 17. Deploy to Cloudflare Pages.
+      - name: Deploy to Cloudflare Pages
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
+          command: >-
+            pages deploy dist
+            --project-name=${{ env.PAGES_PROJECT_NAME }}
+            --commit-hash=${{ github.sha }}
+            --branch=main
+
+      # 18-19. Check the public page and all public route/data URLs.
+      - name: Verify production
+        run: node scripts/verify-production.mjs "${{ steps.deploy.outputs.deployment-url }}"
+
+      # 20. Record build and production proof in the approved project log.
+      - name: Record build and production proof in project log
+        if: always()
+        run: |
+          set -e
+          {
+            echo ""
+            echo "## $(date -u '+%Y-%m-%d %H:%M:%S UTC') — GitHub Actions run ${{ github.run_id }}"
+            echo "- Commit: ${{ github.sha }}"
+            echo "- Triggered by: ${{ github.actor }}"
+            echo "- Workflow result: ${{ job.status }}"
+            echo "- Deploy URL: ${{ steps.deploy.outputs.deployment-url || 'not reached' }}"
+            echo "- Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          } >> 00_BUILD_LOG.md
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add 00_BUILD_LOG.md
+          git diff --cached --quiet || git commit -m "Record CI build/production proof for ${{ github.sha }}"
+          git push

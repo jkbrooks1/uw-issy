@@ -24,3 +24,593 @@ body {
   background: var(--btf-white);
   margin: 0;
 }
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Buildspec 26 — visible focus, at least 2px offset */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--btf-muted-blue);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Buildspec 13.5 — page frame */
+.page-frame {
+  width: calc(100% - 40px);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Buildspec 14 — header */
+.site-header {
+  background: var(--btf-green);
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  flex-wrap: wrap;
+}
+
+.site-header__logo img {
+  display: block;
+  height: 40px;
+  width: auto;
+}
+
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.site-header__email {
+  color: var(--btf-white);
+  font-weight: 500;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.site-header__email:hover {
+  text-decoration: underline;
+}
+
+.site-header__main-site {
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 1px solid var(--btf-white);
+  border-radius: 6px;
+  background: var(--btf-white);
+  color: var(--btf-green);
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.site-header__main-site:hover {
+  background: var(--btf-warm-beige);
+  color: var(--btf-dark-green);
+  transform: translateY(-1px);
+}
+
+.site-header__main-site:active {
+  background: #E8E1D6;
+  color: var(--btf-pressed-green);
+  transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+  .site-header__inner {
+    justify-content: flex-start;
+  }
+  .site-header__logo {
+    width: 100%;
+  }
+  .site-header__logo img {
+    height: 34px;
+  }
+}
+
+/* Buildspec 25 — footer */
+.site-footer {
+  background: var(--btf-green);
+  color: var(--btf-white);
+  padding: 28px 0;
+}
+
+.site-footer p {
+  margin: 0 0 12px 0;
+  font-weight: 500;
+}
+
+.site-footer a {
+  color: var(--btf-white);
+  font-weight: 600;
+}
+
+/* Buildspec 15 — heading */
+.dashboard-heading {
+  padding-top: 28px;
+}
+
+.dashboard-heading h1 {
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--btf-pressed-green);
+  margin: 0 0 6px 0;
+}
+
+@media (max-width: 480px) {
+  .dashboard-heading h1 {
+    font-size: 28px;
+  }
+}
+
+.dashboard-heading__route-label {
+  font-size: 16px;
+  color: var(--text-soft);
+  margin: 0 0 12px 0;
+}
+
+.dashboard-heading__update {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 14px;
+  color: var(--text-soft);
+  margin-bottom: 20px;
+}
+
+.dashboard-heading__update strong {
+  color: var(--text-main);
+}
+
+/* Buildspec 19 — freshness / source notices */
+.freshness-notice {
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  border: 1px solid var(--border-light);
+  background: var(--panel-soft);
+  color: var(--text-main);
+}
+
+.freshness-notice--stale,
+.freshness-notice--failure {
+  border-color: #E7C9A9;
+  background: #FBF3E8;
+}
+
+.freshness-notice ul {
+  margin: 8px 0 0 0;
+  padding-left: 20px;
+}
+
+/* Buildspec 16 — layout. Every direct child of .dashboard-layout is placed
+   individually (no wrapper divs) so mobile can use the exact interleaved
+   order from buildspec 16.3, which does not match a simple "rail then
+   main" grouping. Desktop uses named grid-areas rather than relying on
+   grid auto-placement, which silently drops later items into the narrow
+   first column once `order` is reset at the breakpoint. */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  padding-bottom: 40px;
+}
+
+/* Buildspec 16.3 — mobile order */
+.item-route-state { order: 1; }
+.item-freshness { order: 2; }
+.item-route-map { order: 3; }
+.item-route-alerts { order: 4; }
+.item-monitoring-sources { order: 5; }
+.item-route-impacts { order: 6; }
+.item-system-health { order: 7; }
+
+@media (min-width: 900px) {
+  .dashboard-layout {
+    grid-template-columns: 290px minmax(0, 1fr);
+    grid-template-areas:
+      "freshness freshness"
+      "rail-top main-top"
+      "rail-mid main-mid"
+      "rail-bottom main-bottom";
+    gap: 20px;
+  }
+
+  .item-freshness { grid-area: freshness; order: unset; }
+  .item-route-state { grid-area: rail-top; order: unset; }
+  .item-monitoring-sources { grid-area: rail-mid; order: unset; }
+  .item-route-impacts { grid-area: rail-bottom; order: unset; }
+  .item-route-map { grid-area: main-top; order: unset; }
+  .item-route-alerts { grid-area: main-mid; order: unset; }
+  .item-system-health { grid-area: main-bottom; order: unset; }
+}
+
+@media (min-width: 1100px) {
+  .dashboard-layout {
+    grid-template-columns: 330px minmax(0, 1fr);
+    gap: 24px;
+  }
+}
+
+/* Buildspec 17 — shared panel rules */
+.panel {
+  background: var(--btf-white);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(20, 40, 20, 0.05);
+  padding: 20px;
+}
+
+.panel__heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0 0 20px 0;
+}
+
+/* Buildspec 18 — current route state */
+.route-state__value {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.route-state__icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.tier-normal { color: #1F3D11; }
+.tier-watch { color: #8A5300; }
+.tier-alert { color: #A81F16; }
+.tier-unknown { color: var(--text-soft); }
+
+.route-state__count {
+  font-size: 14px;
+  color: var(--text-soft);
+  margin: 0 0 4px 0;
+}
+
+.route-state__reason {
+  font-size: 13px;
+  color: var(--text-soft);
+  margin: 0;
+}
+
+/* Buildspec 20 — monitoring sources */
+.lane-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.lane-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--row-divider);
+}
+
+.lane-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.lane-row__marker {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-top: 4px;
+  flex-shrink: 0;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.lane-row__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lane-row__label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.lane-row__meta {
+  font-size: 13px;
+  color: var(--text-soft);
+}
+
+.lane-row__lkg {
+  font-size: 12px;
+  color: #8A5300;
+}
+
+/* Buildspec 21 — route impacts */
+.impact-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.impact-row {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--row-divider);
+}
+
+.impact-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.impact-row__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.impact-row__note {
+  font-size: 13px;
+  color: var(--text-soft);
+  margin-top: 2px;
+}
+
+.empty-note {
+  font-size: 14px;
+  color: var(--text-soft);
+  margin: 0;
+}
+
+/* Buildspec 23 — route map */
+.route-map-wrap {
+  height: 360px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  position: relative;
+}
+
+@media (min-width: 700px) {
+  .route-map-wrap {
+    height: 430px;
+  }
+}
+
+@media (min-width: 1100px) {
+  .route-map-wrap {
+    height: 590px;
+  }
+}
+
+.route-map-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  color: var(--text-soft);
+  font-size: 14px;
+  padding: 20px;
+  text-align: center;
+}
+
+.route-map-sr-desc {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.leaflet-popup-content {
+  font-family: Montserrat, system-ui, sans-serif;
+  font-size: 13px;
+}
+
+.map-popup h3 {
+  font-size: 14px;
+  margin: 0 0 4px 0;
+}
+
+.map-popup dl {
+  margin: 6px 0 0 0;
+}
+
+.map-popup dt {
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--text-soft);
+  margin-top: 4px;
+}
+
+.map-popup dd {
+  margin: 0;
+  font-size: 13px;
+}
+
+.map-marker-ring {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--btf-white);
+  border-width: 3px;
+  border-style: solid;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+}
+
+/* Buildspec 24 — event table (desktop) */
+.event-table-wrap {
+  overflow-x: auto;
+}
+
+.event-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.event-table th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-soft);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border-light);
+  white-space: nowrap;
+}
+
+.event-table td {
+  padding: 10px 10px;
+  border-bottom: 1px solid var(--row-divider);
+  vertical-align: top;
+}
+
+.event-table tr:last-child td {
+  border-bottom: none;
+}
+
+.tier-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+
+.tier-badge--normal { background: #EAF3E4; color: #1F3D11; border-color: #C9DFBB; }
+.tier-badge--watch { background: #FBF0DC; color: #8A5300; border-color: #EFD4A0; }
+.tier-badge--alert { background: #FBE7E4; color: #A81F16; border-color: #F0BDB6; }
+.tier-badge--unknown { background: var(--disabled-bg); color: var(--disabled-text); border-color: var(--border-light); }
+
+/* Buildspec 24.3 — mobile event list */
+.event-list-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 700px) {
+  .event-list-mobile {
+    display: none;
+  }
+}
+
+.event-table-wrap {
+  display: none;
+}
+
+@media (min-width: 700px) {
+  .event-table-wrap {
+    display: block;
+  }
+}
+
+.event-card {
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.event-card__title {
+  font-weight: 600;
+  font-size: 15px;
+  margin: 0 0 8px 0;
+}
+
+.event-card__meta {
+  font-size: 13px;
+  color: var(--text-soft);
+  margin: 2px 0;
+}
+
+.event-card__link {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--btf-muted-blue);
+  text-decoration: none;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.event-card__link:hover {
+  text-decoration: underline;
+}
+
+/* Buildspec 20 — system health disclosure */
+.system-health-disclosure summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 0;
+}
+
+.system-health-disclosure ul {
+  margin: 8px 0 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+  color: var(--text-soft);
+}
+
+/* Buildspec 23.7 — map controls */
+.leaflet-control-uwissy {
+  background: var(--btf-white);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.leaflet-control-uwissy:hover {
+  background: var(--panel-soft);
+}

@@ -1,0 +1,29 @@
+---
+// Not a named buildspec section, but supports 10.6/19.4's requirement that
+// failure detail be visible, and 39.4's "hazard state and source health are
+// separate" rule — a low-emphasis disclosure so it doesn't compete with the
+// route-wide state for attention.
+import type { SystemHealthFile } from "../../lib/route-status/types";
+
+type Props = {
+  systemHealth: SystemHealthFile | null;
+};
+
+const { systemHealth } = Astro.props;
+---
+
+{
+  systemHealth && (
+    <details class="system-health-disclosure">
+      <summary>System health detail</summary>
+      <ul>
+        {systemHealth.lanes.map((lane) => (
+          <li>
+            {lane.laneLabel}: {lane.publicText}
+            {lane.usingLastKnownGood ? " (showing last known data)" : ""}
+          </li>
+        ))}
+      </ul>
+    </details>
+  )
+}

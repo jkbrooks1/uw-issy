@@ -1,0 +1,25 @@
+---
+import type { RouteWideSummary } from "../../lib/route-status/normalize-dashboard-data";
+
+type Props = {
+  summary: RouteWideSummary;
+};
+
+const { summary } = Astro.props;
+---
+
+<div class="dashboard-heading">
+  <h1>UW–Issy Route Status</h1>
+  <p class="dashboard-heading__route-label">University of Washington to Issaquah</p>
+  <p class="dashboard-heading__update">
+    {
+      summary.lastUpdatedLabel ? (
+        <span>
+          Latest published update: <strong>{summary.lastUpdatedLabel}</strong>
+        </span>
+      ) : (
+        <span>Latest published update time is not available.</span>
+      )
+    }
+  </p>
+</div>

@@ -1,0 +1,47 @@
+---
+// Buildspec section 20 — monitoring sources panel. Shows all seven lanes.
+import type { NormalizedLaneSummary } from "../../lib/route-status/normalize-dashboard-data";
+import { laneColorFor } from "../../lib/route-status/lane-colors";
+import type { SystemHealthFile } from "../../lib/route-status/types";
+
+type Props = {
+  laneSummaries: NormalizedLaneSummary[];
+  systemHealth: SystemHealthFile | null;
+};
+
+const { laneSummaries, systemHealth } = Astro.props;
+
+function usingLastKnownGood(laneId: string): boolean {
+  return systemHealth?.lanes.find((l) => l.laneId === laneId)?.usingLastKnownGood ?? false;
+}
+---
+
+<section class="panel" aria-labelledby="monitoring-sources-heading">
+  <h2 class="panel__heading" id="monitoring-sources-heading">Monitoring sources</h2>
+  <ul class="lane-list">
+    {
+      laneSummaries.map((lane) => (
+        <li class="lane-row">
+          <span
+            class="lane-row__marker"
+            style={`background:${laneColorFor(lane.laneId) ?? "#9AA39A"}`}
+            aria-hidden="true"
+          />
+          <span class="lane-row__body">
+            <span class="lane-row__label">{lane.laneLabel}</span>
+            <span class="lane-row__meta">
+              {lane.eventCount > 0
+                ? `${lane.eventCount} active route event${lane.eventCount === 1 ? "" : "s"}`
+                : "No active route events"}
+              {" — "}
+              {lane.sourceStateText}
+            </span>
+            {usingLastKnownGood(lane.laneId) && (
+              <span class="lane-row__lkg">Showing last known data</span>
+            )}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+</section>

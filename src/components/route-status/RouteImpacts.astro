@@ -1,0 +1,34 @@
+---
+// Buildspec section 21 — route impacts panel. Never invents route parts;
+// only renders what dashboard-data.json actually supplies.
+import type { RouteImpact } from "../../lib/route-status/types";
+
+type Props = {
+  routeImpacts: RouteImpact[] | null;
+};
+
+const { routeImpacts } = Astro.props;
+---
+
+<section class="panel" aria-labelledby="route-impacts-heading">
+  <h2 class="panel__heading" id="route-impacts-heading">Route impacts</h2>
+  {
+    !routeImpacts || routeImpacts.length === 0 ? (
+      <p class="empty-note">No route-part breakdown is available in this update.</p>
+    ) : (
+      <ul class="impact-list">
+        {routeImpacts.map((impact) => (
+          <li class="impact-row">
+            <div class="impact-row__top">
+              <span>{impact.routeSegmentLabel ?? impact.routeSegmentId}</span>
+              <span class={`tier-badge tier-badge--${impact.displayTier}`}>
+                {impact.displayTier}
+              </span>
+            </div>
+            {impact.effectNote && <p class="impact-row__note">{impact.effectNote}</p>}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</section>
