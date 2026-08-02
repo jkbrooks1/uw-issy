@@ -1,0 +1,16 @@
+{
+  "source_id": "DNR-02",
+  "sample_date": "2026-07-29",
+  "query_type": "route_point_intersection",
+  "route_point": {
+    "lat": 47.6613,
+    "lon": -122.1103
+  },
+  "attributes_excerpt": {
+    "FIREDANGER_AREA_NM": "Central Lowlands FDRA",
+    "FIRE_DANGER_LEVEL_NM": "High",
+    "BURN_BAN_LEVEL_NM": "Rule Burns are banned",
+    "DNR_REGION_NAME": "NORTHEAST REGION",
+    "NOTES_TXT": "Effective 7/17/2026 at 12:01 AM, the Fire Danger Rating for the CENTRAL LOWLANDS FDRA will be HIGH. Rule burning is PROHIBITED on DNR protected lands."
+  }
+}

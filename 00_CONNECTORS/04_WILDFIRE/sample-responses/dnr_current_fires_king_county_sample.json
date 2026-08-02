@@ -1,0 +1,25 @@
+{
+  "source_id": "DNR-01",
+  "sample_date": "2026-07-29",
+  "query_type": "king_county_sample",
+  "features": [
+    {
+      "INCIDENT_NM": "WINDY GAP",
+      "COUNTY_LABEL_NM": "KING",
+      "FIREGCAUSE_LABEL_NM": "Debris Burn",
+      "FIREEVNT_CLASS_LABEL_NM": "WF",
+      "LAT_COORD": 47.120008,
+      "LON_COORD": -121.414971,
+      "ACRES_BURNED": 0.1
+    },
+    {
+      "INCIDENT_NM": "NORTH FORK",
+      "COUNTY_LABEL_NM": "KING",
+      "FIREGCAUSE_LABEL_NM": "Fireworks",
+      "FIREEVNT_CLASS_LABEL_NM": "WF",
+      "LAT_COORD": 47.564876,
+      "LON_COORD": -121.726066,
+      "ACRES_BURNED": 0.1
+    }
+  ]
+}

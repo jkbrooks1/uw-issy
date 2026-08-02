@@ -1,0 +1,15 @@
+{
+  "source_id": "NIFC-01",
+  "sample_date": "2026-07-29",
+  "query_type": "named_incident_lookup",
+  "attributes_excerpt": {
+    "IncidentName": "SKYO",
+    "IncidentTypeCategory": "WF",
+    "InitialLatitude": 46.574011,
+    "InitialLongitude": -121.727557,
+    "FireDiscoveryDateTime": 1784782749000,
+    "ModifiedOnDateTime_dt": 1785299948927,
+    "POOState": "US-WA",
+    "UniqueFireIdentifier": "2026-WAGPF-000669"
+  }
+}

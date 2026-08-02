@@ -1,0 +1,234 @@
+{
+ "displayFieldName": "SiteName",
+ "fieldAliases": {
+  "SiteId": "SiteId",
+  "SiteName": "SiteName",
+  "SiteLocation": "SiteLocation",
+  "DateTime_PST": "DateTime_PST",
+  "AQIValue": "AQIValue",
+  "AQICategory": "AQICategory",
+  "AQI_PM25": "AQI_PM25",
+  "AQI_PM25_Cat": "AQI_PM25_Cat",
+  "PM25_Value": "PM25_Value",
+  "AQI_O3": "AQI_O3",
+  "AQI_O3_Cat": "AQI_O3_Cat",
+  "O3_Value": "O3_Value",
+  "AQI_PM10": "AQI_PM10",
+  "AQI_PM10_Cat": "AQI_PM10_Cat",
+  "PM10_Value": "PM10_Value",
+  "AQI_NO2": "AQI_NO2",
+  "AQI_NO2_Cat": "AQI_NO2_Cat",
+  "NO2_Value": "NO2_Value"
+ },
+ "geometryType": "esriGeometryPoint",
+ "spatialReference": {
+  "wkid": 4326,
+  "latestWkid": 4326
+ },
+ "fields": [
+  {
+   "name": "SiteId",
+   "type": "esriFieldTypeInteger",
+   "alias": "SiteId"
+  },
+  {
+   "name": "SiteName",
+   "type": "esriFieldTypeString",
+   "alias": "SiteName",
+   "length": 50
+  },
+  {
+   "name": "SiteLocation",
+   "type": "esriFieldTypeString",
+   "alias": "SiteLocation",
+   "length": 255
+  },
+  {
+   "name": "DateTime_PST",
+   "type": "esriFieldTypeDate",
+   "alias": "DateTime_PST",
+   "length": 8
+  },
+  {
+   "name": "AQIValue",
+   "type": "esriFieldTypeInteger",
+   "alias": "AQIValue"
+  },
+  {
+   "name": "AQICategory",
+   "type": "esriFieldTypeString",
+   "alias": "AQICategory",
+   "length": 30
+  },
+  {
+   "name": "AQI_PM25",
+   "type": "esriFieldTypeInteger",
+   "alias": "AQI_PM25"
+  },
+  {
+   "name": "AQI_PM25_Cat",
+   "type": "esriFieldTypeString",
+   "alias": "AQI_PM25_Cat",
+   "length": 30
+  },
+  {
+   "name": "PM25_Value",
+   "type": "esriFieldTypeDouble",
+   "alias": "PM25_Value"
+  },
+  {
+   "name": "AQI_O3",
+   "type": "esriFieldTypeInteger",
+   "alias": "AQI_O3"
+  },
+  {
+   "name": "AQI_O3_Cat",
+   "type": "esriFieldTypeString",
+   "alias": "AQI_O3_Cat",
+   "length": 30
+  },
+  {
+   "name": "O3_Value",
+   "type": "esriFieldTypeDouble",
+   "alias": "O3_Value"
+  },
+  {
+   "name": "AQI_PM10",
+   "type": "esriFieldTypeInteger",
+   "alias": "AQI_PM10"
+  },
+  {
+   "name": "AQI_PM10_Cat",
+   "type": "esriFieldTypeString",
+   "alias": "AQI_PM10_Cat",
+   "length": 30
+  },
+  {
+   "name": "PM10_Value",
+   "type": "esriFieldTypeDouble",
+   "alias": "PM10_Value"
+  },
+  {
+   "name": "AQI_NO2",
+   "type": "esriFieldTypeInteger",
+   "alias": "AQI_NO2"
+  },
+  {
+   "name": "AQI_NO2_Cat",
+   "type": "esriFieldTypeString",
+   "alias": "AQI_NO2_Cat",
+   "length": 30
+  },
+  {
+   "name": "NO2_Value",
+   "type": "esriFieldTypeDouble",
+   "alias": "NO2_Value"
+  }
+ ],
+ "features": [
+  {
+   "attributes": {
+    "SiteId": 19,
+    "SiteName": "Issaquah-Lake Sammamish",
+    "SiteLocation": "2000 NW Sammamish rd",
+    "DateTime_PST": 1785351600000,
+    "AQIValue": 22,
+    "AQICategory": "Good",
+    "AQI_PM25": 9,
+    "AQI_PM25_Cat": "Good",
+    "PM25_Value": 1.6,
+    "AQI_O3": 22,
+    "AQI_O3_Cat": "Good",
+    "O3_Value": 0.027,
+    "AQI_PM10": null,
+    "AQI_PM10_Cat": null,
+    "PM10_Value": null,
+    "AQI_NO2": null,
+    "AQI_NO2_Cat": null,
+    "NO2_Value": null
+   },
+   "geometry": {
+    "x": -122.06472199999996,
+    "y": 47.552500000000066
+   }
+  },
+  {
+   "attributes": {
+    "SiteId": 23,
+    "SiteName": "Lake Forest Park-Town Center",
+    "SiteLocation": "17171 Bothell Way NE",
+    "DateTime_PST": 1785351600000,
+    "AQIValue": 16,
+    "AQICategory": "Good",
+    "AQI_PM25": 16,
+    "AQI_PM25_Cat": "Good",
+    "PM25_Value": 2.8,
+    "AQI_O3": null,
+    "AQI_O3_Cat": null,
+    "O3_Value": null,
+    "AQI_PM10": null,
+    "AQI_PM10_Cat": null,
+    "PM10_Value": null,
+    "AQI_NO2": null,
+    "AQI_NO2_Cat": null,
+    "NO2_Value": null
+   },
+   "geometry": {
+    "x": -122.28033999999997,
+    "y": 47.75452000000007
+   }
+  },
+  {
+   "attributes": {
+    "SiteId": 190,
+    "SiteName": "Bellevue-SE 12th St",
+    "SiteLocation": "14310 SE 12th St",
+    "DateTime_PST": 1785351600000,
+    "AQIValue": 17,
+    "AQICategory": "Good",
+    "AQI_PM25": 17,
+    "AQI_PM25_Cat": "Good",
+    "PM25_Value": 3.3,
+    "AQI_O3": null,
+    "AQI_O3_Cat": null,
+    "O3_Value": null,
+    "AQI_PM10": null,
+    "AQI_PM10_Cat": null,
+    "PM10_Value": null,
+    "AQI_NO2": null,
+    "AQI_NO2_Cat": null,
+    "NO2_Value": null
+   },
+   "geometry": {
+    "x": -122.14839699999999,
+    "y": 47.600863000000061
+   }
+  },
+  {
+   "attributes": {
+    "SiteId": 453,
+    "SiteName": "Seattle-NE 127th St",
+    "SiteLocation": "NE 127th St",
+    "DateTime_PST": 1785351600000,
+    "AQIValue": 9,
+    "AQICategory": "Good",
+    "AQI_PM25": 9,
+    "AQI_PM25_Cat": "Good",
+    "PM25_Value": 1.7,
+    "AQI_O3": null,
+    "AQI_O3_Cat": null,
+    "O3_Value": null,
+    "AQI_PM10": null,
+    "AQI_PM10_Cat": null,
+    "PM10_Value": null,
+    "AQI_NO2": null,
+    "AQI_NO2_Cat": null,
+    "NO2_Value": null
+   },
+   "geometry": {
+    "x": -122.29739999999998,
+    "y": 47.72124000000008
+   }
+  }
+ ]
+}

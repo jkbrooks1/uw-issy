@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>HMS Smoke Mapping-20260729</name>
+    <description>NOAA Hazard Mapping System multisatellite smoke mapping data.</description>
+    <note>Original file verified live on 2026-07-29. Full file not duplicated here; this is a tiny identification excerpt only.</note>
+  </Document>
+</kml>

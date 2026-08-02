@@ -1,0 +1,14 @@
+07/29/26|07/28/26||PDT|-1|Y|Y|Seattle-Bellevue-Kent Valley|WA|47.5620|-122.3405|OZONE|19|Good|No||Puget Sound Clean Air Agency
+07/29/26|07/28/26||PDT|-1|Y|N|Seattle-Bellevue-Kent Valley|WA|47.5620|-122.3405|PM2.5|16|Good|No||Puget Sound Clean Air Agency
+07/29/26|07/28/26||PDT|-1|Y|N|Seattle-Bellevue-Kent Valley|WA|47.5620|-122.3405|PM10|16|Good|No||Puget Sound Clean Air Agency
+07/29/26|07/29/26|12:00|PDT|0|O|Y|Seattle-Bellevue-Kent Valley|WA|47.5620|-122.3405|PM2.5|34|Good|No||Puget Sound Clean Air Agency
+07/29/26|07/29/26|12:00|PDT|0|O|N|Seattle-Bellevue-Kent Valley|WA|47.5620|-122.3405|PM10|19|Good|No||Puget Sound Clean Air Agency
+07/29/26|07/29/26|12:00|PDT|0|O|N|Seattle-Bellevue-Kent Valley|WA|47.5620|-122.3405|OZONE|18|Good|No||Puget Sound Clean Air Agency
+07/27/26|07/29/26||PDT|2|F|Y|Seattle-Bellevue-Kent Valley|WA|47.5620|-122.3405|OZONE|37|Good|No|For July 27-31 (Mon-Fri): Expect GOOD air quality this week as westerly winds keep wildfire smoke out of our region.|Puget Sound Clean Air Agency
+07/27/26|07/29/26||PDT|2|F|N|Seattle-Bellevue-Kent Valley|WA|47.5620|-122.3405|PM2.5|28|Good|No|For July 27-31 (Mon-Fri): Expect GOOD air quality this week as westerly winds keep wildfire smoke out of our region.|Puget Sound Clean Air Agency
+07/27/26|07/30/26||PDT|3|F|Y|Seattle-Bellevue-Kent Valley|WA|47.5620|-122.3405|OZONE|37|Good|No|For July 27-31 (Mon-Fri): Expect GOOD air quality this week as westerly winds keep wildfire smoke out of our region.|Puget Sound Clean Air Agency
+07/27/26|07/30/26||PDT|3|F|N|Seattle-Bellevue-Kent Valley|WA|47.5620|-122.3405|PM2.5|28|Good|No|For July 27-31 (Mon-Fri): Expect GOOD air quality this week as westerly winds keep wildfire smoke out of our region.|Puget Sound Clean Air Agency
+07/27/26|07/31/26||PDT|4|F|Y|Seattle-Bellevue-Kent Valley|WA|47.5620|-122.3405|OZONE|37|Good|No|For July 27-31 (Mon-Fri): Expect GOOD air quality this week as westerly winds keep wildfire smoke out of our region.|Puget Sound Clean Air Agency
+07/27/26|07/31/26||PDT|4|F|N|Seattle-Bellevue-Kent Valley|WA|47.5620|-122.3405|PM2.5|28|Good|No|For July 27-31 (Mon-Fri): Expect GOOD air quality this week as westerly winds keep wildfire smoke out of our region.|Puget Sound Clean Air Agency
+07/27/26|08/01/26||PDT|5|F|Y|Seattle-Bellevue-Kent Valley|WA|47.5620|-122.3405|OZONE|37|Good|No|For July 27-31 (Mon-Fri): Expect GOOD air quality this week as westerly winds keep wildfire smoke out of our region.|Puget Sound Clean Air Agency
+07/27/26|08/01/26||PDT|5|F|N|Seattle-Bellevue-Kent Valley|WA|47.5620|-122.3405|PM2.5|28|Good|No|For July 27-31 (Mon-Fri): Expect GOOD air quality this week as westerly winds keep wildfire smoke out of our region.|Puget Sound Clean Air Agency

@@ -1,0 +1,9 @@
+{
+    "@context": {
+        "@version": "1.1"
+    },
+    "type": "FeatureCollection",
+    "features": [],
+    "title": "Current watches, warnings, and advisories for King County (WAC033) WA",
+    "updated": "2026-07-29T07:06:41+00:00"
+}

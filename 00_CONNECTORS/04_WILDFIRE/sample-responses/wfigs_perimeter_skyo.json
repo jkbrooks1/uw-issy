@@ -1,0 +1,13 @@
+{
+  "source_id": "NIFC-02",
+  "sample_date": "2026-07-29",
+  "query_type": "named_incident_lookup",
+  "attributes_excerpt": {
+    "poly_IncidentName": "Skyo",
+    "attr_IncidentTypeCategory": "WF",
+    "attr_POOState": "US-WA",
+    "attr_UniqueFireIdentifier": "2026-WAGPF-000669",
+    "poly_DateCurrent": 1785293598000,
+    "attr_ModifiedOnDateTime_dt": 1785299948927
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "source_id": "NWS-01",
+  "sample_date": "2026-07-29",
+  "query": "https://api.weather.gov/alerts/active/zone/WAZ657",
+  "status": 200,
+  "title": "Current watches, warnings, and advisories for WAZ657",
+  "updated": "2026-07-29T19:30:36+00:00",
+  "features_count": 0
+}

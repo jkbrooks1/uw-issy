@@ -1,0 +1,164 @@
+{
+    "@context": [
+        "https://geojson.org/geojson-ld/geojson-context.jsonld",
+        {
+            "@version": "1.1",
+            "wx": "https://api.weather.gov/ontology#",
+            "@vocab": "https://api.weather.gov/ontology#"
+        }
+    ],
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.ecae55cf826b7a8e45c0bfdfb9f1ea73383e625d.001.1",
+            "type": "Feature",
+            "geometry": null,
+            "properties": {
+                "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.ecae55cf826b7a8e45c0bfdfb9f1ea73383e625d.001.1",
+                "@type": "wx:Alert",
+                "id": "urn:oid:2.49.0.1.840.0.ecae55cf826b7a8e45c0bfdfb9f1ea73383e625d.001.1",
+                "areaDesc": "Asotin, WA; Chelan, WA; Douglas, WA; Ferry, WA; Okanogan, WA; Stevens, WA",
+                "geocode": {
+                    "SAME": [
+                        "053003",
+                        "053007",
+                        "053017",
+                        "053019",
+                        "053047",
+                        "053065"
+                    ],
+                    "UGC": [
+                        "WAC003",
+                        "WAC007",
+                        "WAC017",
+                        "WAC019",
+                        "WAC047",
+                        "WAC065"
+                    ]
+                },
+                "affectedZones": [
+                    "https://api.weather.gov/zones/county/WAC003",
+                    "https://api.weather.gov/zones/county/WAC007",
+                    "https://api.weather.gov/zones/county/WAC017",
+                    "https://api.weather.gov/zones/county/WAC019",
+                    "https://api.weather.gov/zones/county/WAC047",
+                    "https://api.weather.gov/zones/county/WAC065"
+                ],
+                "references": [],
+                "sent": "2026-07-29T11:34:00-07:00",
+                "effective": "2026-07-29T11:29:00-07:00",
+                "onset": "2026-07-29T11:29:00-07:00",
+                "expires": "2026-07-30T12:00:00-07:00",
+                "ends": null,
+                "status": "Actual",
+                "messageType": "Alert",
+                "category": "Met",
+                "severity": "Unknown",
+                "certainty": "Unknown",
+                "urgency": "Unknown",
+                "event": "Air Quality Alert",
+                "sender": "w-nws.webmaster@noaa.gov",
+                "senderName": "NWS Spokane WA",
+                "headline": "Air Quality Alert issued July 29 at 11:29AM PDT by NWS Spokane WA",
+                "description": "An Air Quality Alert has been issued by the following agencies:\n\nWashington Department of Ecology\nColville Confederated Tribes\n\nAn Air Quality Alert has been issued for Asotin, Chelan, Douglas,\nFerry, Okanogan, and Stevens Counties until further notice due\nto current and expected wildfire smoke from regional fires. Areas\nimmediately downwind of active and emerging fires in Washington\nand Oregon may reach Unhealthy levels of particulate matter\n(PM2.5). When air quality is unhealthy, everyone should reduce\nexposure. Limit time outside, avoid strenuous outdoor activity,\nand follow tips for cleaner indoor air.",
+                "instruction": null,
+                "response": "Monitor",
+                "note": "Non-Weather Emergency Message. Not sent to IPAWS.",
+                "parameters": {
+                    "AWIPSidentifier": [
+                        "AQAOTX"
+                    ],
+                    "WMOidentifier": [
+                        "AEUS76 KOTX 291834"
+                    ],
+                    "BLOCKCHANNEL": [
+                        "EAS",
+                        "NWEM",
+                        "CMAS"
+                    ]
+                },
+                "scope": "Public",
+                "code": "IPAWSv1.0",
+                "language": "en-US",
+                "web": "http://www.weather.gov",
+                "eventCode": {
+                    "SAME": [
+                        "NWS"
+                    ],
+                    "NationalWeatherService": [
+                        "AQA"
+                    ]
+                }
+            }
+        },
+        {
+            "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.ecae55cf826b7a8e45c0bfdfb9f1ea73383e625d.003.1",
+            "type": "Feature",
+            "geometry": null,
+            "properties": {
+                "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.ecae55cf826b7a8e45c0bfdfb9f1ea73383e625d.003.1",
+                "@type": "wx:Alert",
+                "id": "urn:oid:2.49.0.1.840.0.ecae55cf826b7a8e45c0bfdfb9f1ea73383e625d.003.1",
+                "areaDesc": "Pend Oreille, WA",
+                "geocode": {
+                    "SAME": [
+                        "053051"
+                    ],
+                    "UGC": [
+                        "WAC051"
+                    ]
+                },
+                "affectedZones": [
+                    "https://api.weather.gov/zones/county/WAC051"
+                ],
+                "references": [],
+                "sent": "2026-07-29T11:34:00-07:00",
+                "effective": "2026-07-29T11:29:00-07:00",
+                "onset": "2026-07-29T11:29:00-07:00",
+                "expires": "2026-07-30T12:00:00-07:00",
+                "ends": null,
+                "status": "Actual",
+                "messageType": "Alert",
+                "category": "Met",
+                "severity": "Unknown",
+                "certainty": "Unknown",
+                "urgency": "Unknown",
+                "event": "Air Quality Alert",
+                "sender": "w-nws.webmaster@noaa.gov",
+                "senderName": "NWS Spokane WA",
+                "headline": "Air Quality Alert issued July 29 at 11:29AM PDT by NWS Spokane WA",
+                "description": "An Air Quality Alert has been issued by the following agencies:\n\nEnvironmental Protection Agency\n\nAn Air Quality Advisory is in effect until further notice for the\nKalispel Indian Community of the Kalispel Reservation due to\nincreases in air pollution from multiple fires in Washington. Smoke\nfrom these fires will impact the reservation with intermittent\nperiods of Unhealthy for Sensitive Groups and Unhealthy air quality,\nbased on EPA's Air Quality Index.",
+                "instruction": null,
+                "response": "Monitor",
+                "note": "Non-Weather Emergency Message. Not sent to IPAWS.",
+                "parameters": {
+                    "AWIPSidentifier": [
+                        "AQAOTX"
+                    ],
+                    "WMOidentifier": [
+                        "AEUS76 KOTX 291834"
+                    ],
+                    "BLOCKCHANNEL": [
+                        "EAS",
+                        "NWEM",
+                        "CMAS"
+                    ]
+                },
+                "scope": "Public",
+                "code": "IPAWSv1.0",
+                "language": "en-US",
+                "web": "http://www.weather.gov",
+                "eventCode": {
+                    "SAME": [
+                        "NWS"
+                    ],
+                    "NationalWeatherService": [
+                        "AQA"
+                    ]
+                }
+            }
+        }
+    ],
+    "title": "Current Air Quality Alert events for Washington",
+    "updated": "2026-07-29T19:39:10+00:00"
+}
