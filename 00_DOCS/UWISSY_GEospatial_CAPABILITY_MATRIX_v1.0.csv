@@ -1,0 +1,11 @@
+lane_id,lane_label,has_real_coordinates_on_events,coordinate_source,route_relevance_method,uses_full_gpx_geometry,route_section_id_tagging,section_id_to_geometry_lookup_exists,geojson_native_output,published_through_workflow_08,map_placement_readiness
+01_ROUTE_CONDITIONS,Route Conditions,No,none,named_segment_text_matching,No,Yes,No,No,Yes,text_only
+02_WEATHER,Weather,Yes,per weather station/grid point,point_distance_to_route_waypoints,No,Yes,No,No,Yes,possible_with_new_dashboard_logic
+03_AIR_QUALITY,Air Quality,Yes,per monitor/station,point_distance_to_route_waypoints,No,Yes,No,No,Yes,possible_with_new_dashboard_logic
+04_WILDFIRE,Wildfire,Yes,per incident/perimeter,point_distance_to_lane_local_coarse_vertices,No,Yes,Partial (lane-local only; not published),No,Yes,possible_with_new_dashboard_logic
+05_FLOOD_CONDITIONS,Flood Conditions,Yes,per gauge,hardcoded_pre_researched_distance,No,Yes,No,No,Yes,possible_with_new_dashboard_logic
+06_TRAIL_INFRASTRUCTURE_STATUS,Trail Infrastructure Status,Yes,per project/page location,named_segment_matching_plus_some_coordinates,No,Yes,No,No,Yes,possible_with_new_dashboard_logic
+07_GOVERNMENT_SAFETY_ALERTS,Government Safety Alerts,Yes,per alert where source provides it,mixed_named_area_and_coordinates,No,Yes,No,No,Yes,possible_with_new_dashboard_logic
+08_STATUS_PUBLISHER,Status Publisher,N/A (pass-through only),N/A,N/A,No,N/A,No,No,N/A,passes_through_whatever_source_lane_provides_unmodified
+09_ALERT_MONITOR,Alert Monitor,N/A (event_id diff only, no geometry use),N/A,N/A,No,N/A,No,No,N/A,not_applicable
+CANONICAL_ROUTE_GPX,data/route/UnivWA-Issaquah.gpx,Yes,full 1470-point track + 42 turn waypoints,N/A,Yes (the file itself is full resolution; no workflow parses it at runtime),N/A,N/A,No (raw GPX; GeoJSON conversion exists only in the separate concurrent process, not independently verified by this audit),No workflow reads it,ready_for_route_line_pending_independent_verification_of_conversion

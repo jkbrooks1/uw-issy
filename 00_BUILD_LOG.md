@@ -353,3 +353,46 @@ Connector 01 has been built, imported, live-executed, debugged from real executi
 - Updated `00_WORKFLOWS/v0001.06_TRAIL_INFRASTRUCTURE_STATUSConnector.n8n.workflow.json` to add env-backed runtime config for the canonical GPX path, output root, freshness thresholds, and HTTP request user agent/timeout settings.
 - Added bounded retry settings and explicit `env` markers to the lane-06 HTTP Request nodes so validation traceability now passes.
 - Revalidated the export successfully as parseable JSON with 35 nodes.
+
+## 2026-08-02 11:21:19 PDT — UI Route Status Dashboard build specification
+- Added canonical specification: `/Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/00_DOCS/v.01.UI_UWISSY_Status_Buildspec.md`
+- Source file: `/Users/jkbrookspersonal/Downloads/v.01.UI_UWISSY_Status_Buildspec.md`
+- Validation: source exists, destination copy completed, and byte comparison passed.
+- Status: v.01 is ready for Ringer build handoff.
+
+## 2026-08-02 11:24:49 PDT — UW–Issy Route Status Dashboard Ringer launch
+- Project root: `/Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor`
+- Build specification: `/Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/00_DOCS/v.01.UI_UWISSY_Status_Buildspec.md`
+- Canonical route GPX: `/Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/data/route/UnivWA-Issaquah.gpx`
+- Claude Code model: Sonnet 5 via the `sonnet` model alias
+- Scope: Implement, validate, build, deploy, and verify v.01 of the public route-status dashboard.
+- Status: Ringer launch initiated.
+
+## 2026-08-02 (Ringer orchestrator) — First-round inspection and two real gaps resolved before build start
+
+**Scope:** Steps 1–20 of the whole-job prompt's first-round inspection, plus two blockers found and resolved with the project owner before any code was written.
+
+**Inspection findings:**
+- No app has been scaffolded yet: `app/` and `deploy/` are empty, no `package.json`, no lock file, no `.github/workflows/`. This is a from-scratch build, not a refactor.
+- Git: branch `main`, up to date with `origin/main` (`https://github.com/jkbrooks1/uw-issy.git`), clean except pre-existing uncommitted doc updates (7 `00_AS-BUILT/0X_*/README.md`, `00_BUILD_LOG.md`, `00_PROJECT_BUILDLOG.md`) and untracked `00_AS-BUILT/08_STATUS_PUBLISHER/`, `00_AS-BUILT/09_ALERT_MONITOR/`, `00_AS-BUILT/README.md`, `00_DOCS/v.01.UI_UWISSY_Status_Buildspec.md` — all pre-existing project-owner work, none touched.
+- Canonical route GPX confirmed at `data/route/UnivWA-Issaquah.gpx` (1,512 track/waypoints). `public/UnivWA-Issaquah.gpx` is a stale, mismatched older route version (different waypoint text/coords) — flagged for removal so it cannot leak into the map.
+- Node v24.14.1 / npm 11.17.0 available locally for the build.
+- `.gitignore` already anticipates the dashboard build (`node_modules/`, `dist/`, `.wrangler/`, `public/data/*.tmp`).
+
+**Gap 1 — data bridge (resolved with project owner):** Workflow 08 (Status Publisher) is real, live-verified, and inactive, but currently writes one file (`/files/uw-issy-connectors/public/status.json`) on Hetzner only — it has never published to GitHub, and the build spec's four-file public contract (`dashboard-data.json`, `route-events.geojson`, `system-health.json`, `release-manifest.json`) doesn't exist anywhere yet. Presented three options to the project owner; approved: pull one real snapshot of Workflow 08's actual output now (read-only, over the existing `hetzner` SSH alias, into the `n8n` container), split it into the four approved files with a repo-side script, and treat wiring Workflow 08 itself to publish to GitHub as an explicit, separately-logged follow-up — not part of this build.
+  - Real snapshot pulled: `docker exec n8n cat /files/uw-issy-connectors/public/status.json` via `ssh hetzner`, confirmed valid JSON, 28,035 bytes, `generated_at: 2026-08-02T16:23:29.490Z`, `run_id: 08_STATUS_PUBLISHER-2026-08-02T162329490Z-001`, real content for all 7 lanes (mixed `ok`/`degraded`/`using_last_known_good`, a genuine East Lake Sammamish Trail closure event with real King County source text).
+  - Checked into the repo, read-only evidence, at `data/connectors/evidence/workflow08-status-snapshot-20260802T162329Z.json`. This is the sole permitted input for the public-package split script — no invented event data.
+  - No n8n workflow was modified, imported, or activated. No credential values were read, printed, or logged.
+- **Gap 2 — Ringer engine (resolved, no user question needed):** the whole-job prompt requires Claude Code / Sonnet 5, but `~/.config/ringer/config.toml` only had `codex` and `opencode` engine blocks — no Claude Code engine existed for Ringer to route work to. Added `[engines.claude]` to that config: `bin = "claude"`, `-p --output-format json --permission-mode bypassPermissions`, `model_default = "sonnet"`. Smoke-tested directly (`claude -p "Reply with exactly the word OK..." --model sonnet --output-format json`): real API call, `is_error: false`, `result: "OK"`, and `modelUsage` confirms the `sonnet` alias resolved to `canonicalModel: "claude-sonnet-5"` as required. Per-task repo write access will be scoped with `--add-dir <repo path>` in each task's `engine_args`, since Claude Code has no OS-level sandbox flag like Codex's `--sandbox`; its real containment is cwd (Ringer sets this to the task dir) plus explicitly granted `--add-dir` paths, backed up by the repo-feature check's `git status --porcelain` allowlist.
+
+**Result:** both gaps resolved with real evidence, no invented data, no live-system changes to n8n. Proceeding to write and lint Round 1 of the swarm (foundation: Astro/Svelte scaffold, brand tokens, `src/lib/route-status/*` type/normalizer contracts, GPX→GeoJSON pipeline run against the real canonical GPX, and the public-package split script run against the real captured snapshot above).
+
+**Open gaps carried forward:** Workflow 08 → GitHub auto-publish path (tracked, not started); Cloudflare Pages project/API token setup (not yet confirmed); GitHub Actions secrets for deploy (not yet confirmed).
+
+**Next safe step:** write, lint, and present Round 1 `swarm.json` for approval before spending worker tokens.
+
+## 2026-08-02 12:21:36 PDT — Removed stale public GPX copy
+- Deleted: `/Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/public/UnivWA-Issaquah.gpx`
+- Preserved canonical GPX: `/Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/data/route/UnivWA-Issaquah.gpx`
+- Preserved built route GeoJSON: `/Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/public/routes/UnivWA-Issaquah.geojson`
+- Validation: stale file absent; canonical GPX and deployed GeoJSON both present and non-empty.

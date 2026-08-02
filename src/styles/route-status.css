@@ -1,0 +1,26 @@
+:root {
+  /* Buildspec 13.2 — main colors */
+  --btf-green: #2D5016;
+  --btf-dark-green: #1F3D11;
+  --btf-pressed-green: #17300C;
+  --btf-warm-beige: #F5F0E8;
+  --btf-muted-blue: #1B4F72;
+  --btf-white: #FFFFFF;
+
+  /* Buildspec 13.3 — neutral colors */
+  --text-main: #172018;
+  --text-soft: #4B554D;
+  --border-light: #D9DED8;
+  --panel-soft: #FAFBF9;
+  --row-divider: #E7EAE5;
+  --disabled-bg: #F0F2EF;
+  --disabled-text: #6C756E;
+}
+
+/* Buildspec 13.4 — typography */
+body {
+  font-family: Montserrat, system-ui, sans-serif;
+  color: var(--text-main);
+  background: var(--btf-white);
+  margin: 0;
+}

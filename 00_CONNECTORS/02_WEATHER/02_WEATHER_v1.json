@@ -38,17 +38,23 @@
     {
       "id": "schedule_trigger",
       "name": "Schedule Trigger",
-      "type": "n8n-nodes-base.cron",
-      "typeVersion": 1,
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
       "position": [
         220,
         240
       ],
       "parameters": {
-        "unit": "minutes",
-        "value": 15
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 1
+            }
+          ]
+        }
       },
-      "notes": "Quarter-hour trigger in America/Los_Angeles; the workflow is expected to run non-overlapping."
+      "notes": "Every 60 minutes (1 hour). (Migrated from deprecated n8n-nodes-base.cron, whose stored parameter shape did not match this n8n version's actual Cron node schema and would not have fired.)"
     },
     {
       "id": "init_metadata",

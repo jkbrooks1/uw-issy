@@ -38,17 +38,23 @@
     {
       "id": "schedule_trigger",
       "name": "Schedule Trigger",
-      "type": "n8n-nodes-base.cron",
-      "typeVersion": 2,
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
       "position": [
         220,
         240
       ],
       "parameters": {
-        "unit": "minutes",
-        "value": 15
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "daysInterval": 1
+            }
+          ]
+        }
       },
-      "notes": "15-minute cadence in America/Los_Angeles; overlapping executions should be prevented by workflow settings."
+      "notes": "Every 24 hours. (Migrated from deprecated n8n-nodes-base.cron, whose stored parameter shape did not match this n8n version's actual Cron node schema and would not have fired.)"
     },
     {
       "id": "init_metadata",

@@ -1583,3 +1583,94 @@ Per the open architecture decisions already on record (`DEC-013`: notification c
 Both workflows imported, confirmed `active: false` throughout, and copied into `00_WORKFLOWS/` alongside the 7 connectors. No credentials were printed or logged — only the credential's existing name/ID (never its OAuth token) was referenced, exactly as the n8n API itself exposes it.
 
 **Not done**: workflow 08 does not yet feed an actual public-facing site (Cloudflare/site deployment remains a separate, still-deferred decision per the architecture doc); workflow 09's alert-worthiness signal is intentionally the safe, uniform `event_id`-appeared-since-last-check rather than an attempt to harmonize each lane's differently-shaped route-relevance classification (`confirmed_route_impact` vs `confirmed_route_relevant` vs a bare boolean vs no classification at all, confirmed to genuinely differ by lane before this design choice was made) — a documented, deliberate simplification, not an oversight.
+
+## 2026-08-02 — As-built documentation written
+
+- The project's own `00_AS-BUILT/0X_*/README.md` scaffolds (created 2026-07-28) had never been filled in — every one was still the placeholder stub. Filled in all 7, plus new `08_STATUS_PUBLISHER/` and `09_ALERT_MONITOR/` as-built entries, plus a new top-level `00_AS-BUILT/README.md` covering system architecture, runtime paths, the pointer-file convention, and — since the project owner's stated next step is building a dashboard against this data — a precise data contract for `public/status.json` (workflow 08's output) with real field names and value vocabularies, verified against the actual live JSON rather than assumed.
+- Per-lane docs include real source lists and URLs (extracted directly from each workflow's actual `Fetch *` nodes, not from the pre-build specs) and the specific real bugs found and fixed in that lane during live qualification.
+- Explicitly documented the cross-lane route-relevance inconsistency (confirmed during workflow 09's build: lanes use different field names and different vocabularies for "is this event route-impacting") as a known gap a dashboard will need to design around, not something silently glossed over.
+- The pre-build `0X_*_EXECUTABLE_BUILD_SPECIFICATION_v1.md` files were left as-is (historical record of original intent) with the as-built docs pointing to this build log as the authoritative record of what actually changed and why.
+
+## 2026-08-02 19:00:00 UTC — Ringer orchestrator — All 9 workflows scheduled and activated; critical dormant scheduling bug found and fixed first
+
+Project owner requested workflow 08 be "completed": a spec for what it publishes (already existed in `00_AS-BUILT/README.md`), confirmation it lives entirely on Hetzner with no Mac dependency, and activation on a real schedule in sync with the 7 connectors. Confirmed the Hetzner-only claim directly: every path involved (`/files/uw-issy-connectors/...`) is inside the n8n Docker container on the server; this session's Mac was only ever the SSH/API client used to build and test, never a runtime dependency.
+
+**Critical finding before touching activation**: checked each connector's actual configured trigger and found all 7 use the deprecated `n8n-nodes-base.cron` node type (`hidden: true` in this n8n version's own node registry) with a flat `{unit, value}` parameter shape. The real, installed Cron node's `trigger()` function reads `this.getNodeParameter('triggerTimes')` expecting a `{item: [...]}` structure — completely different from what was actually stored. `(triggerTimes.item || []).map(...)` on the real stored shape evaluates to an empty array, meaning **zero cron expressions would ever have been registered** — every one of these 7 workflows would have activated successfully via the API with no error, and then simply never fired again on its own. This was invisible all session because every prior test execution used Manual Trigger or the CLI, never the real schedule path. Root-caused by reading the actual installed `Cron.node.js` and comparing it against the actual stored node JSON, not assumed.
+
+**Fix**: replaced the `Schedule Trigger` node on all 7 connectors with the modern `n8n-nodes-base.scheduleTrigger` type (the same type already used correctly on workflows 08/09 from the start), using the project owner's explicit per-lane cadence:
+
+| Lane | Old (broken) | New (working) |
+|---|---|---|
+| 01 Route Conditions | 60 min (never fired) | 30 min |
+| 02 Weather | 15 min (never fired) | 60 min (`hoursInterval: 1` — n8n validates `minutesInterval` to 1–59, so 60 minutes must be expressed as 1 hour, not `minutesInterval: 60`) |
+| 03 Air Quality | 15 min (never fired) | 60 min |
+| 04 Wildfire | 15 min (never fired) | 24 hours (`daysInterval: 1`) |
+| 05 Flood Conditions | 15 min (never fired) | 24 hours |
+| 06 Trail Infrastructure Status | 6 hours (never fired) | 24 hours |
+| 07 Government Safety Alerts | 15 min (never fired) | 24 hours |
+| 08 Status Publisher | 15 min (already correct type) | unchanged, 15 min |
+| 09 Alert Monitor | 15 min (already correct type) | unchanged, 15 min |
+
+**Did not trust "activates without error" as proof the fix worked** — same standard applied all session. Instead: temporarily set workflow 08 (lowest-risk, no external calls) to a 1-minute interval, activated it for real, waited, and confirmed via `GET /executions` that two real automatic executions fired exactly 60 seconds apart with `mode: "trigger"` (not `manual` or `cli`) and `status: "success"` — genuine unattended proof the corrected node type actually registers and fires, before relying on the same mechanism for the other 8. Restored workflow 08 to its real 15-minute interval afterward and re-verified.
+
+**Activated all 9 workflows** via `POST /workflows/{id}/activate`. Final state re-confirmed by reading each workflow directly back from the live n8n API (not from local files): all 9 `active: true`, all 9 trigger nodes confirmed `n8n-nodes-base.scheduleTrigger` with the exact intervals above.
+
+Synced all corrected files into `00_WORKFLOWS/`. No credentials printed or logged. No CDM files touched.
+
+**What this means going forward**: the connectors will now genuinely run unattended on Hetzner — no session, no Mac, no manual trigger required. First automatic executions should appear in n8n's execution history within each lane's own interval; worth an independent spot-check after that window passes, same as the 1-minute proof above, rather than assuming the fix holds at every real cadence just because it held at 1 minute.
+
+## 2026-08-02 19:10:00 UTC — Ringer orchestrator — Added gate: geospatial capability audit before dashboard-map implementation (owner-directed)
+
+Project owner added an explicit research gate before any dashboard map work proceeds, with hard constraints: no modification to workflows 01–08 during the audit, no activation changes, no connector deployment changes, read-only inspection of existing workflow JSON, as-built docs, published artifacts, and workflow 08 output only. Honored throughout — this task made zero changes to any workflow, connector, or n8n state.
+
+**Notable finding during the audit, unrelated to geometry itself**: discovered a separate, independently-running Ringer swarm (`~/.ringer/work/btf-uwissy-dashboard-20260802/01-foundation.swarm.json`, started 11:49 AM, still active) writing new files directly into this same repository (`public/data/dashboard-data.json`, `release-manifest.json`, `route-events.geojson`, `system-health.json`, `public/routes/UnivWA-Issaquah.geojson`, plus new `scripts/*.mjs` conversion/validation scripts) — not produced by this session, not by workflows 01–09. Flagged to the project owner directly rather than silently absorbed into the audit's findings as verified capability; the audit explicitly excludes this concurrent process's output from its "already implemented" determination, since it's mid-run, unverified, and outside this session's visibility into what it's actually doing.
+
+**Audit result**: written to `00_DOCS/UWISSY_GEospatial_CAPABILITY_AUDIT_v1.0.md` and `00_DOCS/UWISSY_GEospatial_CAPABILITY_MATRIX_v1.0.csv`.
+
+**Readiness decision: `PARTIALLY_READY_WITH_TEXT_ONLY_FALLBACKS`**
+
+Key findings, each verified by direct inspection of the actual workflow JSON (not assumed from specs):
+- The canonical GPX (`data/route/UnivWA-Issaquah.gpx`) has real, full-resolution geometry (1,470 track points) but is **never parsed at runtime by any of the 9 workflows** — every reference to it is a plain provenance path string, confirmed by inspecting every `canonical_gpx` usage in all 7 connectors.
+- A consistent ~10-segment route-section ID naming scheme is used across lanes to *tag* which part of the route an event affects, but there is **no published, shared lookup from these IDs to actual coordinates** anywhere in the repo. One lane (04 Wildfire) has an internal, lane-local, unpublished 10-point coarse coordinate list used only for its own distance math — not reusable by a dashboard, not reused by any other lane.
+- 6 of 7 lanes (all but 01) have real lat/lon somewhere in their normalize logic for at least some sources, but the method and shape differ per lane (live point-distance math in some, hardcoded pre-researched distances in lane 05, name/zone matching in others) — no lane does real polyline-buffer intersection against the actual GPX track.
+- Workflow 08 passes each lane's `events` array through to `public/status.json` **verbatim** — it doesn't add, resolve, or strip geometry. Whatever coordinate fields a lane's own events carry survive unchanged, but there is no single uniform `event.geometry` key a dashboard could rely on across all 7 lanes without per-lane logic.
+- **Zero native GeoJSON output** from any of the 9 workflows — confirmed by searching all 9 workflow JSON files for any GeoJSON type marker; no matches.
+
+Recommended follow-on work (explicitly not performed — flagged as blockers/follow-on tasks per instruction, not silently implemented): a single canonical route-section-to-coordinate lookup built once from the real GPX; a uniform `geometry` field added to the shared connector envelope standard; independent verification of the concurrent process's GeoJSON output once that swarm completes.
+
+No workflow, connector, or n8n state was touched during this task. No credentials printed or logged.
+
+## 2026-08-02 19:20:00 UTC — Ringer orchestrator — Direction: continue dashboard-foundation to completion (owner-directed, not a competing build)
+
+Project owner directed continuation of the existing dashboard-foundation swarm's work to completion — explicitly not stopping, restarting, or competing with it — applying 10 constraints derived from the geospatial audit above (keep the route GeoJSON work; do not claim event mapping complete; do not invent coordinates; text-only fallback for ungeometried events; do not leave geometry null merely because the cross-lane schema is incomplete; preserve and use real source-native coordinates where provable; no connector changes outside prior scope; no geocoding/fuzzy matching; keep source geometry separate from route relationship; document map-ready vs text-only per lane).
+
+**Found the swarm had already finished** (not still running) — both of its two attempts ended in `FAIL`, blocked on an `npm install` permission denial, per its own logged worker output. It had gotten much further than the earlier flag suggested: a full Astro/TypeScript scaffold, all 10 files of the `src/lib/route-status/` contract layer, all 4 pipeline scripts, and a full test suite were already written and had already been run once successfully against the real canonical GPX and a real captured Workflow 08 snapshot (`data/connectors/evidence/workflow08-status-snapshot-20260802T162329Z.json`, checked in specifically so this work doesn't need live Hetzner access). Continued in the same files, same paths, same authoritative spec (`00_DOCS/v.01.UI_UWISSY_Status_Buildspec.md`, read in full before continuing) — no competing implementation created.
+
+**Real fix, matching the audit's constraint #6/#7 directly**: `scripts/build-public-package-snapshot.mjs` only checked for a literal `event.geometry` field, which no lane publishes — every event geometry was `null`, not because the data doesn't exist but because the script wasn't looking in the right place. Confirmed directly against the real snapshot that lane 05 (Flood Conditions) events carry genuine, provable `event.location.{latitude,longitude}` (real USGS/NOAA gauge coordinates), while lane 07's alerts have the same keys present but honestly `null` (statewide advisories, no real point — confirmed by direct inspection, not assumed). Added a second, source-native coordinate check used only when both values are valid finite numbers in range — never inferred, never geocoded. Result: 5 of 12 events in this snapshot now carry real `Point` geometry; the other 7 remain correctly `null` and logged as gaps.
+
+**Two real bugs found and fixed while completing the pipeline that had never been run to completion before** (the prior swarm never got past `npm install`):
+- `src/lib/route-status/types.ts`: `DashboardEventWithUnknownLane` used `DashboardEvent & {...}` to widen `laneId` to include `"unknown"` — but TypeScript intersects rather than overrides a shared property on `&`, silently narrowing it back to the strict 7-lane union and defeating the type's whole purpose. Fixed with `Omit<DashboardEvent, "laneId"> & {...}`.
+- `tests/route/gpx-pipeline.test.ts`: two `Math.min(...array)` calls received `(number | undefined)[]` under strict indexed-access typing; added non-null assertions on the known-shape coordinate pairs.
+- A separate, pre-existing npm optional-dependencies bug (missing `@astrojs/compiler-binding-darwin-arm64`, a known issue, npm/cli#4828) blocked `astro build`. `npm install` is on this session's permission deny-list (`~/.claude/settings.json`) — could not be run by the orchestrator even with the project owner's in-conversation approval, since a deny-list entry is absolute by design. Project owner ran it directly in their own terminal; resolved on the next `astro build` attempt.
+
+**Full pipeline run clean, in order, end to end**: `validate-route-source` → `convert-route-gpx-to-geojson` → `build-public-package-snapshot` → `validate-public-package` → `vitest` (37/37 pass) → `tsc --noEmit` → `astro build`. All seven steps exit 0.
+
+**Outstanding, not silently closed**: `public/UnivWA-Issaquah.gpx` (a stale, superseded route copy the build brief calls for deleting) still exists — `rm` was denied twice by this session's permission policy and was not forced or worked around. Flagged as a one-file manual cleanup step, not swept under the rug.
+
+Full detail, including per-lane geometry coverage counts and every confirmation the project owner asked for, written to `00_DOCS/UWISSY_Dashboard_Foundation_Status_Report_v1.0.md`.
+
+**Scope discipline confirmed**: `git diff --stat` against every `00_CONNECTORS/*/*.json` and `00_WORKFLOWS/*.json` file shows only the changes from the earlier, separately-authorized schedule-activation task — nothing in this task touched any connector or workflow. This task's only code changes: `scripts/build-public-package-snapshot.mjs`, `src/lib/route-status/types.ts`, `tests/route/gpx-pipeline.test.ts`.
+
+**Not claimed**: final map readiness. Per the geospatial audit, the route line is ready; event geometry remains genuinely partial (5 of 12 in this snapshot, lane-dependent) — reported as-is, not closed out as complete. No workflow was activated. No credentials printed or logged.
+
+**Closeout note**: the project owner deleted the outstanding stale `public/UnivWA-Issaquah.gpx` directly (rather than have this session force or work around the `rm` denial), verifying the canonical GPX and built GeoJSON were both present and non-empty immediately beforehand, and logged the deletion to `00_BUILD_LOG.md` (a separate log this project also maintains, referenced as the preferred project log in the dashboard buildspec section 38). `00_DOCS/UWISSY_Dashboard_Foundation_Status_Report_v1.0.md` updated to reflect the item as resolved. The dashboard-foundation round described above is now fully closed with no outstanding items.
+
+## 2026-08-02 19:25:00 UTC — Ringer orchestrator — Post-deletion re-verification
+
+Project owner asked for explicit re-verification of the manual `public/UnivWA-Issaquah.gpx` deletion rather than taking it on trust, plus a re-run of the affected steps and confirmation the file does not get silently recreated. Done directly, not assumed:
+
+- Confirmed absence directly (`ls`/`test -e`), not inferred from the prior turn's report.
+- Re-ran the entire 7-step pipeline clean, end to end, from a fresh state: `validate-route-source` → `convert-route-gpx-to-geojson` → `build-public-package-snapshot` → `validate-public-package` → `vitest` (37/37 pass) → `tsc --noEmit` → `astro build`. All seven steps exit 0 again, identical results to the pre-deletion run (5 of 12 event features still carry real source-native geometry, 7 still correctly null).
+- Re-checked file absence *after* the full build completed, confirming no step in the pipeline recreates `public/UnivWA-Issaquah.gpx` — none of the four scripts write to that path; only `public/routes/UnivWA-Issaquah.geojson` and `public/data/*.json`/`.geojson` are written.
+
+No connector, workflow, or n8n state touched. No credentials printed or logged. Dashboard-foundation round remains fully closed with no outstanding items.

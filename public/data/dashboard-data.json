@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "1.0.0",
+  "releaseId": "08_STATUS_PUBLISHER-2026-08-02T162329490Z-001",
+  "assembledAt": "2026-08-02T16:23:29.490Z",
+  "routeId": "UnivWA-Issaquah",
+  "routeName": "University of Washington to Issaquah",
+  "displayTier": "watch",
+  "overallMessage": "One or more lanes are degraded, stale, or running on last-known-good data.",
+  "activeEventCount": 12,
+  "laneSummaries": [
+    {
+      "laneId": "01_ROUTE_CONDITIONS",
+      "laneLabel": "Route Conditions",
+      "available": true,
+      "displayTier": "watch",
+      "sourceState": "degraded",
+      "eventCount": 1
+    },
+    {
+      "laneId": "02_WEATHER",
+      "laneLabel": "Weather",
+      "available": true,
+      "displayTier": "normal",
+      "sourceState": "no_relevant_events",
+      "eventCount": 0
+    },
+    {
+      "laneId": "03_AIR_QUALITY",
+      "laneLabel": "Air Quality",
+      "available": true,
+      "displayTier": "watch",
+      "sourceState": "degraded",
+      "eventCount": 1
+    },
+    {
+      "laneId": "04_WILDFIRE",
+      "laneLabel": "Wildfire",
+      "available": true,
+      "displayTier": "watch",
+      "sourceState": "degraded",
+      "eventCount": 0
+    },
+    {
+      "laneId": "05_FLOOD_CONDITIONS",
+      "laneLabel": "Flood Conditions",
+      "available": true,
+      "displayTier": "watch",
+      "sourceState": "degraded",
+      "eventCount": 5
+    },
+    {
+      "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "laneLabel": "Trail Infrastructure Status",
+      "available": false,
+      "displayTier": "unknown",
+      "sourceState": "unknown",
+      "eventCount": 0
+    },
+    {
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "laneLabel": "Government Safety Alerts",
+      "available": true,
+      "displayTier": "normal",
+      "sourceState": "ok",
+      "eventCount": 5
+    }
+  ],
+  "routeImpacts": null,
+  "eventRefs": [
+    "01_ROUTE_CONDITIONS:KC-03:hash_7f6bfcb8",
+    "03_AIR_QUALITY:PSCAA-02:burn-ban:20260802T101010Z",
+    "05_FLOOD_CONDITIONS:USGS-01:d5267c19",
+    "05_FLOOD_CONDITIONS:USGS-02:d46ee9b9",
+    "05_FLOOD_CONDITIONS:USGS-03:1a1ee800",
+    "05_FLOOD_CONDITIONS:NWPS-01:11181e07",
+    "05_FLOOD_CONDITIONS:NWPS-02:578207fd",
+    "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_bf9b0b4d",
+    "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_f2b6e839",
+    "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c29944a0",
+    "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_dc98040f",
+    "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_3a69f580"
+  ]
+}
