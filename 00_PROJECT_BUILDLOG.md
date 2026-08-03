@@ -1814,3 +1814,116 @@ No obvious noise remains — confirmed by direct inspection of every excluded it
 **Browser tooling limitation, same as the prior session's diagnosis, not re-litigated at length**: the automation tab in this session again reports `document.hidden: true` / `visibilityState: "hidden"`, so live viewport-dependent layout confirmation (grid rendering, media query evaluation) could not be captured pixel-for-pixel. Verified instead via: (1) direct source review of the CSS grid-template-areas mapping, (2) built `dist/index.html` static-HTML checks (title, absent Current Route State heading, heading DOM order, zero noise strings), (3) `getComputedStyle` checks that don't depend on layout size (mobile `order` values 1-6 confirmed exactly as intended). A full pixel-level visual re-check remains recommended for the next foregrounded browser session.
 
 Proceeding to commit, push, and production deployment.
+
+## 2026-08-03 09:31:09 PDT — Codex lane-review source pack
+- Copied 12 UW-Issy architecture, workflow, package, type, and map files to: /Users/jkbrookspersonal/Downloads/uwissy-lanes
+- Created ZIP archive: /Users/jkbrookspersonal/Downloads/uwissy-lanes.zip
+- Result: success
+
+## 2026-08-03 17:11:29 UTC — Ringer — Phase 0 preflight: found and corrected a live incident (both 08/09 unexpectedly active)
+
+**Role:** Ringer (gate owner), preflight before any write worker launched, per the new "renumber to 20/30 + add Lane 08 Route Facilities + restroom map layer" job.
+
+**Action:** `docker exec n8n n8n export:workflow --id=<id>` (read) then `n8n update:workflow --id=<id> --active=false` (write) via `ssh hetzner`, for both `gp8WlccGwLydNWG7` (08_StatusPublisherConnector) and `KhbGg5gBn7Rbne68` (09_AlertMonitorConnector).
+
+**Reason:** The job's binding requirement is "all n8n workflows must remain inactive before, during, and after this job." Live export showed `active: true` on BOTH workflows, contradicting `00_PROJECT_STATUS.md` (which recorded `false` for both) and every prior session's own findings.
+
+**Result — real incident found and corrected:**
+- Both workflows carried a real `n8n-nodes-base.scheduleTrigger` at 15-minute intervals and had been active since `2026-08-02T16:25:40.100Z` / `2026-08-02T18:59:20.958Z` respectively — over 24 hours.
+- `/files/uw-issy-connectors/public/status.json` and `/files/uw-issy-connectors/alerts/last_alerted_state.json` both had mtimes of `2026-08-03 19:00` (local), confirming the schedules genuinely fired repeatedly, not just a stale DB flag.
+- **No public-facing harm**: the live dashboard does not read this Hetzner path directly — it builds from a frozen, checked-in Workflow-08 snapshot (a known, already-documented architecture gap), so `status.json` drifting live did not affect production dashboard content.
+- **Real likely email-spam incident**: `last_alerted_state.json` grew to 83 recorded "new" event IDs over the window, 45 of which are the same real trail closure (`01_ROUTE_CONDITIONS:KC-03`) re-appearing under a new `content_hash` almost every cycle — a volatility bug in lane 01's event-hash computation that defeats Alert Monitor's duplicate suppression at the source. If Alert Monitor emails on every newly-seen event ID (its documented job), this most likely sent a large number of duplicate emails to the real configured inbox over roughly 24 hours. This could not be confirmed from Hetzner alone (no Gmail access was used).
+- Corrected: both workflows re-exported after the CLI update and confirmed `active: false` at the DB level. Residual risk: the CLI documents that an already-running n8n process may not immediately deregister an in-memory trigger without a restart; a full restart of the shared, multi-project n8n container was judged out of this job's authority (would affect unrelated production automations) and was not performed.
+
+**Secret-handling note**: a `printenv | grep 'DB_TYPE\|DB_SQLITE\|DB_POSTGRES'` run to identify the n8n database backend inadvertently matched `DB_POSTGRESDB_PASSWORD` too, exposing the live Postgres password for the n8n database in this session's tool output. Disclosed to the project owner immediately with a rotation recommendation. The value was not reused, stored, or repeated. No further `printenv` sweeps will be run this job; the n8n CLI is used directly instead.
+
+**Decision (project owner, asked directly via AskUserQuestion):** proceed with the renumbering/Lane 08 job exactly as scoped, with both workflows left deactivated (done). The lane 01 hash-volatility bug is logged as a separate, real, open risk — not fixed in this job, since fixing lanes 01–07 is explicitly out of this job's scope.
+
+**Open risk carried forward:** (1) rotate the exposed Postgres DB password for the n8n database; (2) lane 01's event-hash volatility causing false "new" events and likely duplicate alert emails needs its own follow-up fix, outside this job; (3) in-memory scheduler state for 08/09 should be confirmed truly stopped at the next safe n8n restart.
+
+**Next step:** continue Phase 0 preflight file reads, then produce the Phase 0 gate report.
+
+## 2026-08-03 10:18:35 PDT — Inspect CLAUDE.md source
+- Path: /Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/CLAUDE.md
+- Result: regular file or non-symlink filesystem object
+- Raw target: none
+- Resolved path: /Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/CLAUDE.md
+- File detail: -rw-r--r--  1 jkbrookspersonal  staff  518 Jul 28 17:18 /Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/CLAUDE.md
+
+## 2026-08-03 10:19:40 PDT — Compare project and global CLAUDE.md files
+- Project file: /Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/CLAUDE.md
+- Global file checked: /Users/jkbrookspersonal/.claude/CLAUDE.md
+- Result: project file is a regular file; global file presence checked
+
+## 2026-08-03 17:21:06 UTC — Ringer — Phase 1 gate: reconciled migration map (renumbering 08→20, 09→30)
+
+Four read-only workers (A: workflow architecture, B: full reference scan, C: data/map contract for Lane 08 facilities, D: build/test command contract) completed and were reconciled. Full worker output preserved in this session's task transcripts. Key facts adopted below are drawn directly from worker evidence, not assumed.
+
+**Adopted facts:**
+- Live n8n IDs are stable/opaque and do NOT need to change: `08_STATUS_PUBLISHER` = `gp8WlccGwLydNWG7`, `09_ALERT_MONITOR` = `KhbGg5gBn7Rbne68`. Only display name, tags, embedded `connector_id`/`lane` string literals, and `run_id` prefix need to change — consistent with "prefer updating the existing live workflow records so known IDs and history are kept."
+- Live tags on both workflows are currently `[]` (empty) — a real, pre-existing drift from the 4 tags recorded in both repo copies. New tags will be set fresh as part of this rename, not "restored."
+- `00_CONNECTORS/0N_*/…json` and `00_WORKFLOWS/v0001.0N_*Connector.n8n.workflow.json` are byte-identical duplicate pairs for both 08 and 09 — both must be updated consistently.
+- Workflow 09 has zero code-level reference to workflow 08's connector_id, lane string, or output path (confirmed by grep of the live export) — the two workflows can be renamed independently with no cross-workflow string dependency.
+- **Critical safety finding (Worker C)**: `laneId` provides zero eligibility gating in the dashboard pipeline today — the only thing that excludes an item from "Current Route Alerts" is `presentationEligible`/`routeRelevant`/`routeImpact`/freshness in `presentation-eligibility.ts`, never `laneId`. This means the only reliable way to guarantee Lane 08 restroom records never become alert cards is architectural: they must never enter `route-events.geojson` at all. Adopted as a hard design constraint for Phase 5.
+- **Confirmed bug (Worker A)**: Alert Monitor's "new event" check is a literal `Set.has(event_id)` with zero fuzzy matching — directly explains the duplicate-alert incident found in Phase 0 (lane 01's `content_hash` volatility produces a new `event_id` on almost every run). Logged as a separate open risk, not fixed in this job per project-owner decision.
+
+**Exact files to rename** (identifier in filename itself):
+- `00_CONNECTORS/08_STATUS_PUBLISHER/` → `00_CONNECTORS/20_STATUS_PUBLISHER/`
+- `00_CONNECTORS/08_STATUS_PUBLISHER/08_STATUS_PUBLISHER_v1.json` → `00_CONNECTORS/20_STATUS_PUBLISHER/20_STATUS_PUBLISHER_v1.json`
+- `00_CONNECTORS/09_ALERT_MONITOR/` → `00_CONNECTORS/30_ALERT_MONITOR/`
+- `00_CONNECTORS/09_ALERT_MONITOR/09_ALERT_MONITOR_v1.json` → `00_CONNECTORS/30_ALERT_MONITOR/30_ALERT_MONITOR_v1.json`
+- `00_WORKFLOWS/v0001.08_STATUS_PUBLISHERConnector.n8n.workflow.json` → `00_WORKFLOWS/v0001.20_STATUS_PUBLISHERConnector.n8n.workflow.json`
+- `00_WORKFLOWS/v0001.09_ALERT_MONITORConnector.n8n.workflow.json` → `00_WORKFLOWS/v0001.30_ALERT_MONITORConnector.n8n.workflow.json`
+- `00_AS-BUILT/08_STATUS_PUBLISHER/` → `00_AS-BUILT/20_STATUS_PUBLISHER/`
+- `00_AS-BUILT/09_ALERT_MONITOR/` → `00_AS-BUILT/30_ALERT_MONITOR/`
+
+**Exact files to edit (content only, no rename):**
+- All 6 files above: internal `name`, tag list, and jsCode string literals (`connector_id`, `lane`, `run_id` prefix, `connector_name`) per the task's TARGET STATUS PUBLISHER VALUES / TARGET ALERT MONITOR VALUES.
+- `00_AS-BUILT/README.md`, `00_PROJECT_STATUS.md` — update the 08/09 rows and prose to 20/30 (current-state docs; in scope for Phase 2 since they state operational fact).
+- `00_CONNECTORS/00_SHARED_AUTONOMOUS_CONNECTOR_BUILD_STANDARD.md` — update ONLY the normative rule sections (2.3 tag vocabulary: replace `workflow_08` with the new tag set covering `20_status_publisher`/`30_alert_monitor`/`lane_08_route_facilities`; the "workflow 08 MUST carry" rule). Deep historical-decision prose left for Phase 7.
+- `scripts/build-public-package-snapshot.mjs` — 4 comment-only references (not load-bearing code) updated for accuracy.
+
+**Exact live n8n records to update:** `gp8WlccGwLydNWG7` (rename in place), `KhbGg5gBn7Rbne68` (rename in place). No new workflow created for either; no ID change.
+
+**Historical references preserved, not touched (explicit scope decision):**
+- `00_PROJECT_BUILDLOG.md`, `00_BUILD_LOG.md` — append-only audit trail, never rewritten.
+- `data/connectors/evidence/workflow08-status-snapshot-20260802T162329Z.json` — a dated, historical capture of the OLD workflow's real output at the time it was 08_STATUS_PUBLISHER. Renaming or editing this would misrepresent history. Preserved verbatim, including its old-style filename.
+- `data/connectors/audit/exclusions-08_STATUS_PUBLISHER-2026-08-02T162329490Z-001.json` and `public/data/{dashboard-data,release-manifest,route-events,system-health}.json` — build artifacts derived from the preserved evidence file above. Left untouched in Phase 2 ("no dashboard change occurs" is an explicit Phase 2 requirement); will only change in Phase 5 when the publisher pipeline is rebuilt against Lane 08 + a fresh live capture.
+- `schema_compatible_with_workflow_08` field name embedded in all 7 lane (01-07) connector workflows' handoff-doc-builder code — left untouched because Phase 2 explicitly forbids altering source lanes 01-07. Logged as a known, intentionally-deferred reference (not a miss).
+- Deep historical-decision prose inside `00_CONNECTORS/00_OPEN_CONNECTOR_ARCHITECTURE_DECISIONS.md`, `00_DOCS/00_SHARED_AUTONOMOUS_CONNECTOR_BUILD_STANDARD_v2.md`, `00_DOCS/00_OPEN_CONNECTOR_ARCHITECTURE_DECISIONS_v2.md`, `00_DOCS/00_CDM_CONNECTOR_LESSONS_APPLIED_v2.md`/`.md`, and the per-lane executable build spec docs — deferred to Phase 7's dedicated reference-scan-and-docs pass, not silently skipped.
+
+**Expected output paths (Hetzner):** unchanged directory shape (`/files/uw-issy-connectors/public/status.json`, `/files/uw-issy-connectors/alerts/last_alerted_state.json`) — the task's "preserve behavior" requirement means Phase 2 does not relocate these paths, only the workflow identity that writes/reads them.
+
+**Expected test impact:** zero existing tests reference `08_STATUS_PUBLISHER`/`09_ALERT_MONITOR` (confirmed zero matches in `tests/`) — Phase 2 adds new tests (workflow-JSON structural validity has no existing precedent per Worker D; a new pattern will be established) rather than modifying existing ones.
+
+**Rollback plan:** before any live n8n change, export and locally save both current live workflow JSONs (already captured read-only during Phase 0/1 as `wf08_live.json`/`wf09_live.json` equivalents). If a live update fails validation, re-import the saved pre-change export by ID to restore exactly. Git history provides rollback for all file renames/edits (single dedicated commit per phase, per the task's own commit-message plan).
+
+Phase 1 gate passed. Proceeding to Phase 2 — downstream workflow renumbering (single write worker: Ringer itself, performing the rename directly under tight gating, per "do not let two workers edit the same file at the same time" and the small, well-specified nature of this phase).
+
+## 2026-08-03 10:27:59 PDT — Update global Claude operating rules
+- Source file: /Users/jkbrookspersonal/Downloads/CLAUDE_GLOBAL_REVISED.md
+- Target file: /Users/00_AI_RULES/CLAUDE.md
+- Backup file: /Users/00_AI_RULES/CLAUDE.md.backup.20260803T102759
+- Global symlink: /Users/jkbrookspersonal/.claude/CLAUDE.md
+- Resolved target: /Users/00_AI_RULES/CLAUDE.md
+- Change: added tiered secret handling, narrowed auth checks, and reduced repeat warnings
+- Validation: required sections and final-report rule found
+- Result: success
+
+## 2026-08-03 17:29:31 UTC — Ringer — Phase 2: live rename applied and verified; live-execution risk disclosed and accepted
+
+**Action:** Local rename completed for both workflows (git mv + content edits), byte-identical `00_CONNECTORS`/`00_WORKFLOWS` pairs re-synced, then live-imported in place via `n8n import:workflow --input=...` (upsert by embedded `id`, no new workflow created, `--activeState` defaulted to `false`).
+
+**Result — both confirmed live, in place, inactive:**
+- `gp8WlccGwLydNWG7`: `v0001.08_StatusPublisherConnector` → `v0001.20_StatusPublisherConnector`, 36 nodes (unchanged count), `active: false`, tags now correctly `[uw_issy, connector, lane_20_status_publisher, no_direct_deploy]` (also fixes the empty-tags drift found in Phase 1).
+- `KhbGg5gBn7Rbne68`: `v0001.09_AlertMonitorConnector` → `v0001.30_AlertMonitorConnector`, 41 nodes (unchanged count), `active: false`, tags now correctly `[uw_issy, connector, no_direct_deploy, lane_30_alert_monitor]`.
+- New structural-validity script `scripts/validate-n8n-workflow.mjs` (no prior precedent existed per Worker D's Phase 1 report) confirms both live exports: valid JSON, trigger present, `active: false`, and `connector_id`/`lane`/`run_id` prefix all match the expected new identity. Archived to `/Users/jkbrookspersonal/00_SCRIPTS/20260803T172541_validate-n8n-workflow.mjs` per the script rule.
+- Pre-change backups saved to `00_CONNECTORS/00_RUN_1_LIVE_BACKUP/pre-rename-2026-08-03/` (full live exports of both workflows before any change) — real rollback path, not just a plan.
+
+**Files renamed** (git mv, history preserved): `00_CONNECTORS/08_STATUS_PUBLISHER/` → `20_STATUS_PUBLISHER/` (+ inner `_v1.json`), `00_CONNECTORS/09_ALERT_MONITOR/` → `30_ALERT_MONITOR/` (+ inner `_v1.json`), `00_WORKFLOWS/v0001.08_STATUS_PUBLISHERConnector.n8n.workflow.json` → `v0001.20_STATUS_PUBLISHERConnector...`, `00_WORKFLOWS/v0001.09_ALERT_MONITORConnector...` → `v0001.30_ALERT_MONITORConnector...`, `00_AS-BUILT/08_STATUS_PUBLISHER/` → `20_STATUS_PUBLISHER/`, `00_AS-BUILT/09_ALERT_MONITOR/` → `30_ALERT_MONITOR/`.
+
+**Content edited** (both connector-folder and 00_WORKFLOWS copies, kept byte-identical): workflow `name`, the `lane_0N_*` tag → `lane_2N_*`/`lane_3N_*`, and every embedded Code-node string literal (`connector_id`, `lane`, `run_id` prefix, plus the `connector_name`/`severity_mapping_note` comment text on 20's aggregate node). Source lanes 01-07 were not touched, per the task's explicit constraint — including the `schema_compatible_with_workflow_08` field embedded in all 7 lanes' own handoff-doc code, deliberately left as-is and logged in the Phase 1 gate as a known, intentional deferral.
+
+**Live-execution risk disclosed and accepted (project owner, asked directly):** `01_ROUTE_CONDITIONS` remains active on its own schedule and still carries the unfixed content-hash volatility bug found in Phase 0 — meaning a live CLI execution of `30_ALERT_MONITOR` right now will very likely detect the current lane-01 event under yet another new hash as "new" and send one more real duplicate email through the live Gmail node, on top of the ~24h incident already found and stopped. Presented three options (execute live and accept it / seed alerted-state first to suppress this one send / skip the live send-proof entirely). Project owner chose: execute live and accept the risk, exactly as the task originally specified. Proceeding to live execution next.
+
+**Next step:** execute `20_STATUS_PUBLISHER` (safe, file-write only) then `30_ALERT_MONITOR` (accepted email risk) via CLI, capture execution IDs and exit codes, read back output/alert-state files, confirm both remain inactive after execution.

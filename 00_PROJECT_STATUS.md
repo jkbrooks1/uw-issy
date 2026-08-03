@@ -1,10 +1,10 @@
 # UW–Issaquah Route Monitor — Project Status
 
-**Last updated:** 2026-08-03 16:25 UTC (2026-08-03 09:25 PDT)
+**Last updated:** 2026-08-03 17:52 UTC (2026-08-03 10:52 PDT)
 
 ## Current phase
 
-The full chain is built and live: all 7 connector lanes plus the status-publisher (08) and alert-monitor (09) workflows are imported, live-verified, and now **active on real schedules**. A public dashboard reads a snapshot of workflow 08's output and is deployed to production on Cloudflare Pages. GitHub Actions CI/CD is fully working end-to-end — every push to `main` validates, builds, deploys, and verifies production automatically. **The dashboard now applies a noise-reduction policy**: of the current snapshot's 12 candidate events, only 1 (a real, active trail closure) is public — the rest are excluded with audited, machine-readable reasons (health alerts, non-major flood readings, informational-only items). The repository is on GitHub at `https://github.com/jkbrooks1/uw-issy` (`main` branch, currently at commit `68df9b0`).
+The full chain is built and live: all 7 connector lanes plus the status-publisher (20) and alert-monitor (30) workflows are imported, live-verified, and now **active on real schedules**. A public dashboard reads a snapshot of workflow 20's output and is deployed to production on Cloudflare Pages. GitHub Actions CI/CD is fully working end-to-end — every push to `main` validates, builds, deploys, and verifies production automatically. **The dashboard now applies a noise-reduction policy**: of the current snapshot's 12 candidate events, only 1 (a real, active trail closure) is public — the rest are excluded with audited, machine-readable reasons (health alerts, non-major flood readings, informational-only items). The repository is on GitHub at `https://github.com/jkbrooks1/uw-issy` (`main` branch, currently at commit `68df9b0`).
 
 **Live production dashboard:** `https://uw-issy.pages.dev` and `https://uw-issy.biketourfrance.net`
 
@@ -22,7 +22,9 @@ Derived route GeoJSON (built during the site build, not checked in as a separate
 
 `public/routes/UnivWA-Issaquah.geojson`
 
-## Connector status — all 7 lanes plus 08/09
+## Connector status — all 7 lanes plus 20/30
+
+Numbering bands (approved 2026-08-03): `01`–`19` reserved for source lanes (`08` reserved for the planned `08_ROUTE_FACILITIES` lane, `09`–`19` reserved/unused), `20_STATUS_PUBLISHER` for cross-lane assembly, `30_ALERT_MONITOR` for downstream alerting. Renumbered from `08_STATUS_PUBLISHER`/`09_ALERT_MONITOR` on 2026-08-03 — same live n8n workflow IDs, renamed in place (see `00_PROJECT_BUILDLOG.md`).
 
 | Lane | n8n workflow ID | Active | Schedule | Live-verified |
 |---|---|---|---|---|
@@ -33,10 +35,13 @@ Derived route GeoJSON (built during the site build, not checked in as a separate
 | 05 Flood Conditions | `4RiNqOKD9BCZFH6P` | **true** | every 24 h | yes — 10 real sources landed |
 | 06 Trail Infrastructure Status | `poGV37VLUGIUxfGK` | **true** | every 24 h | yes — real published artifact after validation-ordering fix |
 | 07 Government Safety Alerts | `08g3JNwQPVSxUl2H` | **true** | every 24 h | yes — real published artifact, `data_status: ok` |
-| 08 Status Publisher | `gp8WlccGwLydNWG7` | false | — | yes — real aggregated feed written and read back |
-| 09 Alert Monitor | `KhbGg5gBn7Rbne68` | false | — | yes — real email sent (Gmail msg `19fc34bc6a2b9552`), duplicate correctly suppressed on re-run |
+| 08 Route Facilities | *(not yet built)* | — | — | planned, not started |
+| 20 Status Publisher | `gp8WlccGwLydNWG7` | false | — | yes — real aggregated feed written and read back; re-verified live after 2026-08-03 rename (exit 0, correct new `run_id`/`connector_id`, output readback confirmed) |
+| 30 Alert Monitor | `KhbGg5gBn7Rbne68` | false | — | yes — real email sent (Gmail msg `19fc34bc6a2b9552`), duplicate correctly suppressed on re-run; re-verified live after 2026-08-03 rename (exit 0, correct new `run_id`, dedup gate correctly suppressed with 0 new events) |
 
-All 7 lane connectors were migrated off the deprecated `n8n-nodes-base.cron` node (whose stored params never matched what this n8n version actually expects — schedules would never have fired) onto `n8n-nodes-base.scheduleTrigger`, then activated and confirmed running unattended on Hetzner. Workflows 08 and 09 remain inactive/unscheduled by design — the dashboard currently builds from one checked-in real snapshot of workflow 08's output rather than a live feed (see "Known gap" below).
+All 7 lane connectors were migrated off the deprecated `n8n-nodes-base.cron` node (whose stored params never matched what this n8n version actually expects — schedules would never have fired) onto `n8n-nodes-base.scheduleTrigger`, then activated and confirmed running unattended on Hetzner. Workflows 20 and 30 remain inactive/unscheduled by design — the dashboard currently builds from one checked-in real snapshot of workflow 20's (formerly 08's) output rather than a live feed (see "Known gap" below).
+
+**Incident found and corrected 2026-08-03:** both 20/30 (then still numbered 08/09) were found live-active on a 15-minute schedule for roughly 24 hours, contradicting this table's own prior `false` entries — a real drift undetected until this preflight. Both were deactivated via CLI on discovery. Root cause of the likely resulting duplicate-email exposure: lane 01's `event_id` embeds a `content_hash` that changes almost every fetch even for the same real-world event, defeating Alert Monitor's exact-match dedup. That lane-01 issue remains open, tracked separately — see `00_PROJECT_BUILDLOG.md`, 2026-08-03 entries, for full detail and the project owner's explicit decision to proceed with the renumbering job while leaving it as a separate follow-on.
 
 Canonical, correct workflow exports (matching what is actually live and proven) are in `00_WORKFLOWS/`. The lane-local `00_CONNECTORS/0X_*/0X_*_v1.json` (or `_v4.json` for lane 01) files are the source of truth these exports were generated from.
 
@@ -44,7 +49,7 @@ Canonical, correct workflow exports (matching what is actually live and proven) 
 
 Astro + Svelte static site in this same repo (`src/`, `scripts/`, `public/`). Renders the real route line and event markers on a Leaflet map, current route state, monitoring-source health, and a text fallback table/list for events without usable geometry.
 
-- **Data source for this build:** one real, checked-in capture of workflow 08's combined output, `data/connectors/evidence/workflow08-status-snapshot-20260802T162329Z.json`, split into the four approved public files (`public/data/dashboard-data.json`, `route-events.geojson`, `system-health.json`, `release-manifest.json`) by `scripts/build-public-package-snapshot.mjs`. Of the snapshot's 12 active events, 5 carry real source-native point geometry (lane 05); the other 7 are correctly geometry-`null` and shown as text-only.
+- **Data source for this build:** one real, checked-in capture of the Status Publisher's combined output (captured 2026-08-02 while that workflow was still numbered 08 — the file itself is preserved verbatim as a dated historical artifact, not renamed), `data/connectors/evidence/workflow08-status-snapshot-20260802T162329Z.json`, split into the four approved public files (`public/data/dashboard-data.json`, `route-events.geojson`, `system-health.json`, `release-manifest.json`) by `scripts/build-public-package-snapshot.mjs`. Of the snapshot's 12 active events, 5 carry real source-native point geometry (lane 05); the other 7 are correctly geometry-`null` and shown as text-only.
 - **CI/CD:** `.github/workflows/deploy.yml` implements the full validate → build → deploy → verify-production → log-proof contract on every push to `main`. **Working end-to-end**, proven with a real run: `CLOUDFLARE_API_TOKEN` was added as a repo secret, run `30783250154` (commit `dd5812f`) completed all 18 steps successfully, deployed to `https://1678c35d.uw-issy.pages.dev`, and its own `verify-production.mjs` step logged 27/27 automated checks passing.
 - **Cloudflare Pages project:** `uw-issy`, account `84f228323707bc1d08ba30d9f76146be`. Custom domain `uw-issy.biketourfrance.net` already attached.
 - **Current live deployment:** commit `68df9b0` (noise-reduction policy + title/layout changes), CI run `30832034734` all-green, deployed to `https://7895c59b.uw-issy.pages.dev`, verified independently with 27/27 automated checks on `uw-issy.pages.dev` and 26/27 on `uw-issy.biketourfrance.net` (see "Known gap" below for the one pre-existing difference), plus live DOM checks confirming: title exactly "UW-Issaquah BG/SRT/ELST Status", Current Route State absent, exactly one real event card (the East Lake Sammamish Trail closure) rendered once in each responsive layout with zero health/flood noise strings anywhere in the page, and `.leaflet-map-pane` still renders with `position: absolute` (no regression of the earlier CSS-scoping fix).
@@ -56,7 +61,7 @@ Astro + Svelte static site in this same repo (`src/`, `scripts/`, `public/`). Re
 
 **The map's live visual render could not be confirmed via automated browser check in the most recent verification session** (2026-08-03). The automation tab's `document.visibilityState` was persistently `"hidden"`, which throttles `requestAnimationFrame` — Leaflet's tile/vector layer setup depends on it internally, stalling the map at "Loading route map" with no rendered tiles. Ruled out as a real defect: manually replaying the exact same load sequence (import → fetch → `tileLayer.addTo()` → `geoJSON.addTo()` → `getBounds()`) against the same live production data, in the same tab, completed instantly with correct bounds. This is a browser-automation tooling limitation, not a site regression — a normal foregrounded browser tab does not hit this. A full visual re-check (real tiles/route line/markers rendering) is recommended next time a stable, foregrounded browser session is available.
 
-**The dashboard's monitoring data is not yet live-refreshing.** It builds from the one workflow-08 snapshot captured 2026-08-02T16:23:29Z, the same approved input used since the dashboard-foundation round. Workflow 08 itself remains inactive and has no path that publishes to GitHub or anywhere the dashboard build can pull from automatically. Wiring a real, periodic refresh (workflow 08 → some fetchable location → dashboard rebuild) is a separate, not-yet-scoped follow-on.
+**The dashboard's monitoring data is not yet live-refreshing.** It builds from the one Status Publisher snapshot captured 2026-08-02T16:23:29Z (while numbered 08), the same approved input used since the dashboard-foundation round. Status Publisher (now 20) itself remains inactive and has no path that publishes to GitHub or anywhere the dashboard build can pull from automatically. Wiring a real, periodic refresh (Status Publisher → some fetchable location → dashboard rebuild) is a separate, not-yet-scoped follow-on.
 
 ## What live qualification found and fixed (connectors)
 
@@ -94,21 +99,23 @@ Every fix was verified two ways: the lane's own fixture test harness and a real 
 - runtime structure (quarantine/, public/, alerts/ tiers) approved and present under `data/connectors/` (local mirror) and `/files/uw-issy-connectors/` (live server)
 - `DEC-009` (cross-lane severity mapping) and `DEC-013` (notification channel) resolved
 - Cloudflare deployment: **resolved and live** (see "Dashboard" above)
-- the public dashboard now exists and consumes a snapshot of workflow 08's feed
+- the public dashboard now exists and consumes a snapshot of the Status Publisher's (formerly 08, now 20) feed
 
 ## Approved runtime structure
 
 - Hetzner runtime root: `/srv/uw-issy-route-monitor`
 - live n8n container output root: `/files/uw-issy-connectors/`
 - local repository mirror: `data/connectors/`
-- aggregated site-facing status feed: `/files/uw-issy-connectors/public/status.json`, owned only by workflow `08`
-- alert state: `/files/uw-issy-connectors/alerts/last_alerted_state.json`, owned only by workflow `09`
-- dashboard public data package: `public/data/{dashboard-data.json,route-events.geojson,system-health.json,release-manifest.json}`, built from a workflow-08 snapshot by `scripts/build-public-package-snapshot.mjs`
+- aggregated site-facing status feed: `/files/uw-issy-connectors/public/status.json`, owned only by workflow `20_STATUS_PUBLISHER`
+- alert state: `/files/uw-issy-connectors/alerts/last_alerted_state.json`, owned only by workflow `30_ALERT_MONITOR`
+- dashboard public data package: `public/data/{dashboard-data.json,route-events.geojson,system-health.json,release-manifest.json}`, built from a Status Publisher snapshot by `scripts/build-public-package-snapshot.mjs`
 
 ## Next phase
 
 1. Decide whether to disable Cloudflare Email Obfuscation for `uw-issy.biketourfrance.net` (see "Known gap").
 2. Get a full live-browser visual confirmation of the map (tiles/route/markers) from a normal foregrounded session (see "Known gap").
-3. Decide on and build a real, periodic bridge from workflow 08's live output into the dashboard's public data package, replacing the single frozen snapshot currently in use.
-4. Decide whether workflows 08/09 should be activated/scheduled now that the dashboard consumes their output shape.
-5. Consider refining workflow 09's alert trigger to use each lane's native route-impact classification once/if a reliable cross-lane approach is worked out.
+3. Build `08_ROUTE_FACILITIES` (official public restroom locations), wire it into `20_STATUS_PUBLISHER`, add a separate `public/data/route-facilities.geojson` public file, and add a toggleable restroom layer to the map — in progress as of 2026-08-03.
+4. Fix lane 01's `event_id`/`content_hash` volatility bug that defeats `30_ALERT_MONITOR`'s duplicate suppression (see the 2026-08-03 incident note above) — tracked separately, not yet started.
+5. Decide on and build a real, periodic bridge from the Status Publisher's live output into the dashboard's public data package, replacing the single frozen snapshot currently in use.
+6. Decide whether workflows 20/30 should be activated/scheduled now that the dashboard consumes their output shape (blocked on item 4 for 30, to avoid scheduling known duplicate-email behavior).
+7. Consider refining Alert Monitor's alert trigger to use each lane's native route-impact classification once/if a reliable cross-lane approach is worked out.

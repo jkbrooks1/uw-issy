@@ -1,5 +1,6 @@
 {
-  "name": "v0001.09_AlertMonitorConnector",
+  "id": "KhbGg5gBn7Rbne68",
+  "name": "v0001.30_AlertMonitorConnector",
   "active": false,
   "settings": {
     "executionOrder": "v1",
@@ -15,8 +16,8 @@
       "name": "connector"
     },
     {
-      "id": "tag-lane-09-alert-monitor",
-      "name": "lane_09_alert_monitor"
+      "id": "tag-lane-30-alert-monitor",
+      "name": "lane_30_alert_monitor"
     },
     {
       "id": "tag-no-direct-deploy",
@@ -66,7 +67,7 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "const lanes = [{\"lane_id\": \"01_ROUTE_CONDITIONS\", \"label\": \"Route Conditions\"}, {\"lane_id\": \"02_WEATHER\", \"label\": \"Weather\"}, {\"lane_id\": \"03_AIR_QUALITY\", \"label\": \"Air Quality\"}, {\"lane_id\": \"04_WILDFIRE\", \"label\": \"Wildfire\"}, {\"lane_id\": \"05_FLOOD_CONDITIONS\", \"label\": \"Flood Conditions\"}, {\"lane_id\": \"06_TRAIL_INFRASTRUCTURE_STATUS\", \"label\": \"Trail Infrastructure Status\"}, {\"lane_id\": \"07_GOVERNMENT_SAFETY_ALERTS\", \"label\": \"Government Safety Alerts\"}];\nreturn [{\n  json: {\n    schema_version: '1.0.0',\n    connector_id: '09_ALERT_MONITOR',\n    connector_name: 'UW-Issaquah Alert Monitor',\n    connector_version: 'v0001',\n    lane: '09_ALERT_MONITOR',\n    run_id: '09_ALERT_MONITOR-' + new Date().toISOString().replace(/[:.]/g, '') + '-001',\n    run_stamp: new Date().toISOString().replace(/[:.]/g, ''),\n    generated_at: new Date().toISOString(),\n    output_root: '/files/uw-issy-connectors',\n    lanes: lanes\n  }\n}];"
+        "jsCode": "const lanes = [{\"lane_id\": \"01_ROUTE_CONDITIONS\", \"label\": \"Route Conditions\"}, {\"lane_id\": \"02_WEATHER\", \"label\": \"Weather\"}, {\"lane_id\": \"03_AIR_QUALITY\", \"label\": \"Air Quality\"}, {\"lane_id\": \"04_WILDFIRE\", \"label\": \"Wildfire\"}, {\"lane_id\": \"05_FLOOD_CONDITIONS\", \"label\": \"Flood Conditions\"}, {\"lane_id\": \"06_TRAIL_INFRASTRUCTURE_STATUS\", \"label\": \"Trail Infrastructure Status\"}, {\"lane_id\": \"07_GOVERNMENT_SAFETY_ALERTS\", \"label\": \"Government Safety Alerts\"}];\nreturn [{\n  json: {\n    schema_version: '1.0.0',\n    connector_id: '30_ALERT_MONITOR',\n    connector_name: 'UW-Issaquah Alert Monitor',\n    connector_version: 'v0001',\n    lane: '30_ALERT_MONITOR',\n    run_id: '30_ALERT_MONITOR-' + new Date().toISOString().replace(/[:.]/g, '') + '-001',\n    run_stamp: new Date().toISOString().replace(/[:.]/g, ''),\n    generated_at: new Date().toISOString(),\n    output_root: '/files/uw-issy-connectors',\n    lanes: lanes\n  }\n}];"
       }
     },
     {

@@ -12,7 +12,7 @@ Status:
 1. Every connector MUST operate independently through candidate publication.
 2. Every connector MUST treat `data/route/UnivWA-Issaquah.gpx` as the canonical route source.
 3. Connectors MUST NOT deploy the website directly.
-4. Connector publication and workflow-08 publication MUST be separate phases.
+4. Connector publication and workflow-20 (Status Publisher) publication MUST be separate phases.
 5. All shared field names MUST use `snake_case`.
 6. Every source id outside a lane-local registry MUST be globally namespaced as `<lane_id>:<local_source_id>`, for example `03_AIR_QUALITY:ECO-01`.
 7. Unknown, stale, malformed, or missing data MUST NOT be rendered or interpreted as green, clear, or safe.
@@ -24,7 +24,7 @@ Status:
 - Each lane connector MUST fetch, normalize, validate, and publish only its own lane outputs.
 - Each lane connector MAY read shared route geometry, shared schema definitions, and its own lane research.
 - Each lane connector MUST NOT depend on another lane connector to produce its own raw landing, normalized outputs, source-health records, or execution evidence.
-- Cross-lane deduplication and deployment gating MUST happen in workflow 08, not inside a lane connector, except that connectors MAY emit ownership and cross-reference metadata.
+- Cross-lane deduplication and deployment gating MUST happen in workflow 20 (Status Publisher), not inside a lane connector, except that connectors MAY emit ownership and cross-reference metadata.
 
 ### 2.2 n8n workflow naming
 
@@ -37,10 +37,10 @@ Status:
 ### 2.3 n8n folder and tag conventions
 
 - The complete UW–Issaquah monitoring system MUST use one n8n project/folder named exactly `UW-ISSY ROUTE MONITOR`.
+- Numbering bands (approved 2026-08-03): `01`–`19` reserved for source lanes (only `01`–`07` built as of this writing; `08` reserved for `08_ROUTE_FACILITIES`; `09`–`19` reserved/unused), `20_STATUS_PUBLISHER` for cross-lane assembly and publication, `30_ALERT_MONITOR` for downstream new-alert detection. The former `08_STATUS_PUBLISHER`/`09_ALERT_MONITOR` numbering is retired; do not reuse it.
 - Required tag vocabulary is:
   - `uw_issy`
   - `connector`
-  - `workflow_08`
   - `lane_01_route_conditions`
   - `lane_02_weather`
   - `lane_03_air_quality`
@@ -48,20 +48,31 @@ Status:
   - `lane_05_flood_conditions`
   - `lane_06_trail_infrastructure_status`
   - `lane_07_government_safety_alerts`
+  - `lane_08_route_facilities`
+  - `lane_20_status_publisher`
+  - `lane_30_alert_monitor`
   - `candidate_only`
   - `no_direct_deploy`
   - `production`
   - `disabled`
   - `active`
-- Workflows `01` through `07` MUST carry:
+- Workflows `01` through `08` MUST carry:
   - `uw_issy`
   - `connector`
   - their lane tag
   - `no_direct_deploy`
   - the applicable lifecycle/environment tag
-- Workflow `08` MUST carry:
+- Workflow `20_STATUS_PUBLISHER` MUST carry:
   - `uw_issy`
-  - `workflow_08`
+  - `connector`
+  - `lane_20_status_publisher`
+  - `no_direct_deploy`
+  - the applicable lifecycle/environment tag
+- Workflow `30_ALERT_MONITOR` MUST carry:
+  - `uw_issy`
+  - `connector`
+  - `lane_30_alert_monitor`
+  - `no_direct_deploy`
   - the applicable lifecycle/environment tag
 
 ### 2.4 Exported workflow filename conventions

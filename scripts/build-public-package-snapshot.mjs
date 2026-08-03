@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Usage: node scripts/build-public-package-snapshot.mjs <real-workflow08-snapshot-path> <output-dir> [audit-dir]
 //
-// Reads the real captured Workflow 08 combined status object (schema_version /
+// Reads a real captured Status Publisher (workflow 20, formerly 08) combined status object (schema_version /
 // connector_id / generated_at / run_id / overall / lanes / severity_mapping_note)
 // and deterministically splits it into the four approved public package files
 // (buildspec section 9.4): dashboard-data.json, route-events.geojson,
@@ -21,7 +21,7 @@
 // excluded), severity, freshness, active period, and duplicate status
 // before it may appear in `route-events.geojson`. Ineligible events are
 // never deleted — they are written to a non-public audit file alongside a
-// machine-readable reason, and the raw Workflow 08 snapshot this script
+// machine-readable reason, and the raw Status Publisher snapshot this script
 // reads from is untouched.
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -570,10 +570,10 @@ function buildRouteEventFeature(laneId, laneLabel, rawEvent, laneIsStale, laneUs
       locationLabel: mapLocationLabel(rawEvent),
       routeSegmentId: mapRouteSegmentId(rawEvent),
       routeSegmentLabel: null,
-      // No per-event display tier is published by Workflow 08 today — only a
+      // No per-event display tier is published by the Status Publisher today — only a
       // per-lane display_severity. Buildspec 11.3/34.5 forbid inferring an
       // unknown value as "normal", so every event is "unknown" pending a
-      // reviewed per-event tier from Workflow 08 (logged in notes.md as a gap).
+      // reviewed per-event tier from the Status Publisher (logged in notes.md as a gap).
       displayTier: "unknown",
       routeEffect: mapRouteEffect(rawEvent),
       reportedAt: firstDefined(rawEvent.discovered_at, rawEvent.published_observation_at, rawEvent.observed_at),
