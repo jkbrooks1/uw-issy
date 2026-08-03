@@ -1,10 +1,10 @@
 # UW–Issaquah Route Monitor — Project Status
 
-**Last updated:** 2026-08-02 20:01 UTC (2026-08-02 13:01 PDT)
+**Last updated:** 2026-08-03 04:21 UTC (2026-08-02 21:21 PDT)
 
 ## Current phase
 
-The full chain is built and live: all 7 connector lanes plus the status-publisher (08) and alert-monitor (09) workflows are imported, live-verified, and now **active on real schedules**. A public dashboard reads a snapshot of workflow 08's output and is deployed to production on Cloudflare Pages. The repository is on GitHub at `https://github.com/jkbrooks1/uw-issy` (`main` branch, currently at commit `0cf7832`).
+The full chain is built and live: all 7 connector lanes plus the status-publisher (08) and alert-monitor (09) workflows are imported, live-verified, and now **active on real schedules**. A public dashboard reads a snapshot of workflow 08's output and is deployed to production on Cloudflare Pages. **GitHub Actions CI/CD is now fully working end-to-end**, proven with a real run against the live Cloudflare account — every push to `main` validates, builds, deploys, and verifies production automatically. The repository is on GitHub at `https://github.com/jkbrooks1/uw-issy` (`main` branch, currently at commit `38284da`).
 
 **Live production dashboard:** `https://uw-issy.pages.dev` and `https://uw-issy.biketourfrance.net`
 
@@ -45,18 +45,15 @@ Canonical, correct workflow exports (matching what is actually live and proven) 
 Astro + Svelte static site in this same repo (`src/`, `scripts/`, `public/`). Renders the real route line and event markers on a Leaflet map, current route state, monitoring-source health, and a text fallback table/list for events without usable geometry.
 
 - **Data source for this build:** one real, checked-in capture of workflow 08's combined output, `data/connectors/evidence/workflow08-status-snapshot-20260802T162329Z.json`, split into the four approved public files (`public/data/dashboard-data.json`, `route-events.geojson`, `system-health.json`, `release-manifest.json`) by `scripts/build-public-package-snapshot.mjs`. Of the snapshot's 12 active events, 5 carry real source-native point geometry (lane 05); the other 7 are correctly geometry-`null` and shown as text-only.
-- **CI/CD:** `.github/workflows/deploy.yml` implements the full validate → build → deploy → verify-production → log-proof contract on every push to `main`. Blocked on one secret the project owner needs to add themselves (see "Known gap" below); until then, deploys are a manual `wrangler pages deploy` (as performed for the current live deployment).
+- **CI/CD:** `.github/workflows/deploy.yml` implements the full validate → build → deploy → verify-production → log-proof contract on every push to `main`. **Working end-to-end**, proven with a real run: `CLOUDFLARE_API_TOKEN` was added as a repo secret, run `30783250154` (commit `dd5812f`) completed all 18 steps successfully, deployed to `https://1678c35d.uw-issy.pages.dev`, and its own `verify-production.mjs` step logged 27/27 automated checks passing.
 - **Cloudflare Pages project:** `uw-issy`, account `84f228323707bc1d08ba30d9f76146be`. Custom domain `uw-issy.biketourfrance.net` already attached.
-- **Current live deployment:** commit `0cf7832`, verified with 27/27 automated production checks (`scripts/verify-production.mjs`) plus a live browser check of the map, real route line, and real event markers.
+- **Current live deployment:** commit `38284da` (workflow-only change on top of `dd5812f`; app content unchanged since `0cf7832`), verified independently with 27/27 automated checks on `uw-issy.pages.dev` and 26/27 on `uw-issy.biketourfrance.net` (see "Known gap" below for the one difference), plus a direct DOM check confirming `.leaflet-map-pane` renders with `position: absolute` (the prior CSS-scoping fault has not regressed).
 
 ## Known gap — not silently worked around
 
-**GitHub Actions auto-deploy needs one manual step from the project owner.** The workflow's deploy step requires a `CLOUDFLARE_API_TOKEN` GitHub Actions secret. This orchestrator's standing rules forbid printing, storing, or logging secret values, and a Cloudflare API token cannot be safely generated or retrieved without exposing it — so this is a genuine hard stop, not a default-deferred task. To finish wiring it:
+**The custom domain's email link is rewritten by a Cloudflare zone setting, not by this app.** `uw-issy.biketourfrance.net` serves the literal `mailto:contact@biketourfrance.net` link as `/cdn-cgi/l/email-protection#...` because Cloudflare's **Email Address Obfuscation** (Scrape Shield) is active on the `biketourfrance.net` zone. Confirmed by diffing the two domains' raw HTML (byte-identical apart from that one line) and by matching `releaseId`/`assembledAt` in both domains' `release-manifest.json` — same deploy, same content, only the zone-level rewrite differs. The link still resolves for real users (Cloudflare's own decode script); this only affects an automated check looking for the literal `mailto:` string. Not fixed in this round since it's a Cloudflare zone setting, not a deploy or app fault, and changing zone-level settings was outside this task's boundary — the project owner can disable Email Obfuscation for this subdomain in the Cloudflare dashboard (Scrape Shield settings) if the literal link text matters for automated checks.
 
-1. Create a Cloudflare API token scoped to **Cloudflare Pages – Edit** for account `84f228323707bc1d08ba30d9f76146be` (dash.cloudflare.com → My Profile → API Tokens → Create Token).
-2. Run `gh secret set CLOUDFLARE_API_TOKEN --repo jkbrooks1/uw-issy` and paste the token when prompted (the value never needs to pass through this session).
-
-Once set, every push to `main` will validate, build, deploy, and verify production automatically.
+**The map's live visual render could not be confirmed via automated browser check in the most recent verification session** (2026-08-03). The automation tab's `document.visibilityState` was persistently `"hidden"`, which throttles `requestAnimationFrame` — Leaflet's tile/vector layer setup depends on it internally, stalling the map at "Loading route map" with no rendered tiles. Ruled out as a real defect: manually replaying the exact same load sequence (import → fetch → `tileLayer.addTo()` → `geoJSON.addTo()` → `getBounds()`) against the same live production data, in the same tab, completed instantly with correct bounds. This is a browser-automation tooling limitation, not a site regression — a normal foregrounded browser tab does not hit this. A full visual re-check (real tiles/route line/markers rendering) is recommended next time a stable, foregrounded browser session is available.
 
 **The dashboard's monitoring data is not yet live-refreshing.** It builds from the one workflow-08 snapshot captured 2026-08-02T16:23:29Z, the same approved input used since the dashboard-foundation round. Workflow 08 itself remains inactive and has no path that publishes to GitHub or anywhere the dashboard build can pull from automatically. Wiring a real, periodic refresh (workflow 08 → some fetchable location → dashboard rebuild) is a separate, not-yet-scoped follow-on.
 
@@ -109,7 +106,8 @@ Every fix was verified two ways: the lane's own fixture test harness and a real 
 
 ## Next phase
 
-1. Project owner creates the `CLOUDFLARE_API_TOKEN` GitHub Actions secret so pushes to `main` auto-deploy (see "Known gap").
-2. Decide on and build a real, periodic bridge from workflow 08's live output into the dashboard's public data package, replacing the single frozen snapshot currently in use.
-3. Decide whether workflows 08/09 should be activated/scheduled now that the dashboard consumes their output shape.
-4. Consider refining workflow 09's alert trigger to use each lane's native route-impact classification once/if a reliable cross-lane approach is worked out.
+1. Decide whether to disable Cloudflare Email Obfuscation for `uw-issy.biketourfrance.net` (see "Known gap").
+2. Get a full live-browser visual confirmation of the map (tiles/route/markers) from a normal foregrounded session (see "Known gap").
+3. Decide on and build a real, periodic bridge from workflow 08's live output into the dashboard's public data package, replacing the single frozen snapshot currently in use.
+4. Decide whether workflows 08/09 should be activated/scheduled now that the dashboard consumes their output shape.
+5. Consider refining workflow 09's alert trigger to use each lane's native route-impact classification once/if a reliable cross-lane approach is worked out.
