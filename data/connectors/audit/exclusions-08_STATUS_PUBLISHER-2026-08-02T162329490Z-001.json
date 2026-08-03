@@ -1,0 +1,127 @@
+{
+  "releaseId": "08_STATUS_PUBLISHER-2026-08-02T162329490Z-001",
+  "assembledAt": "2026-08-02T16:23:29.490Z",
+  "totalCandidates": 12,
+  "records": [
+    {
+      "eventId": "01_ROUTE_CONDITIONS:KC-03:hash_7f6bfcb8",
+      "laneId": "01_ROUTE_CONDITIONS",
+      "presentationEligible": true,
+      "presentationReason": "eligible",
+      "routeRelevant": true,
+      "routeImpact": true,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "03_AIR_QUALITY:PSCAA-02:burn-ban:20260802T101010Z",
+      "laneId": "03_AIR_QUALITY",
+      "presentationEligible": false,
+      "presentationReason": "no_route_impact",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "stale",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "05_FLOOD_CONDITIONS:USGS-01:d5267c19",
+      "laneId": "05_FLOOD_CONDITIONS",
+      "presentationEligible": false,
+      "presentationReason": "flood_no_active_category",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "05_FLOOD_CONDITIONS:USGS-02:d46ee9b9",
+      "laneId": "05_FLOOD_CONDITIONS",
+      "presentationEligible": false,
+      "presentationReason": "flood_no_active_category",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "05_FLOOD_CONDITIONS:USGS-03:1a1ee800",
+      "laneId": "05_FLOOD_CONDITIONS",
+      "presentationEligible": false,
+      "presentationReason": "flood_no_active_category",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "05_FLOOD_CONDITIONS:NWPS-01:11181e07",
+      "laneId": "05_FLOOD_CONDITIONS",
+      "presentationEligible": false,
+      "presentationReason": "flood_below_major",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "05_FLOOD_CONDITIONS:NWPS-02:578207fd",
+      "laneId": "05_FLOOD_CONDITIONS",
+      "presentationEligible": false,
+      "presentationReason": "flood_below_major",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_bf9b0b4d",
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "presentationEligible": false,
+      "presentationReason": "health_alert_excluded",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_f2b6e839",
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "presentationEligible": false,
+      "presentationReason": "health_alert_excluded",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c29944a0",
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "presentationEligible": false,
+      "presentationReason": "health_alert_excluded",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_dc98040f",
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "presentationEligible": false,
+      "presentationReason": "health_alert_excluded",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_3a69f580",
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "presentationEligible": false,
+      "presentationReason": "health_alert_excluded",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    }
+  ]
+}

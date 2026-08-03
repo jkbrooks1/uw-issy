@@ -1,5 +1,6 @@
 import { isKnownLaneId, laneLabelFor } from "./lane-labels";
 import { toDisplayTier } from "./display-tier";
+import { isEligibleForDisplay } from "./presentation-eligibility";
 import type { DashboardEventWithUnknownLane, MonitoringLaneId, RouteEventsFile } from "./types";
 
 const VALID_GEOMETRY_TYPES = new Set([
@@ -48,7 +49,7 @@ export function normalizeRouteEvents(file: RouteEventsFile): NormalizedRouteEven
       geometry = null;
     }
 
-    events.push({
+    const candidate: DashboardEventWithUnknownLane = {
       id: props.id,
       laneId: laneIsKnown ? (rawLaneId as MonitoringLaneId) : "unknown",
       rawLaneId,
@@ -66,10 +67,28 @@ export function normalizeRouteEvents(file: RouteEventsFile): NormalizedRouteEven
       geometry,
       sourceName: props.sourceName,
       sourceUrl: props.sourceUrl,
+      mergedSourceUrls: props.mergedSourceUrls,
       confidence: props.confidence,
       isLastKnownGood: props.isLastKnownGood,
       isStale: props.isStale,
-    });
+      presentationEligible: props.presentationEligible,
+      presentationReason: props.presentationReason,
+      routeRelevant: props.routeRelevant,
+      routeImpact: props.routeImpact,
+      duplicateGroupKey: props.duplicateGroupKey,
+      lastSourceRefreshAt: props.lastSourceRefreshAt,
+    };
+
+    // Dashboard final guard (buildspec noise-reduction policy): the public
+    // package should already contain only eligible events, but a card is
+    // never rendered without this independent, defense-in-depth re-check.
+    const guard = isEligibleForDisplay(candidate);
+    if (!guard.eligible) {
+      gaps.push({ eventId: props.id, reason: `Blocked by dashboard final guard: ${guard.reason}` });
+      continue;
+    }
+
+    events.push(candidate);
   }
 
   return { events, gaps };

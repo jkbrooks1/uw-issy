@@ -223,14 +223,15 @@ button:focus-visible,
   padding-bottom: 40px;
 }
 
-/* Buildspec 16.3 — mobile order */
-.item-route-state { order: 1; }
-.item-freshness { order: 2; }
-.item-route-map { order: 3; }
-.item-route-alerts { order: 4; }
-.item-monitoring-sources { order: 5; }
-.item-route-impacts { order: 6; }
-.item-system-health { order: 7; }
+/* Buildspec 16.3 — mobile order (Current Route State removed 2026-08-03;
+   Monitoring Sources moved up to sit parallel with the route map at
+   desktop widths — see the desktop grid-areas below). */
+.item-freshness { order: 1; }
+.item-route-map { order: 2; }
+.item-route-alerts { order: 3; }
+.item-monitoring-sources { order: 4; }
+.item-route-impacts { order: 5; }
+.item-system-health { order: 6; }
 
 @media (min-width: 900px) {
   .dashboard-layout {
@@ -239,14 +240,13 @@ button:focus-visible,
       "freshness freshness"
       "rail-top main-top"
       "rail-mid main-mid"
-      "rail-bottom main-bottom";
+      ". main-bottom";
     gap: 20px;
   }
 
   .item-freshness { grid-area: freshness; order: unset; }
-  .item-route-state { grid-area: rail-top; order: unset; }
-  .item-monitoring-sources { grid-area: rail-mid; order: unset; }
-  .item-route-impacts { grid-area: rail-bottom; order: unset; }
+  .item-monitoring-sources { grid-area: rail-top; order: unset; }
+  .item-route-impacts { grid-area: rail-mid; order: unset; }
   .item-route-map { grid-area: main-top; order: unset; }
   .item-route-alerts { grid-area: main-mid; order: unset; }
   .item-system-health { grid-area: main-bottom; order: unset; }

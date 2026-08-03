@@ -171,7 +171,7 @@ describe("build-public-package-snapshot.mjs", () => {
     expect(lane.freshnessState).toBe("stale");
   });
 
-  it("leaves event geometry null and logs a gap when a lane event has no geometry field", () => {
+  it("logs a mapping gap for a geometry-free event, and excludes it from public output for lacking route evidence (noise-reduction policy)", () => {
     const snapshot = baseSnapshot({
       lanes: {
         "01_ROUTE_CONDITIONS": {
@@ -196,11 +196,10 @@ describe("build-public-package-snapshot.mjs", () => {
     expect(result.status).toBe(0);
     expect(result.stdout).toMatch(/mapping gap/);
     const routeEvents = JSON.parse(readFileSync(join(outDir, "route-events.geojson"), "utf8"));
-    const feature = routeEvents.features.find((f: { id: string }) => f.id === "evt-no-geometry");
-    expect(feature.geometry).toBeNull();
+    expect(routeEvents.features.find((f: { id: string }) => f.id === "evt-no-geometry")).toBeUndefined();
   });
 
-  it("maps a geometry.type of 'none' to a null geometry, keeping the event in the data", () => {
+  it("keeps a geometry-null event in public output when it carries real route relevance and route impact", () => {
     const snapshot = baseSnapshot({
       lanes: {
         "01_ROUTE_CONDITIONS": {
@@ -216,6 +215,10 @@ describe("build-public-package-snapshot.mjs", () => {
               event_id: "evt-none-geometry",
               title: "Test event with type none",
               geometry: { type: "none", coordinates: null, bbox: null, spatial_reference: null },
+              status: "active",
+              route_impact_state: "confirmed_route_impact",
+              route_relevance: { classification: "confirmed_route_impact", method: "named_trail_segment_matching" },
+              last_verified_at: "2026-08-02T16:00:00.000Z",
             },
           ],
         },
@@ -226,5 +229,6 @@ describe("build-public-package-snapshot.mjs", () => {
     const routeEvents = JSON.parse(readFileSync(join(outDir, "route-events.geojson"), "utf8"));
     expect(routeEvents.features).toHaveLength(1);
     expect(routeEvents.features[0].geometry).toBeNull();
+    expect(routeEvents.features[0].properties.presentationEligible).toBe(true);
   });
 });

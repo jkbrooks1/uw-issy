@@ -1742,3 +1742,75 @@ Project owner ran `gh secret set CLOUDFLARE_API_TOKEN --repo jkbrooks1/uw-issy` 
 **Not in scope for this task, not touched:** Connector 04 or any other connector workflow. The earlier "Poll the detached connector 04 swarm" background task that was killed mid-session is unrelated to this verification and its termination says nothing about Connector 04's own pass/fail state.
 
 **Final repository state:** branch `main`, local HEAD and `origin/main` HEAD both at `38284da` (fast-forwarded after the CI's own successful log-append commit), working tree clean.
+
+## 2026-08-03 16:04:05 UTC — Ringer orchestrator — Noise-reduction policy: discovery phase
+
+New task: reduce public dashboard noise to route-specific, current, route-impacting items only, plus UI changes (title, remove Current Route State, move Monitoring Sources). Full spec includes route-relevance, route-use-effect, flood/health/gov-alert policies, freshness, long-running closures, dedup, and a dashboard final guard.
+
+**Read first, confirmed from code and real output (not assumed):**
+- Active project build log: `00_PROJECT_BUILDLOG.md` (established this session's pattern; `00_BUILD_LOG.md` continues to receive only CI's own short auto-entries).
+- `00_PROJECT_STATUS.md` read — current live state confirmed (commit `917bd45`, dashboard live on both domains).
+- Shared connector standard: `00_CONNECTORS/00_SHARED_AUTONOMOUS_CONNECTOR_BUILD_STANDARD.md` / `00_DOCS/00_SHARED_AUTONOMOUS_CONNECTOR_BUILD_STANDARD_v2.md` located.
+- Public package builder: `scripts/build-public-package-snapshot.mjs` (363 lines) — the layer that owns the final cross-lane public event set; confirmed this is where the buildspec's own comments say policy belongs (self-contained script pattern, mirrors buildspec 9.4/11.4).
+- Normalization: `src/lib/route-status/normalize-route-events.ts` (client/build-time DashboardEvent normalizer) and `normalize-dashboard-data.ts`; `types.ts` for the full public schema.
+- Dashboard data loader: `src/pages/index.astro`.
+- Components: `CurrentRouteAlerts.astro`, `EventTable.astro`, `EventListMobile.astro`, `EventDetail.astro`, `MonitoringSources.astro`, `CurrentRouteState.astro`, `RouteImpacts.astro`, `DashboardHeading.astro`.
+- Tests: `tests/public-package/build-public-package-snapshot.test.ts` gives the exact fixture-based testing pattern (execFileSync the .mjs against a synthetic Workflow08-shaped snapshot, assert on output files) — this is the pattern new policy tests will follow.
+- **Real production data inspected directly** (`data/connectors/evidence/workflow08-status-snapshot-20260802T162329Z.json`, the actual input the live site is built from): 12 raw events total — 1 route-conditions closure (KC-03, East Lake Sammamish Trail, `route_relevance.method: "named_trail_segment_matching"`, `route_impact_state: "confirmed_route_impact"`, active with `effective_end: 2026-12-31`), 1 air-quality burn ban (no direct route-use effect), 5 flood-lane gauge observations/forecasts (all `official_category` either a raw USGS site:param:stat string, `"no_flooding"`, or `"not_defined"` — none reach "major"), 5 government-safety-alert events — **all 5 are `event_type: "public_health_advisory"`** (measles, cyclosporiasis, Ebola, Hantavirus x2), two of which were mis-classified `confirmed_route_relevant` by a weak `ugc_same_area_match`/`text_landmark_match` method matching only on bare "Washington"/"Seattle" tokens — exactly the broad-area false positive the task's route-relevance rule warns against.
+- Confirmed schema field shapes differ by lane: lane 01/05 use a `route_relevance: {classification, method, distance_km, ...}` object; lane 03 uses a bare `route_relevant: boolean` + `route_sections: string[]`; lane 07 uses `route_relevance: {classification, method: "ugc_same_area_match"|"text_landmark_match", matched_tokens}`. Freshness-relevant timestamps also differ: `last_verified_at` (lane 01), `observed_at`/`provenance.retrieved_at` (lane 05), `observed_at` (lane 07) — none of these map to the existing `reportedAt`/`effectiveFrom` fields' actual intended meaning for a long-running closure's "latest source-check time," confirming a genuine schema gap (addressed below).
+
+**Design decision — main filter location:** `scripts/build-public-package-snapshot.mjs`, per the buildspec's own stated ownership of the cross-lane public event set. Confirmed via code reading, not assumed.
+
+**Design decision — schema additions** (reusing existing fields where sound, per instruction): adding `presentationEligible: boolean`, `presentationReason: string`, `routeRelevant: boolean`, `routeImpact: boolean`, `duplicateGroupKey: string | null`, `lastSourceRefreshAt: string | null`, `mergedSourceUrls: string[] | null` to `RouteEventProperties`/`DashboardEvent`. Reused existing `effectiveUntil` for the "active until" concept (sound existing field, not duplicated) and existing `sourceUrl` for the single/primary link. `lastSourceRefreshAt` is new because no existing field distinctly captures "latest source-check time" separate from `effectiveFrom` (issue date, must be preserved per the long-running-closure rule) and `reportedAt` (first-discovery time) — confirmed by inspecting the real KC-03 closure event, which has `effective_start` (issue date), `discovered_at` (first-seen), and `last_verified_at` (latest check) as three genuinely distinct real timestamps.
+
+**Design decision — audit trail for hidden items:** public `route-events.geojson` will contain only eligible features (buildspec: "public output contains only eligible items"). Excluded items remain traceable via a new non-public audit file `data/connectors/audit/exclusions-<releaseId>.json` (mirrors the existing `data/connectors/evidence/` pattern, not under `public/`, never served) plus a console summary captured in CI/build logs — raw source evidence itself is untouched.
+
+Proceeding to implementation.
+
+## 2026-08-03 16:23:30 UTC — Ringer orchestrator — Noise-reduction policy: implementation, tests, real-data review complete
+
+**Files changed and why:**
+- `src/lib/route-status/types.ts` — added `PresentationReason` union and 7 new schema fields (`presentationEligible`, `presentationReason`, `routeRelevant`, `routeImpact`, `duplicateGroupKey`, `lastSourceRefreshAt`, `mergedSourceUrls`) to `RouteEventProperties`/`DashboardEvent`. Reused existing `effectiveUntil`/`sourceUrl` rather than duplicating them.
+- `scripts/build-public-package-snapshot.mjs` — full rewrite of the eligibility pipeline: `classifyRouteRelevance` (trusted-method allowlist, rejects the broad `ugc_same_area_match`/`text_landmark_match` false positives found in real data), `classifyRouteImpact` (flood-aware), `classifyHealthAlert`/`healthEventCausesRouteClosure`, flood category threshold (`isMajorFloodCategory`), `governmentAlertPassesSeverityRule` (CAP Severe/Extreme, or explicit closure text for unknown severity), `deriveFreshnessState` (closure-type events use the end-date/24h-active rule exclusively; non-closure alerts use the 48h rule exclusively — a real refinement found while writing test 31), duplicate grouping/merging (`computeDuplicateGroupKey`, `mergeDuplicateGroup`), and a non-public audit-file writer. This is the layer that owns the final cross-lane public event set (confirmed from the buildspec's own comments, not assumed).
+- `src/lib/route-status/presentation-eligibility.ts` (new) — the dashboard's final safety guard, independent of the data layer, re-checking freshness against real current time (not just the build snapshot's own timestamp).
+- `src/lib/route-status/normalize-route-events.ts` — wires the guard in; a blocked event is logged as a gap, never rendered.
+- `src/components/route-status/DashboardHeading.astro`, `src/pages/index.astro` — title changed to exactly "UW-Issaquah BG/SRT/ELST Status" (H1 and `<title>`); `CurrentRouteState` import and rendering removed; `MonitoringSources` moved to sit directly before `RouteMap` in DOM order.
+- `src/styles/route-status.css` — desktop grid: Monitoring Sources now shares the `rail-top`/`main-top` row with the route map; Route Impacts moved up to `rail-mid` so the removed box leaves no empty gap; mobile `order` renumbered 1-6 (no gap at the old `route-state` slot).
+- `tests/public-package/build-public-package-snapshot.test.ts` — the two existing tests whose fixtures had zero route-relevance/impact data (and thus are correctly excluded under the new policy) were updated: one now asserts the correct exclusion, a new second test proves geometry-null events with real route relevance still publish.
+- New test files: `tests/public-package/noise-reduction-policy.test.ts` (43 tests, items 5-45), `tests/route-status/presentation-eligibility.test.ts` (11 tests, dashboard guard), `tests/ui/dashboard-layout.test.ts` (4 tests, items 1-4, source-text based since this project has no Astro component-render harness).
+- `public/data/dashboard-data.json`, `public/data/route-events.geojson` — regenerated with the new policy against the real evidence snapshot.
+- `data/connectors/audit/exclusions-<releaseId>.json` (new, tracked, never served under `public/`) — full per-event eligibility audit trail.
+
+**Orphaned file, not removed:** `src/components/route-status/CurrentRouteState.astro` is no longer imported anywhere (confirmed via `grep`) but `rm` was denied by this session's permission policy — flagged, not silently worked around, matching this session's established pattern for denied destructive commands.
+
+**Real-data before/after** (real production evidence snapshot, `data/connectors/evidence/workflow08-status-snapshot-20260802T162329Z.json`, unchanged, 12 raw candidate events):
+
+| Metric | Count |
+|---|---|
+| Total normalized/candidate events | 12 |
+| Total public events (after policy) | 1 |
+| Flood events excluded | 5 (3 `flood_no_active_category`, 2 `flood_below_major` — none reach "major") |
+| Health alerts excluded | 5 (all 5 of lane 07's events are `public_health_advisory`: measles, cyclosporiasis, Ebola, Hantavirus x2) |
+| Government alerts excluded (non-health) | 0 (none present in this snapshot) |
+| Stale events excluded | 0 (none excluded on freshness grounds alone in this snapshot) |
+| Off-route events excluded | 0 (none failed on route-relevance alone; the 2 health events with false-positive `confirmed_route_relevant` from broad "Washington"/"Seattle" token matches were already excluded upstream by the health rule) |
+| Duplicates merged | 0 (no two candidates shared a class+segment key in this snapshot) |
+| Active closures retained | 1 |
+| Informational/no-route-impact excluded | 1 (air-quality burn ban — real, route-tied, but not a route-use effect) |
+
+**The exact public card remaining:** `01_ROUTE_CONDITIONS:KC-03:hash_7f6bfcb8` — "East Lake Sammamish Trail closure for George Davis Creek culvert replacement." Manually reviewed and confirmed:
+- **Tied to the route**: `route_relevance.method: "named_trail_segment_matching"`, matched terms are the actual trail and cross streets ("East Lake Sammamish Trail", "Louis Thompson Rd NE", "NE Inglewood Hill Rd"), `route_sections: ["09_east_lake_sammamish_trail_sammamish"]`.
+- **Current**: `effective_end: 2026-12-31T23:59:59Z` has not passed relative to the snapshot's own `generated_at` (2026-08-02); `last_verified_at: 2026-08-01` is recent. Qualifies as a long-running closure via the stated-future-end-date rule.
+- **Route-impacting**: `route_impact_state: "confirmed_route_impact"`, `detour_available: false` — a real, direct trail closure with no detour.
+- **Not a duplicate**: only one candidate addresses this closure; `duplicateGroupKey: null`.
+- **Fit for public display**: real government source (King County Parks), directly actionable for a rider planning this route.
+
+No obvious noise remains — confirmed by direct inspection of every excluded item's reason, not just the count.
+
+**Tests**: 95/95 pass across 6 files (37 pre-existing + 43 new noise-reduction-policy + 11 new dashboard-guard + 4 new UI/layout). `npm run typecheck` clean. `npm run build` clean.
+
+**Validation chain run in full, nothing skipped**: `validate-route-source.mjs` (GPX, PASS), `convert-route-gpx-to-geojson.mjs` (PASS), `validate-route-geojson.mjs` (PASS), `build-public-package-snapshot.mjs` against the real evidence file (PASS, 1/12 eligible), `validate-public-package.mjs` (PASS), `npm run typecheck` (clean), `npm run build` (clean), `check-public-output-for-secrets.mjs` against both `dist/` and the new `data/connectors/audit/` directory (PASS, both clean).
+
+**Browser tooling limitation, same as the prior session's diagnosis, not re-litigated at length**: the automation tab in this session again reports `document.hidden: true` / `visibilityState: "hidden"`, so live viewport-dependent layout confirmation (grid rendering, media query evaluation) could not be captured pixel-for-pixel. Verified instead via: (1) direct source review of the CSS grid-template-areas mapping, (2) built `dist/index.html` static-HTML checks (title, absent Current Route State heading, heading DOM order, zero noise strings), (3) `getComputedStyle` checks that don't depend on layout size (mobile `order` values 1-6 confirmed exactly as intended). A full pixel-level visual re-check remains recommended for the next foregrounded browser session.
+
+Proceeding to commit, push, and production deployment.

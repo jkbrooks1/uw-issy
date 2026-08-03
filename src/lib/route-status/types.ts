@@ -26,6 +26,26 @@ export type SourceHealthState =
   | "unavailable"
   | "unknown";
 
+/**
+ * Presentation-eligibility reason codes (noise-reduction policy). An
+ * eligible item is always "eligible"; a hidden item always carries one of
+ * the other codes so the exclusion is machine-readable and auditable, not
+ * a silent drop.
+ */
+export type PresentationReason =
+  | "eligible"
+  | "off_route"
+  | "no_route_impact"
+  | "health_alert_excluded"
+  | "flood_below_major"
+  | "flood_no_active_category"
+  | "stale_short_lived_alert"
+  | "low_severity_government_alert"
+  | "duplicate_merged"
+  | "unknown_or_unusable_location"
+  | "expired"
+  | "informational_only";
+
 /** Buildspec 11.1 — the required normalized UI event type. */
 export type DashboardEvent = {
   id: string;
@@ -44,9 +64,17 @@ export type DashboardEvent = {
   geometry: GeoJSON.Geometry | null;
   sourceName: string | null;
   sourceUrl: string | null;
+  mergedSourceUrls: string[] | null;
   confidence: string | null;
   isLastKnownGood: boolean;
   isStale: boolean;
+  /** Noise-reduction policy fields (public-package layer is authoritative; see presentation-eligibility.ts for the dashboard's backup guard). */
+  presentationEligible: boolean;
+  presentationReason: PresentationReason;
+  routeRelevant: boolean;
+  routeImpact: boolean;
+  duplicateGroupKey: string | null;
+  lastSourceRefreshAt: string | null;
 };
 
 /**
@@ -110,9 +138,16 @@ export type RouteEventProperties = {
   effectiveUntil: string | null;
   sourceName: string | null;
   sourceUrl: string | null;
+  mergedSourceUrls: string[] | null;
   confidence: string | null;
   isLastKnownGood: boolean;
   isStale: boolean;
+  presentationEligible: boolean;
+  presentationReason: PresentationReason;
+  routeRelevant: boolean;
+  routeImpact: boolean;
+  duplicateGroupKey: string | null;
+  lastSourceRefreshAt: string | null;
 };
 
 export type RouteEventFeature = {

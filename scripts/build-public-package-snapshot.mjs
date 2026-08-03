@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Usage: node scripts/build-public-package-snapshot.mjs <real-workflow08-snapshot-path> <output-dir>
+// Usage: node scripts/build-public-package-snapshot.mjs <real-workflow08-snapshot-path> <output-dir> [audit-dir]
 //
 // Reads the real captured Workflow 08 combined status object (schema_version /
 // connector_id / generated_at / run_id / overall / lanes / severity_mapping_note)
@@ -14,6 +14,15 @@
 //
 // Every value that cannot be honestly derived from the real snapshot is
 // written as null. Nothing is invented (buildspec 11.3, 12, 30, 37).
+//
+// NOISE-REDUCTION POLICY (2026-08-03): a normalized event fetched by a
+// connector is not automatically fit for the public page. Each event is
+// judged for route relevance, route-use effect, event type (health alerts
+// excluded), severity, freshness, active period, and duplicate status
+// before it may appear in `route-events.geojson`. Ineligible events are
+// never deleted — they are written to a non-public audit file alongside a
+// machine-readable reason, and the raw Workflow 08 snapshot this script
+// reads from is untouched.
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
@@ -71,6 +80,59 @@ const VALID_GEOMETRY_TYPES = new Set([
   "Polygon",
   "MultiPolygon",
 ]);
+
+// ---------------------------------------------------------------------------
+// Noise-reduction policy constants
+// ---------------------------------------------------------------------------
+
+const SHORT_LIVED_FRESHNESS_HOURS = 48;
+const LONG_RUNNING_CLOSURE_CHECK_HOURS = 24;
+
+// Route-relevance: only trust a route-relevance method that is genuinely
+// tied to the route corridor (a named trail/street match, a close point-to-
+// route distance, or an approved upstream-gauge relationship). Broad
+// area/token matches (e.g. matching only on "Washington" or "Seattle") are
+// exactly the false positive this policy exists to catch — never trusted.
+const TRUSTED_ROUTE_RELEVANCE_METHODS = new Set([
+  "named_trail_segment_matching",
+  "point_to_route_distance",
+  "upstream_relationship",
+]);
+const POINT_DISTANCE_TRUST_KM = 3;
+
+const HEALTH_EVENT_TYPES = new Set([
+  "public_health_advisory",
+  "health_advisory",
+  "health_alert",
+  "disease_exposure_notice",
+]);
+
+// A health-originated event may still be shown, but only as a route-closure
+// or access event — never as a health-warning card. Requires an explicit,
+// direct closure/access signal, not an inferred one.
+const CLOSURE_TEXT_PATTERN =
+  /\b(route closed|trail closed|bridge closed|access blocked|evacuation order|travel prohibited|hazardous spill|active fire zone|police closure)\b/i;
+
+// Real flood categories seen from NWS/NWPS gauges, worst to least severe.
+// Anything not in the "major or worse" set — including raw USGS
+// site:param:stat identifiers reused as a category, "no_flooding",
+// "not_defined", "action", "minor", "moderate", "unknown", "n/a" — is
+// correctly treated as not-major.
+const MAJOR_OR_WORSE_FLOOD_CATEGORIES = new Set(["major", "record", "catastrophic"]);
+
+const CAP_SEVERE_OR_EXTREME = new Set(["severe", "extreme"]);
+const CAP_KNOWN_SEVERITIES = new Set(["extreme", "severe", "moderate", "minor", "unknown"]);
+
+// Route-segment/trail alias normalization for both route-relevance text
+// matching and duplicate-title grouping (buildspec: BG/SRT/ELST aliases).
+const ALIAS_SUBSTITUTIONS = [
+  [/\bburke[\s-]?gilman(?:\s+trail)?\b/gi, "bg trail"],
+  [/\bbg\b/gi, "bg trail"],
+  [/\bsammamish river trail\b/gi, "srt trail"],
+  [/\bsrt\b/gi, "srt trail"],
+  [/\beast lake sammamish trail\b/gi, "elst trail"],
+  [/\belst\b/gi, "elst trail"],
+];
 
 class BuildFailure extends Error {}
 
@@ -170,16 +232,335 @@ function mapLocationLabel(rawEvent) {
   );
 }
 
-function buildRouteEventFeature(laneId, laneLabel, rawEvent, laneIsStale, laneUsedLastKnownGood, gaps) {
+// ---------------------------------------------------------------------------
+// Noise-reduction policy: route relevance
+// ---------------------------------------------------------------------------
+
+/**
+ * True only when a genuinely route-tied signal exists: a named trail/street
+ * match, a close point-to-route distance, an approved upstream-gauge
+ * relationship, or an explicit route-section mapping. Broad area matches
+ * (state, county, region, or a bare place-name token) are never sufficient
+ * on their own — this is the exact false positive the policy targets.
+ */
+function classifyRouteRelevance(rawEvent) {
+  const rel = rawEvent.route_relevance;
+  if (rel && typeof rel === "object") {
+    if (rel.classification === "not_route_relevant") return false;
+    if (!TRUSTED_ROUTE_RELEVANCE_METHODS.has(rel.method)) return false;
+    if (rel.method === "point_to_route_distance") {
+      const distance = rel.distance_km ?? rel.distance_to_route_km;
+      return typeof distance === "number" && distance <= POINT_DISTANCE_TRUST_KM;
+    }
+    return true;
+  }
+
+  // Lane 03 (air quality) shape: a bare boolean plus explicit route
+  // section IDs naming a known route part — a trusted source mapping to a
+  // known route segment (buildspec route-relevance rule, bullet 3).
+  if (rawEvent.route_relevant === true && Array.isArray(rawEvent.route_sections) && rawEvent.route_sections.length > 0) {
+    return true;
+  }
+
+  return false;
+}
+
+// ---------------------------------------------------------------------------
+// Noise-reduction policy: health-alert exclusion
+// ---------------------------------------------------------------------------
+
+function classifyHealthAlert(rawEvent) {
+  return HEALTH_EVENT_TYPES.has(rawEvent.event_type);
+}
+
+/** A health-originated event may be shown only as a closure/access event, never as a health-warning card. */
+function healthEventCausesRouteClosure(rawEvent) {
+  const text = [rawEvent.title, rawEvent.summary, rawEvent.details, rawEvent.public_action]
+    .filter((v) => typeof v === "string")
+    .join(" ");
+  return CLOSURE_TEXT_PATTERN.test(text);
+}
+
+// ---------------------------------------------------------------------------
+// Noise-reduction policy: flood threshold
+// ---------------------------------------------------------------------------
+
+function normalizeFloodCategory(rawCategory) {
+  if (typeof rawCategory !== "string") return "unknown";
+  const normalized = rawCategory.trim().toLowerCase();
+  // Raw USGS site:param:stat identifiers (e.g. "USGS:12121600:00060:00000")
+  // are reused as `official_category` by some sources but are not a real
+  // flood category at all — never treat them as major.
+  if (normalized.startsWith("usgs:")) return "unknown";
+  return normalized;
+}
+
+function isMajorFloodCategory(rawCategory) {
+  return MAJOR_OR_WORSE_FLOOD_CATEGORIES.has(normalizeFloodCategory(rawCategory));
+}
+
+// ---------------------------------------------------------------------------
+// Noise-reduction policy: route-use effect
+// ---------------------------------------------------------------------------
+
+const DIRECT_ROUTE_IMPACT_STATES = new Set(["confirmed_route_impact"]);
+
+function classifyRouteImpact(laneId, rawEvent) {
+  if (laneId === "05_FLOOD_CONDITIONS") {
+    // A flood event only has a proven route-use effect when it both meets
+    // the major-or-worse threshold and reports a flood-related effect —
+    // a bare "elevated_water" label on a non-major reading is exactly the
+    // vague-label case the policy excludes.
+    return isMajorFloodCategory(rawEvent.official_category) && typeof rawEvent.route_impact === "string";
+  }
+
+  if (typeof rawEvent.route_impact_state === "string") {
+    return DIRECT_ROUTE_IMPACT_STATES.has(rawEvent.route_impact_state);
+  }
+
+  return false;
+}
+
+// ---------------------------------------------------------------------------
+// Noise-reduction policy: government CAP-style severity
+// ---------------------------------------------------------------------------
+
+function normalizeCapSeverity(rawSeverity) {
+  if (typeof rawSeverity !== "string") return "unknown";
+  const normalized = rawSeverity.trim().toLowerCase();
+  return CAP_KNOWN_SEVERITIES.has(normalized) ? normalized : "unknown";
+}
+
+function governmentAlertPassesSeverityRule(rawEvent) {
+  const severity = normalizeCapSeverity(rawEvent.cap_severity ?? rawEvent.severity);
+  if (CAP_SEVERE_OR_EXTREME.has(severity)) return true;
+  // No usable CAP severity: allow only when the source text itself states
+  // a direct route effect. Never infer severe impact from vague text.
+  const text = [rawEvent.title, rawEvent.summary, rawEvent.details]
+    .filter((v) => typeof v === "string")
+    .join(" ");
+  return CLOSURE_TEXT_PATTERN.test(text);
+}
+
+// ---------------------------------------------------------------------------
+// Noise-reduction policy: freshness and long-running closures
+// ---------------------------------------------------------------------------
+
+function deriveLastSourceRefreshAt(rawEvent) {
+  return firstDefined(
+    rawEvent.last_verified_at,
+    rawEvent.provenance?.retrieved_at,
+    rawEvent.retrieved_at,
+    rawEvent.observed_at,
+  );
+}
+
+function parseTimeMs(iso) {
+  if (typeof iso !== "string") return null;
+  const ms = Date.parse(iso);
+  return Number.isFinite(ms) ? ms : null;
+}
+
+function endDateMs(rawEvent) {
+  const endIso = firstDefined(rawEvent.effective_end, rawEvent.expires_at, rawEvent.effective_until);
+  return parseTimeMs(endIso);
+}
+
+function hasValidFutureEndDate(rawEvent, buildNowMs) {
+  const endMs = endDateMs(rawEvent);
+  return endMs !== null && endMs > buildNowMs;
+}
+
+function hasPassedEndDate(rawEvent, buildNowMs) {
+  const endMs = endDateMs(rawEvent);
+  return endMs !== null && endMs <= buildNowMs;
+}
+
+function isCheckedRecently(lastSourceRefreshAt, buildNowMs, hours) {
+  const refreshMs = parseTimeMs(lastSourceRefreshAt);
+  if (refreshMs === null) return false;
+  return buildNowMs - refreshMs <= hours * 60 * 60 * 1000;
+}
+
+// A closure-type event follows the long-running-closure rules exclusively
+// (stated end date, or active + checked within 24h) — it never falls back
+// to the generic 48h short-lived-alert rule, which exists for advisories,
+// not closures. Everything else follows the short-lived-alert rule only.
+function isClosureTypeEvent(laneId, rawEvent) {
+  return laneId === "01_ROUTE_CONDITIONS" || rawEvent.event_type === "trail_closure";
+}
+
+/**
+ * Returns "fresh" (eligible on freshness grounds), "expired" (had a stated
+ * active period that has definitively ended), or "stale" (no valid recent
+ * source refresh, no closure exemption applies). Build time never
+ * substitutes for a real source refresh time; a missing refresh time is
+ * not fit for public display unless the closure exemption applies.
+ */
+function deriveFreshnessState(laneId, rawEvent, lastSourceRefreshAt, buildNowMs) {
+  if (hasValidFutureEndDate(rawEvent, buildNowMs)) return "fresh";
+
+  if (isClosureTypeEvent(laneId, rawEvent)) {
+    if (hasPassedEndDate(rawEvent, buildNowMs)) return "expired";
+    if (rawEvent.status === "active" && isCheckedRecently(lastSourceRefreshAt, buildNowMs, LONG_RUNNING_CLOSURE_CHECK_HOURS)) {
+      return "fresh";
+    }
+    return "stale";
+  }
+
+  if (hasPassedEndDate(rawEvent, buildNowMs)) return "expired";
+  if (isCheckedRecently(lastSourceRefreshAt, buildNowMs, SHORT_LIVED_FRESHNESS_HOURS)) return "fresh";
+  return "stale";
+}
+
+// ---------------------------------------------------------------------------
+// Noise-reduction policy: single-event eligibility decision
+// ---------------------------------------------------------------------------
+
+/**
+ * Judges one raw event against the full noise-reduction policy, in the
+ * priority order documented in the policy spec: health exclusion, flood
+ * threshold, government severity, route relevance, route-use effect,
+ * freshness. Returns the decision plus every fact used to make it, so the
+ * caller can both build the public feature and write an honest audit
+ * record for hidden items. Duplicate merging is a separate, later pass.
+ */
+function evaluateEventEligibility(laneId, rawEvent, buildNowMs) {
+  const routeRelevant = classifyRouteRelevance(rawEvent);
+  const routeImpact = classifyRouteImpact(laneId, rawEvent);
+  const isHealthAlert = classifyHealthAlert(rawEvent);
+  const lastSourceRefreshAt = deriveLastSourceRefreshAt(rawEvent);
+  const freshnessState = deriveFreshnessState(laneId, rawEvent, lastSourceRefreshAt, buildNowMs);
+
+  if (isHealthAlert && !healthEventCausesRouteClosure(rawEvent)) {
+    return { eligible: false, reason: "health_alert_excluded", routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState };
+  }
+
+  if (laneId === "05_FLOOD_CONDITIONS") {
+    if (!isMajorFloodCategory(rawEvent.official_category)) {
+      const reason = normalizeFloodCategory(rawEvent.official_category) === "unknown"
+        ? "flood_no_active_category"
+        : "flood_below_major";
+      return { eligible: false, reason, routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState };
+    }
+  }
+
+  if (laneId === "07_GOVERNMENT_SAFETY_ALERTS" && !isHealthAlert) {
+    if (!governmentAlertPassesSeverityRule(rawEvent)) {
+      return { eligible: false, reason: "low_severity_government_alert", routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState };
+    }
+  }
+
+  if (!routeRelevant) {
+    const reason = mapLocationLabel(rawEvent) || mapRouteSegmentId(rawEvent) ? "off_route" : "unknown_or_unusable_location";
+    return { eligible: false, reason, routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState };
+  }
+
+  if (!routeImpact) {
+    return { eligible: false, reason: "no_route_impact", routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState };
+  }
+
+  if (freshnessState === "expired") {
+    return { eligible: false, reason: "expired", routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState };
+  }
+  if (freshnessState === "stale") {
+    return { eligible: false, reason: "stale_short_lived_alert", routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState };
+  }
+
+  return { eligible: true, reason: "eligible", routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState };
+}
+
+// ---------------------------------------------------------------------------
+// Noise-reduction policy: duplicate detection and merging
+// ---------------------------------------------------------------------------
+
+function normalizeForGrouping(text) {
+  if (typeof text !== "string" || text.length === 0) return "";
+  let normalized = text.toLowerCase();
+  for (const [pattern, replacement] of ALIAS_SUBSTITUTIONS) {
+    normalized = normalized.replace(pattern, replacement);
+  }
+  return normalized
+    .replace(/\b\d{1,2}\/\d{1,2}\/\d{2,4}\b/g, "") // repeated date text
+    .replace(/[^a-z0-9\s]/g, " ") // punctuation
+    .replace(/\s+/g, " ") // excess spaces
+    .trim();
+}
+
+function eventClassBucket(laneId, rawEvent) {
+  if (laneId === "05_FLOOD_CONDITIONS") return "flood_observation";
+  if (laneId === "01_ROUTE_CONDITIONS" || rawEvent.event_type === "trail_closure") return "closure";
+  if (laneId === "07_GOVERNMENT_SAFETY_ALERTS") return "gov_alert";
+  return laneId;
+}
+
+/**
+ * Groups candidates that describe the same basic hazard or closure: same
+ * event class, same route segment (or, failing that, the same normalized/
+ * alias-substituted location or title text), favoring merge over split.
+ * Deliberately excludes lane ID from the key so the same real-world event
+ * reported by two different agencies still merges (buildspec duplicate
+ * policy, test 36). Different route segments always produce different
+ * keys, so unrelated events on different route parts never collide.
+ */
+function computeDuplicateGroupKey(laneId, rawEvent) {
+  const bucket = eventClassBucket(laneId, rawEvent);
+  const segmentKey =
+    mapRouteSegmentId(rawEvent) ||
+    normalizeForGrouping(mapLocationLabel(rawEvent)) ||
+    normalizeForGrouping(firstDefined(rawEvent.title, rawEvent.summary) ?? "");
+  if (!segmentKey) return null;
+  return `${bucket}::${segmentKey}`;
+}
+
+const SEVERITY_RANK = { extreme: 5, severe: 4, high: 3, moderate: 2, advisory: 2, minor: 1, info: 1, unknown: 0 };
+
+function severityRank(rawEvent) {
+  const raw = (rawEvent.cap_severity ?? rawEvent.severity ?? "unknown").toString().trim().toLowerCase();
+  return SEVERITY_RANK[raw] ?? 0;
+}
+
+/**
+ * Picks one representative per duplicate group (newest valid refresh time,
+ * tie-broken by highest severity, then clearest/longest title), and
+ * collects every member's source URL into a short, de-duplicated list.
+ * Every non-representative member is suppressed with `duplicate_merged`.
+ */
+function mergeDuplicateGroup(members) {
+  const sorted = [...members].sort((a, b) => {
+    const refreshDiff = (parseTimeMs(b.decision.lastSourceRefreshAt) ?? -Infinity) - (parseTimeMs(a.decision.lastSourceRefreshAt) ?? -Infinity);
+    if (refreshDiff !== 0) return refreshDiff;
+    const severityDiff = severityRank(b.rawEvent) - severityRank(a.rawEvent);
+    if (severityDiff !== 0) return severityDiff;
+    const titleA = (firstDefined(a.rawEvent.title, a.rawEvent.summary) ?? "").length;
+    const titleB = (firstDefined(b.rawEvent.title, b.rawEvent.summary) ?? "").length;
+    return titleB - titleA;
+  });
+
+  const representative = sorted[0];
+  const sourceUrls = [
+    ...new Set(
+      sorted
+        .map((m) => m.rawEvent.provenance?.source_url)
+        .filter((url) => typeof url === "string" && url.length > 0),
+    ),
+  ];
+
+  return { representative, sourceUrls, suppressed: sorted.slice(1) };
+}
+
+function buildRouteEventFeature(laneId, laneLabel, rawEvent, laneIsStale, laneUsedLastKnownGood, geometry, decision, mergedSourceUrls, duplicateGroupKey) {
   const id = rawEvent.event_id;
   if (typeof id !== "string" || id.length === 0) {
     fail(`Lane ${laneId} has an event with no event_id — cannot publish it`);
   }
 
+  const primarySourceUrl = firstDefined(rawEvent.provenance?.source_url);
+
   return {
     type: "Feature",
     id,
-    geometry: mapEventGeometry(rawEvent, gaps, id),
+    geometry,
     properties: {
       id,
       laneId,
@@ -199,18 +580,25 @@ function buildRouteEventFeature(laneId, laneLabel, rawEvent, laneIsStale, laneUs
       effectiveFrom: firstDefined(rawEvent.effective_start, rawEvent.effective_at, rawEvent.observed_at),
       effectiveUntil: firstDefined(rawEvent.effective_end, rawEvent.expires_at, rawEvent.effective_until),
       sourceName: firstDefined(rawEvent.provenance?.source_name),
-      sourceUrl: firstDefined(rawEvent.provenance?.source_url),
+      sourceUrl: primarySourceUrl,
+      mergedSourceUrls: mergedSourceUrls && mergedSourceUrls.length > 1 ? mergedSourceUrls : null,
       confidence: firstDefined(rawEvent.route_relevance?.confidence),
       isLastKnownGood: laneUsedLastKnownGood === true,
       isStale: laneIsStale === true,
+      presentationEligible: decision.eligible,
+      presentationReason: decision.reason,
+      routeRelevant: decision.routeRelevant,
+      routeImpact: decision.routeImpact,
+      duplicateGroupKey,
+      lastSourceRefreshAt: decision.lastSourceRefreshAt,
     },
   };
 }
 
-function run(snapshotPath, outputDir) {
+function run(snapshotPath, outputDir, auditDir) {
   if (!snapshotPath || !outputDir) {
     throw new BuildFailure(
-      "usage: node scripts/build-public-package-snapshot.mjs <real-workflow08-snapshot-path> <output-dir>",
+      "usage: node scripts/build-public-package-snapshot.mjs <real-workflow08-snapshot-path> <output-dir> [audit-dir]",
     );
   }
   if (!existsSync(snapshotPath)) {
@@ -230,12 +618,14 @@ function run(snapshotPath, outputDir) {
   if (typeof releaseId !== "string" || typeof assembledAt !== "string") {
     fail("Snapshot is missing run_id or generated_at — cannot establish a shared release ID");
   }
+  const buildNowMs = parseTimeMs(assembledAt) ?? Date.now();
 
   const gaps = [];
   const laneSummaries = [];
   const systemHealthLanes = [];
   const laneRunIds = {};
-  const eventFeatures = [];
+  // Every raw event, individually judged, before duplicate merging.
+  const candidates = [];
 
   for (const laneId of CANONICAL_LANE_ORDER) {
     const lane = snapshot.lanes?.[laneId];
@@ -273,17 +663,98 @@ function run(snapshotPath, outputDir) {
     });
 
     for (const rawEvent of events) {
-      eventFeatures.push(
-        buildRouteEventFeature(
-          laneId,
-          laneLabel,
-          rawEvent,
-          freshnessState === "stale",
-          usingLastKnownGood,
-          gaps,
-        ),
-      );
+      const decision = evaluateEventEligibility(laneId, rawEvent, buildNowMs);
+      candidates.push({
+        laneId,
+        laneLabel,
+        rawEvent,
+        laneIsStale: freshnessState === "stale",
+        laneUsedLastKnownGood: usingLastKnownGood,
+        decision,
+      });
     }
+  }
+
+  // Duplicate merging: only among candidates that individually passed every
+  // other check. A suppressed duplicate is never allowed to look like it
+  // failed some other rule — its reason is specifically duplicate_merged.
+  const groups = new Map();
+  const ungroupedEligible = [];
+  for (const candidate of candidates) {
+    if (!candidate.decision.eligible) continue;
+    const key = computeDuplicateGroupKey(candidate.laneId, candidate.rawEvent);
+    if (key === null) {
+      ungroupedEligible.push(candidate);
+      continue;
+    }
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(candidate);
+  }
+
+  const finalCandidates = [];
+  const duplicatesMerged = [];
+
+  for (const candidate of ungroupedEligible) {
+    finalCandidates.push({ candidate, mergedSourceUrls: [], duplicateGroupKey: null });
+  }
+
+  for (const [key, members] of groups) {
+    if (members.length === 1) {
+      finalCandidates.push({ candidate: members[0], mergedSourceUrls: [], duplicateGroupKey: null });
+      continue;
+    }
+    const { representative, sourceUrls, suppressed } = mergeDuplicateGroup(members);
+    finalCandidates.push({ candidate: representative, mergedSourceUrls: sourceUrls, duplicateGroupKey: key });
+    for (const member of suppressed) {
+      duplicatesMerged.push(member);
+      candidates.splice(candidates.indexOf(member), 1, {
+        ...member,
+        decision: { ...member.decision, eligible: false, reason: "duplicate_merged" },
+      });
+    }
+  }
+
+  const eventFeatures = [];
+  const auditRecords = [];
+
+  for (const candidate of candidates) {
+    // Re-fetch the (possibly duplicate-suppressed) decision recorded above.
+    const isFinalWinner = finalCandidates.some((f) => f.candidate.rawEvent === candidate.rawEvent);
+    const finalEntry = finalCandidates.find((f) => f.candidate.rawEvent === candidate.rawEvent);
+    const eligible = candidate.decision.eligible && isFinalWinner;
+
+    auditRecords.push({
+      eventId: candidate.rawEvent.event_id ?? null,
+      laneId: candidate.laneId,
+      presentationEligible: eligible,
+      presentationReason: candidate.decision.reason,
+      routeRelevant: candidate.decision.routeRelevant,
+      routeImpact: candidate.decision.routeImpact,
+      freshnessState: candidate.decision.freshnessState,
+      duplicateGroupKey: finalEntry?.duplicateGroupKey ?? null,
+    });
+
+    // Geometry-mapping gaps are a data-quality diagnostic, independent of
+    // public-display eligibility — log them for every candidate, not just
+    // the ones that end up eligible, so a hidden event's raw geometry
+    // issues stay visible in the build log too.
+    const geometry = mapEventGeometry(candidate.rawEvent, gaps, candidate.rawEvent.event_id ?? "(unknown id)");
+
+    if (!eligible) continue;
+
+    eventFeatures.push(
+      buildRouteEventFeature(
+        candidate.laneId,
+        candidate.laneLabel,
+        candidate.rawEvent,
+        candidate.laneIsStale,
+        candidate.laneUsedLastKnownGood,
+        geometry,
+        candidate.decision,
+        finalEntry?.mergedSourceUrls ?? [],
+        finalEntry?.duplicateGroupKey ?? null,
+      ),
+    );
   }
 
   const failedLaneIds = systemHealthLanes
@@ -345,15 +816,40 @@ function run(snapshotPath, outputDir) {
   write("system-health.json", systemHealth);
   write("release-manifest.json", releaseManifest);
 
-  console.log(`PASS: wrote 4 public package files to ${outputDir} (release ${releaseId})`);
+  // Audit trail: every candidate event's eligibility decision, including
+  // hidden ones and their machine-readable reason. Never written under
+  // public/ — this is repo-tracked audit evidence only, never served.
+  if (auditDir) {
+    mkdirSync(auditDir, { recursive: true });
+    writeFileSync(
+      `${auditDir}/exclusions-${releaseId}.json`,
+      `${JSON.stringify({ releaseId, assembledAt, totalCandidates: candidates.length, records: auditRecords }, null, 2)}\n`,
+      "utf8",
+    );
+  }
+
+  const excludedCount = auditRecords.filter((r) => !r.presentationEligible).length;
+  console.log(
+    `PASS: wrote 4 public package files to ${outputDir} (release ${releaseId}) — ` +
+      `${eventFeatures.length} of ${candidates.length} candidate event(s) eligible for public display, ` +
+      `${excludedCount} excluded, ${duplicatesMerged.length} duplicate(s) merged`,
+  );
   if (gaps.length > 0) {
     console.log(`NOTE: ${gaps.length} mapping gap(s) logged (buildspec 11.4):`);
     for (const gap of gaps) console.log(`  - ${gap}`);
   }
+  if (excludedCount > 0) {
+    console.log(`NOTE: ${excludedCount} event(s) excluded from public display:`);
+    for (const record of auditRecords) {
+      if (!record.presentationEligible) {
+        console.log(`  - ${record.eventId} (${record.laneId}): ${record.presentationReason}`);
+      }
+    }
+  }
 }
 
 try {
-  run(process.argv[2], process.argv[3]);
+  run(process.argv[2], process.argv[3], process.argv[4]);
 } catch (err) {
   if (err instanceof BuildFailure) {
     process.stderr.write(`FAIL: ${err.message}\n`);

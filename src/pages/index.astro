@@ -13,7 +13,6 @@ import SiteHeader from "../components/site/SiteHeader.astro";
 import SiteFooter from "../components/site/SiteFooter.astro";
 import DashboardHeading from "../components/route-status/DashboardHeading.astro";
 import FreshnessNotice from "../components/route-status/FreshnessNotice.astro";
-import CurrentRouteState from "../components/route-status/CurrentRouteState.astro";
 import MonitoringSources from "../components/route-status/MonitoringSources.astro";
 import RouteImpacts from "../components/route-status/RouteImpacts.astro";
 import CurrentRouteAlerts from "../components/route-status/CurrentRouteAlerts.astro";
@@ -63,7 +62,7 @@ const hasSourceFailures = (systemHealth?.failedLaneIds.length ?? 0) > 0;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>UW–Issy Route Status | BikeTourFrance.net</title>
+    <title>UW-Issaquah BG/SRT/ELST Status | BikeTourFrance.net</title>
     <meta
       name="description"
       content="Current conditions on the University of Washington to Issaquah cycling route: weather, air quality, wildfire, flood, trail infrastructure, and safety alerts."
@@ -79,8 +78,8 @@ const hasSourceFailures = (systemHealth?.failedLaneIds.length ?? 0) > 0;
           <FreshnessNotice summary={summary} systemHealth={packageAvailable ? systemHealth : null} />
         </div>
 
-        <div class="item-route-state">
-          <CurrentRouteState summary={summary} />
+        <div class="item-monitoring-sources">
+          <MonitoringSources laneSummaries={summary.laneSummaries} systemHealth={systemHealth} />
         </div>
 
         <section class="panel item-route-map" aria-labelledby="route-map-heading">
@@ -88,16 +87,12 @@ const hasSourceFailures = (systemHealth?.failedLaneIds.length ?? 0) > 0;
           <RouteMap client:only="svelte" routeDisplayTier={summary.displayTier} />
         </section>
 
-        <div class="item-route-alerts">
-          <CurrentRouteAlerts events={events} hasSourceFailures={hasSourceFailures} />
-        </div>
-
-        <div class="item-monitoring-sources">
-          <MonitoringSources laneSummaries={summary.laneSummaries} systemHealth={systemHealth} />
-        </div>
-
         <div class="item-route-impacts">
           <RouteImpacts routeImpacts={summary.routeImpacts} />
+        </div>
+
+        <div class="item-route-alerts">
+          <CurrentRouteAlerts events={events} hasSourceFailures={hasSourceFailures} />
         </div>
 
         <div class="item-system-health">
