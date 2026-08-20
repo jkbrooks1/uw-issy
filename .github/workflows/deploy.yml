@@ -17,7 +17,7 @@ env:
   PAGES_PROJECT_NAME: uw-issy
   CANONICAL_GPX: data/route/UnivWA-Issaquah.gpx
   ROUTE_GEOJSON: public/routes/UnivWA-Issaquah.geojson
-  EVIDENCE_SNAPSHOT: data/connectors/evidence/workflow08-status-snapshot-20260802T162329Z.json
+  EVIDENCE_SNAPSHOT: data/connectors/evidence/workflow20-status-latest.json
   PUBLIC_DATA_DIR: public/data
 
 jobs:
@@ -55,7 +55,7 @@ jobs:
         run: node scripts/validate-route-geojson.mjs "$ROUTE_GEOJSON"
 
       # Build the four-file public monitoring package from the approved
-      # Workflow 08 evidence input (buildspec 37.9). This step also covers
+      # Lane 20 current evidence input (buildspec 37.9). This step also covers
       # steps 7-10 by construction, then 7-10 below re-validate the result.
       - name: Build public monitoring package
         run: node scripts/build-public-package-snapshot.mjs "$EVIDENCE_SNAPSHOT" "$PUBLIC_DATA_DIR"
