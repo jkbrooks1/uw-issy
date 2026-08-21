@@ -1,0 +1,1537 @@
+{
+  "name": "v02.UWI_LANE05",
+  "nodes": [
+    {
+      "id": "manual_trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        220,
+        120
+      ],
+      "parameters": {},
+      "typeVersion": 2
+    },
+    {
+      "id": "schedule_trigger",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "notes": "Every 24 hours. (Migrated from deprecated n8n-nodes-base.cron, whose stored parameter shape did not match this n8n version's actual Cron node schema and would not have fired.)",
+      "position": [
+        220,
+        240
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 3,13 * * *"
+            }
+          ]
+        }
+      },
+      "typeVersion": 1.2
+    },
+    {
+      "id": "init_metadata",
+      "name": "Initialize Run Metadata",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        500,
+        180
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst now = new Date();\nconst runStamp = now.toISOString().replace(/[-:]/g, '').replace(/\\.\\d{3}Z$/, 'Z');\nconst runId = '05_FLOOD_CONDITIONS-' + runStamp + '-001';\nconst routeSections = [\n  {\n    \"route_section_id\": \"01_uw_u_district\",\n    \"route_section_name\": \"UW / U-District\"\n  },\n  {\n    \"route_section_id\": \"02_burke_gilman_seattle\",\n    \"route_section_name\": \"Burke-Gilman - Seattle\"\n  },\n  {\n    \"route_section_id\": \"03_burke_gilman_north_lake_wa_kenmore\",\n    \"route_section_name\": \"Burke-Gilman - north Lake WA/Kenmore\"\n  },\n  {\n    \"route_section_id\": \"04_burke_gilman_connector_bothell\",\n    \"route_section_name\": \"Burke-Gilman/connector - Bothell\"\n  },\n  {\n    \"route_section_id\": \"05_sammamish_river_trail_bothell_woodinville\",\n    \"route_section_name\": \"Sammamish River Trail - Bothell/Woodinville\"\n  },\n  {\n    \"route_section_id\": \"06_sammamish_river_trail_redmond\",\n    \"route_section_name\": \"Sammamish River Trail - Redmond\"\n  },\n  {\n    \"route_section_id\": \"07_marymoor_park\",\n    \"route_section_name\": \"Marymoor Park\"\n  },\n  {\n    \"route_section_id\": \"08_east_lake_sammamish_trail_redmond\",\n    \"route_section_name\": \"East Lake Sammamish Trail - Redmond\"\n  },\n  {\n    \"route_section_id\": \"09_east_lake_sammamish_trail_sammamish\",\n    \"route_section_name\": \"East Lake Sammamish Trail - Sammamish\"\n  },\n  {\n    \"route_section_id\": \"10_issaquah_approach_terminus\",\n    \"route_section_name\": \"Issaquah approach / terminus\"\n  }\n];\nconst sourceConfigs = {\n  \"USGS-01\": {\n    \"source_id\": \"05_FLOOD_CONDITIONS:USGS-01\",\n    \"source_name\": \"USGS IV service - Issaquah Creek near mouth near Issaquah (12121600)\",\n    \"source_url\": \"https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12121600&parameterCd=00060,00065\",\n    \"stale_after_minutes\": 30,\n    \"route_section_ids\": [\n      \"10_issaquah_approach_terminus\"\n    ],\n    \"route_method\": \"point_to_route_distance\",\n    \"route_distance_km\": 0.173,\n    \"route_reason\": \"Gauge lies at the route terminus and directly monitors Issaquah Creek near the GPX end point.\",\n    \"category\": \"usgs\"\n  },\n  \"USGS-02\": {\n    \"source_id\": \"05_FLOOD_CONDITIONS:USGS-02\",\n    \"source_name\": \"USGS IV service - Issaquah Creek near Hobart (12120600)\",\n    \"source_url\": \"https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12120600&parameterCd=00060,00065\",\n    \"stale_after_minutes\": 30,\n    \"route_section_ids\": [\n      \"10_issaquah_approach_terminus\"\n    ],\n    \"route_method\": \"upstream_relationship\",\n    \"route_distance_km\": 10.934,\n    \"route_reason\": \"Approved upstream exception because Issaquah uses Hobart for local flood lead-time guidance.\",\n    \"category\": \"usgs\"\n  },\n  \"USGS-03\": {\n    \"source_id\": \"05_FLOOD_CONDITIONS:USGS-03\",\n    \"source_name\": \"USGS IV service - Sammamish Lake near Redmond (12122000)\",\n    \"source_url\": \"https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12122000\",\n    \"stale_after_minutes\": 30,\n    \"route_section_ids\": [\n      \"07_marymoor_park\",\n      \"08_east_lake_sammamish_trail_redmond\",\n      \"09_east_lake_sammamish_trail_sammamish\"\n    ],\n    \"route_method\": \"point_to_route_distance\",\n    \"route_distance_km\": 2.2,\n    \"route_reason\": \"Lake Sammamish shoreline context only; not a stand-alone flood trigger.\",\n    \"category\": \"usgs_lake\"\n  },\n  \"NWPS-01\": {\n    \"source_id\": \"05_FLOOD_CONDITIONS:NWPS-01\",\n    \"source_name\": \"NOAA National Water Prediction Service - Issaquah Creek near Issaquah (ISSW1)\",\n    \"source_url\": \"https://api.water.noaa.gov/nwps/v1/gauges/ISSW1\",\n    \"stale_after_minutes\": 30,\n    \"route_section_ids\": [\n      \"10_issaquah_approach_terminus\"\n    ],\n    \"route_method\": \"point_to_route_distance\",\n    \"route_distance_km\": 0.173,\n    \"route_reason\": \"Official NOAA flood-category and forecast source for the route terminus.\",\n    \"category\": \"nwps\"\n  },\n  \"NWPS-02\": {\n    \"source_id\": \"05_FLOOD_CONDITIONS:NWPS-02\",\n    \"source_name\": \"NOAA National Water Prediction Service - Issaquah Creek near Hobart (ISQW1)\",\n    \"source_url\": \"https://api.water.noaa.gov/nwps/v1/gauges/ISQW1\",\n    \"stale_after_minutes\": 30,\n    \"route_section_ids\": [\n      \"10_issaquah_approach_terminus\"\n    ],\n    \"route_method\": \"upstream_relationship\",\n    \"route_distance_km\": 10.934,\n    \"route_reason\": \"NOAA-form corroboration for the upstream Hobart point and local lead-time interpretation.\",\n    \"category\": \"nwps\"\n  },\n  \"NWS-01\": {\n    \"source_id\": \"05_FLOOD_CONDITIONS:NWS-01\",\n    \"source_name\": \"National Weather Service API - flood and flash-flood alerts\",\n    \"source_url\": \"https://api.weather.gov/alerts/active?point=47.6505,-122.3046\",\n    \"stale_after_minutes\": 15,\n    \"route_section_ids\": [\n      \"01_uw_u_district\",\n      \"02_burke_gilman_seattle\",\n      \"03_burke_gilman_north_lake_wa_kenmore\",\n      \"04_burke_gilman_connector_bothell\",\n      \"05_sammamish_river_trail_bothell_woodinville\",\n      \"06_sammamish_river_trail_redmond\",\n      \"07_marymoor_park\",\n      \"08_east_lake_sammamish_trail_redmond\",\n      \"09_east_lake_sammamish_trail_sammamish\",\n      \"10_issaquah_approach_terminus\"\n    ],\n    \"route_method\": \"polygon_intersection\",\n    \"route_distance_km\": 0,\n    \"route_reason\": \"Federal flood and flash-flood alerts are route-wide when they overlap the corridor.\",\n    \"category\": \"nws\"\n  },\n  \"ISS-01\": {\n    \"source_id\": \"05_FLOOD_CONDITIONS:ISS-01\",\n    \"source_name\": \"City of Issaquah Flooding page\",\n    \"source_url\": \"https://www.issaquahwa.gov/flood\",\n    \"stale_after_minutes\": 1440,\n    \"route_section_ids\": [\n      \"10_issaquah_approach_terminus\"\n    ],\n    \"route_method\": \"named_facility_match\",\n    \"route_distance_km\": 0,\n    \"route_reason\": \"Official local flood-phase semantics for the Issaquah end of the corridor.\",\n    \"category\": \"issaquah\"\n  },\n  \"REDM-01\": {\n    \"source_id\": \"05_FLOOD_CONDITIONS:REDM-01\",\n    \"source_name\": \"City of Redmond Traffic Alerts ArcGIS service\",\n    \"source_url\": \"https://gis.redmond.gov/arcgis/rest/services/Traffic/Alerts/FeatureServer/1/query?where=1%3D1&outFields=AlertID,AlertName,LocationDescription,AlertStartDate,AlertEndDate,TrafficImpactDescription,AlertStatus,GovDeliverySubject&returnGeometry=true&f=json\",\n    \"stale_after_minutes\": 60,\n    \"route_section_ids\": [\n      \"06_sammamish_river_trail_redmond\",\n      \"07_marymoor_park\",\n      \"08_east_lake_sammamish_trail_redmond\"\n    ],\n    \"route_method\": \"bbox_prefilter_then_intersection\",\n    \"route_distance_km\": 0.15,\n    \"route_reason\": \"Redmond closure supplement around West Lake Sammamish Parkway and NE 24th corridor.\",\n    \"category\": \"arcgis_redmond\"\n  },\n  \"KC-ROAD-01\": {\n    \"source_id\": \"05_FLOOD_CONDITIONS:KC-ROAD-01\",\n    \"source_name\": \"King County RoadAlerts - KingCo_Road_Alerts\",\n    \"source_url\": \"https://gismaps.kingcounty.gov/arcgis/rest/services/RoadAlerts/KingCo_Road_Alerts/MapServer/0/query?where=1%3D1&outFields=ClosureName,LocationLimits,Community,ClosureReason,ClosureState,PlannedClosedDate,PlannedOpenDate&returnGeometry=true&f=json\",\n    \"stale_after_minutes\": 60,\n    \"route_section_ids\": [\n      \"05_sammamish_river_trail_bothell_woodinville\",\n      \"06_sammamish_river_trail_redmond\",\n      \"07_marymoor_park\",\n      \"08_east_lake_sammamish_trail_redmond\",\n      \"09_east_lake_sammamish_trail_sammamish\",\n      \"10_issaquah_approach_terminus\"\n    ],\n    \"route_method\": \"bbox_prefilter_then_intersection\",\n    \"route_distance_km\": 0.2,\n    \"route_reason\": \"Low-probability county-road closure supplement, kept as defense in depth.\",\n    \"category\": \"arcgis_king_county\"\n  },\n  \"WSDOT-01\": {\n    \"source_id\": \"05_FLOOD_CONDITIONS:WSDOT-01\",\n    \"source_name\": \"WSDOT Traveler Information API - Highway Alerts\",\n    \"source_url\": null,\n    \"stale_after_minutes\": 60,\n    \"route_section_ids\": [\n      \"03_burke_gilman_north_lake_wa_kenmore\",\n      \"04_burke_gilman_connector_bothell\",\n      \"05_sammamish_river_trail_bothell_woodinville\",\n      \"06_sammamish_river_trail_redmond\",\n      \"07_marymoor_park\",\n      \"08_east_lake_sammamish_trail_redmond\",\n      \"09_east_lake_sammamish_trail_sammamish\"\n    ],\n    \"route_method\": \"roadway_match\",\n    \"route_distance_km\": 0,\n    \"route_reason\": \"State highway crossing and detour supplement only.\",\n    \"category\": \"wsdot\"\n  }\n};\nreturn [{\n  json: {\n    schema_version: '1.0.0',\n    connector_id: '05_FLOOD_CONDITIONS',\n    connector_name: 'UW-Issaquah Flood Conditions Connector',\n    connector_version: 'v0002',\n    lane: '05_FLOOD_CONDITIONS',\n    workflow_name: 'v02.UWI_LANE05',\n    run_id: runId,\n    run_stamp: runStamp,\n    generated_at: now.toISOString(),\n    published_at: null,\n    output_root: '/files/uw-issy-connectors',\n    canonical_gpx: 'data/route/UnivWA-Issaquah.gpx',\n    manifest_ref: {\n      manifest_id: '05_FLOOD_CONDITIONS-v0002',\n      schema_version: '1.0.0'\n    },\n    route_sections: routeSections,\n    source_configs: sourceConfigs,\n    freshness_policy: {\n      usgs_minutes: 30,\n      nwps_minutes: 30,\n      nws_minutes: 15,\n      closure_supplement_minutes: 60,\n      iss_minutes: 24 * 60\n    },\n    route_filter_policy: {\n      named_assets: ['Burke-Gilman Trail', 'Sammamish River Trail', 'Marymoor Park', 'East Lake Sammamish Trail', 'Lake Sammamish State Park'],\n      geometry_requires_line_buffer_intersection: true,\n      text_sources_require_relevant_flood_language: true\n    },\n    coverage_limitations: [\n      'No verified direct live Sammamish River gauge is in the approved runtime set.'\n    ],\n    runtime_flags: {\n      wsdot_access_code_present: false\n    }\n  }\n}];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "read_lkg",
+      "name": "Read Last Known Good",
+      "type": "n8n-nodes-base.readWriteFile",
+      "onError": "continueRegularOutput",
+      "position": [
+        760,
+        180
+      ],
+      "parameters": {
+        "options": {},
+        "operation": "read",
+        "fileSelector": "={{ $('Initialize Run Metadata').first().json.output_root }}/last_known_good/05_FLOOD_CONDITIONS/current.json"
+      },
+      "typeVersion": 1,
+      "alwaysOutputData": true
+    },
+    {
+      "id": "parse_lkg",
+      "name": "Parse Last Known Good",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1010,
+        180
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst first = $input.first();\nif (!first || first.error || (first.json && first.json.error) || !first.binary || !first.binary.data) {\n  return [{ json: { bySource: {} } }];\n}\nlet parsed;\ntry {\n  const buffer = await this.helpers.getBinaryDataBuffer(0, 'data');\n  parsed = JSON.parse(buffer.toString('utf8'));\n} catch (error) {\n  return [{ json: { bySource: {} } }];\n}\nif (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.source_health) || !Array.isArray(parsed.events)) {\n  return [{ json: { bySource: {} } }];\n}\nconst bySource = {};\nfor (const entry of parsed.source_health) {\n  if (!entry || typeof entry !== 'object' || !entry.source_id) continue;\n  if (!['ok', 'empty_but_valid', 'using_last_known_good'].includes(entry.status)) continue;\n  bySource[entry.source_id] = {\n    source_health: entry,\n    events: Array.isArray(parsed.events) ? parsed.events.filter(event => event && event.source_id === entry.source_id) : [],\n    observations: Array.isArray(parsed.observations) ? parsed.observations.filter(obs => obs && obs.source_id === entry.source_id) : [],\n    route_sections: Array.isArray(parsed.route_sections) ? parsed.route_sections.filter(section => Array.isArray(section.event_ids) ? section.event_ids.some(eventId => (parsed.events || []).some(event => event && event.event_id === eventId && event.source_id === entry.source_id)) : false) : []\n  };\n}\nreturn [{ json: { bySource } }];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "fetch_USGS-01",
+      "name": "Fetch USGS-01 Gauge",
+      "type": "n8n-nodes-base.httpRequest",
+      "notes": "USGS IV service - Issaquah Creek near mouth near Issaquah (12121600)",
+      "onError": "continueRegularOutput",
+      "position": [
+        220,
+        420
+      ],
+      "parameters": {
+        "url": "=https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12121600&parameterCd=00060,00065",
+        "method": "GET",
+        "options": {
+          "timeout": 30000
+        },
+        "responseFormat": "json"
+      },
+      "typeVersion": 4.2
+    },
+    {
+      "id": "land_USGS-01",
+      "name": "Land USGS-01 Raw Payload",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        500,
+        420
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch USGS-01 Gauge').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyText = typeof body === 'string' ? body : JSON.stringify(body ?? null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyText);\nconst filePath = run.output_root + '/raw/05_FLOOD_CONDITIONS/landings/USGS-01_landing_' + run.run_stamp + '.json';\nconst landing = {\n  schema_version: '1.0.0',\n  connector_id: run.connector_id,\n  source_id: '05_FLOOD_CONDITIONS:USGS-01',\n  source_name: 'USGS IV service - Issaquah Creek near mouth near Issaquah (12121600)',\n  source_url: \"https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12121600&parameterCd=00060,00065\",\n  retrieved_at: run.generated_at,\n  http_status: statusCode,\n  retrieval_method: \"usgs\",\n  content_hash: contentHash,\n  body_length: bodyText.length,\n  fetch_status: fetch.error ? 'failed' : 'ok',\n  body: body\n};\nif (fetch.error) landing.error_message = String(fetch.error.message || fetch.error);\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json: { file_path: filePath, source_id: landing.source_id, source_name: landing.source_name, content_hash: contentHash, retrieved_at: run.generated_at }, binary: { data: binary } }];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "write_USGS-01",
+      "name": "Write USGS-01 Raw Landing",
+      "type": "n8n-nodes-base.readWriteFile",
+      "position": [
+        760,
+        420
+      ],
+      "parameters": {
+        "options": {},
+        "fileName": "={{ $json.file_path }}",
+        "operation": "write",
+        "dataPropertyName": "data"
+      },
+      "typeVersion": 1
+    },
+    {
+      "id": "normalize_USGS-01",
+      "name": "Normalize USGS-01 Events",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1010,
+        420
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst safeJson = (value) => { try { return typeof value === 'string' ? JSON.parse(value) : value; } catch { return null; } };\nconst asArray = (value) => Array.isArray(value) ? value : (value === undefined || value === null ? [] : [value]);\nconst pickText = (...parts) => parts.filter(Boolean).map(value => typeof value === 'string' ? value : JSON.stringify(value)).join(' | ');\n\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch USGS-01 Gauge').first().json || {};\nconst landing = $('Land USGS-01 Raw Payload').first().json || {};\nconst raw = fetch.body !== undefined ? fetch.body : (landing.body !== undefined ? landing.body : fetch);\nconst rawText = typeof raw === 'string' ? raw : JSON.stringify(raw ?? null);\nconst rawObj = safeJson(rawText);\nconst lkg = ($('Parse Last Known Good').first().json.bySource || {})['05_FLOOD_CONDITIONS:USGS-01'];\nlet events = [];\nlet observations = [];\nlet warnings = [];\nlet errors = [];\nlet sourceHealth;\nlet lastObservationAt = run.generated_at;\nconst liveFailed = !!fetch.error;\nconst liveErrorMessage = liveFailed ? String(fetch.error.message || fetch.error) : '';\n\nif (!liveFailed) {\n  const timeSeries = Array.isArray(rawObj?.value?.timeSeries) ? rawObj.value.timeSeries : (Array.isArray(rawObj?.timeSeries) ? rawObj.timeSeries : []);\n  if (!timeSeries.length) {\n    errors.push('No USGS timeSeries objects found.');\n  } else {\n    const chosenSeries = timeSeries.find(series => {\n      const seriesText = JSON.stringify(series || {});\n      return /00060|00065/.test(seriesText);\n    }) || timeSeries[0];\n    const flattenedValues = [];\n    for (const bucket of asArray(chosenSeries?.values)) {\n      for (const point of asArray(bucket?.value)) {\n        flattenedValues.push(point);\n      }\n    }\n    const latest = flattenedValues[flattenedValues.length - 1] || {};\n    const observedAt = latest.dateTime || chosenSeries?.values?.[0]?.value?.slice?.(-1)?.[0]?.dateTime || run.generated_at;\n    const rawValue = latest.value ?? latest['#text'] ?? latest.stage ?? null;\n    const metricValue = rawValue === null || rawValue === undefined || rawValue === '' ? null : Number(rawValue);\n    const hasNumeric = Number.isFinite(metricValue);\n    const unit = \"mixed\";\n    const routeImpact = \"elevated_water\";\n    const routeSeverity = \"advisory\";\n    const title = \"Issaquah Creek gauge observation\";\n    const summary = hasNumeric ? pickText('USGS observation', 'value=' + metricValue, 'unit=' + unit, observedAt) : pickText('USGS observation', 'no numeric value parsed', observedAt);\n    const payloadHash = 'hash_' + hashString(rawText);\n    const event = {\n      event_id: '05_FLOOD_CONDITIONS:USGS-01:gauge-observation:' + routeSeverity + ':monitoring',\n      event_type: 'gauge_observation',\n      status: 'monitoring',\n      severity: routeSeverity,\n      route_impact: routeImpact,\n      title: title,\n      summary: summary,\n      source_id: '05_FLOOD_CONDITIONS:USGS-01',\n      source_event_ref: chosenSeries?.variable?.variableCode?.[0]?.value || chosenSeries?.variable?.variableCode || null,\n      observed_at: observedAt,\n      effective_until: null,\n      official_category: chosenSeries?.name || null,\n      metric: {\n        metric_name: \"stage_or_flow\",\n        metric_value: hasNumeric ? metricValue : null,\n        unit: unit\n      },\n      location: {\n        name: \"Issaquah Creek near Issaquah\",\n        latitude: 47.5525,\n        longitude: -122.0467,\n        route_section_ids: [\"10_issaquah_approach_terminus\"]\n      },\n      route_relevance: {\n        method: \"point_to_route_distance\",\n        distance_km: 0.173,\n        confidence: \"high\",\n        reason: \"Gauge lies at the route terminus and directly monitors Issaquah Creek near the GPX end point.\"\n      },\n      provenance: {\n        source_url: \"https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12121600&parameterCd=00060,00065\",\n        retrieved_at: run.generated_at,\n        source_record_hash: payloadHash\n      }\n    };\n    events.push(event);\n    if (false) {\n      observations.push({\n        observation_id: '05_FLOOD_CONDITIONS:USGS-01:context',\n        observation_type: 'derived_context',\n        title: \"Lake Sammamish shoreline context\",\n        summary: summary,\n        source_id: '05_FLOOD_CONDITIONS:USGS-01',\n        observed_at: observedAt,\n        route_section_ids: [\"10_issaquah_approach_terminus\"],\n        metric: event.metric,\n        notes: \"Context only; do not treat as a closure trigger by itself.\"\n      });\n    }\n    lastObservationAt = observedAt;\n  }\n}\n\nif (liveFailed) {\n  const lkgRetrievedAt = lkg && lkg.source_health && lkg.source_health.retrieved_at ? Date.parse(lkg.source_health.retrieved_at) : NaN;\n  const lkgStaleAfterMinutes = lkg && lkg.source_health && lkg.source_health.stale_after_minutes !== undefined ? lkg.source_health.stale_after_minutes : 30;\n  const lkgUsable = !!lkg && Number.isFinite(lkgRetrievedAt) && ((Date.now() - lkgRetrievedAt) / 60000) <= lkgStaleAfterMinutes;\n  if (lkgUsable) {\n    events = Array.isArray(lkg.events) ? lkg.events : [];\n    observations = Array.isArray(lkg.observations) ? lkg.observations : [];\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:USGS-01',\n      source_name: \"USGS IV service - Issaquah Creek near mouth near Issaquah (12121600)\",\n      status: 'using_last_known_good',\n      retrieved_at: lkg.source_health.retrieved_at,\n      stale_after_minutes: 30,\n      record_count: events.length + observations.length,\n      http_status: null,\n      last_observation_at: lkg.source_health.last_observation_at ?? lkg.source_health.retrieved_at,\n      warnings: [...(lkg.source_health.warnings || []), 'Live fetch failed; serving last-known-good data retrieved at ' + lkg.source_health.retrieved_at + '.'],\n      errors: [liveErrorMessage]\n    };\n  } else {\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:USGS-01',\n      source_name: \"USGS IV service - Issaquah Creek near mouth near Issaquah (12121600)\",\n      status: 'failed',\n      retrieved_at: run.generated_at,\n      stale_after_minutes: 30,\n      record_count: 0,\n      http_status: fetch.statusCode ?? fetch.status ?? null,\n      last_observation_at: run.generated_at,\n      warnings: ['Live fetch failed and no usable last-known-good snapshot was available.'],\n      errors: [liveErrorMessage]\n    };\n  }\n}\n\n\nif (!sourceHealth) {\n  sourceHealth = {\n    schema_version: '1.0.0',\n    connector_id: run.connector_id,\n    source_id: '05_FLOOD_CONDITIONS:USGS-01',\n    source_name: \"USGS IV service - Issaquah Creek near mouth near Issaquah (12121600)\",\n    status: events.length ? 'ok' : 'empty_but_valid',\n    retrieved_at: run.generated_at,\n    stale_after_minutes: 30,\n    record_count: events.length + observations.length,\n    http_status: fetch.statusCode ?? fetch.status ?? null,\n    last_observation_at: lastObservationAt,\n    warnings: warnings,\n    errors: errors\n  };\n}\n\nreturn [{\n  json: {\n    source_id: '05_FLOOD_CONDITIONS:USGS-01',\n    source_name: \"USGS IV service - Issaquah Creek near mouth near Issaquah (12121600)\",\n    source_health: sourceHealth,\n    events,\n    observations,\n    raw_landing_path: landing.file_path || null,\n    raw_content_hash: landing.content_hash || ('hash_' + hashString(rawText)),\n    warnings,\n    errors: sourceHealth.errors\n  }\n}];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "fetch_USGS-02",
+      "name": "Fetch USGS-02 Gauge",
+      "type": "n8n-nodes-base.httpRequest",
+      "notes": "USGS IV service - Issaquah Creek near Hobart (12120600)",
+      "onError": "continueRegularOutput",
+      "position": [
+        220,
+        590
+      ],
+      "parameters": {
+        "url": "=https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12120600&parameterCd=00060,00065",
+        "method": "GET",
+        "options": {
+          "timeout": 30000
+        },
+        "responseFormat": "json"
+      },
+      "typeVersion": 4.2
+    },
+    {
+      "id": "land_USGS-02",
+      "name": "Land USGS-02 Raw Payload",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        500,
+        590
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch USGS-02 Gauge').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyText = typeof body === 'string' ? body : JSON.stringify(body ?? null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyText);\nconst filePath = run.output_root + '/raw/05_FLOOD_CONDITIONS/landings/USGS-02_landing_' + run.run_stamp + '.json';\nconst landing = {\n  schema_version: '1.0.0',\n  connector_id: run.connector_id,\n  source_id: '05_FLOOD_CONDITIONS:USGS-02',\n  source_name: 'USGS IV service - Issaquah Creek near Hobart (12120600)',\n  source_url: \"https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12120600&parameterCd=00060,00065\",\n  retrieved_at: run.generated_at,\n  http_status: statusCode,\n  retrieval_method: \"usgs\",\n  content_hash: contentHash,\n  body_length: bodyText.length,\n  fetch_status: fetch.error ? 'failed' : 'ok',\n  body: body\n};\nif (fetch.error) landing.error_message = String(fetch.error.message || fetch.error);\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json: { file_path: filePath, source_id: landing.source_id, source_name: landing.source_name, content_hash: contentHash, retrieved_at: run.generated_at }, binary: { data: binary } }];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "write_USGS-02",
+      "name": "Write USGS-02 Raw Landing",
+      "type": "n8n-nodes-base.readWriteFile",
+      "position": [
+        760,
+        590
+      ],
+      "parameters": {
+        "options": {},
+        "fileName": "={{ $json.file_path }}",
+        "operation": "write",
+        "dataPropertyName": "data"
+      },
+      "typeVersion": 1
+    },
+    {
+      "id": "normalize_USGS-02",
+      "name": "Normalize USGS-02 Events",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1010,
+        590
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst safeJson = (value) => { try { return typeof value === 'string' ? JSON.parse(value) : value; } catch { return null; } };\nconst asArray = (value) => Array.isArray(value) ? value : (value === undefined || value === null ? [] : [value]);\nconst pickText = (...parts) => parts.filter(Boolean).map(value => typeof value === 'string' ? value : JSON.stringify(value)).join(' | ');\n\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch USGS-02 Gauge').first().json || {};\nconst landing = $('Land USGS-02 Raw Payload').first().json || {};\nconst raw = fetch.body !== undefined ? fetch.body : (landing.body !== undefined ? landing.body : fetch);\nconst rawText = typeof raw === 'string' ? raw : JSON.stringify(raw ?? null);\nconst rawObj = safeJson(rawText);\nconst lkg = ($('Parse Last Known Good').first().json.bySource || {})['05_FLOOD_CONDITIONS:USGS-02'];\nlet events = [];\nlet observations = [];\nlet warnings = [];\nlet errors = [];\nlet sourceHealth;\nlet lastObservationAt = run.generated_at;\nconst liveFailed = !!fetch.error;\nconst liveErrorMessage = liveFailed ? String(fetch.error.message || fetch.error) : '';\n\nif (!liveFailed) {\n  const timeSeries = Array.isArray(rawObj?.value?.timeSeries) ? rawObj.value.timeSeries : (Array.isArray(rawObj?.timeSeries) ? rawObj.timeSeries : []);\n  if (!timeSeries.length) {\n    errors.push('No USGS timeSeries objects found.');\n  } else {\n    const chosenSeries = timeSeries.find(series => {\n      const seriesText = JSON.stringify(series || {});\n      return /00060|00065/.test(seriesText);\n    }) || timeSeries[0];\n    const flattenedValues = [];\n    for (const bucket of asArray(chosenSeries?.values)) {\n      for (const point of asArray(bucket?.value)) {\n        flattenedValues.push(point);\n      }\n    }\n    const latest = flattenedValues[flattenedValues.length - 1] || {};\n    const observedAt = latest.dateTime || chosenSeries?.values?.[0]?.value?.slice?.(-1)?.[0]?.dateTime || run.generated_at;\n    const rawValue = latest.value ?? latest['#text'] ?? latest.stage ?? null;\n    const metricValue = rawValue === null || rawValue === undefined || rawValue === '' ? null : Number(rawValue);\n    const hasNumeric = Number.isFinite(metricValue);\n    const unit = \"mixed\";\n    const routeImpact = \"elevated_water\";\n    const routeSeverity = \"advisory\";\n    const title = \"Issaquah Creek gauge observation\";\n    const summary = hasNumeric ? pickText('USGS observation', 'value=' + metricValue, 'unit=' + unit, observedAt) : pickText('USGS observation', 'no numeric value parsed', observedAt);\n    const payloadHash = 'hash_' + hashString(rawText);\n    const event = {\n      event_id: '05_FLOOD_CONDITIONS:USGS-02:gauge-observation:' + routeSeverity + ':monitoring',\n      event_type: 'gauge_observation',\n      status: 'monitoring',\n      severity: routeSeverity,\n      route_impact: routeImpact,\n      title: title,\n      summary: summary,\n      source_id: '05_FLOOD_CONDITIONS:USGS-02',\n      source_event_ref: chosenSeries?.variable?.variableCode?.[0]?.value || chosenSeries?.variable?.variableCode || null,\n      observed_at: observedAt,\n      effective_until: null,\n      official_category: chosenSeries?.name || null,\n      metric: {\n        metric_name: \"stage_or_flow\",\n        metric_value: hasNumeric ? metricValue : null,\n        unit: unit\n      },\n      location: {\n        name: \"Issaquah Creek near Issaquah\",\n        latitude: 47.5525,\n        longitude: -122.0467,\n        route_section_ids: [\"10_issaquah_approach_terminus\"]\n      },\n      route_relevance: {\n        method: \"upstream_relationship\",\n        distance_km: 10.934,\n        confidence: \"high\",\n        reason: \"Approved upstream exception because Issaquah uses Hobart for local flood lead-time guidance.\"\n      },\n      provenance: {\n        source_url: \"https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12120600&parameterCd=00060,00065\",\n        retrieved_at: run.generated_at,\n        source_record_hash: payloadHash\n      }\n    };\n    events.push(event);\n    if (false) {\n      observations.push({\n        observation_id: '05_FLOOD_CONDITIONS:USGS-02:context',\n        observation_type: 'derived_context',\n        title: \"Lake Sammamish shoreline context\",\n        summary: summary,\n        source_id: '05_FLOOD_CONDITIONS:USGS-02',\n        observed_at: observedAt,\n        route_section_ids: [\"10_issaquah_approach_terminus\"],\n        metric: event.metric,\n        notes: \"Context only; do not treat as a closure trigger by itself.\"\n      });\n    }\n    lastObservationAt = observedAt;\n  }\n}\n\nif (liveFailed) {\n  const lkgRetrievedAt = lkg && lkg.source_health && lkg.source_health.retrieved_at ? Date.parse(lkg.source_health.retrieved_at) : NaN;\n  const lkgStaleAfterMinutes = lkg && lkg.source_health && lkg.source_health.stale_after_minutes !== undefined ? lkg.source_health.stale_after_minutes : 30;\n  const lkgUsable = !!lkg && Number.isFinite(lkgRetrievedAt) && ((Date.now() - lkgRetrievedAt) / 60000) <= lkgStaleAfterMinutes;\n  if (lkgUsable) {\n    events = Array.isArray(lkg.events) ? lkg.events : [];\n    observations = Array.isArray(lkg.observations) ? lkg.observations : [];\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:USGS-02',\n      source_name: \"USGS IV service - Issaquah Creek near Hobart (12120600)\",\n      status: 'using_last_known_good',\n      retrieved_at: lkg.source_health.retrieved_at,\n      stale_after_minutes: 30,\n      record_count: events.length + observations.length,\n      http_status: null,\n      last_observation_at: lkg.source_health.last_observation_at ?? lkg.source_health.retrieved_at,\n      warnings: [...(lkg.source_health.warnings || []), 'Live fetch failed; serving last-known-good data retrieved at ' + lkg.source_health.retrieved_at + '.'],\n      errors: [liveErrorMessage]\n    };\n  } else {\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:USGS-02',\n      source_name: \"USGS IV service - Issaquah Creek near Hobart (12120600)\",\n      status: 'failed',\n      retrieved_at: run.generated_at,\n      stale_after_minutes: 30,\n      record_count: 0,\n      http_status: fetch.statusCode ?? fetch.status ?? null,\n      last_observation_at: run.generated_at,\n      warnings: ['Live fetch failed and no usable last-known-good snapshot was available.'],\n      errors: [liveErrorMessage]\n    };\n  }\n}\n\n\nif (!sourceHealth) {\n  sourceHealth = {\n    schema_version: '1.0.0',\n    connector_id: run.connector_id,\n    source_id: '05_FLOOD_CONDITIONS:USGS-02',\n    source_name: \"USGS IV service - Issaquah Creek near Hobart (12120600)\",\n    status: events.length ? 'ok' : 'empty_but_valid',\n    retrieved_at: run.generated_at,\n    stale_after_minutes: 30,\n    record_count: events.length + observations.length,\n    http_status: fetch.statusCode ?? fetch.status ?? null,\n    last_observation_at: lastObservationAt,\n    warnings: warnings,\n    errors: errors\n  };\n}\n\nreturn [{\n  json: {\n    source_id: '05_FLOOD_CONDITIONS:USGS-02',\n    source_name: \"USGS IV service - Issaquah Creek near Hobart (12120600)\",\n    source_health: sourceHealth,\n    events,\n    observations,\n    raw_landing_path: landing.file_path || null,\n    raw_content_hash: landing.content_hash || ('hash_' + hashString(rawText)),\n    warnings,\n    errors: sourceHealth.errors\n  }\n}];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "fetch_USGS-03",
+      "name": "Fetch USGS-03 Gauge",
+      "type": "n8n-nodes-base.httpRequest",
+      "notes": "USGS IV service - Sammamish Lake near Redmond (12122000)",
+      "onError": "continueRegularOutput",
+      "position": [
+        220,
+        760
+      ],
+      "parameters": {
+        "url": "=https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12122000",
+        "method": "GET",
+        "options": {
+          "timeout": 30000
+        },
+        "responseFormat": "json"
+      },
+      "typeVersion": 4.2
+    },
+    {
+      "id": "land_USGS-03",
+      "name": "Land USGS-03 Raw Payload",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        500,
+        760
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch USGS-03 Gauge').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyText = typeof body === 'string' ? body : JSON.stringify(body ?? null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyText);\nconst filePath = run.output_root + '/raw/05_FLOOD_CONDITIONS/landings/USGS-03_landing_' + run.run_stamp + '.json';\nconst landing = {\n  schema_version: '1.0.0',\n  connector_id: run.connector_id,\n  source_id: '05_FLOOD_CONDITIONS:USGS-03',\n  source_name: 'USGS IV service - Sammamish Lake near Redmond (12122000)',\n  source_url: \"https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12122000\",\n  retrieved_at: run.generated_at,\n  http_status: statusCode,\n  retrieval_method: \"usgs_lake\",\n  content_hash: contentHash,\n  body_length: bodyText.length,\n  fetch_status: fetch.error ? 'failed' : 'ok',\n  body: body\n};\nif (fetch.error) landing.error_message = String(fetch.error.message || fetch.error);\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json: { file_path: filePath, source_id: landing.source_id, source_name: landing.source_name, content_hash: contentHash, retrieved_at: run.generated_at }, binary: { data: binary } }];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "write_USGS-03",
+      "name": "Write USGS-03 Raw Landing",
+      "type": "n8n-nodes-base.readWriteFile",
+      "position": [
+        760,
+        760
+      ],
+      "parameters": {
+        "options": {},
+        "fileName": "={{ $json.file_path }}",
+        "operation": "write",
+        "dataPropertyName": "data"
+      },
+      "typeVersion": 1
+    },
+    {
+      "id": "normalize_USGS-03",
+      "name": "Normalize USGS-03 Events",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1010,
+        760
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst safeJson = (value) => { try { return typeof value === 'string' ? JSON.parse(value) : value; } catch { return null; } };\nconst asArray = (value) => Array.isArray(value) ? value : (value === undefined || value === null ? [] : [value]);\nconst pickText = (...parts) => parts.filter(Boolean).map(value => typeof value === 'string' ? value : JSON.stringify(value)).join(' | ');\n\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch USGS-03 Gauge').first().json || {};\nconst landing = $('Land USGS-03 Raw Payload').first().json || {};\nconst raw = fetch.body !== undefined ? fetch.body : (landing.body !== undefined ? landing.body : fetch);\nconst rawText = typeof raw === 'string' ? raw : JSON.stringify(raw ?? null);\nconst rawObj = safeJson(rawText);\nconst lkg = ($('Parse Last Known Good').first().json.bySource || {})['05_FLOOD_CONDITIONS:USGS-03'];\nlet events = [];\nlet observations = [];\nlet warnings = [];\nlet errors = [];\nlet sourceHealth;\nlet lastObservationAt = run.generated_at;\nconst liveFailed = !!fetch.error;\nconst liveErrorMessage = liveFailed ? String(fetch.error.message || fetch.error) : '';\n\nif (!liveFailed) {\n  const timeSeries = Array.isArray(rawObj?.value?.timeSeries) ? rawObj.value.timeSeries : (Array.isArray(rawObj?.timeSeries) ? rawObj.timeSeries : []);\n  if (!timeSeries.length) {\n    errors.push('No USGS timeSeries objects found.');\n  } else {\n    const chosenSeries = timeSeries.find(series => {\n      const seriesText = JSON.stringify(series || {});\n      return /62614/.test(seriesText);\n    }) || timeSeries[0];\n    const flattenedValues = [];\n    for (const bucket of asArray(chosenSeries?.values)) {\n      for (const point of asArray(bucket?.value)) {\n        flattenedValues.push(point);\n      }\n    }\n    const latest = flattenedValues[flattenedValues.length - 1] || {};\n    const observedAt = latest.dateTime || chosenSeries?.values?.[0]?.value?.slice?.(-1)?.[0]?.dateTime || run.generated_at;\n    const rawValue = latest.value ?? latest['#text'] ?? latest.stage ?? null;\n    const metricValue = rawValue === null || rawValue === undefined || rawValue === '' ? null : Number(rawValue);\n    const hasNumeric = Number.isFinite(metricValue);\n    const unit = \"ft\";\n    const routeImpact = \"elevated_water\";\n    const routeSeverity = \"advisory\";\n    const title = \"Lake Sammamish shoreline context observed\";\n    const summary = hasNumeric ? pickText('USGS observation', 'value=' + metricValue, 'unit=' + unit, observedAt) : pickText('USGS observation', 'no numeric value parsed', observedAt);\n    const payloadHash = 'hash_' + hashString(rawText);\n    const event = {\n      event_id: '05_FLOOD_CONDITIONS:USGS-03:gauge-observation:' + routeSeverity + ':monitoring',\n      event_type: 'gauge_observation',\n      status: 'monitoring',\n      severity: routeSeverity,\n      route_impact: routeImpact,\n      title: title,\n      summary: summary,\n      source_id: '05_FLOOD_CONDITIONS:USGS-03',\n      source_event_ref: chosenSeries?.variable?.variableCode?.[0]?.value || chosenSeries?.variable?.variableCode || null,\n      observed_at: observedAt,\n      effective_until: null,\n      official_category: chosenSeries?.name || null,\n      metric: {\n        metric_name: \"lake_elevation_ft\",\n        metric_value: hasNumeric ? metricValue : null,\n        unit: unit\n      },\n      location: {\n        name: \"Lake Sammamish near Redmond\",\n        latitude: 47.6628,\n        longitude: -122.0922,\n        route_section_ids: [\"07_marymoor_park\",\"08_east_lake_sammamish_trail_redmond\",\"09_east_lake_sammamish_trail_sammamish\"]\n      },\n      route_relevance: {\n        method: \"point_to_route_distance\",\n        distance_km: 2.2,\n        confidence: \"medium\",\n        reason: \"Lake Sammamish shoreline context only; not a stand-alone flood trigger.\"\n      },\n      provenance: {\n        source_url: \"https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12122000\",\n        retrieved_at: run.generated_at,\n        source_record_hash: payloadHash\n      }\n    };\n    events.push(event);\n    if (true) {\n      observations.push({\n        observation_id: '05_FLOOD_CONDITIONS:USGS-03:context',\n        observation_type: 'derived_context',\n        title: \"Lake Sammamish shoreline context\",\n        summary: summary,\n        source_id: '05_FLOOD_CONDITIONS:USGS-03',\n        observed_at: observedAt,\n        route_section_ids: [\"07_marymoor_park\",\"08_east_lake_sammamish_trail_redmond\",\"09_east_lake_sammamish_trail_sammamish\"],\n        metric: event.metric,\n        notes: \"Context only; do not treat as a closure trigger by itself.\"\n      });\n    }\n    lastObservationAt = observedAt;\n  }\n}\n\nif (liveFailed) {\n  const lkgRetrievedAt = lkg && lkg.source_health && lkg.source_health.retrieved_at ? Date.parse(lkg.source_health.retrieved_at) : NaN;\n  const lkgStaleAfterMinutes = lkg && lkg.source_health && lkg.source_health.stale_after_minutes !== undefined ? lkg.source_health.stale_after_minutes : 30;\n  const lkgUsable = !!lkg && Number.isFinite(lkgRetrievedAt) && ((Date.now() - lkgRetrievedAt) / 60000) <= lkgStaleAfterMinutes;\n  if (lkgUsable) {\n    events = Array.isArray(lkg.events) ? lkg.events : [];\n    observations = Array.isArray(lkg.observations) ? lkg.observations : [];\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:USGS-03',\n      source_name: \"USGS IV service - Sammamish Lake near Redmond (12122000)\",\n      status: 'using_last_known_good',\n      retrieved_at: lkg.source_health.retrieved_at,\n      stale_after_minutes: 30,\n      record_count: events.length + observations.length,\n      http_status: null,\n      last_observation_at: lkg.source_health.last_observation_at ?? lkg.source_health.retrieved_at,\n      warnings: [...(lkg.source_health.warnings || []), 'Live fetch failed; serving last-known-good data retrieved at ' + lkg.source_health.retrieved_at + '.'],\n      errors: [liveErrorMessage]\n    };\n  } else {\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:USGS-03',\n      source_name: \"USGS IV service - Sammamish Lake near Redmond (12122000)\",\n      status: 'failed',\n      retrieved_at: run.generated_at,\n      stale_after_minutes: 30,\n      record_count: 0,\n      http_status: fetch.statusCode ?? fetch.status ?? null,\n      last_observation_at: run.generated_at,\n      warnings: ['Live fetch failed and no usable last-known-good snapshot was available.'],\n      errors: [liveErrorMessage]\n    };\n  }\n}\n\n\nif (!sourceHealth) {\n  sourceHealth = {\n    schema_version: '1.0.0',\n    connector_id: run.connector_id,\n    source_id: '05_FLOOD_CONDITIONS:USGS-03',\n    source_name: \"USGS IV service - Sammamish Lake near Redmond (12122000)\",\n    status: events.length ? 'ok' : 'empty_but_valid',\n    retrieved_at: run.generated_at,\n    stale_after_minutes: 30,\n    record_count: events.length + observations.length,\n    http_status: fetch.statusCode ?? fetch.status ?? null,\n    last_observation_at: lastObservationAt,\n    warnings: warnings,\n    errors: errors\n  };\n}\n\nreturn [{\n  json: {\n    source_id: '05_FLOOD_CONDITIONS:USGS-03',\n    source_name: \"USGS IV service - Sammamish Lake near Redmond (12122000)\",\n    source_health: sourceHealth,\n    events,\n    observations,\n    raw_landing_path: landing.file_path || null,\n    raw_content_hash: landing.content_hash || ('hash_' + hashString(rawText)),\n    warnings,\n    errors: sourceHealth.errors\n  }\n}];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "fetch_NWPS-01",
+      "name": "Fetch NWPS-01 Status",
+      "type": "n8n-nodes-base.httpRequest",
+      "notes": "NOAA National Water Prediction Service - Issaquah Creek near Issaquah (ISSW1)",
+      "onError": "continueRegularOutput",
+      "position": [
+        220,
+        930
+      ],
+      "parameters": {
+        "url": "=https://api.water.noaa.gov/nwps/v1/gauges/ISSW1",
+        "method": "GET",
+        "options": {
+          "timeout": 30000
+        },
+        "responseFormat": "json"
+      },
+      "typeVersion": 4.2
+    },
+    {
+      "id": "land_NWPS-01",
+      "name": "Land NWPS-01 Raw Payload",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        500,
+        930
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch NWPS-01 Status').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyText = typeof body === 'string' ? body : JSON.stringify(body ?? null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyText);\nconst filePath = run.output_root + '/raw/05_FLOOD_CONDITIONS/landings/NWPS-01_landing_' + run.run_stamp + '.json';\nconst landing = {\n  schema_version: '1.0.0',\n  connector_id: run.connector_id,\n  source_id: '05_FLOOD_CONDITIONS:NWPS-01',\n  source_name: 'NOAA National Water Prediction Service - Issaquah Creek near Issaquah (ISSW1)',\n  source_url: \"https://api.water.noaa.gov/nwps/v1/gauges/ISSW1\",\n  retrieved_at: run.generated_at,\n  http_status: statusCode,\n  retrieval_method: \"nwps\",\n  content_hash: contentHash,\n  body_length: bodyText.length,\n  fetch_status: fetch.error ? 'failed' : 'ok',\n  body: body\n};\nif (fetch.error) landing.error_message = String(fetch.error.message || fetch.error);\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json: { file_path: filePath, source_id: landing.source_id, source_name: landing.source_name, content_hash: contentHash, retrieved_at: run.generated_at }, binary: { data: binary } }];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "write_NWPS-01",
+      "name": "Write NWPS-01 Raw Landing",
+      "type": "n8n-nodes-base.readWriteFile",
+      "position": [
+        760,
+        930
+      ],
+      "parameters": {
+        "options": {},
+        "fileName": "={{ $json.file_path }}",
+        "operation": "write",
+        "dataPropertyName": "data"
+      },
+      "typeVersion": 1
+    },
+    {
+      "id": "normalize_NWPS-01",
+      "name": "Normalize NWPS-01 Events",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1010,
+        930
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst safeJson = (value) => { try { return typeof value === 'string' ? JSON.parse(value) : value; } catch { return null; } };\nconst pickText = (...parts) => parts.filter(Boolean).map(value => typeof value === 'string' ? value : JSON.stringify(value)).join(' | ');\n\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch NWPS-01 Status').first().json || {};\nconst landing = $('Land NWPS-01 Raw Payload').first().json || {};\nconst raw = fetch.body !== undefined ? fetch.body : (landing.body !== undefined ? landing.body : fetch);\nconst rawText = typeof raw === 'string' ? raw : JSON.stringify(raw ?? null);\nconst rawObj = safeJson(rawText);\nconst lkg = ($('Parse Last Known Good').first().json.bySource || {})['05_FLOOD_CONDITIONS:NWPS-01'];\nlet events = [];\nlet observations = [];\nlet warnings = [];\nlet errors = [];\nlet sourceHealth;\nlet lastObservationAt = run.generated_at;\nconst liveFailed = !!fetch.error;\nconst liveErrorMessage = liveFailed ? String(fetch.error.message || fetch.error) : '';\n\nif (!liveFailed) {\n  const observed = rawObj?.observed || rawObj?.status?.observed || rawObj?.data?.observed || {};\n  const forecast = rawObj?.forecast || rawObj?.status?.forecast || rawObj?.data?.forecast || {};\n  const observedStage = observed.stage ?? observed.height ?? observed.value ?? null;\n  const observedFlow = observed.flow ?? observed.cfs ?? observed.discharge ?? null;\n  const observedAt = observed.validTime || observed.issuedTime || rawObj?.updated || rawObj?.issuedTime || run.generated_at;\n  const category = String(observed.floodCategory || rawObj?.floodCategory || rawObj?.status?.floodCategory || '').toLowerCase();\n  const metricValue = observedStage !== null && observedStage !== undefined && observedStage !== '' ? Number(observedStage) : null;\n  const routeImpact = /major|moderate/.test(category) ? 'observed_flooding' : (/minor/.test(category) ? 'watch' : \"elevated_water\");\n  const severity = /major/.test(category) ? 'severe' : (/moderate/.test(category) ? 'warning' : \"advisory\");\n  const title = \"NOAA NWPS observed status and forecast\";\n  const summary = pickText('Observed stage=' + (observedStage ?? 'n/a'), 'flow=' + (observedFlow ?? 'n/a'), 'category=' + (category || 'not_defined'), 'forecast=' + (forecast?.type || forecast?.stage || 'n/a'));\n  const event = {\n    event_id: '05_FLOOD_CONDITIONS:NWPS-01:' + (category || 'not_defined').toString().toLowerCase().replace(/[^a-z0-9]+/g, '-') + ':' + severity,\n    event_type: \"gauge_forecast\",\n    status: 'monitoring',\n    severity,\n    route_impact: routeImpact,\n    title,\n    summary,\n    source_id: '05_FLOOD_CONDITIONS:NWPS-01',\n    source_event_ref: rawObj?.id || rawObj?.stationId || null,\n    observed_at: observedAt,\n    effective_until: null,\n    official_category: category || null,\n    metric: {\n      metric_name: 'stage_ft',\n      metric_value: Number.isFinite(metricValue) ? metricValue : null,\n      secondary_metric_name: 'flow_cfs',\n      secondary_metric_value: observedFlow !== null && observedFlow !== undefined && observedFlow !== '' ? Number(observedFlow) : null,\n      unit: 'ft'\n    },\n    location: {\n      name: \"Issaquah Creek near Issaquah\",\n      latitude: 47.6505,\n      longitude: -122.3046,\n      route_section_ids: [\"10_issaquah_approach_terminus\"]\n    },\n    route_relevance: {\n      method: \"point_to_route_distance\",\n      distance_km: 0.173,\n      confidence: 'high',\n      reason: \"Official NOAA flood-category and forecast source for the route terminus.\"\n    },\n    provenance: {\n      source_url: \"https://api.water.noaa.gov/nwps/v1/gauges/ISSW1\",\n      retrieved_at: run.generated_at,\n      source_record_hash: 'hash_' + hashString(rawText)\n    }\n  };\n  events.push(event);\n  lastObservationAt = observedAt;\n  if (category === 'not_defined' || routeImpact === 'elevated_water') {\n    warnings.push(\"No flood category escalation detected; retaining observed context only.\");\n  }\n}\n\nif (liveFailed) {\n  const lkgRetrievedAt = lkg && lkg.source_health && lkg.source_health.retrieved_at ? Date.parse(lkg.source_health.retrieved_at) : NaN;\n  const lkgStaleAfterMinutes = lkg && lkg.source_health && lkg.source_health.stale_after_minutes !== undefined ? lkg.source_health.stale_after_minutes : 30;\n  const lkgUsable = !!lkg && Number.isFinite(lkgRetrievedAt) && ((Date.now() - lkgRetrievedAt) / 60000) <= lkgStaleAfterMinutes;\n  if (lkgUsable) {\n    events = Array.isArray(lkg.events) ? lkg.events : [];\n    observations = Array.isArray(lkg.observations) ? lkg.observations : [];\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:NWPS-01',\n      source_name: \"NOAA National Water Prediction Service - Issaquah Creek near Issaquah (ISSW1)\",\n      status: 'using_last_known_good',\n      retrieved_at: lkg.source_health.retrieved_at,\n      stale_after_minutes: 30,\n      record_count: events.length + observations.length,\n      http_status: null,\n      last_observation_at: lkg.source_health.last_observation_at ?? lkg.source_health.retrieved_at,\n      warnings: [...(lkg.source_health.warnings || []), 'Live fetch failed; serving last-known-good data retrieved at ' + lkg.source_health.retrieved_at + '.'],\n      errors: [liveErrorMessage]\n    };\n  } else {\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:NWPS-01',\n      source_name: \"NOAA National Water Prediction Service - Issaquah Creek near Issaquah (ISSW1)\",\n      status: 'failed',\n      retrieved_at: run.generated_at,\n      stale_after_minutes: 30,\n      record_count: 0,\n      http_status: fetch.statusCode ?? fetch.status ?? null,\n      last_observation_at: run.generated_at,\n      warnings: ['Live fetch failed and no usable last-known-good snapshot was available.'],\n      errors: [liveErrorMessage]\n    };\n  }\n}\n\n\nif (!sourceHealth) {\n  sourceHealth = {\n    schema_version: '1.0.0',\n    connector_id: run.connector_id,\n    source_id: '05_FLOOD_CONDITIONS:NWPS-01',\n    source_name: \"NOAA National Water Prediction Service - Issaquah Creek near Issaquah (ISSW1)\",\n    status: events.length ? 'ok' : 'empty_but_valid',\n    retrieved_at: run.generated_at,\n    stale_after_minutes: 30,\n    record_count: events.length + observations.length,\n    http_status: fetch.statusCode ?? fetch.status ?? null,\n    last_observation_at: lastObservationAt,\n    warnings: warnings,\n    errors: errors\n  };\n}\n\nreturn [{\n  json: {\n    source_id: '05_FLOOD_CONDITIONS:NWPS-01',\n    source_name: \"NOAA National Water Prediction Service - Issaquah Creek near Issaquah (ISSW1)\",\n    source_health: sourceHealth,\n    events,\n    observations,\n    raw_landing_path: landing.file_path || null,\n    raw_content_hash: landing.content_hash || ('hash_' + hashString(rawText)),\n    warnings,\n    errors: sourceHealth.errors\n  }\n}];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "fetch_NWPS-02",
+      "name": "Fetch NWPS-02 Status",
+      "type": "n8n-nodes-base.httpRequest",
+      "notes": "NOAA National Water Prediction Service - Issaquah Creek near Hobart (ISQW1)",
+      "onError": "continueRegularOutput",
+      "position": [
+        220,
+        1100
+      ],
+      "parameters": {
+        "url": "=https://api.water.noaa.gov/nwps/v1/gauges/ISQW1",
+        "method": "GET",
+        "options": {
+          "timeout": 30000
+        },
+        "responseFormat": "json"
+      },
+      "typeVersion": 4.2
+    },
+    {
+      "id": "land_NWPS-02",
+      "name": "Land NWPS-02 Raw Payload",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        500,
+        1100
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch NWPS-02 Status').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyText = typeof body === 'string' ? body : JSON.stringify(body ?? null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyText);\nconst filePath = run.output_root + '/raw/05_FLOOD_CONDITIONS/landings/NWPS-02_landing_' + run.run_stamp + '.json';\nconst landing = {\n  schema_version: '1.0.0',\n  connector_id: run.connector_id,\n  source_id: '05_FLOOD_CONDITIONS:NWPS-02',\n  source_name: 'NOAA National Water Prediction Service - Issaquah Creek near Hobart (ISQW1)',\n  source_url: \"https://api.water.noaa.gov/nwps/v1/gauges/ISQW1\",\n  retrieved_at: run.generated_at,\n  http_status: statusCode,\n  retrieval_method: \"nwps\",\n  content_hash: contentHash,\n  body_length: bodyText.length,\n  fetch_status: fetch.error ? 'failed' : 'ok',\n  body: body\n};\nif (fetch.error) landing.error_message = String(fetch.error.message || fetch.error);\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json: { file_path: filePath, source_id: landing.source_id, source_name: landing.source_name, content_hash: contentHash, retrieved_at: run.generated_at }, binary: { data: binary } }];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "write_NWPS-02",
+      "name": "Write NWPS-02 Raw Landing",
+      "type": "n8n-nodes-base.readWriteFile",
+      "position": [
+        760,
+        1100
+      ],
+      "parameters": {
+        "options": {},
+        "fileName": "={{ $json.file_path }}",
+        "operation": "write",
+        "dataPropertyName": "data"
+      },
+      "typeVersion": 1
+    },
+    {
+      "id": "normalize_NWPS-02",
+      "name": "Normalize NWPS-02 Events",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1010,
+        1100
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst safeJson = (value) => { try { return typeof value === 'string' ? JSON.parse(value) : value; } catch { return null; } };\nconst pickText = (...parts) => parts.filter(Boolean).map(value => typeof value === 'string' ? value : JSON.stringify(value)).join(' | ');\n\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch NWPS-02 Status').first().json || {};\nconst landing = $('Land NWPS-02 Raw Payload').first().json || {};\nconst raw = fetch.body !== undefined ? fetch.body : (landing.body !== undefined ? landing.body : fetch);\nconst rawText = typeof raw === 'string' ? raw : JSON.stringify(raw ?? null);\nconst rawObj = safeJson(rawText);\nconst lkg = ($('Parse Last Known Good').first().json.bySource || {})['05_FLOOD_CONDITIONS:NWPS-02'];\nlet events = [];\nlet observations = [];\nlet warnings = [];\nlet errors = [];\nlet sourceHealth;\nlet lastObservationAt = run.generated_at;\nconst liveFailed = !!fetch.error;\nconst liveErrorMessage = liveFailed ? String(fetch.error.message || fetch.error) : '';\n\nif (!liveFailed) {\n  const observed = rawObj?.observed || rawObj?.status?.observed || rawObj?.data?.observed || {};\n  const forecast = rawObj?.forecast || rawObj?.status?.forecast || rawObj?.data?.forecast || {};\n  const observedStage = observed.stage ?? observed.height ?? observed.value ?? null;\n  const observedFlow = observed.flow ?? observed.cfs ?? observed.discharge ?? null;\n  const observedAt = observed.validTime || observed.issuedTime || rawObj?.updated || rawObj?.issuedTime || run.generated_at;\n  const category = String(observed.floodCategory || rawObj?.floodCategory || rawObj?.status?.floodCategory || '').toLowerCase();\n  const metricValue = observedStage !== null && observedStage !== undefined && observedStage !== '' ? Number(observedStage) : null;\n  const routeImpact = /major|moderate/.test(category) ? 'observed_flooding' : (/minor/.test(category) ? 'watch' : \"elevated_water\");\n  const severity = /major/.test(category) ? 'severe' : (/moderate/.test(category) ? 'warning' : \"advisory\");\n  const title = \"NOAA NWPS upstream corroboration\";\n  const summary = pickText('Observed stage=' + (observedStage ?? 'n/a'), 'flow=' + (observedFlow ?? 'n/a'), 'category=' + (category || 'not_defined'), 'forecast=' + (forecast?.type || forecast?.stage || 'n/a'));\n  const event = {\n    event_id: '05_FLOOD_CONDITIONS:NWPS-02:' + (category || 'not_defined').toString().toLowerCase().replace(/[^a-z0-9]+/g, '-') + ':' + severity,\n    event_type: \"gauge_observation\",\n    status: 'monitoring',\n    severity,\n    route_impact: routeImpact,\n    title,\n    summary,\n    source_id: '05_FLOOD_CONDITIONS:NWPS-02',\n    source_event_ref: rawObj?.id || rawObj?.stationId || null,\n    observed_at: observedAt,\n    effective_until: null,\n    official_category: category || null,\n    metric: {\n      metric_name: 'stage_ft',\n      metric_value: Number.isFinite(metricValue) ? metricValue : null,\n      secondary_metric_name: 'flow_cfs',\n      secondary_metric_value: observedFlow !== null && observedFlow !== undefined && observedFlow !== '' ? Number(observedFlow) : null,\n      unit: 'ft'\n    },\n    location: {\n      name: \"Issaquah Creek near Hobart\",\n      latitude: 47.6183,\n      longitude: -122.0640,\n      route_section_ids: [\"10_issaquah_approach_terminus\"]\n    },\n    route_relevance: {\n      method: \"upstream_relationship\",\n      distance_km: 10.934,\n      confidence: 'high',\n      reason: \"NOAA-form corroboration for the upstream Hobart point and local lead-time interpretation.\"\n    },\n    provenance: {\n      source_url: \"https://api.water.noaa.gov/nwps/v1/gauges/ISQW1\",\n      retrieved_at: run.generated_at,\n      source_record_hash: 'hash_' + hashString(rawText)\n    }\n  };\n  events.push(event);\n  lastObservationAt = observedAt;\n  if (category === 'not_defined' || routeImpact === 'elevated_water') {\n    warnings.push(\"No flood category escalation detected; retaining observed context only.\");\n  }\n}\n\nif (liveFailed) {\n  const lkgRetrievedAt = lkg && lkg.source_health && lkg.source_health.retrieved_at ? Date.parse(lkg.source_health.retrieved_at) : NaN;\n  const lkgStaleAfterMinutes = lkg && lkg.source_health && lkg.source_health.stale_after_minutes !== undefined ? lkg.source_health.stale_after_minutes : 30;\n  const lkgUsable = !!lkg && Number.isFinite(lkgRetrievedAt) && ((Date.now() - lkgRetrievedAt) / 60000) <= lkgStaleAfterMinutes;\n  if (lkgUsable) {\n    events = Array.isArray(lkg.events) ? lkg.events : [];\n    observations = Array.isArray(lkg.observations) ? lkg.observations : [];\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:NWPS-02',\n      source_name: \"NOAA National Water Prediction Service - Issaquah Creek near Hobart (ISQW1)\",\n      status: 'using_last_known_good',\n      retrieved_at: lkg.source_health.retrieved_at,\n      stale_after_minutes: 30,\n      record_count: events.length + observations.length,\n      http_status: null,\n      last_observation_at: lkg.source_health.last_observation_at ?? lkg.source_health.retrieved_at,\n      warnings: [...(lkg.source_health.warnings || []), 'Live fetch failed; serving last-known-good data retrieved at ' + lkg.source_health.retrieved_at + '.'],\n      errors: [liveErrorMessage]\n    };\n  } else {\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:NWPS-02',\n      source_name: \"NOAA National Water Prediction Service - Issaquah Creek near Hobart (ISQW1)\",\n      status: 'failed',\n      retrieved_at: run.generated_at,\n      stale_after_minutes: 30,\n      record_count: 0,\n      http_status: fetch.statusCode ?? fetch.status ?? null,\n      last_observation_at: run.generated_at,\n      warnings: ['Live fetch failed and no usable last-known-good snapshot was available.'],\n      errors: [liveErrorMessage]\n    };\n  }\n}\n\n\nif (!sourceHealth) {\n  sourceHealth = {\n    schema_version: '1.0.0',\n    connector_id: run.connector_id,\n    source_id: '05_FLOOD_CONDITIONS:NWPS-02',\n    source_name: \"NOAA National Water Prediction Service - Issaquah Creek near Hobart (ISQW1)\",\n    status: events.length ? 'ok' : 'empty_but_valid',\n    retrieved_at: run.generated_at,\n    stale_after_minutes: 30,\n    record_count: events.length + observations.length,\n    http_status: fetch.statusCode ?? fetch.status ?? null,\n    last_observation_at: lastObservationAt,\n    warnings: warnings,\n    errors: errors\n  };\n}\n\nreturn [{\n  json: {\n    source_id: '05_FLOOD_CONDITIONS:NWPS-02',\n    source_name: \"NOAA National Water Prediction Service - Issaquah Creek near Hobart (ISQW1)\",\n    source_health: sourceHealth,\n    events,\n    observations,\n    raw_landing_path: landing.file_path || null,\n    raw_content_hash: landing.content_hash || ('hash_' + hashString(rawText)),\n    warnings,\n    errors: sourceHealth.errors\n  }\n}];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "fetch_NWS-01",
+      "name": "Fetch NWS-01 Alerts",
+      "type": "n8n-nodes-base.httpRequest",
+      "notes": "National Weather Service API - flood and flash-flood alerts",
+      "onError": "continueRegularOutput",
+      "position": [
+        220,
+        1270
+      ],
+      "parameters": {
+        "url": "=https://api.weather.gov/alerts/active?point=47.6505,-122.3046",
+        "method": "GET",
+        "headers": {
+          "User-Agent": "UW-Issy Route Monitor / Flood Conditions Connector"
+        },
+        "options": {
+          "timeout": 30000
+        },
+        "responseFormat": "json"
+      },
+      "typeVersion": 4.2
+    },
+    {
+      "id": "land_NWS-01",
+      "name": "Land NWS-01 Raw Payload",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        500,
+        1270
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch NWS-01 Alerts').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyText = typeof body === 'string' ? body : JSON.stringify(body ?? null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyText);\nconst filePath = run.output_root + '/raw/05_FLOOD_CONDITIONS/landings/NWS-01_landing_' + run.run_stamp + '.json';\nconst landing = {\n  schema_version: '1.0.0',\n  connector_id: run.connector_id,\n  source_id: '05_FLOOD_CONDITIONS:NWS-01',\n  source_name: 'National Weather Service API - flood and flash-flood alerts',\n  source_url: \"https://api.weather.gov/alerts/active?point=47.6505,-122.3046\",\n  retrieved_at: run.generated_at,\n  http_status: statusCode,\n  retrieval_method: \"nws\",\n  content_hash: contentHash,\n  body_length: bodyText.length,\n  fetch_status: fetch.error ? 'failed' : 'ok',\n  body: body\n};\nif (fetch.error) landing.error_message = String(fetch.error.message || fetch.error);\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json: { file_path: filePath, source_id: landing.source_id, source_name: landing.source_name, content_hash: contentHash, retrieved_at: run.generated_at }, binary: { data: binary } }];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "write_NWS-01",
+      "name": "Write NWS-01 Raw Landing",
+      "type": "n8n-nodes-base.readWriteFile",
+      "position": [
+        760,
+        1270
+      ],
+      "parameters": {
+        "options": {},
+        "fileName": "={{ $json.file_path }}",
+        "operation": "write",
+        "dataPropertyName": "data"
+      },
+      "typeVersion": 1
+    },
+    {
+      "id": "normalize_NWS-01",
+      "name": "Normalize NWS-01 Events",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1010,
+        1270
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst safeJson = (value) => { try { return typeof value === 'string' ? JSON.parse(value) : value; } catch { return null; } };\nconst pickText = (...parts) => parts.filter(Boolean).map(value => typeof value === 'string' ? value : JSON.stringify(value)).join(' | ');\n\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch NWS-01 Alerts').first().json || {};\nconst landing = $('Land NWS-01 Raw Payload').first().json || {};\nconst raw = fetch.body !== undefined ? fetch.body : (landing.body !== undefined ? landing.body : fetch);\nconst rawText = typeof raw === 'string' ? raw : JSON.stringify(raw ?? null);\nconst rawObj = safeJson(rawText);\nconst lkg = ($('Parse Last Known Good').first().json.bySource || {})['05_FLOOD_CONDITIONS:NWS-01'];\nlet events = [];\nlet observations = [];\nlet warnings = [];\nlet errors = [];\nlet sourceHealth;\nlet lastObservationAt = run.generated_at;\nconst liveFailed = !!fetch.error;\nconst liveErrorMessage = liveFailed ? String(fetch.error.message || fetch.error) : '';\n\nif (!liveFailed) {\n  const payload = rawObj || { features: [] };\n  const features = Array.isArray(payload.features) ? payload.features : [];\n  const filtered = features.filter(feature => {\n    const props = feature?.properties || {};\n    const eventName = String(props.event || props.headline || '').toLowerCase();\n    const areaDesc = String(props.areaDesc || '').toLowerCase();\n    return /flood|flash flood|water over roadway|flood advisory|flood warning|flood watch/.test(eventName + ' ' + areaDesc);\n  });\n  if (features.length === 0) {\n    warnings.push('NWS returned a valid empty collection.');\n  }\n  for (const feature of filtered) {\n    const props = feature.properties || {};\n    const geom = feature.geometry || {};\n    const eventName = String(props.event || props.headline || 'Flood alert');\n    const severity = String(props.severity || 'warning').toLowerCase();\n    const routeImpact = /warning|watch/.test(eventName.toLowerCase()) ? 'warning' : 'forecast_flooding';\n    const observedAt = props.sent || props.effective || props.onset || props.ends || props.updated || run.generated_at;\n    events.push({\n      event_id: '05_FLOOD_CONDITIONS:NWS-01:' + String(props.id || props['@id'] || props.identifier || hashString(pickText(eventName, observedAt, rawText))),\n      event_type: 'nws_alert',\n      status: 'active',\n      severity: /severe|extreme/.test(severity) ? 'severe' : (/moderate/.test(severity) ? 'warning' : 'watch'),\n      route_impact: routeImpact,\n      title: eventName,\n      summary: String(props.description || props.headline || eventName),\n      source_id: '05_FLOOD_CONDITIONS:NWS-01',\n      source_event_ref: props.id || props.eventId || null,\n      observed_at: observedAt,\n      effective_until: props.expires || null,\n      official_category: eventName,\n      metric: null,\n      location: {\n        name: String(props.areaDesc || 'King County'),\n        latitude: geom?.coordinates?.[1] ?? null,\n        longitude: geom?.coordinates?.[0] ?? null,\n        route_section_ids: [\"01_uw_u_district\",\"02_burke_gilman_seattle\",\"03_burke_gilman_north_lake_wa_kenmore\",\"04_burke_gilman_connector_bothell\",\"05_sammamish_river_trail_bothell_woodinville\",\"06_sammamish_river_trail_redmond\",\"07_marymoor_park\",\"08_east_lake_sammamish_trail_redmond\",\"09_east_lake_sammamish_trail_sammamish\",\"10_issaquah_approach_terminus\"]\n      },\n      route_relevance: {\n        method: 'polygon_intersection',\n        distance_km: 0,\n        confidence: 'high',\n        reason: 'NWS flood alert overlaps the route corridor or its immediate service area.'\n      },\n      provenance: {\n        source_url: \"https://api.weather.gov/alerts/active?point=47.6505,-122.3046\",\n        retrieved_at: run.generated_at,\n        source_record_hash: 'hash_' + hashString(JSON.stringify(feature))\n      }\n    });\n    lastObservationAt = observedAt;\n  }\n}\n\nif (liveFailed) {\n  const lkgRetrievedAt = lkg && lkg.source_health && lkg.source_health.retrieved_at ? Date.parse(lkg.source_health.retrieved_at) : NaN;\n  const lkgStaleAfterMinutes = lkg && lkg.source_health && lkg.source_health.stale_after_minutes !== undefined ? lkg.source_health.stale_after_minutes : 15;\n  const lkgUsable = !!lkg && Number.isFinite(lkgRetrievedAt) && ((Date.now() - lkgRetrievedAt) / 60000) <= lkgStaleAfterMinutes;\n  if (lkgUsable) {\n    events = Array.isArray(lkg.events) ? lkg.events : [];\n    observations = Array.isArray(lkg.observations) ? lkg.observations : [];\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:NWS-01',\n      source_name: \"National Weather Service API - flood and flash-flood alerts\",\n      status: 'using_last_known_good',\n      retrieved_at: lkg.source_health.retrieved_at,\n      stale_after_minutes: 15,\n      record_count: events.length + observations.length,\n      http_status: null,\n      last_observation_at: lkg.source_health.last_observation_at ?? lkg.source_health.retrieved_at,\n      warnings: [...(lkg.source_health.warnings || []), 'Live fetch failed; serving last-known-good data retrieved at ' + lkg.source_health.retrieved_at + '.'],\n      errors: [liveErrorMessage]\n    };\n  } else {\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:NWS-01',\n      source_name: \"National Weather Service API - flood and flash-flood alerts\",\n      status: 'failed',\n      retrieved_at: run.generated_at,\n      stale_after_minutes: 15,\n      record_count: 0,\n      http_status: fetch.statusCode ?? fetch.status ?? null,\n      last_observation_at: run.generated_at,\n      warnings: ['Live fetch failed and no usable last-known-good snapshot was available.'],\n      errors: [liveErrorMessage]\n    };\n  }\n}\n\n\nif (!sourceHealth) {\n  sourceHealth = {\n    schema_version: '1.0.0',\n    connector_id: run.connector_id,\n    source_id: '05_FLOOD_CONDITIONS:NWS-01',\n    source_name: \"National Weather Service API - flood and flash-flood alerts\",\n    status: events.length ? 'ok' : 'empty_but_valid',\n    retrieved_at: run.generated_at,\n    stale_after_minutes: 15,\n    record_count: events.length + observations.length,\n    http_status: fetch.statusCode ?? fetch.status ?? null,\n    last_observation_at: lastObservationAt,\n    warnings: warnings,\n    errors: errors\n  };\n}\n\nreturn [{\n  json: {\n    source_id: '05_FLOOD_CONDITIONS:NWS-01',\n    source_name: \"National Weather Service API - flood and flash-flood alerts\",\n    source_health: sourceHealth,\n    events,\n    observations,\n    raw_landing_path: landing.file_path || null,\n    raw_content_hash: landing.content_hash || ('hash_' + hashString(rawText)),\n    warnings,\n    errors: sourceHealth.errors\n  }\n}];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "fetch_ISS-01",
+      "name": "Fetch ISS-01 Flood Page",
+      "type": "n8n-nodes-base.httpRequest",
+      "notes": "City of Issaquah Flooding page",
+      "onError": "continueRegularOutput",
+      "position": [
+        220,
+        1440
+      ],
+      "parameters": {
+        "url": "=https://www.issaquahwa.gov/flood",
+        "method": "GET",
+        "options": {
+          "timeout": 30000
+        },
+        "responseFormat": "string"
+      },
+      "typeVersion": 4.2
+    },
+    {
+      "id": "land_ISS-01",
+      "name": "Land ISS-01 Raw Payload",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        500,
+        1440
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch ISS-01 Flood Page').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyText = typeof body === 'string' ? body : JSON.stringify(body ?? null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyText);\nconst filePath = run.output_root + '/raw/05_FLOOD_CONDITIONS/landings/ISS-01_landing_' + run.run_stamp + '.json';\nconst landing = {\n  schema_version: '1.0.0',\n  connector_id: run.connector_id,\n  source_id: '05_FLOOD_CONDITIONS:ISS-01',\n  source_name: 'City of Issaquah Flooding page',\n  source_url: \"https://www.issaquahwa.gov/flood\",\n  retrieved_at: run.generated_at,\n  http_status: statusCode,\n  retrieval_method: \"issaquah\",\n  content_hash: contentHash,\n  body_length: bodyText.length,\n  fetch_status: fetch.error ? 'failed' : 'ok',\n  body: body\n};\nif (fetch.error) landing.error_message = String(fetch.error.message || fetch.error);\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json: { file_path: filePath, source_id: landing.source_id, source_name: landing.source_name, content_hash: contentHash, retrieved_at: run.generated_at }, binary: { data: binary } }];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "write_ISS-01",
+      "name": "Write ISS-01 Raw Landing",
+      "type": "n8n-nodes-base.readWriteFile",
+      "position": [
+        760,
+        1440
+      ],
+      "parameters": {
+        "options": {},
+        "fileName": "={{ $json.file_path }}",
+        "operation": "write",
+        "dataPropertyName": "data"
+      },
+      "typeVersion": 1
+    },
+    {
+      "id": "normalize_ISS-01",
+      "name": "Normalize ISS-01 Events",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1010,
+        1440
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst safeJson = (value) => { try { return typeof value === 'string' ? JSON.parse(value) : value; } catch { return null; } };\n\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch ISS-01 Flood Page').first().json || {};\nconst landing = $('Land ISS-01 Raw Payload').first().json || {};\nconst raw = fetch.body !== undefined ? fetch.body : (landing.body !== undefined ? landing.body : fetch);\nconst rawText = typeof raw === 'string' ? raw : JSON.stringify(raw ?? null);\nconst rawObj = safeJson(rawText);\nconst lkg = ($('Parse Last Known Good').first().json.bySource || {})['05_FLOOD_CONDITIONS:ISS-01'];\nlet events = [];\nlet observations = [];\nlet warnings = [];\nlet errors = [];\nlet sourceHealth;\nlet lastObservationAt = run.generated_at;\nconst liveFailed = !!fetch.error;\nconst liveErrorMessage = liveFailed ? String(fetch.error.message || fetch.error) : '';\n\nif (!liveFailed) {\n  const text = rawText.replace(/<script[\\s\\S]*?<\\/script>/gi, ' ').replace(/<style[\\s\\S]*?<\\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim();\n  const phaseMatch = text.match(/phase\\s+[ivx]+/gi) || [];\n  if (!phaseMatch.length || !/flood|phase/i.test(text)) {\n    errors.push('Issaquah flood page did not yield recognizable phase threshold text.');\n  } else {\n    const thresholds = [];\n    const thresholdPattern = /Phase\\s+([IVX]+)\\s+begins? at\\s+([0-9.]+)\\s*ft/gi;\n    let match;\n    while ((match = thresholdPattern.exec(text)) !== null) {\n      thresholds.push({ phase: match[1], stage_ft: Number(match[2]) });\n    }\n    observations.push({\n      observation_id: '05_FLOOD_CONDITIONS:ISS-01:phase-thresholds',\n      observation_type: 'policy_threshold',\n      title: 'City of Issaquah flood phase thresholds',\n      summary: thresholds.length ? thresholds.map(item => 'Phase ' + item.phase + ' begins at ' + item.stage_ft + ' ft').join('; ') : text.slice(0, 500),\n      source_id: '05_FLOOD_CONDITIONS:ISS-01',\n      observed_at: run.generated_at,\n      route_section_ids: [\"10_issaquah_approach_terminus\"],\n      metric: null,\n      notes: 'Local policy semantics for the route end.'\n    });\n    lastObservationAt = run.generated_at;\n  }\n}\n\nif (liveFailed) {\n  const lkgRetrievedAt = lkg && lkg.source_health && lkg.source_health.retrieved_at ? Date.parse(lkg.source_health.retrieved_at) : NaN;\n  const lkgStaleAfterMinutes = lkg && lkg.source_health && lkg.source_health.stale_after_minutes !== undefined ? lkg.source_health.stale_after_minutes : 1440;\n  const lkgUsable = !!lkg && Number.isFinite(lkgRetrievedAt) && ((Date.now() - lkgRetrievedAt) / 60000) <= lkgStaleAfterMinutes;\n  if (lkgUsable) {\n    events = Array.isArray(lkg.events) ? lkg.events : [];\n    observations = Array.isArray(lkg.observations) ? lkg.observations : [];\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:ISS-01',\n      source_name: \"City of Issaquah Flooding page\",\n      status: 'using_last_known_good',\n      retrieved_at: lkg.source_health.retrieved_at,\n      stale_after_minutes: 1440,\n      record_count: events.length + observations.length,\n      http_status: null,\n      last_observation_at: lkg.source_health.last_observation_at ?? lkg.source_health.retrieved_at,\n      warnings: [...(lkg.source_health.warnings || []), 'Live fetch failed; serving last-known-good data retrieved at ' + lkg.source_health.retrieved_at + '.'],\n      errors: [liveErrorMessage]\n    };\n  } else {\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:ISS-01',\n      source_name: \"City of Issaquah Flooding page\",\n      status: 'failed',\n      retrieved_at: run.generated_at,\n      stale_after_minutes: 1440,\n      record_count: 0,\n      http_status: fetch.statusCode ?? fetch.status ?? null,\n      last_observation_at: run.generated_at,\n      warnings: ['Live fetch failed and no usable last-known-good snapshot was available.'],\n      errors: [liveErrorMessage]\n    };\n  }\n}\n\n\nif (!sourceHealth) {\n  sourceHealth = {\n    schema_version: '1.0.0',\n    connector_id: run.connector_id,\n    source_id: '05_FLOOD_CONDITIONS:ISS-01',\n    source_name: \"City of Issaquah Flooding page\",\n    status: events.length ? 'ok' : 'empty_but_valid',\n    retrieved_at: run.generated_at,\n    stale_after_minutes: 1440,\n    record_count: events.length + observations.length,\n    http_status: fetch.statusCode ?? fetch.status ?? null,\n    last_observation_at: lastObservationAt,\n    warnings: warnings,\n    errors: errors\n  };\n}\n\nreturn [{\n  json: {\n    source_id: '05_FLOOD_CONDITIONS:ISS-01',\n    source_name: \"City of Issaquah Flooding page\",\n    source_health: sourceHealth,\n    events,\n    observations,\n    raw_landing_path: landing.file_path || null,\n    raw_content_hash: landing.content_hash || ('hash_' + hashString(rawText)),\n    warnings,\n    errors: sourceHealth.errors\n  }\n}];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "fetch_REDM-01",
+      "name": "Fetch REDM-01 Alerts",
+      "type": "n8n-nodes-base.httpRequest",
+      "notes": "City of Redmond Traffic Alerts ArcGIS service",
+      "onError": "continueRegularOutput",
+      "position": [
+        220,
+        1610
+      ],
+      "parameters": {
+        "url": "=https://gis.redmond.gov/arcgis/rest/services/Traffic/Alerts/FeatureServer/1/query?where=1%3D1&outFields=AlertID,AlertName,LocationDescription,AlertStartDate,AlertEndDate,TrafficImpactDescription,AlertStatus,GovDeliverySubject&returnGeometry=true&f=json",
+        "method": "GET",
+        "options": {
+          "timeout": 30000
+        },
+        "responseFormat": "json"
+      },
+      "typeVersion": 4.2
+    },
+    {
+      "id": "land_REDM-01",
+      "name": "Land REDM-01 Raw Payload",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        500,
+        1610
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch REDM-01 Alerts').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyText = typeof body === 'string' ? body : JSON.stringify(body ?? null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyText);\nconst filePath = run.output_root + '/raw/05_FLOOD_CONDITIONS/landings/REDM-01_landing_' + run.run_stamp + '.json';\nconst landing = {\n  schema_version: '1.0.0',\n  connector_id: run.connector_id,\n  source_id: '05_FLOOD_CONDITIONS:REDM-01',\n  source_name: 'City of Redmond Traffic Alerts ArcGIS service',\n  source_url: \"https://gis.redmond.gov/arcgis/rest/services/Traffic/Alerts/FeatureServer/1/query?where=1%3D1&outFields=AlertID,AlertName,LocationDescription,AlertStartDate,AlertEndDate,TrafficImpactDescription,AlertStatus,GovDeliverySubject&returnGeometry=true&f=json\",\n  retrieved_at: run.generated_at,\n  http_status: statusCode,\n  retrieval_method: \"arcgis_redmond\",\n  content_hash: contentHash,\n  body_length: bodyText.length,\n  fetch_status: fetch.error ? 'failed' : 'ok',\n  body: body\n};\nif (fetch.error) landing.error_message = String(fetch.error.message || fetch.error);\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json: { file_path: filePath, source_id: landing.source_id, source_name: landing.source_name, content_hash: contentHash, retrieved_at: run.generated_at }, binary: { data: binary } }];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "write_REDM-01",
+      "name": "Write REDM-01 Raw Landing",
+      "type": "n8n-nodes-base.readWriteFile",
+      "position": [
+        760,
+        1610
+      ],
+      "parameters": {
+        "options": {},
+        "fileName": "={{ $json.file_path }}",
+        "operation": "write",
+        "dataPropertyName": "data"
+      },
+      "typeVersion": 1
+    },
+    {
+      "id": "normalize_REDM-01",
+      "name": "Normalize REDM-01 Events",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1010,
+        1610
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst safeJson = (value) => { try { return typeof value === 'string' ? JSON.parse(value) : value; } catch { return null; } };\nconst pickText = (...parts) => parts.filter(Boolean).map(value => typeof value === 'string' ? value : JSON.stringify(value)).join(' | ');\n\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch REDM-01 Alerts').first().json || {};\nconst landing = $('Land REDM-01 Raw Payload').first().json || {};\nconst raw = fetch.body !== undefined ? fetch.body : (landing.body !== undefined ? landing.body : fetch);\nconst rawText = typeof raw === 'string' ? raw : JSON.stringify(raw ?? null);\nconst rawObj = safeJson(rawText);\nconst lkg = ($('Parse Last Known Good').first().json.bySource || {})['05_FLOOD_CONDITIONS:REDM-01'];\nlet events = [];\nlet observations = [];\nlet warnings = [];\nlet errors = [];\nlet sourceHealth;\nlet lastObservationAt = run.generated_at;\nconst liveFailed = !!fetch.error;\nconst liveErrorMessage = liveFailed ? String(fetch.error.message || fetch.error) : '';\n\nif (!liveFailed) {\n  const features = Array.isArray(rawObj?.features) ? rawObj.features : (Array.isArray(rawObj?.records) ? rawObj.records : (Array.isArray(rawObj) ? rawObj : []));\n  for (const feature of features) {\n    const attrs = feature?.attributes || feature || {};\n    const geom = feature?.geometry || {};\n    const text = pickText(attrs.AlertName || attrs.ClosureName || attrs.AlertTitle || attrs.AlertDescription || attrs.LocationDescription || attrs.LocationLimits || attrs.TrafficImpactDescription || attrs.ClosureReason || attrs.GovDeliverySubject || attrs.GovDeliveryMessage);\n    const lower = text.toLowerCase();\n    const routeMatch = [\"flood\",\"standing water\",\"washout\",\"drainage failure\",\"water over roadway\",\"closure\",\"closed\",\"detour\",\"lane closure\",\"road closure\",\"West Lake Sammamish Parkway\",\"NE 24th\"].some(term => lower.includes(term.toLowerCase()));\n    const floodText = /flood|standing water|washout|drainage failure|water over roadway|inundation|high water/.test(lower);\n    if (!routeMatch && !floodText) continue;\n    const isClosure = /closure|closed|detour|lane closure|road closure/.test(lower);\n    const observedAt = attrs.AlertStartDate || attrs.StartTime || attrs.startDate || attrs.LastUpdatedTime || attrs.AlertDate || run.generated_at;\n    const routeImpact = isClosure ? 'confirmed_route_closure' : 'probable_route_impact';\n    events.push({\n      event_id: '05_FLOOD_CONDITIONS:REDM-01:' + String(attrs.AlertID || attrs.GlobalID || attrs.OBJECTID || hashString(pickText(attrs.AlertName || attrs.ClosureName || attrs.AlertTitle, attrs.LocationDescription || attrs.LocationLimits))),\n      event_type: isClosure ? 'closure_confirmation' : 'derived_context',\n      status: String(attrs.AlertStatus || attrs.ClosureState || 'active').toLowerCase(),\n      severity: isClosure ? 'warning' : 'advisory',\n      route_impact: routeImpact,\n      title: attrs.AlertName || attrs.ClosureName || attrs.AlertTitle || 'Flood-related closure supplement',\n      summary: attrs.TrafficImpactDescription || attrs.ClosureReason || attrs.AlertDescription || text,\n      source_id: '05_FLOOD_CONDITIONS:REDM-01',\n      source_event_ref: attrs.AlertID || attrs.OBJECTID || attrs.AlertTitle || attrs.ClosureName || null,\n      observed_at: observedAt,\n      effective_until: attrs.AlertEndDate || attrs.PlannedOpenDate || attrs.EndTime || null,\n      official_category: attrs.AlertStatus || attrs.ClosureState || null,\n      metric: null,\n      location: {\n        name: attrs.LocationDescription || attrs.LocationLimits || attrs.Community || attrs.AlertName || 'Route-relevant location',\n        latitude: geom?.y ?? geom?.latitude ?? null,\n        longitude: geom?.x ?? geom?.longitude ?? null,\n        route_section_ids: [\"06_sammamish_river_trail_redmond\",\"07_marymoor_park\",\"08_east_lake_sammamish_trail_redmond\"]\n      },\n      route_relevance: {\n        method: \"bbox_prefilter_then_intersection\",\n        distance_km: 0.15,\n        confidence: routeMatch ? 'high' : 'medium',\n        reason: \"Redmond closure supplement around West Lake Sammamish Parkway and NE 24th corridor.\"\n      },\n      provenance: {\n        source_url: \"https://gis.redmond.gov/arcgis/rest/services/Traffic/Alerts/FeatureServer/1/query?where=1%3D1&outFields=AlertID,AlertName,LocationDescription,AlertStartDate,AlertEndDate,TrafficImpactDescription,AlertStatus,GovDeliverySubject&returnGeometry=true&f=json\",\n        retrieved_at: run.generated_at,\n        source_record_hash: 'hash_' + hashString(JSON.stringify(feature))\n      }\n    });\n    lastObservationAt = observedAt;\n  }\n  if (!features.length) {\n    warnings.push('ArcGIS payload returned no current features.');\n  }\n}\n\nif (liveFailed) {\n  const lkgRetrievedAt = lkg && lkg.source_health && lkg.source_health.retrieved_at ? Date.parse(lkg.source_health.retrieved_at) : NaN;\n  const lkgStaleAfterMinutes = lkg && lkg.source_health && lkg.source_health.stale_after_minutes !== undefined ? lkg.source_health.stale_after_minutes : 60;\n  const lkgUsable = !!lkg && Number.isFinite(lkgRetrievedAt) && ((Date.now() - lkgRetrievedAt) / 60000) <= lkgStaleAfterMinutes;\n  if (lkgUsable) {\n    events = Array.isArray(lkg.events) ? lkg.events : [];\n    observations = Array.isArray(lkg.observations) ? lkg.observations : [];\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:REDM-01',\n      source_name: \"City of Redmond Traffic Alerts ArcGIS service\",\n      status: 'using_last_known_good',\n      retrieved_at: lkg.source_health.retrieved_at,\n      stale_after_minutes: 60,\n      record_count: events.length + observations.length,\n      http_status: null,\n      last_observation_at: lkg.source_health.last_observation_at ?? lkg.source_health.retrieved_at,\n      warnings: [...(lkg.source_health.warnings || []), 'Live fetch failed; serving last-known-good data retrieved at ' + lkg.source_health.retrieved_at + '.'],\n      errors: [liveErrorMessage]\n    };\n  } else {\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:REDM-01',\n      source_name: \"City of Redmond Traffic Alerts ArcGIS service\",\n      status: 'failed',\n      retrieved_at: run.generated_at,\n      stale_after_minutes: 60,\n      record_count: 0,\n      http_status: fetch.statusCode ?? fetch.status ?? null,\n      last_observation_at: run.generated_at,\n      warnings: ['Live fetch failed and no usable last-known-good snapshot was available.'],\n      errors: [liveErrorMessage]\n    };\n  }\n}\n\n\nif (!sourceHealth) {\n  sourceHealth = {\n    schema_version: '1.0.0',\n    connector_id: run.connector_id,\n    source_id: '05_FLOOD_CONDITIONS:REDM-01',\n    source_name: \"City of Redmond Traffic Alerts ArcGIS service\",\n    status: events.length ? 'ok' : 'empty_but_valid',\n    retrieved_at: run.generated_at,\n    stale_after_minutes: 60,\n    record_count: events.length + observations.length,\n    http_status: fetch.statusCode ?? fetch.status ?? null,\n    last_observation_at: lastObservationAt,\n    warnings: warnings,\n    errors: errors\n  };\n}\n\nreturn [{\n  json: {\n    source_id: '05_FLOOD_CONDITIONS:REDM-01',\n    source_name: \"City of Redmond Traffic Alerts ArcGIS service\",\n    source_health: sourceHealth,\n    events,\n    observations,\n    raw_landing_path: landing.file_path || null,\n    raw_content_hash: landing.content_hash || ('hash_' + hashString(rawText)),\n    warnings,\n    errors: sourceHealth.errors\n  }\n}];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "fetch_KC-ROAD-01",
+      "name": "Fetch KC-ROAD-01 Alerts",
+      "type": "n8n-nodes-base.httpRequest",
+      "notes": "King County RoadAlerts - KingCo_Road_Alerts",
+      "onError": "continueRegularOutput",
+      "position": [
+        220,
+        1780
+      ],
+      "parameters": {
+        "url": "=https://gismaps.kingcounty.gov/arcgis/rest/services/RoadAlerts/KingCo_Road_Alerts/MapServer/0/query?where=1%3D1&outFields=ClosureName,LocationLimits,Community,ClosureReason,ClosureState,PlannedClosedDate,PlannedOpenDate&returnGeometry=true&f=json",
+        "method": "GET",
+        "options": {
+          "timeout": 30000
+        },
+        "responseFormat": "json"
+      },
+      "typeVersion": 4.2
+    },
+    {
+      "id": "land_KC-ROAD-01",
+      "name": "Land KC-ROAD-01 Raw Payload",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        500,
+        1780
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch KC-ROAD-01 Alerts').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyText = typeof body === 'string' ? body : JSON.stringify(body ?? null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyText);\nconst filePath = run.output_root + '/raw/05_FLOOD_CONDITIONS/landings/KC-ROAD-01_landing_' + run.run_stamp + '.json';\nconst landing = {\n  schema_version: '1.0.0',\n  connector_id: run.connector_id,\n  source_id: '05_FLOOD_CONDITIONS:KC-ROAD-01',\n  source_name: 'King County RoadAlerts - KingCo_Road_Alerts',\n  source_url: \"https://gismaps.kingcounty.gov/arcgis/rest/services/RoadAlerts/KingCo_Road_Alerts/MapServer/0/query?where=1%3D1&outFields=ClosureName,LocationLimits,Community,ClosureReason,ClosureState,PlannedClosedDate,PlannedOpenDate&returnGeometry=true&f=json\",\n  retrieved_at: run.generated_at,\n  http_status: statusCode,\n  retrieval_method: \"arcgis_king_county\",\n  content_hash: contentHash,\n  body_length: bodyText.length,\n  fetch_status: fetch.error ? 'failed' : 'ok',\n  body: body\n};\nif (fetch.error) landing.error_message = String(fetch.error.message || fetch.error);\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json: { file_path: filePath, source_id: landing.source_id, source_name: landing.source_name, content_hash: contentHash, retrieved_at: run.generated_at }, binary: { data: binary } }];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "write_KC-ROAD-01",
+      "name": "Write KC-ROAD-01 Raw Landing",
+      "type": "n8n-nodes-base.readWriteFile",
+      "position": [
+        760,
+        1780
+      ],
+      "parameters": {
+        "options": {},
+        "fileName": "={{ $json.file_path }}",
+        "operation": "write",
+        "dataPropertyName": "data"
+      },
+      "typeVersion": 1
+    },
+    {
+      "id": "normalize_KC-ROAD-01",
+      "name": "Normalize KC-ROAD-01 Events",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1010,
+        1780
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst safeJson = (value) => { try { return typeof value === 'string' ? JSON.parse(value) : value; } catch { return null; } };\nconst pickText = (...parts) => parts.filter(Boolean).map(value => typeof value === 'string' ? value : JSON.stringify(value)).join(' | ');\n\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch KC-ROAD-01 Alerts').first().json || {};\nconst landing = $('Land KC-ROAD-01 Raw Payload').first().json || {};\nconst raw = fetch.body !== undefined ? fetch.body : (landing.body !== undefined ? landing.body : fetch);\nconst rawText = typeof raw === 'string' ? raw : JSON.stringify(raw ?? null);\nconst rawObj = safeJson(rawText);\nconst lkg = ($('Parse Last Known Good').first().json.bySource || {})['05_FLOOD_CONDITIONS:KC-ROAD-01'];\nlet events = [];\nlet observations = [];\nlet warnings = [];\nlet errors = [];\nlet sourceHealth;\nlet lastObservationAt = run.generated_at;\nconst liveFailed = !!fetch.error;\nconst liveErrorMessage = liveFailed ? String(fetch.error.message || fetch.error) : '';\n\nif (!liveFailed) {\n  const features = Array.isArray(rawObj?.features) ? rawObj.features : (Array.isArray(rawObj?.records) ? rawObj.records : (Array.isArray(rawObj) ? rawObj : []));\n  for (const feature of features) {\n    const attrs = feature?.attributes || feature || {};\n    const geom = feature?.geometry || {};\n    const text = pickText(attrs.AlertName || attrs.ClosureName || attrs.AlertTitle || attrs.AlertDescription || attrs.LocationDescription || attrs.LocationLimits || attrs.TrafficImpactDescription || attrs.ClosureReason || attrs.GovDeliverySubject || attrs.GovDeliveryMessage);\n    const lower = text.toLowerCase();\n    const routeMatch = [\"flood\",\"standing water\",\"washout\",\"drainage failure\",\"water over roadway\",\"closure\",\"closed\",\"detour\",\"lane closure\",\"road closure\"].some(term => lower.includes(term.toLowerCase()));\n    const floodText = /flood|standing water|washout|drainage failure|water over roadway|inundation|high water/.test(lower);\n    if (!routeMatch && !floodText) continue;\n    const isClosure = /closure|closed|detour|lane closure|road closure/.test(lower);\n    const observedAt = attrs.AlertStartDate || attrs.StartTime || attrs.startDate || attrs.LastUpdatedTime || attrs.AlertDate || run.generated_at;\n    const routeImpact = isClosure ? 'confirmed_route_closure' : 'probable_route_impact';\n    events.push({\n      event_id: '05_FLOOD_CONDITIONS:KC-ROAD-01:' + String(attrs.AlertID || attrs.GlobalID || attrs.OBJECTID || hashString(pickText(attrs.AlertName || attrs.ClosureName || attrs.AlertTitle, attrs.LocationDescription || attrs.LocationLimits))),\n      event_type: isClosure ? 'closure_confirmation' : 'derived_context',\n      status: String(attrs.AlertStatus || attrs.ClosureState || 'active').toLowerCase(),\n      severity: isClosure ? 'warning' : 'advisory',\n      route_impact: routeImpact,\n      title: attrs.AlertName || attrs.ClosureName || attrs.AlertTitle || 'Flood-related closure supplement',\n      summary: attrs.TrafficImpactDescription || attrs.ClosureReason || attrs.AlertDescription || text,\n      source_id: '05_FLOOD_CONDITIONS:KC-ROAD-01',\n      source_event_ref: attrs.AlertID || attrs.OBJECTID || attrs.AlertTitle || attrs.ClosureName || null,\n      observed_at: observedAt,\n      effective_until: attrs.AlertEndDate || attrs.PlannedOpenDate || attrs.EndTime || null,\n      official_category: attrs.AlertStatus || attrs.ClosureState || null,\n      metric: null,\n      location: {\n        name: attrs.LocationDescription || attrs.LocationLimits || attrs.Community || attrs.AlertName || 'Route-relevant location',\n        latitude: geom?.y ?? geom?.latitude ?? null,\n        longitude: geom?.x ?? geom?.longitude ?? null,\n        route_section_ids: [\"05_sammamish_river_trail_bothell_woodinville\",\"06_sammamish_river_trail_redmond\",\"07_marymoor_park\",\"08_east_lake_sammamish_trail_redmond\",\"09_east_lake_sammamish_trail_sammamish\",\"10_issaquah_approach_terminus\"]\n      },\n      route_relevance: {\n        method: \"bbox_prefilter_then_intersection\",\n        distance_km: 0.2,\n        confidence: routeMatch ? 'high' : 'medium',\n        reason: \"Low-probability county-road closure supplement, kept as defense in depth.\"\n      },\n      provenance: {\n        source_url: \"https://gismaps.kingcounty.gov/arcgis/rest/services/RoadAlerts/KingCo_Road_Alerts/MapServer/0/query?where=1%3D1&outFields=ClosureName,LocationLimits,Community,ClosureReason,ClosureState,PlannedClosedDate,PlannedOpenDate&returnGeometry=true&f=json\",\n        retrieved_at: run.generated_at,\n        source_record_hash: 'hash_' + hashString(JSON.stringify(feature))\n      }\n    });\n    lastObservationAt = observedAt;\n  }\n  if (!features.length) {\n    warnings.push('ArcGIS payload returned no current features.');\n  }\n}\n\nif (liveFailed) {\n  const lkgRetrievedAt = lkg && lkg.source_health && lkg.source_health.retrieved_at ? Date.parse(lkg.source_health.retrieved_at) : NaN;\n  const lkgStaleAfterMinutes = lkg && lkg.source_health && lkg.source_health.stale_after_minutes !== undefined ? lkg.source_health.stale_after_minutes : 60;\n  const lkgUsable = !!lkg && Number.isFinite(lkgRetrievedAt) && ((Date.now() - lkgRetrievedAt) / 60000) <= lkgStaleAfterMinutes;\n  if (lkgUsable) {\n    events = Array.isArray(lkg.events) ? lkg.events : [];\n    observations = Array.isArray(lkg.observations) ? lkg.observations : [];\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:KC-ROAD-01',\n      source_name: \"King County RoadAlerts - KingCo_Road_Alerts\",\n      status: 'using_last_known_good',\n      retrieved_at: lkg.source_health.retrieved_at,\n      stale_after_minutes: 60,\n      record_count: events.length + observations.length,\n      http_status: null,\n      last_observation_at: lkg.source_health.last_observation_at ?? lkg.source_health.retrieved_at,\n      warnings: [...(lkg.source_health.warnings || []), 'Live fetch failed; serving last-known-good data retrieved at ' + lkg.source_health.retrieved_at + '.'],\n      errors: [liveErrorMessage]\n    };\n  } else {\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:KC-ROAD-01',\n      source_name: \"King County RoadAlerts - KingCo_Road_Alerts\",\n      status: 'failed',\n      retrieved_at: run.generated_at,\n      stale_after_minutes: 60,\n      record_count: 0,\n      http_status: fetch.statusCode ?? fetch.status ?? null,\n      last_observation_at: run.generated_at,\n      warnings: ['Live fetch failed and no usable last-known-good snapshot was available.'],\n      errors: [liveErrorMessage]\n    };\n  }\n}\n\n\nif (!sourceHealth) {\n  sourceHealth = {\n    schema_version: '1.0.0',\n    connector_id: run.connector_id,\n    source_id: '05_FLOOD_CONDITIONS:KC-ROAD-01',\n    source_name: \"King County RoadAlerts - KingCo_Road_Alerts\",\n    status: events.length ? 'ok' : 'empty_but_valid',\n    retrieved_at: run.generated_at,\n    stale_after_minutes: 60,\n    record_count: events.length + observations.length,\n    http_status: fetch.statusCode ?? fetch.status ?? null,\n    last_observation_at: lastObservationAt,\n    warnings: warnings,\n    errors: errors\n  };\n}\n\nreturn [{\n  json: {\n    source_id: '05_FLOOD_CONDITIONS:KC-ROAD-01',\n    source_name: \"King County RoadAlerts - KingCo_Road_Alerts\",\n    source_health: sourceHealth,\n    events,\n    observations,\n    raw_landing_path: landing.file_path || null,\n    raw_content_hash: landing.content_hash || ('hash_' + hashString(rawText)),\n    warnings,\n    errors: sourceHealth.errors\n  }\n}];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "fetch_WSDOT-01",
+      "name": "Fetch WSDOT-01 Alerts",
+      "type": "n8n-nodes-base.httpRequest",
+      "notes": "WSDOT Traveler Information API - Highway Alerts",
+      "onError": "continueRegularOutput",
+      "position": [
+        220,
+        1950
+      ],
+      "parameters": {
+        "url": "={{ $env.WSDOT_TRAVELER_API_ACCESS_CODE ? 'https://wsdot.wa.gov/Traffic/api/HighwayAlerts/HighwayAlertsREST.svc/GetAlertsAsJson?AccessCode=' + encodeURIComponent($env.WSDOT_TRAVELER_API_ACCESS_CODE) : 'https://wsdot.wa.gov/Traffic/api/HighwayAlerts/HighwayAlertsREST.svc/GetAlertsAsJson' }}",
+        "method": "GET",
+        "options": {
+          "timeout": 30000
+        },
+        "responseFormat": "json"
+      },
+      "typeVersion": 4.2
+    },
+    {
+      "id": "land_WSDOT-01",
+      "name": "Land WSDOT-01 Raw Payload",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        500,
+        1950
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch WSDOT-01 Alerts').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyText = typeof body === 'string' ? body : JSON.stringify(body ?? null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyText);\nconst filePath = run.output_root + '/raw/05_FLOOD_CONDITIONS/landings/WSDOT-01_landing_' + run.run_stamp + '.json';\nconst landing = {\n  schema_version: '1.0.0',\n  connector_id: run.connector_id,\n  source_id: '05_FLOOD_CONDITIONS:WSDOT-01',\n  source_name: 'WSDOT Traveler Information API - Highway Alerts',\n  source_url: null,\n  retrieved_at: run.generated_at,\n  http_status: statusCode,\n  retrieval_method: \"wsdot\",\n  content_hash: contentHash,\n  body_length: bodyText.length,\n  fetch_status: fetch.error ? 'failed' : 'ok',\n  body: body\n};\nif (fetch.error) landing.error_message = String(fetch.error.message || fetch.error);\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json: { file_path: filePath, source_id: landing.source_id, source_name: landing.source_name, content_hash: contentHash, retrieved_at: run.generated_at }, binary: { data: binary } }];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "write_WSDOT-01",
+      "name": "Write WSDOT-01 Raw Landing",
+      "type": "n8n-nodes-base.readWriteFile",
+      "position": [
+        760,
+        1950
+      ],
+      "parameters": {
+        "options": {},
+        "fileName": "={{ $json.file_path }}",
+        "operation": "write",
+        "dataPropertyName": "data"
+      },
+      "typeVersion": 1
+    },
+    {
+      "id": "normalize_WSDOT-01",
+      "name": "Normalize WSDOT-01 Events",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1010,
+        1950
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst safeJson = (value) => { try { return typeof value === 'string' ? JSON.parse(value) : value; } catch { return null; } };\nconst pickText = (...parts) => parts.filter(Boolean).map(value => typeof value === 'string' ? value : JSON.stringify(value)).join(' | ');\n\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch WSDOT-01 Alerts').first().json || {};\nconst landing = $('Land WSDOT-01 Raw Payload').first().json || {};\nconst raw = fetch.body !== undefined ? fetch.body : (landing.body !== undefined ? landing.body : fetch);\nconst rawText = typeof raw === 'string' ? raw : JSON.stringify(raw ?? null);\nconst rawObj = safeJson(rawText);\nconst lkg = ($('Parse Last Known Good').first().json.bySource || {})['05_FLOOD_CONDITIONS:WSDOT-01'];\nlet events = [];\nlet observations = [];\nlet warnings = [];\nlet errors = [];\nlet sourceHealth;\nlet lastObservationAt = run.generated_at;\nconst liveFailed = !!fetch.error;\nconst liveErrorMessage = liveFailed ? String(fetch.error.message || fetch.error) : '';\n\nif (!run.runtime_flags.wsdot_access_code_present) {\n  sourceHealth = {\n    schema_version: '1.0.0',\n    connector_id: run.connector_id,\n    source_id: '05_FLOOD_CONDITIONS:WSDOT-01',\n    source_name: \"WSDOT Traveler Information API - Highway Alerts\",\n    status: 'not_run',\n    retrieved_at: run.generated_at,\n    stale_after_minutes: 60,\n    record_count: 0,\n    http_status: null,\n    last_observation_at: null,\n    warnings: ['WSDOT_TRAVELER_API_ACCESS_CODE is not set; source skipped.'],\n    errors: []\n  };\n} else if (!liveFailed) {\n  const records = Array.isArray(rawObj) ? rawObj : (Array.isArray(rawObj?.alerts) ? rawObj.alerts : (Array.isArray(rawObj?.value) ? rawObj.value : []));\n  for (const record of records) {\n    const text = pickText(record.AlertID || record.HeadlineDescription || record.EventCategory || record.EventStatus || record.County || record.StartTime || record.EndTime || record.Description);\n    const lower = text.toLowerCase();\n    if (!/sr-522|i-405|road|highway|detour|closure|flood|water|washout|drainage/.test(lower)) continue;\n    const observedAt = record.LastUpdatedTime || record.StartTime || run.generated_at;\n    const routeImpact = /closure|detour/.test(lower) ? 'confirmed_route_closure' : 'probable_route_impact';\n    events.push({\n      event_id: '05_FLOOD_CONDITIONS:WSDOT-01:' + String(record.AlertID || hashString(pickText(record.HeadlineDescription || record.EventCategory, record.County))),\n      event_type: 'closure_confirmation',\n      status: String(record.EventStatus || 'active').toLowerCase(),\n      severity: /severe|major|warning/.test(lower) ? 'warning' : 'watch',\n      route_impact: routeImpact,\n      title: record.HeadlineDescription || record.EventCategory || 'WSDOT highway alert',\n      summary: pickText(record.HeadlineDescription || '', record.Description || '', record.County || ''),\n      source_id: '05_FLOOD_CONDITIONS:WSDOT-01',\n      source_event_ref: record.AlertID || null,\n      observed_at: observedAt,\n      effective_until: record.EndTime || null,\n      official_category: record.EventCategory || null,\n      metric: null,\n      location: {\n        name: record.County || 'WSDOT highway segment',\n        latitude: null,\n        longitude: null,\n        route_section_ids: [\"03_burke_gilman_north_lake_wa_kenmore\",\"04_burke_gilman_connector_bothell\",\"05_sammamish_river_trail_bothell_woodinville\",\"06_sammamish_river_trail_redmond\",\"07_marymoor_park\",\"08_east_lake_sammamish_trail_redmond\",\"09_east_lake_sammamish_trail_sammamish\"]\n      },\n      route_relevance: {\n        method: \"roadway_match\",\n        distance_km: 0,\n        confidence: 'medium',\n        reason: \"State highway crossing and detour supplement only.\"\n      },\n      provenance: {\n        source_url: 'https://wsdot.wa.gov/Traffic/api/HighwayAlerts/HighwayAlertsREST.svc/GetAlertsAsJson',\n        retrieved_at: run.generated_at,\n        source_record_hash: 'hash_' + hashString(JSON.stringify(record))\n      }\n    });\n    lastObservationAt = observedAt;\n  }\n  if (!records.length) {\n    warnings.push('WSDOT returned a valid empty array.');\n  }\n}\n\nif (liveFailed) {\n  const lkgRetrievedAt = lkg && lkg.source_health && lkg.source_health.retrieved_at ? Date.parse(lkg.source_health.retrieved_at) : NaN;\n  const lkgStaleAfterMinutes = lkg && lkg.source_health && lkg.source_health.stale_after_minutes !== undefined ? lkg.source_health.stale_after_minutes : 60;\n  const lkgUsable = !!lkg && Number.isFinite(lkgRetrievedAt) && ((Date.now() - lkgRetrievedAt) / 60000) <= lkgStaleAfterMinutes;\n  if (lkgUsable) {\n    events = Array.isArray(lkg.events) ? lkg.events : [];\n    observations = Array.isArray(lkg.observations) ? lkg.observations : [];\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:WSDOT-01',\n      source_name: \"WSDOT Traveler Information API - Highway Alerts\",\n      status: 'using_last_known_good',\n      retrieved_at: lkg.source_health.retrieved_at,\n      stale_after_minutes: 60,\n      record_count: events.length + observations.length,\n      http_status: null,\n      last_observation_at: lkg.source_health.last_observation_at ?? lkg.source_health.retrieved_at,\n      warnings: [...(lkg.source_health.warnings || []), 'Live fetch failed; serving last-known-good data retrieved at ' + lkg.source_health.retrieved_at + '.'],\n      errors: [liveErrorMessage]\n    };\n  } else {\n    sourceHealth = {\n      schema_version: '1.0.0',\n      connector_id: run.connector_id,\n      source_id: '05_FLOOD_CONDITIONS:WSDOT-01',\n      source_name: \"WSDOT Traveler Information API - Highway Alerts\",\n      status: 'failed',\n      retrieved_at: run.generated_at,\n      stale_after_minutes: 60,\n      record_count: 0,\n      http_status: fetch.statusCode ?? fetch.status ?? null,\n      last_observation_at: run.generated_at,\n      warnings: ['Live fetch failed and no usable last-known-good snapshot was available.'],\n      errors: [liveErrorMessage]\n    };\n  }\n}\n\n\nif (!sourceHealth) {\n  sourceHealth = {\n    schema_version: '1.0.0',\n    connector_id: run.connector_id,\n    source_id: '05_FLOOD_CONDITIONS:WSDOT-01',\n    source_name: \"WSDOT Traveler Information API - Highway Alerts\",\n    status: events.length ? 'ok' : 'empty_but_valid',\n    retrieved_at: run.generated_at,\n    stale_after_minutes: 60,\n    record_count: events.length + observations.length,\n    http_status: fetch.statusCode ?? fetch.status ?? null,\n    last_observation_at: lastObservationAt,\n    warnings: warnings,\n    errors: errors\n  };\n}\n\nreturn [{\n  json: {\n    source_id: '05_FLOOD_CONDITIONS:WSDOT-01',\n    source_name: \"WSDOT Traveler Information API - Highway Alerts\",\n    source_health: sourceHealth,\n    events,\n    observations,\n    raw_landing_path: landing.file_path || null,\n    raw_content_hash: landing.content_hash || ('hash_' + hashString(rawText)),\n    warnings,\n    errors: sourceHealth.errors\n  }\n}];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "merge_normalized_branches",
+      "name": "Merge Normalized Branches",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        1260,
+        760
+      ],
+      "parameters": {
+        "numberInputs": 10
+      },
+      "typeVersion": 3.1
+    },
+    {
+      "id": "aggregate_normalized_branches",
+      "name": "Aggregate Normalized Branches",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1520,
+        760
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst run = $('Initialize Run Metadata').first().json;\nconst inputs = $input.all().map(item => item.json || {});\nconst events = inputs.flatMap(item => Array.isArray(item.events) ? item.events : []);\nconst observations = inputs.flatMap(item => Array.isArray(item.observations) ? item.observations : []);\nconst sourceHealth = inputs.map(item => item.source_health).filter(Boolean);\nconst sourceWarnings = inputs.flatMap(item => Array.isArray(item.warnings) ? item.warnings : []);\nconst sourceErrors = inputs.flatMap(item => Array.isArray(item.errors) ? item.errors : []);\nconst sourceIds = inputs.map(item => item.source_id).filter(Boolean);\nconst sourcePayloadRefs = inputs.map(item => item.raw_landing_path).filter(Boolean);\nreturn [{\n  json: {\n    schema_version: run.schema_version,\n    connector_id: run.connector_id,\n    connector_name: run.connector_name,\n    connector_version: run.connector_version,\n    lane: run.lane,\n    run_id: run.run_id,\n    run_stamp: run.run_stamp,\n    generated_at: run.generated_at,\n    published_at: null,\n    output_root: run.output_root,\n    canonical_gpx: run.canonical_gpx,\n    manifest_ref: run.manifest_ref,\n    route_sections: run.route_sections,\n    source_health: sourceHealth,\n    events: events,\n    observations: observations,\n    provenance: {\n      source_ids_used: sourceIds,\n      route_gpx_ref: run.canonical_gpx,\n      source_payload_refs: sourcePayloadRefs,\n      normalization_notes: sourceWarnings.length ? sourceWarnings : ['Normalized from live source branches.']\n    },\n    source_warnings: sourceWarnings,\n    source_errors: sourceErrors,\n    source_items: inputs\n  }\n}];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "deduplicate_events",
+      "name": "Deduplicate Events",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1760,
+        760
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst input = $input.first().json;\nconst seen = new Map();\nconst deduplicatedEvents = [];\nconst duplicateEvents = [];\nfor (const event of input.events || []) {\n  const key = [\n    event.source_id,\n    event.event_type,\n    event.status,\n    event.summary,\n    event.source_event_ref || '',\n    event.observed_at || '',\n    event.effective_until || ''\n  ].join('|');\n  if (seen.has(key)) {\n    duplicateEvents.push(event);\n    continue;\n  }\n  seen.set(key, true);\n  deduplicatedEvents.push(event);\n}\nconst seenObs = new Map();\nconst deduplicatedObservations = [];\nconst duplicateObservations = [];\nfor (const observation of input.observations || []) {\n  const key = [\n    observation.source_id,\n    observation.observation_type,\n    observation.title,\n    observation.observed_at || ''\n  ].join('|');\n  if (seenObs.has(key)) {\n    duplicateObservations.push(observation);\n    continue;\n  }\n  seenObs.set(key, true);\n  deduplicatedObservations.push(observation);\n}\nreturn [{ json: { ...input, events_before_dedup: (input.events || []).length, deduplicated_events: deduplicatedEvents, duplicate_events: duplicateEvents, observations_before_dedup: (input.observations || []).length, deduplicated_observations: deduplicatedObservations, duplicate_observations: duplicateObservations, dedup_valid: true } }];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "build_route_sections",
+      "name": "Build Route Sections Rollups",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        2000,
+        760
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst input = $input.first().json;\nconst sectionMap = {};\nfor (const [route_section_id, route_section_name] of [[\"01_uw_u_district\",\"UW / U-District\"],[\"02_burke_gilman_seattle\",\"Burke-Gilman - Seattle\"],[\"03_burke_gilman_north_lake_wa_kenmore\",\"Burke-Gilman - north Lake WA/Kenmore\"],[\"04_burke_gilman_connector_bothell\",\"Burke-Gilman/connector - Bothell\"],[\"05_sammamish_river_trail_bothell_woodinville\",\"Sammamish River Trail - Bothell/Woodinville\"],[\"06_sammamish_river_trail_redmond\",\"Sammamish River Trail - Redmond\"],[\"07_marymoor_park\",\"Marymoor Park\"],[\"08_east_lake_sammamish_trail_redmond\",\"East Lake Sammamish Trail - Redmond\"],[\"09_east_lake_sammamish_trail_sammamish\",\"East Lake Sammamish Trail - Sammamish\"],[\"10_issaquah_approach_terminus\",\"Issaquah approach / terminus\"]]) {\n  sectionMap[route_section_id] = {\n    route_section_id,\n    route_section_name,\n    status: 'no_current_events',\n    event_ids: [],\n    observation_ids: [],\n    updated_at: input.generated_at\n  };\n}\nconst records = [\n  ...(input.deduplicated_events || []).map(item => ({ ...item, kind: 'event' })),\n  ...(input.deduplicated_observations || []).map(item => ({ ...item, kind: 'observation' }))\n];\nfor (const record of records) {\n  const sectionIds = Array.isArray(record.route_section_ids) ? record.route_section_ids : Array.isArray(record.route_sections) ? record.route_sections : [];\n  for (const sectionId of sectionIds) {\n    const section = sectionMap[sectionId];\n    if (!section) continue;\n    section.updated_at = input.generated_at;\n    if (record.kind === 'event') {\n      section.event_ids.push(record.event_id);\n      if (record.route_impact === 'confirmed_route_closure') {\n        section.status = 'active_closure';\n      } else if (['observed_flooding', 'forecast_flooding', 'probable_route_impact', 'warning'].includes(record.route_impact) && section.status !== 'active_closure') {\n        section.status = 'watch';\n      } else if (record.route_impact === 'elevated_water' && section.status === 'no_current_events') {\n        section.status = 'monitoring';\n      }\n    } else {\n      section.observation_ids.push(record.observation_id);\n      if (section.status === 'no_current_events') {\n        section.status = 'monitoring';\n      }\n    }\n  }\n}\nreturn [{ json: { ...input, route_sections: Object.values(sectionMap) } }];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "validate_candidate_envelope",
+      "name": "Validate Candidate Envelope",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        2240,
+        760
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst input = $input.first().json;\nconst errors = [];\nconst warnings = [];\nconst requiredRootFields = ['schema_version', 'connector_id', 'connector_name', 'connector_version', 'lane', 'run_id', 'generated_at', 'output_root', 'canonical_gpx', 'manifest_ref'];\nfor (const field of requiredRootFields) {\n  if (!(field in input) || input[field] === null || input[field] === undefined || input[field] === '') errors.push('Missing required root field: ' + field);\n}\nif (!Array.isArray(input.source_health)) errors.push('source_health must be an array');\nif (!Array.isArray(input.deduplicated_events)) errors.push('deduplicated_events must be an array');\nif (!Array.isArray(input.deduplicated_observations)) errors.push('deduplicated_observations must be an array');\nif (!Array.isArray(input.route_sections)) errors.push('route_sections must be an array');\nconst allowedSourceStatuses = ['ok', 'degraded', 'failed', 'stale', 'blocked', 'not_run', 'skipped_as_not_due', 'empty_but_valid', 'using_last_known_good'];\nconst allowedEventTypes = ['gauge_observation', 'gauge_forecast', 'nws_alert', 'closure_confirmation', 'policy_threshold', 'derived_context'];\nconst allowedEventStatuses = ['active', 'monitoring', 'scheduled', 'resolved', 'expired'];\nconst allowedSeverities = ['info', 'advisory', 'watch', 'warning', 'severe'];\nconst allowedRouteImpact = ['no_known_route_impact', 'elevated_water', 'watch', 'probable_route_impact', 'forecast_flooding', 'observed_flooding', 'warning', 'confirmed_route_closure'];\nfor (const event of input.deduplicated_events || []) {\n  const fields = ['event_id', 'event_type', 'status', 'severity', 'route_impact', 'title', 'summary', 'source_id', 'observed_at', 'location', 'route_relevance', 'provenance'];\n  for (const field of fields) {\n    if (!(field in event) || event[field] === null || event[field] === undefined || event[field] === '') {\n      errors.push('Event missing required field: ' + field + ' (' + (event.event_id || 'unknown') + ')');\n    }\n  }\n  if (!allowedEventTypes.includes(event.event_type)) errors.push('Invalid event_type: ' + event.event_type + ' (' + event.event_id + ')');\n  if (!allowedEventStatuses.includes(event.status)) errors.push('Invalid event status: ' + event.status + ' (' + event.event_id + ')');\n  if (!allowedSeverities.includes(event.severity)) errors.push('Invalid event severity: ' + event.severity + ' (' + event.event_id + ')');\n  if (!allowedRouteImpact.includes(event.route_impact)) errors.push('Invalid route_impact: ' + event.route_impact + ' (' + event.event_id + ')');\n}\nfor (const obs of input.deduplicated_observations || []) {\n  const fields = ['observation_id', 'observation_type', 'title', 'summary', 'source_id', 'observed_at'];\n  for (const field of fields) {\n    if (!(field in obs) || obs[field] === null || obs[field] === undefined || obs[field] === '') {\n      errors.push('Observation missing required field: ' + field + ' (' + (obs.observation_id || 'unknown') + ')');\n    }\n  }\n}\nfor (const source of input.source_health || []) {\n  const fields = ['schema_version', 'connector_id', 'source_id', 'source_name', 'status', 'retrieved_at', 'stale_after_minutes', 'record_count', 'http_status', 'last_observation_at', 'warnings', 'errors'];\n  for (const field of fields) {\n    if (!(field in source) || source[field] === undefined) {\n      errors.push('Source health missing field: ' + field + ' (' + (source.source_id || 'unknown') + ')');\n    }\n  }\n  if (source.status && !allowedSourceStatuses.includes(source.status)) {\n    errors.push('Invalid source health status: ' + source.status + ' (' + (source.source_id || 'unknown') + ')');\n  }\n}\nconst candidateValidationPassed = errors.length === 0;\nif (!candidateValidationPassed) warnings.push('Validation failed; candidate will be quarantined and published output suppressed.');\nreturn [{ json: { ...input, validation_errors: errors, validation_warnings: warnings, candidate_validation_passed: candidateValidationPassed, validator_version: '1.0.0', validation_state: { schema_valid: candidateValidationPassed, freshness_valid: candidateValidationPassed, dedup_valid: true, published_from_candidate: false, validator_version: '1.0.0' } } }];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "build_candidate_artifact",
+      "name": "Build Candidate Artifact",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        2480,
+        760
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst input = $input.first().json;\nconst sourceStatuses = (input.source_health || []).map(source => source.status);\nconst anyFailed = sourceStatuses.some(status => status === 'failed');\nconst anyStale = sourceStatuses.some(status => status === 'stale' || status === 'using_last_known_good');\nconst anyLkg = sourceStatuses.some(status => status === 'using_last_known_good');\nconst allFailed = (input.source_health || []).length > 0 && sourceStatuses.every(status => status === 'failed');\nconst allLkg = sourceStatuses.length > 0 && sourceStatuses.every(status => status === 'using_last_known_good');\nconst hasEvents = (input.deduplicated_events || []).length > 0;\nlet dataStatus = 'ok';\nif (!input.candidate_validation_passed) dataStatus = 'failed_validation'; else if (allFailed) dataStatus = 'failed_fetch'; else if (allLkg) dataStatus = 'using_last_known_good'; else if (!hasEvents && !anyFailed && !anyStale) dataStatus = 'no_relevant_events'; else if (anyFailed || anyStale) dataStatus = 'degraded';\nconst freshnessState = allFailed ? 'unknown' : (anyFailed || anyStale ? 'stale' : 'fresh');\nconst staleSourceIds = (input.source_health || []).filter(source => source.status === 'stale' || source.status === 'using_last_known_good').map(source => source.source_id);\nconst oldestRelevantAgeMinutes = (() => {\n  const ages = (input.source_health || []).map(source => {\n    const ts = Date.parse(source.retrieved_at || '');\n    return Number.isFinite(ts) ? Math.max(0, Math.round((Date.parse(input.generated_at) - ts) / 60000)) : null;\n  }).filter(value => value !== null);\n  return ages.length ? Math.max(...ages) : 0;\n})();\nconst candidateEnvelope = {\n  schema_version: input.schema_version,\n  connector_id: input.connector_id,\n  connector_name: input.connector_name,\n  connector_version: input.connector_version,\n  lane: input.lane,\n  run_id: input.run_id,\n  generated_at: input.generated_at,\n  published_at: null,\n  data_status: dataStatus,\n  freshness: {\n    overall_state: freshnessState,\n    computed_at: input.generated_at,\n    oldest_relevant_source_age_minutes: oldestRelevantAgeMinutes,\n    stale_source_ids: staleSourceIds\n  },\n  manifest_ref: input.manifest_ref,\n  source_health: input.source_health || [],\n  connector_health: {\n    schema_version: '1.0.0',\n    connector_id: input.connector_id,\n    status: input.candidate_validation_passed ? (anyFailed || anyStale ? 'degraded' : 'ok') : 'failed',\n    failed_stage: input.candidate_validation_passed ? null : 'validation',\n    warning_count: (input.validation_warnings || []).length + (input.source_warnings || []).length,\n    error_count: (input.validation_errors || []).length + (input.source_errors || []).length,\n    used_last_known_good: anyLkg,\n    candidate_written: true,\n    published_written: false\n  },\n  events: input.deduplicated_events || [],\n  observations: input.deduplicated_observations || [],\n  route_sections: input.route_sections || [],\n  provenance: {\n    source_ids_used: (input.source_health || []).map(source => source.source_id),\n    route_gpx_ref: input.canonical_gpx,\n    source_payload_refs: (input.source_items || []).map(item => item.raw_landing_path).filter(Boolean),\n    normalization_notes: (input.validation_warnings || []).concat(input.source_warnings || [])\n  },\n  validation_state: {\n    schema_valid: input.candidate_validation_passed,\n    freshness_valid: freshnessState !== 'unknown',\n    dedup_valid: input.dedup_valid !== false,\n    candidate_validation_passed: input.candidate_validation_passed,\n    published_from_candidate: false,\n    validator_version: input.validator_version || '1.0.0'\n  },\n  metadata: {\n    coverage_limitations: input.coverage_limitations || [],\n    optional_sources_not_run: (input.source_health || []).filter(source => source.status === 'not_run').map(source => source.source_id),\n    stale_data_fields: staleSourceIds,\n    source_warnings: input.source_warnings || [],\n    source_errors: input.source_errors || []\n  }\n};\nconst normalizedPath = input.output_root + '/normalized/05_FLOOD_CONDITIONS/05_FLOOD_CONDITIONS_normalized_output_' + input.run_stamp + '.json';\nconst candidatePath = input.output_root + '/candidate/05_FLOOD_CONDITIONS/05_FLOOD_CONDITIONS_candidate_' + input.run_stamp + '.json';\nconst normalizedBuffer = Buffer.from(JSON.stringify(candidateEnvelope, null, 2), 'utf8');\nconst candidateBuffer = Buffer.from(JSON.stringify(candidateEnvelope, null, 2), 'utf8');\nconst normalizedBinary = await this.helpers.prepareBinaryData(normalizedBuffer, normalizedPath.split('/').pop(), 'application/json');\nconst candidateBinary = await this.helpers.prepareBinaryData(candidateBuffer, candidatePath.split('/').pop(), 'application/json');\nreturn [\n  { json: { file_path: normalizedPath, file_name: normalizedPath.split('/').pop(), artifact_type: 'normalized', candidate_envelope: candidateEnvelope }, binary: { data: normalizedBinary } },\n  { json: { file_path: candidatePath, file_name: candidatePath.split('/').pop(), artifact_type: 'candidate', candidate_envelope: candidateEnvelope }, binary: { data: candidateBinary } }\n];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "write_candidate_artifact",
+      "name": "Write Candidate Artifact",
+      "type": "n8n-nodes-base.readWriteFile",
+      "position": [
+        2720,
+        760
+      ],
+      "parameters": {
+        "options": {},
+        "fileName": "={{ $json.file_path }}",
+        "operation": "write",
+        "dataPropertyName": "data"
+      },
+      "typeVersion": 1
+    },
+    {
+      "id": "publish_gate_decision",
+      "name": "Publish Gate Decision",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        2960,
+        760
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst candidate = $('Build Candidate Artifact').first().json.candidate_envelope;\nconst validation = $('Validate Candidate Envelope').first().json;\nconst shouldPublish = !!validation.candidate_validation_passed;\nconst reason = shouldPublish ? 'Validation passed' : 'Validation failed: ' + (validation.validation_errors || []).join('; ');\nreturn [{ json: { should_publish: shouldPublish, reason, candidate_envelope: candidate, validation_errors: validation.validation_errors || [], validation_warnings: validation.validation_warnings || [], run_id: validation.run_id, run_stamp: validation.run_stamp, output_root: validation.output_root, connector_id: validation.connector_id, connector_name: validation.connector_name, connector_version: validation.connector_version, lane: validation.lane, generated_at: validation.generated_at, source_health: validation.source_health || [], deduplicated_events: validation.deduplicated_events || [], deduplicated_observations: validation.deduplicated_observations || [], route_sections: validation.route_sections || [], freshness: validation.freshness || null, provenance: validation.provenance || null } }];\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "build_final_artifact_bundle",
+      "name": "Build Final Artifact Bundle",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        3200,
+        760
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst gate = $input.first().json;\nconst candidateEnvelope = gate.candidate_envelope || $('Build Candidate Artifact').first().json.candidate_envelope;\nconst runStamp = gate.run_stamp || candidateEnvelope.generated_at.replace(/[-:]/g, '').replace(/\\.\\d{3}Z$/, 'Z');\nconst now = new Date().toISOString();\nconst outputRoot = gate.output_root || '/files/uw-issy-connectors';\nconst runId = gate.run_id || candidateEnvelope.run_id;\nconst publishedPath = outputRoot + '/published/05_FLOOD_CONDITIONS/05_FLOOD_CONDITIONS_published_' + runStamp + '.json';\nconst publishedCurrentPath = outputRoot + '/published/05_FLOOD_CONDITIONS/current.json';\nconst lkgCurrentPath = outputRoot + '/last_known_good/05_FLOOD_CONDITIONS/current.json';\nconst lkgArchivePath = outputRoot + '/last_known_good/05_FLOOD_CONDITIONS/archive/' + runStamp + '.json';\nconst validationLogPath = outputRoot + '/logs/05_FLOOD_CONDITIONS/validation_log_' + runStamp + '.jsonl';\nconst statusPath = outputRoot + '/health/05_FLOOD_CONDITIONS/status.json';\nconst statusArchivePath = outputRoot + '/health/05_FLOOD_CONDITIONS/status_' + runStamp + '.json';\nconst executionEvidencePath = outputRoot + '/health/05_FLOOD_CONDITIONS/execution_evidence_' + runStamp + '.json';\nconst handoffPath = outputRoot + '/handoff/05_FLOOD_CONDITIONS/05_FLOOD_CONDITIONS_handoff_' + runStamp + '.json';\nconst quarantinePath = outputRoot + '/health/05_FLOOD_CONDITIONS/quarantine_' + runStamp + '.json';\nconst validationErrors = gate.validation_errors || [];\nconst validationWarnings = gate.validation_warnings || [];\nconst sourceHealth = gate.source_health || [];\nconst sourceStatuses = sourceHealth.map(source => source.status);\nconst anyFailed = sourceStatuses.some(status => status === 'failed');\nconst anyStale = sourceStatuses.some(status => status === 'stale' || status === 'using_last_known_good');\nconst anyLkg = sourceStatuses.some(status => status === 'using_last_known_good');\nconst allFailed = sourceHealth.length > 0 && sourceStatuses.every(status => status === 'failed');\nconst allLkg = sourceStatuses.length > 0 && sourceStatuses.every(status => status === 'using_last_known_good');\nconst hasEvents = (gate.deduplicated_events || []).length > 0;\nconst publishedArtifactRef = gate.should_publish ? publishedPath : null;\nconst statusValue = gate.should_publish ? (anyFailed || anyStale ? 'degraded' : 'ok') : (validationErrors.length ? 'failed' : (allFailed ? 'failed' : 'degraded'));\nlet dataStatus = 'ok';\nif (allFailed) dataStatus = 'failed_fetch'; else if (allLkg) dataStatus = 'using_last_known_good'; else if (!hasEvents && !anyFailed && !anyStale) dataStatus = 'no_relevant_events'; else if (anyFailed || anyStale) dataStatus = 'degraded';\nconst publishedEnvelope = gate.should_publish ? {\n  ...candidateEnvelope,\n  published_at: now,\n  data_status: dataStatus,\n  connector_health: {\n    ...candidateEnvelope.connector_health,\n    status: anyFailed || anyStale ? 'degraded' : 'ok',\n    failed_stage: null,\n    candidate_written: true,\n    published_written: true,\n    used_last_known_good: anyLkg\n  },\n  validation_state: {\n    ...candidateEnvelope.validation_state,\n    candidate_validation_passed: true,\n    published_from_candidate: true\n  },\n  freshness: {\n    ...candidateEnvelope.freshness,\n    overall_state: anyFailed || anyStale ? 'stale' : 'fresh',\n    computed_at: now\n  }\n} : null;\nconst statusDoc = {\n  lane_id: '05_FLOOD_CONDITIONS',\n  last_fetch_at: gate.generated_at || candidateEnvelope.generated_at,\n  last_success_at: gate.should_publish ? now : null,\n  status: statusValue,\n  source_health: sourceHealth,\n  error_messages: validationErrors.concat(gate.source_errors || []),\n  stale_data_fields: (gate.freshness && gate.freshness.stale_source_ids) || sourceHealth.filter(source => source.status === 'stale' || source.status === 'using_last_known_good').map(source => source.source_id),\n  published_artifact_ref: publishedArtifactRef,\n  last_known_good_ref: lkgCurrentPath\n};\nconst handoffDoc = {\n  schema_version: '1.0.0',\n  connector_id: gate.connector_id,\n  lane: gate.lane || candidateEnvelope.lane,\n  run_id: runId,\n  handoff_generated_at: now,\n  connector_output_path: gate.should_publish ? publishedPath : quarantinePath,\n  manifest_path: '/files/uw-issy-connectors/manifests/05_FLOOD_CONDITIONS/05_FLOOD_CONDITIONS_manifest_v0002.json',\n  validation_result_path: statusPath,\n  execution_evidence_path: executionEvidencePath,\n  publication_status: gate.should_publish ? 'published' : 'quarantined',\n  data_status: gate.should_publish ? dataStatus : candidateEnvelope.data_status,\n  uses_last_known_good: anyLkg,\n  schema_compatible_with_workflow_08: !!gate.should_publish,\n  source_ids_used: (gate.source_health || []).map(source => source.source_id),\n  route_sections: gate.route_sections || []\n};\nconst artifactPayloads = [];\nconst makeBinaryItem = async (filePath, payload, artifactType, mime = 'application/json') => {\n  const text = typeof payload === 'string' ? payload : JSON.stringify(payload, null, 2);\n  const buffer = Buffer.from(text, 'utf8');\n  const binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), mime);\n  return { json: { file_path: filePath, file_name: filePath.split('/').pop(), artifact_type: artifactType, content_hash: 'hash_' + hashString(text) }, binary: { data: binary } };\n};\nconst evidencePayload = {\n  schema_version: '1.0.0',\n  connector_id: gate.connector_id,\n  run_id: runId,\n  workflow_name: 'v02.UWI_LANE05',\n  workflow_internal_id: '4RiNqOKD9BCZFH6P',\n  execution_id: 'pending_n8n_execution_id',\n  connector_version: gate.connector_version || 'v0001',\n  started_at: candidateEnvelope.generated_at,\n  finished_at: now,\n  result: gate.should_publish ? 'success' : 'failed',\n  artifacts: [],\n  promotion_scope: gate.should_publish ? 'candidate_and_published' : 'none',\n  candidate_generated: true,\n  published_generated: !!gate.should_publish\n};\nconst files = [];\nif (gate.should_publish && publishedEnvelope) {\n  const publishedText = JSON.stringify(publishedEnvelope, null, 2);\n  const publishedHash = 'hash_' + hashString(publishedText);\n  evidencePayload.artifacts.push({ path: publishedPath, sha256: publishedHash });\n  evidencePayload.artifacts.push({ path: publishedCurrentPath, sha256: publishedHash });\n  evidencePayload.artifacts.push({ path: lkgCurrentPath, sha256: publishedHash });\n  evidencePayload.artifacts.push({ path: lkgArchivePath, sha256: publishedHash });\n  files.push(await makeBinaryItem(publishedPath, publishedEnvelope, 'published'));\n  files.push(await makeBinaryItem(publishedCurrentPath, { run_id: runId, artifact: publishedPath }, 'published_current'));\n  files.push(await makeBinaryItem(lkgCurrentPath, publishedEnvelope, 'last_known_good_current'));\n  files.push(await makeBinaryItem(lkgArchivePath, publishedEnvelope, 'last_known_good_archive'));\n  files.push(await makeBinaryItem(statusPath, statusDoc, 'status'));\n  files.push(await makeBinaryItem(statusArchivePath, statusDoc, 'status_archive'));\n} else {\n  const quarantineEnvelope = {\n    run_id: runId,\n    reason: gate.reason,\n    validation_errors: validationErrors,\n    validation_warnings: validationWarnings,\n    candidate_envelope: candidateEnvelope\n  };\n  evidencePayload.artifacts.push({ path: quarantinePath, sha256: 'hash_' + hashString(JSON.stringify(quarantineEnvelope, null, 2)) });\n  files.push(await makeBinaryItem(quarantinePath, quarantineEnvelope, 'quarantine'));\n  files.push(await makeBinaryItem(statusPath, statusDoc, 'status'));\n  files.push(await makeBinaryItem(statusArchivePath, statusDoc, 'status_archive'));\n}\nconst validationLogLines = [];\nfor (const source of sourceHealth) {\n  validationLogLines.push(JSON.stringify({\n    source_id: source.source_id,\n    check_name: 'source_health',\n    pass_fail: source.status === 'failed' ? 'fail' : 'pass',\n    message: source.status + ' / ' + source.record_count + ' record(s)',\n    timestamp: gate.generated_at || candidateEnvelope.generated_at\n  }));\n}\nvalidationLogLines.push(JSON.stringify({\n  source_id: 'CONNECTOR',\n  check_name: 'candidate_schema',\n  pass_fail: gate.should_publish ? 'pass' : 'fail',\n  message: gate.should_publish ? 'Candidate passed validation.' : (validationErrors.join('; ') || 'Validation failed.'),\n  timestamp: gate.generated_at || candidateEnvelope.generated_at\n}));\nvalidationLogLines.push(JSON.stringify({\n  source_id: 'CONNECTOR',\n  check_name: 'publish_gate',\n  pass_fail: gate.should_publish ? 'pass' : 'fail',\n  message: gate.should_publish ? 'Candidate promoted to published.' : gate.reason,\n  timestamp: now\n}));\nfiles.push(await makeBinaryItem(validationLogPath, validationLogLines.join('\\n'), 'validation_log', 'text/plain'));\nfiles.push(await makeBinaryItem(executionEvidencePath, evidencePayload, 'execution_evidence'));\nfiles.push(await makeBinaryItem(handoffPath, handoffDoc, 'handoff'));\nreturn files;\n"
+      },
+      "typeVersion": 2
+    },
+    {
+      "id": "write_final_artifacts",
+      "name": "Write Final Artifacts",
+      "type": "n8n-nodes-base.readWriteFile",
+      "position": [
+        3440,
+        760
+      ],
+      "parameters": {
+        "options": {},
+        "fileName": "={{ $json.file_path }}",
+        "operation": "write",
+        "dataPropertyName": "data"
+      },
+      "typeVersion": 1
+    },
+    {
+      "id": "final_status_report",
+      "name": "Final Status Report",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        3680,
+        760
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst gate = $('Publish Gate Decision').first().json;\nconst bundleItems = $('Build Final Artifact Bundle').all();\nconst candidate = $('Build Candidate Artifact').first().json.candidate_envelope;\nconst sourceHealth = Array.isArray(gate.source_health) ? gate.source_health : (Array.isArray(candidate.source_health) ? candidate.source_health : []);\nconst sourceStatuses = sourceHealth.map(source => source.status);\nconst failedSourceCount = sourceStatuses.filter(status => status === 'failed').length;\nconst usingLastKnownGood = sourceStatuses.includes('using_last_known_good') || !!(candidate.connector_health && candidate.connector_health.used_last_known_good);\nconst staleOrDegraded = sourceStatuses.some(status => ['failed', 'stale', 'degraded', 'using_last_known_good'].includes(status));\nconst dataStatus = gate.data_status || candidate.data_status || 'unknown';\nconst runStamp = gate.run_stamp || (candidate.generated_at || '').replace(/[-:]/g, '').replace(/.d{3}Z$/, 'Z');\nconst outputRoot = gate.output_root || '/files/uw-issy-connectors';\nconst publishedPath = gate.should_publish ? outputRoot + '/published/05_FLOOD_CONDITIONS/05_FLOOD_CONDITIONS_published_' + runStamp + '.json' : null;\nconst artifactTypes = bundleItems.map(item => item.json && item.json.artifact_type).filter(Boolean);\nlet status = 'FAILED';\nif (gate.should_publish) status = (staleOrDegraded || usingLastKnownGood || ['degraded', 'using_last_known_good', 'failed_fetch', 'stale'].includes(dataStatus)) ? 'DEGRADED' : 'PASSED';\nconst events = Array.isArray(candidate.events) ? candidate.events : [];\nconst observations = Array.isArray(candidate.observations) ? candidate.observations : [];\nreturn [{ json: {\n  run_id: gate.run_id || candidate.run_id,\n  status,\n  data_status: dataStatus,\n  candidate_written: true,\n  published_written: !!gate.should_publish,\n  quarantine_written: !gate.should_publish,\n  validation_log_written: artifactTypes.includes('validation_log'),\n  status_written: artifactTypes.includes('status'),\n  handoff_written: artifactTypes.includes('handoff'),\n  execution_evidence_written: artifactTypes.includes('execution_evidence'),\n  artifact_count_written: bundleItems.length,\n  event_count: events.length,\n  source_count: sourceHealth.length,\n  failed_source_count: failedSourceCount,\n  using_last_known_good: usingLastKnownGood,\n  gauge_count: observations.length,\n  flood_event_count: events.length,\n  published_path: publishedPath,\n  timestamp: candidate.generated_at\n} }];"
+      },
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Initialize Run Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Initialize Run Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deduplicate Events": {
+      "main": [
+        [
+          {
+            "node": "Build Route Sections Rollups",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch NWS-01 Alerts": {
+      "main": [
+        [
+          {
+            "node": "Land NWS-01 Raw Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch USGS-01 Gauge": {
+      "main": [
+        [
+          {
+            "node": "Land USGS-01 Raw Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch USGS-02 Gauge": {
+      "main": [
+        [
+          {
+            "node": "Land USGS-02 Raw Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch USGS-03 Gauge": {
+      "main": [
+        [
+          {
+            "node": "Land USGS-03 Raw Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch NWPS-01 Status": {
+      "main": [
+        [
+          {
+            "node": "Land NWPS-01 Raw Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch NWPS-02 Status": {
+      "main": [
+        [
+          {
+            "node": "Land NWPS-02 Raw Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch REDM-01 Alerts": {
+      "main": [
+        [
+          {
+            "node": "Land REDM-01 Raw Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Last Known Good": {
+      "main": [
+        [
+          {
+            "node": "Parse Last Known Good",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch WSDOT-01 Alerts": {
+      "main": [
+        [
+          {
+            "node": "Land WSDOT-01 Raw Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publish Gate Decision": {
+      "main": [
+        [
+          {
+            "node": "Build Final Artifact Bundle",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Final Artifacts": {
+      "main": [
+        [
+          {
+            "node": "Final Status Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch ISS-01 Flood Page": {
+      "main": [
+        [
+          {
+            "node": "Land ISS-01 Raw Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch KC-ROAD-01 Alerts": {
+      "main": [
+        [
+          {
+            "node": "Land KC-ROAD-01 Raw Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Initialize Run Metadata": {
+      "main": [
+        [
+          {
+            "node": "Read Last Known Good",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch USGS-01 Gauge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch USGS-02 Gauge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch USGS-03 Gauge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch NWPS-01 Status",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch NWPS-02 Status",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch NWS-01 Alerts",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch ISS-01 Flood Page",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch REDM-01 Alerts",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch KC-ROAD-01 Alerts",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch WSDOT-01 Alerts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Land ISS-01 Raw Payload": {
+      "main": [
+        [
+          {
+            "node": "Write ISS-01 Raw Landing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Land NWS-01 Raw Payload": {
+      "main": [
+        [
+          {
+            "node": "Write NWS-01 Raw Landing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize ISS-01 Events": {
+      "main": [
+        [
+          {
+            "node": "Merge Normalized Branches",
+            "type": "main",
+            "index": 6
+          }
+        ]
+      ]
+    },
+    "Normalize NWS-01 Events": {
+      "main": [
+        [
+          {
+            "node": "Merge Normalized Branches",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "Build Candidate Artifact": {
+      "main": [
+        [
+          {
+            "node": "Write Candidate Artifact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Land NWPS-01 Raw Payload": {
+      "main": [
+        [
+          {
+            "node": "Write NWPS-01 Raw Landing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Land NWPS-02 Raw Payload": {
+      "main": [
+        [
+          {
+            "node": "Write NWPS-02 Raw Landing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Land REDM-01 Raw Payload": {
+      "main": [
+        [
+          {
+            "node": "Write REDM-01 Raw Landing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Land USGS-01 Raw Payload": {
+      "main": [
+        [
+          {
+            "node": "Write USGS-01 Raw Landing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Land USGS-02 Raw Payload": {
+      "main": [
+        [
+          {
+            "node": "Write USGS-02 Raw Landing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Land USGS-03 Raw Payload": {
+      "main": [
+        [
+          {
+            "node": "Write USGS-03 Raw Landing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize NWPS-01 Events": {
+      "main": [
+        [
+          {
+            "node": "Merge Normalized Branches",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Normalize NWPS-02 Events": {
+      "main": [
+        [
+          {
+            "node": "Merge Normalized Branches",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Normalize REDM-01 Events": {
+      "main": [
+        [
+          {
+            "node": "Merge Normalized Branches",
+            "type": "main",
+            "index": 7
+          }
+        ]
+      ]
+    },
+    "Normalize USGS-01 Events": {
+      "main": [
+        [
+          {
+            "node": "Merge Normalized Branches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize USGS-02 Events": {
+      "main": [
+        [
+          {
+            "node": "Merge Normalized Branches",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Normalize USGS-03 Events": {
+      "main": [
+        [
+          {
+            "node": "Merge Normalized Branches",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Write Candidate Artifact": {
+      "main": [
+        [
+          {
+            "node": "Publish Gate Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write ISS-01 Raw Landing": {
+      "main": [
+        [
+          {
+            "node": "Normalize ISS-01 Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write NWS-01 Raw Landing": {
+      "main": [
+        [
+          {
+            "node": "Normalize NWS-01 Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Land WSDOT-01 Raw Payload": {
+      "main": [
+        [
+          {
+            "node": "Write WSDOT-01 Raw Landing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Normalized Branches": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Normalized Branches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize WSDOT-01 Events": {
+      "main": [
+        [
+          {
+            "node": "Merge Normalized Branches",
+            "type": "main",
+            "index": 9
+          }
+        ]
+      ]
+    },
+    "Write NWPS-01 Raw Landing": {
+      "main": [
+        [
+          {
+            "node": "Normalize NWPS-01 Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write NWPS-02 Raw Landing": {
+      "main": [
+        [
+          {
+            "node": "Normalize NWPS-02 Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write REDM-01 Raw Landing": {
+      "main": [
+        [
+          {
+            "node": "Normalize REDM-01 Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write USGS-01 Raw Landing": {
+      "main": [
+        [
+          {
+            "node": "Normalize USGS-01 Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write USGS-02 Raw Landing": {
+      "main": [
+        [
+          {
+            "node": "Normalize USGS-02 Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write USGS-03 Raw Landing": {
+      "main": [
+        [
+          {
+            "node": "Normalize USGS-03 Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write WSDOT-01 Raw Landing": {
+      "main": [
+        [
+          {
+            "node": "Normalize WSDOT-01 Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Final Artifact Bundle": {
+      "main": [
+        [
+          {
+            "node": "Write Final Artifacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Land KC-ROAD-01 Raw Payload": {
+      "main": [
+        [
+          {
+            "node": "Write KC-ROAD-01 Raw Landing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize KC-ROAD-01 Events": {
+      "main": [
+        [
+          {
+            "node": "Merge Normalized Branches",
+            "type": "main",
+            "index": 8
+          }
+        ]
+      ]
+    },
+    "Validate Candidate Envelope": {
+      "main": [
+        [
+          {
+            "node": "Build Candidate Artifact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Route Sections Rollups": {
+      "main": [
+        [
+          {
+            "node": "Validate Candidate Envelope",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write KC-ROAD-01 Raw Landing": {
+      "main": [
+        [
+          {
+            "node": "Normalize KC-ROAD-01 Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Normalized Branches": {
+      "main": [
+        [
+          {
+            "node": "Deduplicate Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "timezone": "America/Los_Angeles",
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  }
+}

@@ -1,0 +1,5 @@
+b446610a8cf78204ac15ce2167be8af64a88b549 2026-08-20 18:06:37 -0700 Merge origin/main: incorporate unattended Lane 20 release bridge commits (710637c, 36389bc) and their CI proof commits
+08e2436595f44f500dc0fedf35faf9ae6353f1f9 2026-08-20 18:05:41 -0700 Reconcile local UWISSY work: OVH watchdog, Lane 08 integration, canonical build plan, and as-built proof records
+684a574be1d4dc2c0a538576ee1c40d9a5db9cdf 2026-08-20 20:15:40 +0000 Record CI build/production proof for 36389bcbd16348b98c79842e6bc0a3d768ce2567
+36389bcbd16348b98c79842e6bc0a3d768ce2567 2026-08-20 22:15:01 +0200 Update UWISSY Lane 20 release input
+1c9fa2547287b60a5ff6ce683a457de4b1f2657e 2026-08-20 10:15:36 +0000 Record CI build/production proof for 710637c6fbe8a37d35ea4747b3a978213bb4da23
