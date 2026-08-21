@@ -1,0 +1,554 @@
+{
+  "updatedAt": "2026-08-01T04:21:36.062Z",
+  "createdAt": "2026-07-21T15:05:38.099Z",
+  "id": "263acPaILiJmPW9m",
+  "name": "v0001.04_WildfireConnector",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "manual",
+        "duplicateItem": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "connectorId",
+              "name": "connectorId",
+              "type": "string",
+              "value": "04_WILDFIRE"
+            },
+            {
+              "id": "connectorNumber",
+              "name": "connectorNumber",
+              "type": "string",
+              "value": "04"
+            },
+            {
+              "id": "connectorName",
+              "name": "connectorName",
+              "type": "string",
+              "value": "CDM Wildfire Connector"
+            },
+            {
+              "id": "workflowName",
+              "name": "workflowName",
+              "type": "string",
+              "value": "v0001.04_WildfireConnector"
+            },
+            {
+              "id": "workflowVersion",
+              "name": "workflowVersion",
+              "type": "string",
+              "value": "v0001"
+            },
+            {
+              "id": "timezone",
+              "name": "timezone",
+              "type": "string",
+              "value": "Europe/Paris"
+            },
+            {
+              "id": "generatedAt",
+              "name": "generatedAt",
+              "type": "string",
+              "value": "={{ $now.toUTC().toISO() }}"
+            },
+            {
+              "id": "forestWeatherEndpoint",
+              "name": "forestWeatherEndpoint",
+              "type": "string",
+              "value": "https://public-api.meteofrance.fr/public/DPMeteoForets/v1/carte/encours"
+            },
+            {
+              "id": "staleAfterMinutes",
+              "name": "staleAfterMinutes",
+              "type": "number",
+              "value": 720
+            },
+            {
+              "id": "outputDirectory",
+              "name": "outputDirectory",
+              "type": "string",
+              "value": "/files/cdm-status-output"
+            },
+            {
+              "id": "finalOutputPath",
+              "name": "finalOutputPath",
+              "type": "string",
+              "value": "/files/cdm-status-output/04_wildfire.json"
+            },
+            {
+              "id": "stagingOutputPath",
+              "name": "stagingOutputPath",
+              "type": "string",
+              "value": "/files/cdm-status-output/04_wildfire.staging.json"
+            },
+            {
+              "id": "sourceUrl",
+              "name": "sourceUrl",
+              "type": "string",
+              "value": "https://meteofrance.com/meteo-des-forets"
+            },
+            {
+              "id": "attributionText",
+              "name": "attributionText",
+              "type": "string",
+              "value": "Météo-France Météo des Forêts"
+            },
+            {
+              "id": "requestedDepartmentCodesJson",
+              "name": "requestedDepartmentCodesJson",
+              "type": "string",
+              "value": "[\"33\",\"47\",\"17\",\"82\",\"31\",\"11\",\"34\"]"
+            },
+            {
+              "id": "departmentsJson",
+              "name": "departmentsJson",
+              "type": "string",
+              "value": "[{\"code\":\"33\",\"name\":\"Gironde\",\"rideDays\":[1]},{\"code\":\"17\",\"name\":\"Charente-Maritime\",\"rideDays\":[]},{\"code\":\"47\",\"name\":\"Lot-et-Garonne\",\"rideDays\":[1,2,3]},{\"code\":\"82\",\"name\":\"Tarn-et-Garonne\",\"rideDays\":[3,4]},{\"code\":\"31\",\"name\":\"Haute-Garonne\",\"rideDays\":[4,5]},{\"code\":\"11\",\"name\":\"Aude\",\"rideDays\":[5,6,7,8]},{\"code\":\"34\",\"name\":\"Hérault\",\"rideDays\":[8,9]}]"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-config",
+      "name": "Set Connector Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        280,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $input.all()[0].json;\nreturn [{\n  json: {\n    endpoint: config.forestWeatherEndpoint,\n    generatedAt: config.generatedAt,\n  }\n}];"
+      },
+      "id": "build-wildfire-request-config",
+      "name": "Build Wildfire Request Config",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.endpoint }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json,text/csv,*/*"
+            }
+          ]
+        },
+        "sendBody": false,
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "id": "fetch-forest-weather",
+      "name": "Fetch Météo-France Forest Weather",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        840,
+        240
+      ],
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 3000,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "Yib76WBiO7goz4ee",
+          "name": "METEOFRANCE_FOREST_WEATHER_API_KEY"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const checkedAt = new Date().toISOString();\nconst config = $items('Set Connector Config')[0].json;\nconst departments = JSON.parse(config.departmentsJson);\nconst departmentByCode = new Map(departments.map((d) => [d.code, d]));\nconst requestedDepartmentCodes = JSON.parse(config.requestedDepartmentCodesJson);\nconst targetCodes = new Set(requestedDepartmentCodes);\n\nconst inputItems = $input.all();\nif (!inputItems.length) {\n  return [{ json: { recordKind: 'wildfireDepartmentForecastMeta', fetchOk: false, classification: 'SOURCE_API_BLOCKED', error: 'No response reached the fetch node', elevatedRecordCount: 0 } }];\n}\nconst raw = inputItems[0].json || {};\nconst status = Number(raw.statusCode || 0);\nconst bodyText = String(raw.body !== undefined ? raw.body : (raw.data !== undefined ? raw.data : ''));\n\nif (status === 401 || status === 403) {\n  return [{ json: { recordKind: 'wildfireDepartmentForecastMeta', fetchOk: false, classification: 'CREDENTIALS_BLOCKED', httpStatus: status, error: 'Météo-France forest-weather request rejected the bound credential (401/403). Never logging the response body.', elevatedRecordCount: 0 } }];\n}\nif (!status || status < 200 || status >= 300 || !bodyText) {\n  return [{ json: { recordKind: 'wildfireDepartmentForecastMeta', fetchOk: false, classification: 'SOURCE_API_BLOCKED', httpStatus: status || 0, error: 'Météo-France forest-weather request failed or returned an empty body.', elevatedRecordCount: 0 } }];\n}\n\nconst severityByDangerCode = { '1': 'green', '2': 'yellow', '3': 'orange', '4': 'red', faible: 'green', vert: 'green', low: 'green', modere: 'yellow', 'modéré': 'yellow', jaune: 'yellow', moderate: 'yellow', eleve: 'orange', 'élevé': 'orange', orange: 'orange', high: 'orange', 'tres-eleve': 'red', 'très-élevé': 'red', 'tres eleve': 'red', 'très élevé': 'red', rouge: 'red', red: 'red', 'very high': 'red' };\nconst labelBySeverity = { green: 'Low', yellow: 'Moderate', orange: 'High', red: 'Very high' };\n\nfunction normalizeDepartmentCode(value) {\n  const code = String(value ?? '').trim();\n  return /^\\d$/.test(code) ? `0${code}` : code;\n}\nfunction normalizeSeverity(value) {\n  const key = String(value ?? '').trim().toLowerCase();\n  return severityByDangerCode[key] ?? null;\n}\nfunction normalizeForecastDay(value) {\n  const key = String(value ?? '').trim().toLowerCase();\n  if (/^(2|j2|d\\+?2|lendemain)$/.test(key)) return 'D+2';\n  return 'D+1';\n}\nfunction forecastDayLongLabel(value) { return value === 'D+2' ? 'following day (D+2)' : 'tomorrow (D+1)'; }\nfunction forestWeatherExplanation(severity, departmentName, forecastDay) {\n  const when = forecastDayLongLabel(forecastDay);\n  return {\n    yellow: `Official Météo-France forest-weather data shows yellow fire danger for ${departmentName} ${when}, meaning fires start more easily in dry vegetation.`,\n    orange: `Official Météo-France forest-weather data shows orange fire danger for ${departmentName} ${when}, indicating elevated wildfire-start and spread risk.`,\n    red: `Official Météo-France forest-weather data shows red fire danger for ${departmentName} ${when}, indicating very high wildfire-start and spread risk today.`,\n  }[severity] || null;\n}\n\nfunction parseDelimited(text) {\n  const lines = text.trim().split(/\\r?\\n/).filter(Boolean);\n  const headers = lines.shift()?.split(';').map((h) => h.trim()) ?? [];\n  return lines.map((line) => {\n    const values = line.split(';');\n    return Object.fromEntries(headers.map((h, idx) => [h, values[idx]?.trim() ?? '']));\n  });\n}\n\nfunction findDepartmentRisks(value, records = []) {\n  if (!value || typeof value !== 'object') return records;\n  if (Array.isArray(value)) { value.forEach((item) => findDepartmentRisks(item, records)); return records; }\n  const departmentCode = normalizeDepartmentCode(value.code_departement ?? value.department_code ?? value.department ?? value.domain_id ?? value.code ?? value.dept);\n  const day = value.echeance ?? value.day ?? value.jour ?? value.validity_day ?? value.valid_day ?? value.date_echeance;\n  const danger = value.niveau_danger ?? value.danger_level ?? value.risk_level ?? value.risk_code ?? value.color_id ?? value.niveau ?? value.couleur;\n  const severity = normalizeSeverity(danger);\n  if (departmentByCode.has(departmentCode) && severity) {\n    records.push({ departmentCode, day: normalizeForecastDay(day), severity, referenceTime: value.date_validation ?? value.date_echeance ?? value.reference_time ?? value.update_time ?? value.date_maj ?? null });\n  }\n  Object.values(value).forEach((item) => findDepartmentRisks(item, records));\n  return records;\n}\n\nlet risks;\ntry {\n  const payload = JSON.parse(bodyText);\n  risks = findDepartmentRisks(payload);\n} catch (err) {\n  const rows = parseDelimited(bodyText);\n  risks = rows.flatMap((row) => {\n    const departmentCode = normalizeDepartmentCode(row.dep_code);\n    if (!departmentByCode.has(departmentCode)) return [];\n    return [\n      { departmentCode, day: 'D+1', severity: normalizeSeverity(row.niveau_j1), referenceTime: row.reference_time },\n      { departmentCode, day: 'D+2', severity: normalizeSeverity(row.niveau_j2), referenceTime: row.reference_time },\n    ].filter((r) => r.severity);\n  });\n}\n\nconst dedupedRisks = Array.from(risks.reduce((items, risk) => {\n  if (!targetCodes.has(risk.departmentCode) || !risk.severity) return items;\n  const key = [risk.departmentCode, risk.day, risk.severity, risk.referenceTime ?? ''].join('|');\n  if (!items.has(key)) items.set(key, risk);\n  return items;\n}, new Map()).values());\n\nconst wildfireRiskRecords = [];\nfor (const risk of dedupedRisks) {\n  const department = departmentByCode.get(risk.departmentCode);\n  if (!department || !department.rideDays.length) continue;\n  if (risk.severity === 'green') continue;\n  const explanation = forestWeatherExplanation(risk.severity, department.name, risk.day);\n  for (const rideDay of department.rideDays) {\n    wildfireRiskRecords.push({\n      json: {\n        recordKind: 'wildfireRisk',\n        externalId: `meteo-france-forest-weather-${risk.departmentCode}-${risk.day}-${risk.severity}-${rideDay}`,\n        sourceId: 'meteo-france-forest-weather',\n        category: 'wildfire',\n        semanticStatus: 'forest_fire_risk',\n        officialRiskLevel: labelBySeverity[risk.severity],\n        officialRiskColor: risk.severity,\n        severity: risk.severity,\n        status: 'forecast',\n        title: `${labelBySeverity[risk.severity]} fire danger in ${department.name} (${forecastDayLongLabel(risk.day)}).`,\n        nearestPlace: department.name,\n        departmentCode: risk.departmentCode,\n        departmentName: department.name,\n        rideDay,\n        distanceFromRouteKm: null,\n        routeInfluenceConfirmed: true,\n        startTime: risk.referenceTime || checkedAt,\n        expectedEndTime: null,\n        checkedAt,\n        sourceUrl: config.sourceUrl,\n        summary: `${department.name} has a ${labelBySeverity[risk.severity].toLowerCase()} department-level forest fire danger forecast for ${risk.day}.`,\n        statusTitle: `${labelBySeverity[risk.severity]} fire danger in ${department.name} (${forecastDayLongLabel(risk.day)}).`,\n        statusExplanation: explanation,\n        statusSource: { name: 'Météo-France Météo des Forêts', url: config.sourceUrl, official: true, checkedAt, sourceLanguage: 'fr', translationMethod: 'condensed_official_source' },\n        whyItMatters: 'The official fire-danger forecast applies at department level and overlaps one or more planned riding days.',\n        recommendedAction: 'Check official guidance and local restrictions before riding through the affected department.',\n        suggestedDetour: null,\n        detourImpact: null,\n      }\n    });\n  }\n}\n\nconst meta = { json: { recordKind: 'wildfireDepartmentForecastMeta', fetchOk: true, httpStatus: status, dedupedRiskCount: dedupedRisks.length, elevatedRecordCount: wildfireRiskRecords.length } };\n\nreturn [...wildfireRiskRecords, meta];"
+      },
+      "id": "normalize-wildfire-risk",
+      "name": "Normalize Wildfire Risk Records",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const checkedAt = new Date().toISOString();\nconst config = $items('Set Connector Config')[0].json;\nconst inputItems = $input.all();\nconst raw = (inputItems[0] && inputItems[0].json) || {};\nconst status = Number(raw.statusCode || 0);\nconst bodyText = String(raw.body !== undefined ? raw.body : (raw.data !== undefined ? raw.data : ''));\n\nlet recordCount = 0;\ntry {\n  const metaItems = $items('Normalize Wildfire Risk Records');\n  const meta = metaItems.find((i) => i.json.recordKind === 'wildfireDepartmentForecastMeta');\n  if (meta) recordCount = meta.json.elevatedRecordCount || 0;\n} catch (err) {\n  // Normalize node may not have produced items if the fetch failed upstream.\n}\n\nlet healthStatus;\nconst errors = [];\nconst warnings = [];\nif (status === 401 || status === 403) {\n  healthStatus = 'credentials_blocked';\n  errors.push('Météo-France forest-weather request rejected the bound credential (401/403).');\n} else if (!status || status < 200 || status >= 300 || !bodyText) {\n  healthStatus = 'failed';\n  errors.push(`Météo-France forest-weather request failed (httpStatus=${status || 0}).`);\n} else {\n  healthStatus = 'ok';\n}\n\nreturn [{\n  json: {\n    recordKind: 'sourceHealth',\n    sourceId: 'meteo-france-forest-weather',\n    sourceName: 'Météo-France Météo des Forêts',\n    status: healthStatus,\n    fetchedAt: checkedAt,\n    staleAfterMinutes: Number(config.staleAfterMinutes),\n    httpStatus: status || 0,\n    recordCount,\n    errors,\n    warnings,\n  }\n}];"
+      },
+      "id": "build-source-health",
+      "name": "Build Source Health",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "merge-wildfire-outputs",
+      "name": "Merge Wildfire Outputs",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1400,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst allInputs = [];\nfor (const name of ['Normalize Wildfire Risk Records', 'Build Source Health']) {\n  try { allInputs.push(...$items(name).map((i) => i.json || {})); } catch (err) {}\n}\n\nfunction validIso(v) { return !v || !Number.isNaN(Date.parse(v)); }\nfunction looksLikeSecret(v) { if (typeof v !== 'string') return false; return /^[A-Za-z0-9_-]{24,}$/.test(v) && !/^https?:\\/\\//.test(v); }\nconst severityEnum = ['green', 'yellow', 'orange', 'red'];\nconst forbiddenPathPattern = /(^|\\/)(tmp|data\\/public|home\\/node\\/\\.n8n)(\\/|$)/i;\n\nconst errors = [];\nconst warnings = [];\n\nif (!config.connectorId) errors.push('Missing connectorId in Set Connector Config');\nif (!config.connectorNumber) errors.push('Missing connectorNumber in Set Connector Config');\nif (!config.workflowName) errors.push('Missing workflowName in Set Connector Config');\nif (!config.workflowVersion) errors.push('Missing workflowVersion in Set Connector Config');\nif (!validIso(config.generatedAt)) errors.push('Missing or invalid generatedAt in Set Connector Config');\nif (!config.outputDirectory || !config.outputDirectory.startsWith('/files/cdm-status-output')) errors.push('Forbidden or missing output directory: expected /files/cdm-status-output');\nif (forbiddenPathPattern.test(config.outputDirectory || '')) errors.push('Output directory matches a forbidden path pattern');\nif (!config.attributionText) errors.push('Missing attribution text');\n\nconst fullText = JSON.stringify(allInputs);\nif (/bearer\\s+[A-Za-z0-9_\\-.]{20,}/i.test(fullText)) errors.push('Possible bearer token leaked into merged output records');\nif (/apikey[\"']?\\s*[:=]\\s*[\"'][A-Za-z0-9_\\-]{16,}[\"']/i.test(fullText)) errors.push('Possible hardcoded API key value leaked into merged output records');\nif (fullText.toLowerCase().includes('meteofrance_forest_weather_api_key') && /[:=]\\s*[\"'][A-Za-z0-9_\\-]{16,}[\"']/i.test(fullText)) errors.push('Possible hardcoded credential value leaked into merged output records');\nif (/process\\.env/.test(fullText)) errors.push('process.env literal found in merged output records');\nif (/route\\s+closure|active\\s+wildfire|active\\s+fire|smoke\\s+impact|air[\\s-]?quality\\s+impact/i.test(fullText)) {\n  errors.push('Merged output appears to claim route closure, active wildfire, or smoke/air-quality impact, which this connector must never assert');\n}\n\nlet sawSourceHealth = false;\nfor (const r of allInputs) {\n  if (r.recordKind === 'sourceHealth') {\n    sawSourceHealth = true;\n    for (const field of ['sourceId', 'sourceName', 'status', 'fetchedAt', 'staleAfterMinutes', 'httpStatus', 'recordCount', 'errors', 'warnings']) {\n      if (r[field] === undefined || r[field] === null) errors.push(`sourceHealth ${r.sourceId || 'unknown'} missing ${field}`);\n    }\n    if (!validIso(r.fetchedAt)) errors.push(`sourceHealth ${r.sourceId} has invalid fetchedAt`);\n    if (!['ok', 'degraded', 'failed', 'stale', 'credentials_blocked'].includes(r.status)) errors.push(`sourceHealth ${r.sourceId} has invalid status enum: ${r.status}`);\n    continue;\n  }\n  if (r.recordKind === 'wildfireRisk') {\n    for (const field of ['externalId', 'sourceId', 'category', 'severity', 'status', 'title', 'checkedAt', 'departmentCode', 'rideDay']) {\n      if (r[field] === undefined || r[field] === null || r[field] === '') errors.push(`wildfireRisk/${r.externalId || 'unknown'}: missing required field ${field}`);\n    }\n    if (r.severity && !severityEnum.includes(r.severity)) errors.push(`wildfireRisk/${r.externalId}: invalid severity enum ${r.severity}`);\n    if (!validIso(r.checkedAt) || !validIso(r.startTime)) errors.push(`wildfireRisk/${r.externalId}: invalid ISO timestamp`);\n    if (!r.statusSource || r.statusSource.official !== true) errors.push(`wildfireRisk/${r.externalId}: elevated record missing official statusSource`);\n    if (!r.statusExplanation) {\n      errors.push(`wildfireRisk/${r.externalId}: elevated record missing statusExplanation`);\n    } else {\n      const wc = r.statusExplanation.trim().split(/\\s+/).length;\n      if (wc < 15 || wc > 20) warnings.push(`wildfireRisk/${r.externalId}: statusExplanation word count ${wc} outside the target 15-20 word range`);\n    }\n    if (looksLikeSecret(r.externalId) || looksLikeSecret(r.sourceUrl)) errors.push(`wildfireRisk/${r.externalId}: field resembles a hardcoded credential and was rejected`);\n  }\n}\nif (!sawSourceHealth) errors.push('No sourceHealth record observed in merged input (upstream fetch may not have run)');\n\nreturn [{ json: { recordKind: 'validationResult', passed: errors.length === 0, errors, warnings } }, ...allInputs.map((r) => ({ json: r }))];"
+      },
+      "id": "validate-output",
+      "name": "Validate Wildfire Connector Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1680,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst items = $input.all().map((i) => i.json || {});\nconst validationResult = items.find((i) => i.recordKind === 'validationResult') || { passed: true, errors: [], warnings: [] };\nconst wildfireRisk = items.filter((i) => i.recordKind === 'wildfireRisk');\nconst sourceHealth = items.filter((i) => i.recordKind === 'sourceHealth');\nconst generatedAt = config.generatedAt || new Date().toISOString();\nconst sourceNames = sourceHealth.length\n  ? sourceHealth.map((source) => source.sourceName || source.sourceId).filter(Boolean)\n  : [config.attributionText || 'Météo-France Météo des Forêts'];\nconst sourceUrls = [config.sourceUrl].filter(Boolean);\nconst sourceReferences = Array.from(new Set([...sourceNames, ...sourceUrls]));\nconst sourceUpdatedCandidates = wildfireRisk\n  .map((record) => record.startTime || record.checkedAt || null)\n  .filter((value) => value && !Number.isNaN(Date.parse(value)));\nconst latestSourceUpdatedAt = sourceUpdatedCandidates.length\n  ? sourceUpdatedCandidates.sort().slice(-1)[0]\n  : (sourceHealth[0]?.fetchedAt || null);\nconst connectorWarnings = [\n  ...sourceHealth.flatMap((source) => Array.isArray(source.warnings) ? source.warnings : []),\n  ...(validationResult.warnings || []),\n];\nconst connectorErrors = [\n  ...sourceHealth.flatMap((source) => Array.isArray(source.errors) ? source.errors : []),\n  ...(validationResult.errors || []),\n];\nconst allSourceOk = sourceHealth.length > 0 && sourceHealth.every((source) => source.status === 'ok');\nconst anySourceFailed = sourceHealth.some((source) => source.status === 'failed' || source.status === 'credentials_blocked');\nconst sourceFreshness = latestSourceUpdatedAt && !Number.isNaN(Date.parse(latestSourceUpdatedAt))\n  ? (Date.parse(generatedAt) - Date.parse(latestSourceUpdatedAt)) / 60000\n  : 0;\nconst stale = Number.isFinite(sourceFreshness) ? sourceFreshness > Number(config.staleAfterMinutes || 0) : false;\nconst shouldPublish = validationResult.passed === true && !anySourceFailed && !stale && allSourceOk;\nconst contractStatus = shouldPublish\n  ? (connectorWarnings.length ? 'SUCCESS_WITH_WARNINGS' : 'SUCCESS')\n  : stale\n    ? 'STALE_LAST_KNOWN_GOOD'\n    : 'FAILED_NO_OUTPUT';\n\nconst connectorPayload = {\n  connectorId: config.connectorId,\n  connectorNumber: config.connectorNumber,\n  connectorName: config.connectorName,\n  workflowName: config.workflowName,\n  workflowVersion: config.workflowVersion,\n  generatedAt,\n  timezone: config.timezone,\n  status: anySourceFailed ? 'failed' : (validationResult.passed ? 'ok' : 'failed'),\n  sources: [\n    {\n      sourceId: 'meteo-france-forest-weather',\n      sourceName: 'Météo-France Météo des Forêts',\n      endpoint: config.forestWeatherEndpoint,\n      category: 'wildfire',\n    },\n  ],\n  wildfireRisk,\n  records: wildfireRisk,\n  sourceHealth,\n  attribution: {\n    required: true,\n    source: 'Météo-France Météo des Forêts',\n    official: true,\n  },\n  validation: {\n    passed: validationResult.passed,\n    errors: validationResult.errors || [],\n    warnings: validationResult.warnings || [],\n  },\n  compatibility: {\n    targetMonitoringFeed: 'public/cdm-monitoring-status.json',\n    mode: 'compatibility_candidate',\n  },\n};\n\nconst envelope = {\n  schema_version: '1.0.0',\n  connector_id: config.connectorId,\n  connector_name: config.connectorName,\n  run_id: config.connectorId + '-' + generatedAt,\n  status: contractStatus,\n  started_at: sourceHealth[0]?.fetchedAt || generatedAt,\n  completed_at: new Date().toISOString(),\n  generated_at: generatedAt,\n  source_updated_at: latestSourceUpdatedAt,\n  record_count: wildfireRisk.length,\n  source_count: sourceHealth.length,\n  sources: sourceReferences,\n  data: connectorPayload,\n  warnings: connectorWarnings,\n  errors: connectorErrors,\n  stale,\n  last_known_good: {\n    is_last_known_good: false,\n    reason: shouldPublish\n      ? 'Fresh candidate output validated and promoted from staging.'\n      : 'Candidate output failed publish gating; existing final output must remain untouched.',\n  },\n  validation: {\n    schema_valid: validationResult.passed === true,\n  },\n};\n\nreturn [{\n  json: {\n    label: '04_wildfire.staging',\n    targetPath: config.stagingOutputPath,\n    finalPath: config.finalOutputPath,\n    shouldPublish,\n    contractStatus,\n    sourceStatuses: sourceHealth.map((source) => source.status),\n    jsonText: JSON.stringify(envelope, null, 2) + '\\n',\n  },\n}];"
+      },
+      "id": "build-payloads",
+      "name": "Build Wildfire Output Payloads",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1960,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = [];\nfor (const item of $input.all()) {\n  const buf = Buffer.from(item.json.jsonText, 'utf8');\n  const fileName = String(item.json.targetPath).split('/').pop();\n  const binary = await this.helpers.prepareBinaryData(buf, fileName, 'application/json');\n  output.push({ json: item.json, binary: { data: binary } });\n}\nreturn output;"
+      },
+      "id": "prepare-binary",
+      "name": "Prepare Binary Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2240,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.targetPath }}",
+        "dataPropertyName": "data",
+        "options": {}
+      },
+      "id": "write-files",
+      "name": "Write Wildfire Output Files",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        2520,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $json.targetPath }}",
+        "options": {}
+      },
+      "id": "read-back-files",
+      "name": "Read Back Wildfire Output Files",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        2800,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const REQUIRED_STATUS = new Set(['SUCCESS', 'SUCCESS_WITH_WARNINGS', 'STALE_LAST_KNOWN_GOOD', 'FAILED_NO_OUTPUT']);\nconst REQUIRED_TOP_LEVEL_FIELDS = [\n  'schema_version',\n  'connector_id',\n  'connector_name',\n  'run_id',\n  'status',\n  'started_at',\n  'completed_at',\n  'generated_at',\n  'source_updated_at',\n  'record_count',\n  'source_count',\n  'sources',\n  'data',\n  'warnings',\n  'errors',\n  'stale',\n  'last_known_good',\n  'validation',\n];\n\nfunction isIso(value) {\n  return typeof value === 'string' && !Number.isNaN(Date.parse(value));\n}\n\nconst buildPayloadItems = $items('Build Wildfire Output Payloads');\nconst results = [];\nconst items = $input.all();\nfor (let i = 0; i < items.length; i++) {\n  const item = items[i];\n  const originalJson = buildPayloadItems[i]?.json || {};\n  const mergedJson = {\n    ...originalJson,\n    ...(item.json || {}),\n    targetPath: originalJson.targetPath || item.json?.targetPath || item.json?.fileName || 'unknown',\n    finalPath: originalJson.finalPath || item.json?.finalPath || null,\n    shouldPublish: originalJson.shouldPublish === true || item.json?.shouldPublish === true,\n    label: originalJson.label || item.json?.label || 'unknown',\n  };\n  const fileName = mergedJson.targetPath || item.json?.fileName || 'unknown';\n  const targetPath = mergedJson.targetPath;\n  const finalPath = mergedJson.finalPath;\n  const shouldPublish = mergedJson.shouldPublish === true;\n  if (!item.binary || !item.binary.data) {\n    results.push({ json: { label: mergedJson.label, targetPath, finalPath, shouldPublish, validJson: false, bytes: 0, error: 'No binary data read back for ' + fileName } });\n    continue;\n  }\n  const buf = await this.helpers.getBinaryDataBuffer(i, 'data');\n  const text = buf.toString('utf8');\n  let parsed;\n  try {\n    parsed = JSON.parse(text);\n  } catch (err) {\n    results.push({ json: { label: mergedJson.label, targetPath, finalPath, shouldPublish, validJson: false, bytes: Buffer.byteLength(text, 'utf8'), error: 'Invalid JSON: ' + err.message } });\n    continue;\n  }\n\n  const errors = [];\n  for (const field of REQUIRED_TOP_LEVEL_FIELDS) {\n    if (!(field in parsed)) errors.push('Missing top-level field ' + field);\n  }\n  if (parsed.schema_version !== '1.0.0') errors.push('schema_version must be 1.0.0');\n  if (!REQUIRED_STATUS.has(parsed.status)) errors.push('Invalid contract status ' + parsed.status);\n  for (const field of ['started_at', 'completed_at', 'generated_at']) {\n    if (!isIso(parsed[field])) errors.push(field + ' must be ISO 8601 UTC');\n  }\n  if (parsed.source_updated_at !== null && parsed.source_updated_at !== undefined && !isIso(parsed.source_updated_at)) {\n    errors.push('source_updated_at must be null or ISO 8601 UTC');\n  }\n  if (!Array.isArray(parsed.sources)) errors.push('sources must be an array');\n  if (!Array.isArray(parsed.warnings)) errors.push('warnings must be an array');\n  if (!Array.isArray(parsed.errors)) errors.push('errors must be an array');\n  if (typeof parsed.record_count !== 'number') errors.push('record_count must be numeric');\n  if (typeof parsed.source_count !== 'number') errors.push('source_count must be numeric');\n  if (typeof parsed.stale !== 'boolean') errors.push('stale must be boolean');\n  if (!parsed.last_known_good || typeof parsed.last_known_good.is_last_known_good !== 'boolean' || typeof parsed.last_known_good.reason !== 'string') {\n    errors.push('last_known_good must include is_last_known_good and reason');\n  }\n  if (!parsed.validation || typeof parsed.validation.schema_valid !== 'boolean') {\n    errors.push('validation.schema_valid must be boolean');\n  }\n  if (!parsed.data || typeof parsed.data !== 'object') errors.push('data must be an object');\n  if (parsed.connector_id !== '04_WILDFIRE') errors.push('connector_id mismatch');\n  if (parsed.connector_name !== 'CDM Wildfire Connector') errors.push('connector_name mismatch');\n\n  results.push({\n    json: {\n      label: mergedJson.label,\n      targetPath,\n      finalPath,\n      shouldPublish,\n      validJson: errors.length === 0,\n      bytes: Buffer.byteLength(text, 'utf8'),\n      error: errors.length ? errors.join('; ') : null,\n      parsedStatus: parsed.status,\n      recordCount: parsed.record_count,\n      sourceCount: parsed.source_count,\n    },\n  });\n}\nreturn results;"
+      },
+      "id": "validate-written",
+      "name": "Validate Written Wildfire Files",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3080,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "command": "=if [ \"{{$json.validJson}}\" != \"true\" ] || [ \"{{$json.shouldPublish}}\" != \"true\" ]; then\n  echo 'SKIP_PROMOTION'\n  exit 0\nfi\nmv \"{{$json.targetPath}}\" \"{{$json.finalPath}}\"\necho 'PROMOTED {{$json.finalPath}}'"
+      },
+      "id": "promote-wildfire-staging-output",
+      "name": "Promote Wildfire Staging Output",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        3360,
+        240
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Connector Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Connector Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Connector Config": {
+      "main": [
+        [
+          {
+            "node": "Build Wildfire Request Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Wildfire Request Config": {
+      "main": [
+        [
+          {
+            "node": "Fetch Météo-France Forest Weather",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Météo-France Forest Weather": {
+      "main": [
+        [
+          {
+            "node": "Normalize Wildfire Risk Records",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Build Source Health",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Wildfire Risk Records": {
+      "main": [
+        [
+          {
+            "node": "Merge Wildfire Outputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Source Health": {
+      "main": [
+        [
+          {
+            "node": "Merge Wildfire Outputs",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Wildfire Outputs": {
+      "main": [
+        [
+          {
+            "node": "Validate Wildfire Connector Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Wildfire Connector Output": {
+      "main": [
+        [
+          {
+            "node": "Build Wildfire Output Payloads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Wildfire Output Payloads": {
+      "main": [
+        [
+          {
+            "node": "Prepare Binary Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Binary Payload": {
+      "main": [
+        [
+          {
+            "node": "Write Wildfire Output Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Wildfire Output Files": {
+      "main": [
+        [
+          {
+            "node": "Read Back Wildfire Output Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Back Wildfire Output Files": {
+      "main": [
+        [
+          {
+            "node": "Validate Written Wildfire Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Written Wildfire Files": {
+      "main": [
+        [
+          {
+            "node": "Promote Wildfire Staging Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "timezone": "Europe/Paris",
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": [
+        0
+      ]
+    }
+  },
+  "meta": null,
+  "pinData": null,
+  "versionId": "f090d4b7-4751-4a29-8297-bc8e59c01fb6",
+  "activeVersionId": "f090d4b7-4751-4a29-8297-bc8e59c01fb6",
+  "versionCounter": 5,
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-07-21T15:05:38.099Z",
+      "createdAt": "2026-07-21T15:05:38.099Z",
+      "role": "workflow:owner",
+      "workflowId": "263acPaILiJmPW9m",
+      "projectId": "Y0Ygmqe59jevHoeV",
+      "project": {
+        "updatedAt": "2026-07-10T05:38:45.677Z",
+        "createdAt": "2026-06-02T20:51:11.579Z",
+        "id": "Y0Ygmqe59jevHoeV",
+        "name": "John Brooks <john@biketourfrance.net>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "5dadc5f6-6bff-44cf-9566-6b82f3d768dc"
+      }
+    }
+  ],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

@@ -1,0 +1,5 @@
+        id        |      name      | active |  parentFolderId  | folder_name | node_count | versionCounter |              versionId               |           activeVersionId            
+------------------+----------------+--------+------------------+-------------+------------+----------------+--------------------------------------+--------------------------------------
+ 08g3JNwQPVSxUl2H | v02.UWI_LANE07 | t      | LaS9Q6sil9yCDzrV | UWISSY      |         48 |              5 | f46394a3-bc05-475c-8e50-0d52cc3cecde | f46394a3-bc05-475c-8e50-0d52cc3cecde
+(1 row)
+

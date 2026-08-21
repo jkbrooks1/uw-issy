@@ -1,0 +1,44 @@
+[
+  {
+    "id": "0h9XYSxumCdZFYwh",
+    "name": "v0001.07_GovernmentSafetyAlertsConnector",
+    "active": true,
+    "nodeCount": 24
+  },
+  {
+    "id": "263acPaILiJmPW9m",
+    "name": "v0001.04_WildfireConnector",
+    "active": true,
+    "nodeCount": 15
+  },
+  {
+    "id": "CvzPNlnWXrzZfYGP",
+    "name": "v0001.02_WeatherConnector",
+    "active": true,
+    "nodeCount": 21
+  },
+  {
+    "id": "D1Dsa02M3LAmzRfy",
+    "name": "v0001.05_FloodConditionsConnector",
+    "active": true,
+    "nodeCount": 21
+  },
+  {
+    "id": "pelOd6E0sdu5mygf",
+    "name": "v0001.01_RouteConditionsConnector",
+    "active": false,
+    "nodeCount": 17
+  },
+  {
+    "id": "qQPYZ1eUdNsAwBNM",
+    "name": "v0001.03_AirQualityConnector",
+    "active": false,
+    "nodeCount": 20
+  },
+  {
+    "id": "wm4M6lHgcbBYlIJh",
+    "name": "v0001.06_CanalStatusConnector",
+    "active": false,
+    "nodeCount": 26
+  }
+]

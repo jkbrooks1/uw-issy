@@ -1,0 +1,27 @@
+{
+  "path": "/files/uw-issy-connectors/public/status.json",
+  "schema_version": "1.0.0",
+  "connector_id": "08_STATUS_PUBLISHER",
+  "run_id": "08_STATUS_PUBLISHER-2026-08-03T183033019Z-001",
+  "generated_at": "2026-08-03T18:30:33.019Z",
+  "overall": {
+    "display_severity": "watch",
+    "message": "One or more lanes are degraded, stale, or running on last-known-good data."
+  },
+  "keys": [
+    "schema_version",
+    "connector_id",
+    "generated_at",
+    "run_id",
+    "overall",
+    "lanes",
+    "severity_mapping_note"
+  ]
+}
+{
+  "path": "/files/uw-issy-connectors/alerts/last_alerted_state.json",
+  "keys": [
+    "alerted_event_ids",
+    "updated_at"
+  ]
+}

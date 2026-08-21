@@ -1,0 +1,102 @@
+{
+  "watchdog_status": "DEGRADED",
+  "checked_at": "2026-08-20T05:43:08.832Z",
+  "source_url": "https://uw-issy.biketourfrance.net/data/system-health.json",
+  "health_summary": {
+    "total_lanes": 8,
+    "fresh_lane_count": 3,
+    "degraded_lane_count": 5,
+    "failed_lane_count": 0,
+    "assembly_state": "ok",
+    "publication_state": "published"
+  },
+  "assembly_state": "ok",
+  "publication_state": "published",
+  "failed_checks": [],
+  "degraded_checks": [
+    "Lane 01_ROUTE_CONDITIONS DEGRADED (sourceState=degraded, freshnessState=stale)",
+    "Lane 03_AIR_QUALITY DEGRADED (sourceState=degraded, freshnessState=stale)",
+    "Lane 04_WILDFIRE DEGRADED (sourceState=degraded, freshnessState=stale)",
+    "Lane 05_FLOOD_CONDITIONS DEGRADED (sourceState=degraded, freshnessState=stale)",
+    "Lane 06_TRAIL_INFRASTRUCTURE_STATUS DEGRADED (sourceState=degraded, freshnessState=stale)"
+  ],
+  "lane_summary": {
+    "01_ROUTE_CONDITIONS": {
+      "available": true,
+      "freshnessState": "stale",
+      "sourceState": "degraded",
+      "usingLastKnownGood": false,
+      "lane_class": "degraded",
+      "reason": "sourceState=degraded, freshnessState=stale"
+    },
+    "02_WEATHER": {
+      "available": true,
+      "freshnessState": "fresh",
+      "sourceState": "no_relevant_events",
+      "usingLastKnownGood": false,
+      "lane_class": "ok",
+      "reason": null
+    },
+    "03_AIR_QUALITY": {
+      "available": true,
+      "freshnessState": "stale",
+      "sourceState": "degraded",
+      "usingLastKnownGood": false,
+      "lane_class": "degraded",
+      "reason": "sourceState=degraded, freshnessState=stale"
+    },
+    "04_WILDFIRE": {
+      "available": true,
+      "freshnessState": "stale",
+      "sourceState": "degraded",
+      "usingLastKnownGood": false,
+      "lane_class": "degraded",
+      "reason": "sourceState=degraded, freshnessState=stale"
+    },
+    "05_FLOOD_CONDITIONS": {
+      "available": true,
+      "freshnessState": "stale",
+      "sourceState": "degraded",
+      "usingLastKnownGood": false,
+      "lane_class": "degraded",
+      "reason": "sourceState=degraded, freshnessState=stale"
+    },
+    "06_TRAIL_INFRASTRUCTURE_STATUS": {
+      "available": true,
+      "freshnessState": "stale",
+      "sourceState": "degraded",
+      "usingLastKnownGood": false,
+      "lane_class": "degraded",
+      "reason": "sourceState=degraded, freshnessState=stale"
+    },
+    "07_GOVERNMENT_SAFETY_ALERTS": {
+      "available": true,
+      "freshnessState": "fresh",
+      "sourceState": "ok",
+      "usingLastKnownGood": false,
+      "lane_class": "ok",
+      "reason": null
+    },
+    "08_ROUTE_FACILITIES": {
+      "available": true,
+      "freshnessState": "fresh",
+      "sourceState": "ok",
+      "usingLastKnownGood": false,
+      "lane_class": "ok",
+      "reason": null
+    }
+  },
+  "expected_cycle": "2026-08-19T13:00:00.000-07:00",
+  "observed_cycle": "2026-08-19T13:00:00.000-07:00",
+  "release_id": "20_STATUS_PUBLISHER-20260820T034129Z-001",
+  "schema_version": "1.0.0",
+  "failed_lane_ids": [],
+  "degraded_lane_ids_reported_by_source": [
+    "01_ROUTE_CONDITIONS",
+    "03_AIR_QUALITY",
+    "04_WILDFIRE",
+    "05_FLOOD_CONDITIONS",
+    "06_TRAIL_INFRASTRUCTURE_STATUS"
+  ],
+  "note": "Three-state watchdog: FAILED if any of HTTP/JSON error, missing/invalid schemaVersion or assembledAt, stale cycle, assemblyState!=ok, publicationState!=published, failedLaneIds present, or any lane with usingLastKnownGood=true or available=false. DEGRADED if the document is otherwise structurally valid but one or more lanes have sourceState=degraded or freshnessState!=fresh. PASSED only if all lanes are fresh/available and assembly/publication are confirmed. Checks system-health.json as the real published freshness/completion signal; monitor-status.json does not exist at the UWISSY public site."
+}

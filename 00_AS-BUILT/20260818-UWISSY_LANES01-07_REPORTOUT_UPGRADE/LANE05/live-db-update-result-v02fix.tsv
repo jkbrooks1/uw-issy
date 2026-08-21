@@ -1,0 +1,12 @@
+BEGIN
+CREATE TABLE
+INSERT 0 1
+UPDATE 1
+INSERT 0 1
+UPDATE 1
+        id        |      name      | active |              versionId               |           activeVersionId            | versionCounter |  parentFolderId  | node_count 
+------------------+----------------+--------+--------------------------------------+--------------------------------------+----------------+------------------+------------
+ 4RiNqOKD9BCZFH6P | v02.UWI_LANE05 | t      | b975c971-f73b-4c02-808e-6acaae76140a | b975c971-f73b-4c02-808e-6acaae76140a |              6 | LaS9Q6sil9yCDzrV |         56
+(1 row)
+
+COMMIT

@@ -1,0 +1,12 @@
+BEGIN
+CREATE TABLE
+COPY 1
+SELECT 1
+INSERT 0 1
+        id        |      name      | active |              versionId               |           activeVersionId            | versionCounter |  parentFolderId  | node_count 
+------------------+----------------+--------+--------------------------------------+--------------------------------------+----------------+------------------+------------
+ gp8WlccGwLydNWG7 | v02.UWI_LANE20 | f      | dd9d5e22-3f40-46cb-b1fb-beb2fefda94f | dd9d5e22-3f40-46cb-b1fb-beb2fefda94f |              6 | LaS9Q6sil9yCDzrV |         40
+(1 row)
+
+UPDATE 1
+COMMIT

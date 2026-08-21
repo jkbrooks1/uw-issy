@@ -1,0 +1,9 @@
+{
+  "id": "KhbGg5gBn7Rbne68",
+  "name": "v03.UWI_LANE30",
+  "active": false,
+  "nodeCount": 45,
+  "hasLane08": true,
+  "hasLegacyMigration": true,
+  "connectorV0003": true
+}

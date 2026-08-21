@@ -1,0 +1,11 @@
+lane	id	old_name	target_name	version	active	nodes	folder
+01	RR7cLSV9oGngrJdA	v0001.01_RouteConditionsConnector	v01.UWI_LANE01	01	true	32	UWISSY
+02	fA0ZjWH3Itl83aPC	v0001.02_WeatherConnector	v01.UWI_LANE02	01	true	40	UWISSY
+03	qlM2XIv2BbFSh3in	v0001.03_AirQualityConnector	v01.UWI_LANE03	01	true	48	UWISSY
+04	w6xnelPQeRFZk8BG	v0001.04_WildfireConnector	v01.UWI_LANE04	01	true	36	UWISSY
+05	4RiNqOKD9BCZFH6P	v0001.05_FloodConditionsConnector	v01.UWI_LANE05	01	true	56	UWISSY
+06	poGV37VLUGIUxfGK	v0001.06_TrailInfrastructureStatusConnector	v01.UWI_LANE06	01	true	48	UWISSY
+07	08g3JNwQPVSxUl2H	v0001.07_GovernmentSafetyAlertsConnector	v01.UWI_LANE07	01	true	48	UWISSY
+08	uwIssy08RouteFacilities	v0001.08_RouteFacilitiesConnector	v01.UWI_LANE08	01	false	24	UWISSY
+20	gp8WlccGwLydNWG7	v0001.20_StatusPublisherConnector	v01.UWI_LANE20	01	false	36	UWISSY
+30	KhbGg5gBn7Rbne68	v0001.30_AlertMonitorConnector	v01.UWI_LANE30	01	false	41	UWISSY

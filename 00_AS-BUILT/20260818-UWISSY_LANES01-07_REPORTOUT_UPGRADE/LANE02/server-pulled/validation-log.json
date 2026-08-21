@@ -1,0 +1,8 @@
+{"source_id":"02_WEATHER:NWS-01","run_id":"02_WEATHER-20260819T053755Z-001","stage":"source_normalize","check":"source_health","result":"pass","message":"ok / 8 record(s)","timestamp":"2026-08-19T05:37:55.749Z"}
+{"source_id":"02_WEATHER:NWS-02","run_id":"02_WEATHER-20260819T053755Z-001","stage":"source_normalize","check":"source_health","result":"pass","message":"ok / 8 record(s)","timestamp":"2026-08-19T05:37:55.749Z"}
+{"source_id":"02_WEATHER:NWS-03","run_id":"02_WEATHER-20260819T053755Z-001","stage":"source_normalize","check":"source_health","result":"pass","message":"ok / 8 record(s)","timestamp":"2026-08-19T05:37:55.749Z"}
+{"source_id":"02_WEATHER:NWS-04","run_id":"02_WEATHER-20260819T053755Z-001","stage":"source_normalize","check":"source_health","result":"pass","message":"ok / 8 record(s)","timestamp":"2026-08-19T05:37:55.749Z"}
+{"source_id":"02_WEATHER:NWS-05","run_id":"02_WEATHER-20260819T053755Z-001","stage":"source_normalize","check":"source_health","result":"pass","message":"ok / 8 record(s)","timestamp":"2026-08-19T05:37:55.749Z"}
+{"source_id":"02_WEATHER:NWS-06","run_id":"02_WEATHER-20260819T053755Z-001","stage":"source_normalize","check":"source_health","result":"pass","message":"empty_but_valid / 0 record(s)","timestamp":"2026-08-19T05:37:55.749Z"}
+{"source_id":"CONNECTOR","run_id":"02_WEATHER-20260819T053755Z-001","stage":"validation","check":"candidate_schema","result":"pass","message":"Candidate passed validation.","timestamp":"2026-08-19T05:37:55.749Z"}
+{"source_id":"CONNECTOR","run_id":"02_WEATHER-20260819T053755Z-001","stage":"publish_gate","check":"promotion","result":"pass","message":"Candidate promoted to published.","timestamp":"2026-08-19T05:38:02.861Z"}

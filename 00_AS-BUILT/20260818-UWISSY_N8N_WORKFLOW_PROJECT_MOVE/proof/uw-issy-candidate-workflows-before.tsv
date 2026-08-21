@@ -1,0 +1,29 @@
+id	name	active	isArchived	nodes	versionCounter	versionId	updatedAt	projectId	project_name	parentFolderId	folder_name	credential_node_count
+pelOd6E0sdu5mygf	v0001.01_RouteConditionsConnector	f	f	17	1	7f070612-dfb6-44dd-b5ba-8a698f08b652	2026-08-01 04:22:51.392+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>	W0ooXbZiTXt7FWwh	CDM	0
+RR7cLSV9oGngrJdA	v0001.01_RouteConditionsConnector	t	f	32	18	bc320298-2096-4db6-8276-1a0d07f138a4	2026-08-02 18:56:12.052+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>			0
+CvzPNlnWXrzZfYGP	v0001.02_WeatherConnector	t	f	21	2	d1f91cb3-e5f8-4e58-abd3-86ae7e7552f1	2026-08-01 04:22:41.718+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>	W0ooXbZiTXt7FWwh	CDM	2
+fA0ZjWH3Itl83aPC	v0001.02_WeatherConnector	t	f	40	6	e98037ed-2e1e-4054-a5d9-1a626339bc05	2026-08-02 18:56:14.134+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>			0
+qQPYZ1eUdNsAwBNM	v0001.03_AirQualityConnector	f	f	20	1	6394c909-8775-487f-966b-579fee671b9e	2026-08-01 04:22:56.792+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>	W0ooXbZiTXt7FWwh	CDM	1
+qlM2XIv2BbFSh3in	v0001.03_AirQualityConnector	t	f	48	4	14087715-85b3-4f03-b3b5-5ab2cc94e04f	2026-08-02 18:56:15.952+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>			0
+263acPaILiJmPW9m	v0001.04_WildfireConnector	t	f	15	5	f090d4b7-4751-4a29-8297-bc8e59c01fb6	2026-08-01 04:21:36.062+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>	W0ooXbZiTXt7FWwh	CDM	1
+w6xnelPQeRFZk8BG	v0001.04_WildfireConnector	t	f	36	2	0e4dd526-c55a-4ab0-bfc9-2cec91bf50f0	2026-08-02 18:56:17.033+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>			0
+D1Dsa02M3LAmzRfy	v0001.05_FloodConditionsConnector	t	f	21	4	35c4b7e1-4536-4a9f-af36-500c7c91a63e	2026-08-01 04:21:33.638+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>	W0ooXbZiTXt7FWwh	CDM	0
+4RiNqOKD9BCZFH6P	v0001.05_FloodConditionsConnector	t	f	56	4	f790d7db-3407-4bab-ab09-3be06a54a65e	2026-08-02 18:56:18.319+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>			0
+poGV37VLUGIUxfGK	v0001.06_TrailInfrastructureStatusConnector	t	f	48	4	0ca79cfc-a582-42e9-8f0b-d30017ef1348	2026-08-02 18:56:19.957+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>			0
+0h9XYSxumCdZFYwh	v0001.07_GovernmentSafetyAlertsConnector	t	f	24	4	e8b737e3-f8ad-4ff5-88fc-d98b04b5bc09	2026-08-01 04:21:26.199+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>	W0ooXbZiTXt7FWwh	CDM	0
+08g3JNwQPVSxUl2H	v0001.07_GovernmentSafetyAlertsConnector	t	f	48	4	3ab787a9-286e-4078-ba52-698395ab72f4	2026-08-02 18:56:21.33+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>			0
+uwIssy08RouteFacilities	v0001.08_RouteFacilitiesConnector	f	f	24	1	565a68a1-3265-4d22-beb7-05360d1de30e	2026-08-04 00:20:49.903+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>			0
+gp8WlccGwLydNWG7	v0001.20_StatusPublisherConnector	f	f	36	5	980d1131-6871-4e09-9d6d-1456686d569f	2026-08-03 17:27:10.556+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>			0
+KhbGg5gBn7Rbne68	v0001.30_AlertMonitorConnector	f	f	41	2	09e23d5d-00fb-420c-85f1-8d90cf93d52d	2026-08-03 17:27:20.25+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>			1
+qWAlsffIyfEF8OL0	v0002.03_AirQualityConnector	f	f	20	1	f854d956-45fb-4a42-993e-c787eec01bea	2026-08-01 04:22:59.248+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>	W0ooXbZiTXt7FWwh	CDM	1
+D2jq6dJuKQmmRVUp	v0003.03_AirQualityConnector	f	f	20	1	0c8a96e5-4090-4969-964d-59b91dec1293	2026-08-01 04:23:01.611+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>	W0ooXbZiTXt7FWwh	CDM	1
+i4QexQX1yXfqjRC1	v0004.03_AirQualityConnector	f	f	20	1	67fecc20-d760-4595-ab25-fe7f67bf8899	2026-08-01 04:23:03.558+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>	W0ooXbZiTXt7FWwh	CDM	1
+6mtvJsEiGNOFEngG	v0005.03_AirQualityConnector	f	f	20	1	eeb3f06f-55a0-434a-a697-76083838d60d	2026-08-01 04:23:06.026+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>	W0ooXbZiTXt7FWwh	CDM	1
+BkZnr8GXZN44QOOP	v0006.01_RouteConditionsConnector	f	f	19	1	a4e9a5cf-2ae9-429f-8f12-e81b19199f30	2026-08-01 04:23:16.556+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>	W0ooXbZiTXt7FWwh	CDM	0
+zx4ksMf1gbiw2PY7	v0006.03_AirQualityConnector	f	f	20	1	f69bf262-c581-40f9-8c33-d04e3b45158a	2026-08-01 04:23:07.972+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>	W0ooXbZiTXt7FWwh	CDM	1
+1f898nUrd8fdQNbb	v0007.01_RouteConditionsConnector	f	f	19	10	39aca896-2dc2-4f98-b1af-4ebe200d1f0f	2026-08-01 04:22:54.245+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>	W0ooXbZiTXt7FWwh	CDM	0
+B3K3UPZWDuRgdHQo	v0007.03_AirQualityConnector	f	f	20	15	944f304c-e4d0-463d-bda5-6bec54d3917b	2026-08-01 04:23:14.294+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>	W0ooXbZiTXt7FWwh	CDM	1
+hCjyk3wSTSTC7N1Q	v0008.03_AirQualityConnector	f	f	20	3	a8db6bb0-af4a-44f1-b8e8-dfabeafc45c7	2026-08-01 04:23:12.353+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>	W0ooXbZiTXt7FWwh	CDM	1
+wi3x7NfHxpFYHBKx	v0009.03_AirQualityConnector	f	f	20	3	b495de98-8583-4594-ba5f-e47162217240	2026-08-01 04:23:09.99+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>	W0ooXbZiTXt7FWwh	CDM	1
+r3boxdxGt60mx9sr	v0010.03_AirQualityConnector	f	f	20	5	1ee0764d-c7a2-4047-9a1a-bcfddad7c429	2026-08-01 04:22:46.654+00	Y0Ygmqe59jevHoeV	John Brooks <john@biketourfrance.net>	W0ooXbZiTXt7FWwh	CDM	1
+(27 rows)

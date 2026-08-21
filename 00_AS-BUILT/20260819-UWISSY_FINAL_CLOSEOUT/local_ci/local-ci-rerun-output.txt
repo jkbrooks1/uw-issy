@@ -1,0 +1,91 @@
+## local CI rerun 2026-08-20T03:05:08Z
+npm error Missing script: "validate:route-source"
+npm error
+npm error To see a list of scripts, run:
+npm error   npm run
+npm error A complete log of this run can be found in: /Users/jkbrookspersonal/.npm/_logs/2026-08-20T03_05_08_872Z-debug-0.log
+npm error Missing script: "build:route-geojson"
+npm error
+npm error To see a list of scripts, run:
+npm error   npm run
+npm error A complete log of this run can be found in: /Users/jkbrookspersonal/.npm/_logs/2026-08-20T03_05_09_121Z-debug-0.log
+npm error Missing script: "validate:route-geojson"
+npm error
+npm error To see a list of scripts, run:
+npm error   npm run
+npm error A complete log of this run can be found in: /Users/jkbrookspersonal/.npm/_logs/2026-08-20T03_05_09_259Z-debug-0.log
+npm error Missing script: "build:public-package"
+npm error
+npm error To see a list of scripts, run:
+npm error   npm run
+npm error A complete log of this run can be found in: /Users/jkbrookspersonal/.npm/_logs/2026-08-20T03_05_09_387Z-debug-0.log
+npm error Missing script: "validate:public-package"
+npm error
+npm error To see a list of scripts, run:
+npm error   npm run
+npm error A complete log of this run can be found in: /Users/jkbrookspersonal/.npm/_logs/2026-08-20T03_05_09_503Z-debug-0.log
+
+> uw-issy-route-status@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.10 /Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor
+
+FAIL: GPX file does not exist: /var/folders/5g/vs4ywyrn2195wtptbt4m2gz40000gn/T/does-not-exist.gpx
+FAIL: Snapshot file does not exist: /var/folders/5g/vs4ywyrn2195wtptbt4m2gz40000gn/T/build-pkg-test-CbOf5V/missing.json
+FAIL: GPX is not valid XML: mismatched closing tag </trk> (expected </name>)
+FAIL: Missing required file: /var/folders/5g/vs4ywyrn2195wtptbt4m2gz40000gn/T/pkg-test-xAOgTT/release-manifest.json
+FAIL: dashboard-data.json is missing required field "routeId"
+FAIL: GPX has no usable route: found 1 track(s) and 0 track point(s); need at least 1 track with at least 2 points
+FAIL: Release IDs do not match across the four files: TEST-RELEASE-001, DIFFERENT-RELEASE
+FAIL: Track point 0 has invalid latitude: 97
+FAIL: dashboard-data.json references event "evt-does-not-exist" that is missing from route-events.geojson
+FAIL: Track point 0 has invalid longitude: -190.2
+FAIL: route-events.geojson feature "evt-1" has an invalid geometry type
+FAIL: Route bounds are not plausible for the UW-Issaquah route: padded bbox [lat 9.8000..10.2100, lon 9.8000..10.2100] does not contain reference point "UW Seattle" (47.6553, -122.3035)
+FAIL: GPX is not valid XML: mismatched closing tag </trk> (expected </name>)
+FAIL: GPX contains no usable track segment (need at least one segment with 2+ points)
+FAIL: route-events.geojson is not a valid GeoJSON FeatureCollection
+FAIL: route-events.geojson is missing its own release/generated marker
+
+ Test Files  6 passed (6)
+      Tests  95 passed (95)
+   Start at  20:05:10
+   Duration  2.50s (transform 373ms, setup 0ms, import 526ms, tests 4.10s, environment 0ms)
+
+
+> uw-issy-route-status@0.1.0 typecheck
+> tsc --noEmit -p tsconfig.json
+
+
+> uw-issy-route-status@0.1.0 build
+> astro build
+
+20:05:15 [types] Generated 49ms
+20:05:15 [build] output: "static"
+20:05:15 [build] mode: "static"
+20:05:15 [build] directory: /Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/dist/
+20:05:15 [build] Collecting build info...
+20:05:15 [build] ✓ Completed in 84ms.
+20:05:15 [build] Building static entrypoints...
+20:05:15 [vite] ✓ built in 385ms
+20:05:15 [vite] ✓ built in 148ms
+20:05:15 [build] Rearranging server assets...
+
+ generating static routes 
+20:05:15   ├─ /index.html (+11ms) 
+20:05:15 ✓ Completed in 38ms.
+
+20:05:15 [build] ✓ Completed in 599ms.
+20:05:15 [build] 1 page(s) built in 689ms
+20:05:15 [build] Complete!
+npm error Missing script: "verify:required-assets"
+npm error
+npm error To see a list of scripts, run:
+npm error   npm run
+npm error A complete log of this run can be found in: /Users/jkbrookspersonal/.npm/_logs/2026-08-20T03_05_15_931Z-debug-0.log
+npm error Missing script: "scan:secrets"
+npm error
+npm error To see a list of scripts, run:
+npm error   npm run
+npm error A complete log of this run can be found in: /Users/jkbrookspersonal/.npm/_logs/2026-08-20T03_05_16_040Z-debug-0.log

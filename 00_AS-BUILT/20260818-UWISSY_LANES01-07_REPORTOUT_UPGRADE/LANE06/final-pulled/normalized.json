@@ -1,0 +1,611 @@
+{
+  "schema_version": "1.0.0",
+  "connector_id": "06_TRAIL_INFRASTRUCTURE_STATUS",
+  "connector_name": "UW-Issaquah Trail Infrastructure Status Connector",
+  "connector_version": "v0002",
+  "lane": "06_TRAIL_INFRASTRUCTURE_STATUS",
+  "run_id": "06_TRAIL_INFRASTRUCTURE_STATUS-20260819T061817Z-001",
+  "generated_at": "2026-08-19T06:18:17.442Z",
+  "published_at": null,
+  "data_status": "degraded",
+  "freshness": {
+    "overall_state": "stale",
+    "computed_at": "2026-08-19T06:18:17.442Z",
+    "oldest_relevant_source_age_minutes": 0,
+    "stale_source_ids": []
+  },
+  "manifest_ref": {
+    "manifest_id": "06_TRAIL_INFRASTRUCTURE_STATUS-v0002",
+    "schema_version": "1.0.0"
+  },
+  "source_health": [
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01",
+      "source_name": "King County Parks Burke-Gilman Trail page",
+      "status": "ok",
+      "last_fetch_at": "2026-08-19T06:18:17.442Z",
+      "last_success_at": "2026-08-19T06:18:17.442Z",
+      "retrieved_at": "2026-08-19T06:18:17.442Z",
+      "freshness_state": "fresh",
+      "http_status": null,
+      "stale_after_minutes": 1440,
+      "record_count": 1,
+      "message": "Live fetch produced 1 publishable event(s).",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02",
+      "source_name": "King County Parks Sammamish River Trail page",
+      "status": "ok",
+      "last_fetch_at": "2026-08-19T06:18:17.442Z",
+      "last_success_at": "2026-08-19T06:18:17.442Z",
+      "retrieved_at": "2026-08-19T06:18:17.442Z",
+      "freshness_state": "fresh",
+      "http_status": null,
+      "stale_after_minutes": 1440,
+      "record_count": 1,
+      "message": "Live fetch produced 1 publishable event(s).",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-03",
+      "source_name": "King County Parks East Lake Sammamish Trail page",
+      "status": "ok",
+      "last_fetch_at": "2026-08-19T06:18:17.442Z",
+      "last_success_at": "2026-08-19T06:18:17.442Z",
+      "retrieved_at": "2026-08-19T06:18:17.442Z",
+      "freshness_state": "fresh",
+      "http_status": null,
+      "stale_after_minutes": 1440,
+      "record_count": 1,
+      "message": "Live fetch produced 1 publishable event(s).",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01",
+      "source_name": "City of Sammamish George Davis Creek Fish Passage and Storm Improvement Project page",
+      "status": "ok",
+      "last_fetch_at": "2026-08-19T06:18:17.442Z",
+      "last_success_at": "2026-08-19T06:18:17.442Z",
+      "retrieved_at": "2026-08-19T06:18:17.442Z",
+      "freshness_state": "fresh",
+      "http_status": null,
+      "stale_after_minutes": 4320,
+      "record_count": 1,
+      "message": "Live fetch produced 1 publishable event(s).",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02",
+      "source_name": "City of Sammamish George Davis Creek project-start update page",
+      "status": "ok",
+      "last_fetch_at": "2026-08-19T06:18:17.442Z",
+      "last_success_at": "2026-08-19T06:18:17.442Z",
+      "retrieved_at": "2026-08-19T06:18:17.442Z",
+      "freshness_state": "fresh",
+      "http_status": null,
+      "stale_after_minutes": 2880,
+      "record_count": 1,
+      "message": "Live fetch produced 1 publishable event(s).",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:ISS-01",
+      "source_name": "City of Issaquah Public Works Current Year Construction Projects ArcGIS service",
+      "status": "failed",
+      "last_fetch_at": "2026-08-19T06:18:17.442Z",
+      "last_success_at": null,
+      "retrieved_at": "2026-08-19T06:18:17.442Z",
+      "freshness_state": "unknown",
+      "http_status": null,
+      "stale_after_minutes": 720,
+      "record_count": 0,
+      "message": "Live fetch failed and no usable last-known-good snapshot was available.",
+      "warnings": [],
+      "errors": [
+        "timeout of 30000ms exceeded"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:REDM-01",
+      "source_name": "City of Redmond Traffic Alerts FeatureServer",
+      "status": "failed",
+      "last_fetch_at": "2026-08-19T06:18:17.442Z",
+      "last_success_at": null,
+      "retrieved_at": "2026-08-19T06:18:17.442Z",
+      "freshness_state": "unknown",
+      "http_status": null,
+      "stale_after_minutes": 720,
+      "record_count": 0,
+      "message": "Live fetch failed and no usable last-known-good snapshot was available.",
+      "warnings": [],
+      "errors": [
+        "timeout of 30000ms exceeded"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-04",
+      "source_name": "King County KingCo_Bridges ArcGIS service",
+      "status": "empty_but_valid",
+      "last_fetch_at": "2026-08-19T06:18:17.442Z",
+      "last_success_at": "2026-08-19T06:18:17.442Z",
+      "retrieved_at": "2026-08-19T06:18:17.442Z",
+      "freshness_state": "fresh",
+      "http_status": null,
+      "stale_after_minutes": 10080,
+      "record_count": 0,
+      "message": "Live fetch succeeded; no publishable lane-06 events.",
+      "warnings": [],
+      "errors": []
+    }
+  ],
+  "connector_health": {
+    "status": "degraded",
+    "branches_total": 8,
+    "branches_succeeded": 6,
+    "branches_failed": 2,
+    "used_last_known_good": false
+  },
+  "events": [
+    {
+      "event_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:74aa4692",
+      "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01",
+      "source_record_id": "5dc3df86",
+      "event_type": "other",
+      "status": "closed",
+      "severity": "high",
+      "title": "Burke-Gilman Trail infrastructure notice",
+      "summary": "{\"data\":\"\\r\\n\\r\\n\\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n \\r\\n\\r\\n\\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n Burke-Gilman Trail - King County, Washington \\r\\n \\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n\\r\\n \\r\\n \\",
+      "effective_start": null,
+      "effective_end": null,
+      "updated_at": "2026-08-19T06:18:17.442Z",
+      "route_relevance": {
+        "classification": "confirmed_route_impact",
+        "method": "text_location_match",
+        "confidence": "medium",
+        "nearest_route_distance_m": null,
+        "matched_route_sections": [
+          "03",
+          "04"
+        ]
+      },
+      "location": {
+        "location_text": "Burke-Gilman Trail / Burke-Gilman",
+        "municipality": "Sammamish",
+        "county": "King",
+        "state": "WA",
+        "coordinates": null,
+        "geometry_type": "none",
+        "bbox": null
+      },
+      "facilities": [
+        "Burke-Gilman Trail",
+        "Burke-Gilman"
+      ],
+      "source": {
+        "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01",
+        "source_name": "King County Parks Burke-Gilman Trail page",
+        "agency": "King County",
+        "url": "https://cd10-prod.kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/burke-gilman",
+        "retrieved_at": "2026-08-19T06:18:17.442Z",
+        "published_or_observed_at": null
+      },
+      "ownership": {
+        "canonical_lane_owner": "06_TRAIL_INFRASTRUCTURE_STATUS",
+        "overlap_notes": "Lane 01 may summarize generic passability, but lane 06 owns infrastructure-caused waterway and crossing impacts."
+      },
+      "route_sections": [
+        "03",
+        "04"
+      ],
+      "provenance": {
+        "source_name": "King County Parks Burke-Gilman Trail page",
+        "source_url": "https://cd10-prod.kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/burke-gilman",
+        "retrieved_at": "2026-08-19T06:18:17.442Z",
+        "source_notes": "HTML lane-06 source parsed from body text.",
+        "corroborating_source_ids": [
+          "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01"
+        ]
+      }
+    },
+    {
+      "event_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:8dcfaeab",
+      "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02",
+      "source_record_id": "7a48aaca",
+      "event_type": "other",
+      "status": "closed",
+      "severity": "high",
+      "title": "Sammamish River Trail infrastructure notice",
+      "summary": "{\"data\":\"\\r\\n\\r\\n\\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n \\r\\n\\r\\n\\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n Sammamish River Trail - King County, Washington \\r\\n \\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n\\r\\n \\r\\",
+      "effective_start": null,
+      "effective_end": null,
+      "updated_at": "2026-08-19T06:18:17.442Z",
+      "route_relevance": {
+        "classification": "confirmed_route_impact",
+        "method": "text_location_match",
+        "confidence": "medium",
+        "nearest_route_distance_m": null,
+        "matched_route_sections": [
+          "05",
+          "06",
+          "07"
+        ]
+      },
+      "location": {
+        "location_text": "Sammamish River Trail / Marymoor Connector / Marymoor Park",
+        "municipality": "Sammamish",
+        "county": "King",
+        "state": "WA",
+        "coordinates": null,
+        "geometry_type": "none",
+        "bbox": null
+      },
+      "facilities": [
+        "Sammamish River Trail",
+        "Marymoor Connector",
+        "Marymoor Park"
+      ],
+      "source": {
+        "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02",
+        "source_name": "King County Parks Sammamish River Trail page",
+        "agency": "King County",
+        "url": "https://cd10-prod.kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/sammamish-river-trail",
+        "retrieved_at": "2026-08-19T06:18:17.442Z",
+        "published_or_observed_at": null
+      },
+      "ownership": {
+        "canonical_lane_owner": "06_TRAIL_INFRASTRUCTURE_STATUS",
+        "overlap_notes": "Lane 01 may summarize generic passability, but lane 06 owns infrastructure-caused waterway and crossing impacts."
+      },
+      "route_sections": [
+        "05",
+        "06",
+        "07"
+      ],
+      "provenance": {
+        "source_name": "King County Parks Sammamish River Trail page",
+        "source_url": "https://cd10-prod.kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/sammamish-river-trail",
+        "retrieved_at": "2026-08-19T06:18:17.442Z",
+        "source_notes": "HTML lane-06 source parsed from body text.",
+        "corroborating_source_ids": [
+          "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02"
+        ]
+      }
+    },
+    {
+      "event_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-03:65bcac37",
+      "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-03",
+      "source_record_id": "66c39e9e",
+      "event_type": "culvert",
+      "status": "closed",
+      "severity": "high",
+      "title": "East Lake Sammamish Trail closure for culvert replacement",
+      "summary": "King County reports the East Lake Sammamish Trail is closed for culvert replacement and related access work.",
+      "effective_start": null,
+      "effective_end": null,
+      "updated_at": "2026-08-19T06:18:17.442Z",
+      "route_relevance": {
+        "classification": "confirmed_route_impact",
+        "method": "named_trail_match",
+        "confidence": "high",
+        "nearest_route_distance_m": null,
+        "matched_route_sections": [
+          "09",
+          "10"
+        ]
+      },
+      "location": {
+        "location_text": "East Lake Sammamish Trail / George Davis Creek / Louis Thompson Rd NE / NE Inglewood Hill Rd",
+        "municipality": "Sammamish",
+        "county": "King",
+        "state": "WA",
+        "coordinates": null,
+        "geometry_type": "none",
+        "bbox": null
+      },
+      "facilities": [
+        "East Lake Sammamish Trail",
+        "George Davis Creek",
+        "Louis Thompson Rd NE",
+        "NE Inglewood Hill Rd"
+      ],
+      "source": {
+        "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-03",
+        "source_name": "King County Parks East Lake Sammamish Trail page",
+        "agency": "King County",
+        "url": "https://cd10-prod.kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/east-lake-sammamish",
+        "retrieved_at": "2026-08-19T06:18:17.442Z",
+        "published_or_observed_at": null
+      },
+      "ownership": {
+        "canonical_lane_owner": "06_TRAIL_INFRASTRUCTURE_STATUS",
+        "overlap_notes": "Lane 01 may summarize generic passability, but lane 06 owns the culvert-driven infrastructure closure."
+      },
+      "route_sections": [
+        "09",
+        "10"
+      ],
+      "provenance": {
+        "source_name": "King County Parks East Lake Sammamish Trail page",
+        "source_url": "https://cd10-prod.kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/east-lake-sammamish",
+        "retrieved_at": "2026-08-19T06:18:17.442Z",
+        "source_notes": "HTML lane-06 source parsed from body text.",
+        "corroborating_source_ids": [
+          "06_TRAIL_INFRASTRUCTURE_STATUS:KC-03"
+        ]
+      }
+    },
+    {
+      "event_id": "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:d2c2a234",
+      "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01",
+      "source_record_id": "b9dc8101",
+      "event_type": "fish_passage",
+      "status": "closed",
+      "severity": "high",
+      "title": "George Davis Creek fish-passage and storm improvement project",
+      "summary": "{\"data\":\"\\r\\n \\r\\n \\r\\n \\r\\n George Davis Creek Fish Passage and Storm Improvement Project | City of Sammamish \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n",
+      "effective_start": null,
+      "effective_end": null,
+      "updated_at": "2026-08-19T06:18:17.442Z",
+      "route_relevance": {
+        "classification": "confirmed_route_impact",
+        "method": "text_location_match",
+        "confidence": "medium",
+        "nearest_route_distance_m": null,
+        "matched_route_sections": [
+          "09",
+          "10"
+        ]
+      },
+      "location": {
+        "location_text": "George Davis Creek / East Lake Sammamish Trail / East Lake Sammamish Shore Lane NE / East Lake Sammamish Parkway",
+        "municipality": "Sammamish",
+        "county": "King",
+        "state": "WA",
+        "coordinates": null,
+        "geometry_type": "none",
+        "bbox": null
+      },
+      "facilities": [
+        "George Davis Creek",
+        "East Lake Sammamish Trail",
+        "East Lake Sammamish Shore Lane NE",
+        "East Lake Sammamish Parkway"
+      ],
+      "source": {
+        "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01",
+        "source_name": "City of Sammamish George Davis Creek Fish Passage and Storm Improvement Project page",
+        "agency": "City of Sammamish",
+        "url": "https://www.sammamish.us/projects/george-davis-creek-fish-passage-and-storm-improvement-project/",
+        "retrieved_at": "2026-08-19T06:18:17.442Z",
+        "published_or_observed_at": null
+      },
+      "ownership": {
+        "canonical_lane_owner": "06_TRAIL_INFRASTRUCTURE_STATUS",
+        "overlap_notes": "Lane 01 may mention generic construction, but lane 06 owns the structure-specific access impact and fish-passage infrastructure."
+      },
+      "route_sections": [
+        "09",
+        "10"
+      ],
+      "provenance": {
+        "source_name": "City of Sammamish George Davis Creek Fish Passage and Storm Improvement Project page",
+        "source_url": "https://www.sammamish.us/projects/george-davis-creek-fish-passage-and-storm-improvement-project/",
+        "retrieved_at": "2026-08-19T06:18:17.442Z",
+        "source_notes": "HTML lane-06 source parsed from body text.",
+        "corroborating_source_ids": [
+          "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01"
+        ]
+      }
+    },
+    {
+      "event_id": "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02:3f489f7f",
+      "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02",
+      "source_record_id": "c905923c",
+      "event_type": "culvert",
+      "status": "planned",
+      "severity": "high",
+      "title": "George Davis Creek project start update",
+      "summary": "{\"data\":\"\\r\\n \\r\\n \\r\\n \\r\\n City of Sammamish \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n \\r\\n\\r\\n \\r\\n \\r\\n\\r\\n \\r\\n\\r\\n",
+      "effective_start": null,
+      "effective_end": null,
+      "updated_at": "2026-08-19T06:18:17.442Z",
+      "route_relevance": {
+        "classification": "confirmed_route_impact",
+        "method": "text_location_match",
+        "confidence": "medium",
+        "nearest_route_distance_m": null,
+        "matched_route_sections": [
+          "09",
+          "10"
+        ]
+      },
+      "location": {
+        "location_text": "George Davis Creek / East Lake Sammamish Trail / East Lake Sammamish Parkway",
+        "municipality": "Sammamish",
+        "county": "King",
+        "state": "WA",
+        "coordinates": null,
+        "geometry_type": "none",
+        "bbox": null
+      },
+      "facilities": [
+        "George Davis Creek",
+        "East Lake Sammamish Trail",
+        "East Lake Sammamish Parkway"
+      ],
+      "source": {
+        "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02",
+        "source_name": "City of Sammamish George Davis Creek project-start update page",
+        "agency": "City of Sammamish",
+        "url": "https://www.sammamish.us/news/george-davis-creek-project-to-start-this-spring/",
+        "retrieved_at": "2026-08-19T06:18:17.442Z",
+        "published_or_observed_at": null
+      },
+      "ownership": {
+        "canonical_lane_owner": "06_TRAIL_INFRASTRUCTURE_STATUS",
+        "overlap_notes": "Lane 01 may mention generic construction, but lane 06 owns the structure-specific access impact and fish-passage infrastructure."
+      },
+      "route_sections": [
+        "09",
+        "10"
+      ],
+      "provenance": {
+        "source_name": "City of Sammamish George Davis Creek project-start update page",
+        "source_url": "https://www.sammamish.us/news/george-davis-creek-project-to-start-this-spring/",
+        "retrieved_at": "2026-08-19T06:18:17.442Z",
+        "source_notes": "HTML lane-06 source parsed from body text.",
+        "corroborating_source_ids": [
+          "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02"
+        ]
+      }
+    }
+  ],
+  "observations": [],
+  "route_sections": [
+    {
+      "section_id": "10",
+      "section_name": "Issaquah approach / terminus",
+      "impact_level": "confirmed",
+      "summary": "Confirmed lane-06 infrastructure impact.",
+      "event_ids": [
+        "06_TRAIL_INFRASTRUCTURE_STATUS:KC-03:65bcac37",
+        "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:d2c2a234",
+        "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02:3f489f7f"
+      ]
+    },
+    {
+      "section_id": "01",
+      "section_name": "UW / U-District",
+      "impact_level": "none",
+      "summary": "No confirmed route-impacting events detected.",
+      "event_ids": []
+    },
+    {
+      "section_id": "02",
+      "section_name": "Burke-Gilman - Seattle",
+      "impact_level": "none",
+      "summary": "No confirmed route-impacting events detected.",
+      "event_ids": []
+    },
+    {
+      "section_id": "03",
+      "section_name": "Burke-Gilman - north Lake Washington / Kenmore",
+      "impact_level": "confirmed",
+      "summary": "Confirmed lane-06 infrastructure impact.",
+      "event_ids": [
+        "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:74aa4692"
+      ]
+    },
+    {
+      "section_id": "04",
+      "section_name": "Burke-Gilman / connector - Bothell",
+      "impact_level": "confirmed",
+      "summary": "Confirmed lane-06 infrastructure impact.",
+      "event_ids": [
+        "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:74aa4692"
+      ]
+    },
+    {
+      "section_id": "05",
+      "section_name": "Sammamish River Trail - Bothell / Woodinville",
+      "impact_level": "confirmed",
+      "summary": "Confirmed lane-06 infrastructure impact.",
+      "event_ids": [
+        "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:8dcfaeab"
+      ]
+    },
+    {
+      "section_id": "06",
+      "section_name": "Sammamish River Trail - Redmond",
+      "impact_level": "confirmed",
+      "summary": "Confirmed lane-06 infrastructure impact.",
+      "event_ids": [
+        "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:8dcfaeab"
+      ]
+    },
+    {
+      "section_id": "07",
+      "section_name": "Marymoor Park / Marymoor Connector",
+      "impact_level": "confirmed",
+      "summary": "Confirmed lane-06 infrastructure impact.",
+      "event_ids": [
+        "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:8dcfaeab"
+      ]
+    },
+    {
+      "section_id": "08",
+      "section_name": "East Lake Sammamish Trail - Redmond",
+      "impact_level": "none",
+      "summary": "No confirmed route-impacting events detected.",
+      "event_ids": []
+    },
+    {
+      "section_id": "09",
+      "section_name": "East Lake Sammamish Trail - Sammamish",
+      "impact_level": "confirmed",
+      "summary": "Confirmed lane-06 infrastructure impact.",
+      "event_ids": [
+        "06_TRAIL_INFRASTRUCTURE_STATUS:KC-03:65bcac37",
+        "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:d2c2a234",
+        "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02:3f489f7f"
+      ]
+    }
+  ],
+  "provenance": {
+    "source_ids_used": [
+      "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01",
+      "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02",
+      "06_TRAIL_INFRASTRUCTURE_STATUS:KC-03",
+      "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01",
+      "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02",
+      "06_TRAIL_INFRASTRUCTURE_STATUS:KC-04"
+    ],
+    "route_gpx": "data/route/UnivWA-Issaquah.gpx",
+    "research_basis": [
+      "06_TRAIL_INFRASTRUCTURE_STATUS_EXECUTABLE_BUILD_SPECIFICATION_v1.md",
+      "00_SHARED_AUTONOMOUS_CONNECTOR_BUILD_STANDARD.md",
+      "00_CDM_CONNECTOR_LESSONS_APPLIED.md"
+    ]
+  },
+  "validation_state": {
+    "schema_valid": true,
+    "freshness_valid": false,
+    "route_relevance_valid": true,
+    "deduplication_valid": true,
+    "used_last_known_good": false,
+    "candidate_validation_passed": true,
+    "published_from_candidate": false,
+    "validator_version": "1.0.0"
+  },
+  "metadata": {
+    "public_label": "WATERWAY_AND_CROSSING_STATUS",
+    "manual_review_required": false,
+    "source_warnings": [],
+    "source_errors": [
+      "timeout of 30000ms exceeded",
+      "timeout of 30000ms exceeded"
+    ]
+  }
+}

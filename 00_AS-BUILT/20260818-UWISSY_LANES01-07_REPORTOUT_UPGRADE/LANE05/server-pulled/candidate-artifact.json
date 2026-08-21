@@ -1,0 +1,593 @@
+{
+  "schema_version": "1.0.0",
+  "connector_id": "05_FLOOD_CONDITIONS",
+  "connector_name": "UW-Issaquah Flood Conditions Connector",
+  "connector_version": "v0002",
+  "lane": "05_FLOOD_CONDITIONS",
+  "run_id": "05_FLOOD_CONDITIONS-20260819T060417Z-001",
+  "generated_at": "2026-08-19T06:04:17.348Z",
+  "published_at": null,
+  "data_status": "degraded",
+  "freshness": {
+    "overall_state": "stale",
+    "computed_at": "2026-08-19T06:04:17.348Z",
+    "oldest_relevant_source_age_minutes": 0,
+    "stale_source_ids": []
+  },
+  "manifest_ref": {
+    "manifest_id": "05_FLOOD_CONDITIONS-v0002",
+    "schema_version": "1.0.0"
+  },
+  "source_health": [
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "05_FLOOD_CONDITIONS",
+      "source_id": "05_FLOOD_CONDITIONS:USGS-01",
+      "source_name": "USGS IV service - Issaquah Creek near mouth near Issaquah (12121600)",
+      "status": "ok",
+      "retrieved_at": "2026-08-19T06:04:17.348Z",
+      "stale_after_minutes": 30,
+      "record_count": 1,
+      "http_status": null,
+      "last_observation_at": "2026-08-18T22:15:00.000-07:00",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "05_FLOOD_CONDITIONS",
+      "source_id": "05_FLOOD_CONDITIONS:USGS-02",
+      "source_name": "USGS IV service - Issaquah Creek near Hobart (12120600)",
+      "status": "ok",
+      "retrieved_at": "2026-08-19T06:04:17.348Z",
+      "stale_after_minutes": 30,
+      "record_count": 1,
+      "http_status": null,
+      "last_observation_at": "2026-08-18T22:45:00.000-07:00",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "05_FLOOD_CONDITIONS",
+      "source_id": "05_FLOOD_CONDITIONS:USGS-03",
+      "source_name": "USGS IV service - Sammamish Lake near Redmond (12122000)",
+      "status": "ok",
+      "retrieved_at": "2026-08-19T06:04:17.348Z",
+      "stale_after_minutes": 30,
+      "record_count": 2,
+      "http_status": null,
+      "last_observation_at": "2026-08-18T22:15:00.000-07:00",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "05_FLOOD_CONDITIONS",
+      "source_id": "05_FLOOD_CONDITIONS:NWPS-01",
+      "source_name": "NOAA National Water Prediction Service - Issaquah Creek near Issaquah (ISSW1)",
+      "status": "ok",
+      "retrieved_at": "2026-08-19T06:04:17.348Z",
+      "stale_after_minutes": 30,
+      "record_count": 1,
+      "http_status": {
+        "observed": {
+          "primary": 0.0181,
+          "primaryUnit": "kcfs",
+          "secondary": 3.7,
+          "secondaryUnit": "ft",
+          "floodCategory": "no_flooding",
+          "validTime": "2026-08-19T03:15:00Z"
+        },
+        "forecast": {
+          "primary": 0.0222,
+          "primaryUnit": "kcfs",
+          "secondary": 3.8,
+          "secondaryUnit": "ft",
+          "floodCategory": "no_flooding",
+          "validTime": "2026-08-26T18:00:00Z"
+        }
+      },
+      "last_observation_at": "2026-08-19T03:15:00Z",
+      "warnings": [
+        "No flood category escalation detected; retaining observed context only."
+      ],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "05_FLOOD_CONDITIONS",
+      "source_id": "05_FLOOD_CONDITIONS:NWPS-02",
+      "source_name": "NOAA National Water Prediction Service - Issaquah Creek near Hobart (ISQW1)",
+      "status": "ok",
+      "retrieved_at": "2026-08-19T06:04:17.348Z",
+      "stale_after_minutes": 30,
+      "record_count": 1,
+      "http_status": {
+        "observed": {
+          "primary": 3.94,
+          "primaryUnit": "ft",
+          "secondary": 0.011,
+          "secondaryUnit": "kcfs",
+          "floodCategory": "not_defined",
+          "validTime": "2026-08-19T04:45:00Z"
+        },
+        "forecast": {
+          "primary": -999,
+          "primaryUnit": "",
+          "secondary": -999,
+          "secondaryUnit": "",
+          "floodCategory": "fcst_not_current",
+          "validTime": "0001-01-01T00:00:00Z"
+        }
+      },
+      "last_observation_at": "2026-08-19T04:45:00Z",
+      "warnings": [
+        "No flood category escalation detected; retaining observed context only."
+      ],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "05_FLOOD_CONDITIONS",
+      "source_id": "05_FLOOD_CONDITIONS:NWS-01",
+      "source_name": "National Weather Service API - flood and flash-flood alerts",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T06:04:17.348Z",
+      "stale_after_minutes": 15,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T06:04:17.348Z",
+      "warnings": [
+        "NWS returned a valid empty collection."
+      ],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "05_FLOOD_CONDITIONS",
+      "source_id": "05_FLOOD_CONDITIONS:ISS-01",
+      "source_name": "City of Issaquah Flooding page",
+      "status": "failed",
+      "retrieved_at": "2026-08-19T06:04:17.348Z",
+      "stale_after_minutes": 1440,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T06:04:17.348Z",
+      "warnings": [
+        "Live fetch failed and no usable last-known-good snapshot was available."
+      ],
+      "errors": [
+        "403 - \"<!DOCTYPE html><html lang=\\\"en-US\\\"><head><title>Just a moment...</title><meta http-equiv=\\\"Content-Type\\\" content=\\\"text/html; charset=UTF-8\\\"><meta http-equiv=\\\"X-UA-Compatible\\\" content=\\\"IE=Edge\\\"><meta name=\\\"robots\\\" content=\\\"noindex,nofollow\\\"><meta name=\\\"viewport\\\" content=\\\"width=device-width,initial-scale=1\\\"><meta http-equiv=\\\"content-security-policy\\\" content=\\\"default-src &#39;none&#39;; script-src &#39;nonce-GG4ah2OWMUMOjpfirDTGBX&#39; &#39;unsafe-eval&#39; https://challenges.cloudflare.com; script-src-attr &#39;none&#39;; style-src &#39;unsafe-inline&#39;; img-src &#39;self&#39; https://challenges.cloudflare.com; connect-src &#39;self&#39; https://challenges.cloudflare.com; frame-src &#39;self&#39; https://challenges.cloudflare.com blob:; child-src &#39;self&#39; https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri &#39;self&#39;\\\"><style>*{box-sizing:border-box;margin:0;padding:0}html{line-height:1.15;-webkit-text-size-adjust:100%;color:#313131;font-family:system-ui,-apple-system,BlinkMacSystemFont,\\\"Segoe UI\\\",Roboto,\\\"Helvetica Neue\\\",Arial,\\\"Noto Sans\\\",sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\",\\\"Segoe UI Symbol\\\",\\\"Noto Color Emoji\\\"}body{display:flex;flex-direction:column;height:100vh;min-height:100vh}.main-content{margin:8rem auto;padding-left:1.5rem;max-width:60rem}@media (width <= 720px){.main-content{margin-top:4rem}}#challenge-error-text{background-image:url(\\\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgZmlsbD0ibm9uZSI+PHBhdGggZmlsbD0iI0IyMEYwMyIgZD0iTTE2IDNhMTMgMTMgMCAxIDAgMTMgMTNBMTMuMDE1IDEzLjAxNSAwIDAgMCAxNiAzbTAgMjRhMTEgMTEgMCAxIDEgMTEtMTEgMTEuMDEgMTEuMDEgMCAwIDEtMTEgMTEiLz48cGF0aCBmaWxsPSIjQjIwRjAzIiBkPSJNMTcuMDM4IDE4LjYxNUgxNC44N0wxNC41NjMgOS41aDIuNzgzem0tMS4wODQgMS40MjdxLjY2IDAgMS4wNTcuMzg4LjQwNy4zODkuNDA3Ljk5NCAwIC41OTYtLjQwNy45ODQtLjM5Ny4zOS0xLjA1Ny4zODktLjY1IDAtMS4wNTYtLjM4OS0uMzk4LS4zODktLjM5OC0uOTg0IDAtLjU5Ny4zOTgtLjk4NS40MDYtLjM5NyAxLjA1Ni0uMzk3Ii8+PC9zdmc+\\\");background-repeat:no-repeat;background-size:contain;padding-left:34px}</style><meta http-equiv=\\\"refresh\\\" content=\\\"360\\\"></head><body><div class=\\\"main-wrapper\\\" role=\\\"main\\\"><div class=\\\"main-content\\\"><noscript><div class=\\\"h2\\\"><span id=\\\"challenge-error-text\\\">Enable JavaScript and cookies to continue</span></div></noscript></div></div><script nonce=\\\"GG4ah2OWMUMOjpfirDTGBX\\\">(function(){window._cf_chl_opt = {cFPWv: 'g',cH: 'rf36CxlJF9Vvu63Obaw8.NxdzU.nmOqGPL5JDKFc4ZY-1787119491-1.2.1.1-yi1hVqOuVv4eeQ168u0Bk0w4zRNj2RBVPT5kpwusURe6hOWj0xLBM9WWJOTLKlFV',cITimeS: '1787119491',cN: 'GG4ah2OWMUMOjpfirDTGBX',cRay: 'a2d6f6956f4a8e59',cTplB: '0',cTplC:0,cTplO:0,cTplV:5,cType: 'managed',cUPMDTk:\\\"/flood?__cf_chl_tk=dC0og.KOiGAHfjYT9tvWh.V9OJppmJQ2SgbIEiJOzkU-1787119491-1.0.1.1-3e0pbKx6HOZvVNDBqmmJWDLI9v7Oj6hFe9WNunaXKwk\\\",cvId: '3',cZone: 'www.issaquahwa.gov',fa:\\\"/flood?__cf_chl_f_tk=dC0og.KOiGAHfjYT9tvWh.V9OJppmJQ2SgbIEiJOzkU-1787119491-1.0.1.1-3e0pbKx6HOZvVNDBqmmJWDLI9v7Oj6hFe9WNunaXKwk\\\",md: 'EXr_9CEsoKnuJi0LU6qzF4aPJjCZqjaEEvIjHzTwMWM-1787119491-1.2.1.1-BmsajO7RJh_Lh8FOeYsiSyOuNIEdkE2gsDJrZrydVVp_aOfwkosdHRqh0y08mqd4u8uqRvZAFAH8_Kyl3CAXA2hqiRy5iMZybzRGY4tRvrR.k5nU99t45.hUWFCuEVO5ANkLQYHATisLStPtUAW5wLY5ZXv8T.CUZW.dHwgeN1a.2o_w54YvT8ugYSrA2BQJLD.tWBEULQOrmo6GGdd8VXNCOPNW0_cG2RgKsnMZJz3cZnZbg1jXqAFjWjuUoRJjwJwwDJUWoXKT7jkTy6vztY2GYNS9lce.ZW9rr2yHVhdItsTqZS7hWtbJUuvBBts3ClJR0Excilywx6WOg.XtRbM9HGdRa19mj6ZcfKbKXAZiNQ2ULwA3r1mBeeUe0wsE6rzSH.Fwk8bmJISaOCBzFRur_yv4d_Jkk7OAWpjDGhYM3TANv9BzkmZnkAOzRuBFk4z5QXAMYswG5gTIn6JRweJ5R1kmDONHEXHStuTevgC3dAE6BM4s0Vv9Nl9Jbd44ZumttDosHp34F2FcaYdufKfLQXZiyVjShkdv6GYSrlFfeFrI_7jwARk4QHRZ2XVuHTzKxo3RmAmMJr6g0PhE6oxbSLH5DW.76KqozgLkPhbmAbnczkVFf7yKdIctPWwyxyMQf2ZPFa__yu5gVK9mKss_cstlJTREmIvfYkock8mUzlzGy7zVpWZ6rDZ4PU3clJk5OKLsJ7OizHt3a2PJa0VINBsZr_s2XOs2K54RhZeWV_9QDOfd47yanwjzWmTiVOm0ufbdPjdNn7.N_PoUcpVbUGNGfnUxiVpdr0LloTsbIzdQ1enCTuT1bY1FodyT7gCIa8hCcZXpUBFvwKz6vrlmeRX27jO8hG19MzoLsJbUFaIcYXnHJHZpJeJ8zMA9SPIXPe1VA7LofLPLE.GmzgxGq3vKS4oTR.0UuDuUsHi.gX.hvHmw9L9gcKEhXdP1PJZfMXDr4KLu3W_Lh1ruJsT1Ds4pttuOaqHdaJhnpVPKs51wj4bTLR9tPYgLZkA82BXg2D4sgPA1dNE4nVUgwmnn3dc8k6qIJv7Br.Jjmtc',mdrd: 'nU6ZU5P0caqlyQe4.GcydE06grEIlvch1ILhPtWqmp8-1787119491-1.2.1.1-3iI6gmsK7rXganXS1zD9tSE0Hj00PS0AXkCsIC.gkP0h4tLLGw9bAdCtUHnYUmzq0.1ZhnKTUUTxruLwoLr5V7Q2o4dw5.Xuk8va6JIYpRt07hY2mmFqSls6B1VbnICuDqehesbGuuVFz_RtNqs9HnygnSq_TM.wrXx_8VRcjz8O.OTLkf5CbLNrNICLduZhZQ04_ffIqQYDAHpjyPhSOm_Jt58qXzj8MpR_XICFZkdVLhbjdp8MSYHOUyUmH34utt_SklTltF32rcTBz6f32Wo6IL9iw7VJT1qEHTq_f4g',};var a = document.createElement('script');a.nonce = 'GG4ah2OWMUMOjpfirDTGBX';a.src = '/cdn-cgi/challenge-platform/h/g/orchestrate/chl_page/v1?ray=a2d6f6956f4a8e59';window._cf_chl_opt.cOgUHash = location.hash === '' && location.href.indexOf('#') !== -1 ? '#' : location.hash;window._cf_chl_opt.cOgUQuery = location.search === '' && location.href.slice(0, location.href.length - window._cf_chl_opt.cOgUHash.length).indexOf('?') !== -1 ? '?' : location.search;if (window.history && window.history.replaceState) {var ogU = location.pathname + window._cf_chl_opt.cOgUQuery + window._cf_chl_opt.cOgUHash;history.replaceState(null, null,\\\"/flood?__cf_chl_rt_tk=dC0og.KOiGAHfjYT9tvWh.V9OJppmJQ2SgbIEiJOzkU-1787119491-1.0.1.1-3e0pbKx6HOZvVNDBqmmJWDLI9v7Oj6hFe9WNunaXKwk\\\"+ window._cf_chl_opt.cOgUHash);a.onload = function() {history.replaceState(null, null, ogU);}}document.getElementsByTagName('head')[0].appendChild(a);}());</script></body></html>\""
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "05_FLOOD_CONDITIONS",
+      "source_id": "05_FLOOD_CONDITIONS:REDM-01",
+      "source_name": "City of Redmond Traffic Alerts ArcGIS service",
+      "status": "failed",
+      "retrieved_at": "2026-08-19T06:04:17.348Z",
+      "stale_after_minutes": 60,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T06:04:17.348Z",
+      "warnings": [
+        "Live fetch failed and no usable last-known-good snapshot was available."
+      ],
+      "errors": [
+        "timeout of 30000ms exceeded"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "05_FLOOD_CONDITIONS",
+      "source_id": "05_FLOOD_CONDITIONS:KC-ROAD-01",
+      "source_name": "King County RoadAlerts - KingCo_Road_Alerts",
+      "status": "failed",
+      "retrieved_at": "2026-08-19T06:04:17.348Z",
+      "stale_after_minutes": 60,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T06:04:17.348Z",
+      "warnings": [
+        "Live fetch failed and no usable last-known-good snapshot was available."
+      ],
+      "errors": [
+        "Failed to execute query."
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "05_FLOOD_CONDITIONS",
+      "source_id": "05_FLOOD_CONDITIONS:WSDOT-01",
+      "source_name": "WSDOT Traveler Information API - Highway Alerts",
+      "status": "failed",
+      "retrieved_at": "2026-08-19T06:04:17.348Z",
+      "stale_after_minutes": 60,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T06:04:17.348Z",
+      "warnings": [
+        "Live fetch failed and no usable last-known-good snapshot was available."
+      ],
+      "errors": [
+        "access to env vars denied"
+      ]
+    }
+  ],
+  "connector_health": {
+    "schema_version": "1.0.0",
+    "connector_id": "05_FLOOD_CONDITIONS",
+    "status": "degraded",
+    "failed_stage": null,
+    "warning_count": 3,
+    "error_count": 4,
+    "used_last_known_good": false,
+    "candidate_written": true,
+    "published_written": false
+  },
+  "events": [
+    {
+      "event_id": "05_FLOOD_CONDITIONS:USGS-01:3155e9ae",
+      "event_type": "gauge_observation",
+      "status": "monitoring",
+      "severity": "advisory",
+      "route_impact": "elevated_water",
+      "title": "Issaquah Creek gauge observation",
+      "summary": "USGS observation | value=17.5 | unit=mixed | 2026-08-18T22:15:00.000-07:00",
+      "source_id": "05_FLOOD_CONDITIONS:USGS-01",
+      "source_event_ref": "00060",
+      "observed_at": "2026-08-18T22:15:00.000-07:00",
+      "effective_until": null,
+      "official_category": "USGS:12121600:00060:00000",
+      "metric": {
+        "metric_name": "stage_or_flow",
+        "metric_value": 17.5,
+        "unit": "mixed"
+      },
+      "location": {
+        "name": "Issaquah Creek near Issaquah",
+        "latitude": 47.5525,
+        "longitude": -122.0467,
+        "route_section_ids": [
+          "10_issaquah_approach_terminus"
+        ]
+      },
+      "route_relevance": {
+        "method": "point_to_route_distance",
+        "distance_km": 0.173,
+        "confidence": "high",
+        "reason": "Gauge lies at the route terminus and directly monitors Issaquah Creek near the GPX end point."
+      },
+      "provenance": {
+        "source_url": "https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12121600&parameterCd=00060,00065",
+        "retrieved_at": "2026-08-19T06:04:17.348Z",
+        "source_record_hash": "hash_d7a53197"
+      }
+    },
+    {
+      "event_id": "05_FLOOD_CONDITIONS:USGS-02:6641544f",
+      "event_type": "gauge_observation",
+      "status": "monitoring",
+      "severity": "advisory",
+      "route_impact": "elevated_water",
+      "title": "Issaquah Creek gauge observation",
+      "summary": "USGS observation | value=11.1 | unit=mixed | 2026-08-18T22:45:00.000-07:00",
+      "source_id": "05_FLOOD_CONDITIONS:USGS-02",
+      "source_event_ref": "00060",
+      "observed_at": "2026-08-18T22:45:00.000-07:00",
+      "effective_until": null,
+      "official_category": "USGS:12120600:00060:00000",
+      "metric": {
+        "metric_name": "stage_or_flow",
+        "metric_value": 11.1,
+        "unit": "mixed"
+      },
+      "location": {
+        "name": "Issaquah Creek near Issaquah",
+        "latitude": 47.5525,
+        "longitude": -122.0467,
+        "route_section_ids": [
+          "10_issaquah_approach_terminus"
+        ]
+      },
+      "route_relevance": {
+        "method": "upstream_relationship",
+        "distance_km": 10.934,
+        "confidence": "high",
+        "reason": "Approved upstream exception because Issaquah uses Hobart for local flood lead-time guidance."
+      },
+      "provenance": {
+        "source_url": "https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12120600&parameterCd=00060,00065",
+        "retrieved_at": "2026-08-19T06:04:17.348Z",
+        "source_record_hash": "hash_e76128c7"
+      }
+    },
+    {
+      "event_id": "05_FLOOD_CONDITIONS:USGS-03:3ede5e04",
+      "event_type": "gauge_observation",
+      "status": "monitoring",
+      "severity": "advisory",
+      "route_impact": "elevated_water",
+      "title": "Lake Sammamish shoreline context observed",
+      "summary": "USGS observation | value=25.76 | unit=ft | 2026-08-18T22:15:00.000-07:00",
+      "source_id": "05_FLOOD_CONDITIONS:USGS-03",
+      "source_event_ref": "62614",
+      "observed_at": "2026-08-18T22:15:00.000-07:00",
+      "effective_until": null,
+      "official_category": "USGS:12122000:62614:00000",
+      "metric": {
+        "metric_name": "lake_elevation_ft",
+        "metric_value": 25.76,
+        "unit": "ft"
+      },
+      "location": {
+        "name": "Lake Sammamish near Redmond",
+        "latitude": 47.6628,
+        "longitude": -122.0922,
+        "route_section_ids": [
+          "07_marymoor_park",
+          "08_east_lake_sammamish_trail_redmond",
+          "09_east_lake_sammamish_trail_sammamish"
+        ]
+      },
+      "route_relevance": {
+        "method": "point_to_route_distance",
+        "distance_km": 2.2,
+        "confidence": "medium",
+        "reason": "Lake Sammamish shoreline context only; not a stand-alone flood trigger."
+      },
+      "provenance": {
+        "source_url": "https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12122000",
+        "retrieved_at": "2026-08-19T06:04:17.348Z",
+        "source_record_hash": "hash_f60897d9"
+      }
+    },
+    {
+      "event_id": "05_FLOOD_CONDITIONS:NWPS-01:6e5fc021",
+      "event_type": "gauge_forecast",
+      "status": "monitoring",
+      "severity": "advisory",
+      "route_impact": "elevated_water",
+      "title": "NOAA NWPS observed status and forecast",
+      "summary": "Observed stage=n/a | flow=n/a | category=no_flooding | forecast=n/a",
+      "source_id": "05_FLOOD_CONDITIONS:NWPS-01",
+      "source_event_ref": null,
+      "observed_at": "2026-08-19T03:15:00Z",
+      "effective_until": null,
+      "official_category": "no_flooding",
+      "metric": {
+        "metric_name": "stage_ft",
+        "metric_value": null,
+        "secondary_metric_name": "flow_cfs",
+        "secondary_metric_value": null,
+        "unit": "ft"
+      },
+      "location": {
+        "name": "Issaquah Creek near Issaquah",
+        "latitude": 47.6505,
+        "longitude": -122.3046,
+        "route_section_ids": [
+          "10_issaquah_approach_terminus"
+        ]
+      },
+      "route_relevance": {
+        "method": "point_to_route_distance",
+        "distance_km": 0.173,
+        "confidence": "high",
+        "reason": "Official NOAA flood-category and forecast source for the route terminus."
+      },
+      "provenance": {
+        "source_url": "https://api.water.noaa.gov/nwps/v1/gauges/ISSW1",
+        "retrieved_at": "2026-08-19T06:04:17.348Z",
+        "source_record_hash": "hash_4d2cb1f0"
+      }
+    },
+    {
+      "event_id": "05_FLOOD_CONDITIONS:NWPS-02:4f5de46b",
+      "event_type": "gauge_observation",
+      "status": "monitoring",
+      "severity": "advisory",
+      "route_impact": "elevated_water",
+      "title": "NOAA NWPS upstream corroboration",
+      "summary": "Observed stage=n/a | flow=n/a | category=not_defined | forecast=n/a",
+      "source_id": "05_FLOOD_CONDITIONS:NWPS-02",
+      "source_event_ref": null,
+      "observed_at": "2026-08-19T04:45:00Z",
+      "effective_until": null,
+      "official_category": "not_defined",
+      "metric": {
+        "metric_name": "stage_ft",
+        "metric_value": null,
+        "secondary_metric_name": "flow_cfs",
+        "secondary_metric_value": null,
+        "unit": "ft"
+      },
+      "location": {
+        "name": "Issaquah Creek near Hobart",
+        "latitude": 47.6183,
+        "longitude": -122.064,
+        "route_section_ids": [
+          "10_issaquah_approach_terminus"
+        ]
+      },
+      "route_relevance": {
+        "method": "upstream_relationship",
+        "distance_km": 10.934,
+        "confidence": "high",
+        "reason": "NOAA-form corroboration for the upstream Hobart point and local lead-time interpretation."
+      },
+      "provenance": {
+        "source_url": "https://api.water.noaa.gov/nwps/v1/gauges/ISQW1",
+        "retrieved_at": "2026-08-19T06:04:17.348Z",
+        "source_record_hash": "hash_eb887240"
+      }
+    }
+  ],
+  "observations": [
+    {
+      "observation_id": "05_FLOOD_CONDITIONS:USGS-03:context",
+      "observation_type": "derived_context",
+      "title": "Lake Sammamish shoreline context",
+      "summary": "USGS observation | value=25.76 | unit=ft | 2026-08-18T22:15:00.000-07:00",
+      "source_id": "05_FLOOD_CONDITIONS:USGS-03",
+      "observed_at": "2026-08-18T22:15:00.000-07:00",
+      "route_section_ids": [
+        "07_marymoor_park",
+        "08_east_lake_sammamish_trail_redmond",
+        "09_east_lake_sammamish_trail_sammamish"
+      ],
+      "metric": {
+        "metric_name": "lake_elevation_ft",
+        "metric_value": 25.76,
+        "unit": "ft"
+      },
+      "notes": "Context only; do not treat as a closure trigger by itself."
+    }
+  ],
+  "route_sections": [
+    {
+      "route_section_id": "01_uw_u_district",
+      "route_section_name": "UW / U-District",
+      "status": "no_current_events",
+      "event_ids": [],
+      "observation_ids": [],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    },
+    {
+      "route_section_id": "02_burke_gilman_seattle",
+      "route_section_name": "Burke-Gilman - Seattle",
+      "status": "no_current_events",
+      "event_ids": [],
+      "observation_ids": [],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    },
+    {
+      "route_section_id": "03_burke_gilman_north_lake_wa_kenmore",
+      "route_section_name": "Burke-Gilman - north Lake WA/Kenmore",
+      "status": "no_current_events",
+      "event_ids": [],
+      "observation_ids": [],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    },
+    {
+      "route_section_id": "04_burke_gilman_connector_bothell",
+      "route_section_name": "Burke-Gilman/connector - Bothell",
+      "status": "no_current_events",
+      "event_ids": [],
+      "observation_ids": [],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    },
+    {
+      "route_section_id": "05_sammamish_river_trail_bothell_woodinville",
+      "route_section_name": "Sammamish River Trail - Bothell/Woodinville",
+      "status": "no_current_events",
+      "event_ids": [],
+      "observation_ids": [],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    },
+    {
+      "route_section_id": "06_sammamish_river_trail_redmond",
+      "route_section_name": "Sammamish River Trail - Redmond",
+      "status": "no_current_events",
+      "event_ids": [],
+      "observation_ids": [],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    },
+    {
+      "route_section_id": "07_marymoor_park",
+      "route_section_name": "Marymoor Park",
+      "status": "monitoring",
+      "event_ids": [],
+      "observation_ids": [
+        "05_FLOOD_CONDITIONS:USGS-03:context"
+      ],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    },
+    {
+      "route_section_id": "08_east_lake_sammamish_trail_redmond",
+      "route_section_name": "East Lake Sammamish Trail - Redmond",
+      "status": "monitoring",
+      "event_ids": [],
+      "observation_ids": [
+        "05_FLOOD_CONDITIONS:USGS-03:context"
+      ],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    },
+    {
+      "route_section_id": "09_east_lake_sammamish_trail_sammamish",
+      "route_section_name": "East Lake Sammamish Trail - Sammamish",
+      "status": "monitoring",
+      "event_ids": [],
+      "observation_ids": [
+        "05_FLOOD_CONDITIONS:USGS-03:context"
+      ],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    },
+    {
+      "route_section_id": "10_issaquah_approach_terminus",
+      "route_section_name": "Issaquah approach / terminus",
+      "status": "no_current_events",
+      "event_ids": [],
+      "observation_ids": [],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    }
+  ],
+  "provenance": {
+    "source_ids_used": [
+      "05_FLOOD_CONDITIONS:USGS-01",
+      "05_FLOOD_CONDITIONS:USGS-02",
+      "05_FLOOD_CONDITIONS:USGS-03",
+      "05_FLOOD_CONDITIONS:NWPS-01",
+      "05_FLOOD_CONDITIONS:NWPS-02",
+      "05_FLOOD_CONDITIONS:NWS-01",
+      "05_FLOOD_CONDITIONS:ISS-01",
+      "05_FLOOD_CONDITIONS:REDM-01",
+      "05_FLOOD_CONDITIONS:KC-ROAD-01",
+      "05_FLOOD_CONDITIONS:WSDOT-01"
+    ],
+    "route_gpx_ref": "data/route/UnivWA-Issaquah.gpx",
+    "source_payload_refs": [
+      "/files/uw-issy-connectors/raw/05_FLOOD_CONDITIONS/landings/USGS-01_landing_20260819T060417Z.json",
+      "/files/uw-issy-connectors/raw/05_FLOOD_CONDITIONS/landings/USGS-02_landing_20260819T060417Z.json",
+      "/files/uw-issy-connectors/raw/05_FLOOD_CONDITIONS/landings/USGS-03_landing_20260819T060417Z.json",
+      "/files/uw-issy-connectors/raw/05_FLOOD_CONDITIONS/landings/NWPS-01_landing_20260819T060417Z.json",
+      "/files/uw-issy-connectors/raw/05_FLOOD_CONDITIONS/landings/NWPS-02_landing_20260819T060417Z.json",
+      "/files/uw-issy-connectors/raw/05_FLOOD_CONDITIONS/landings/NWS-01_landing_20260819T060417Z.json",
+      "/files/uw-issy-connectors/raw/05_FLOOD_CONDITIONS/landings/ISS-01_landing_20260819T060417Z.json",
+      "/files/uw-issy-connectors/raw/05_FLOOD_CONDITIONS/landings/REDM-01_landing_20260819T060417Z.json",
+      "/files/uw-issy-connectors/raw/05_FLOOD_CONDITIONS/landings/KC-ROAD-01_landing_20260819T060417Z.json",
+      "/files/uw-issy-connectors/raw/05_FLOOD_CONDITIONS/landings/WSDOT-01_landing_20260819T060417Z.json"
+    ],
+    "normalization_notes": [
+      "No flood category escalation detected; retaining observed context only.",
+      "No flood category escalation detected; retaining observed context only.",
+      "NWS returned a valid empty collection."
+    ]
+  },
+  "validation_state": {
+    "schema_valid": true,
+    "freshness_valid": true,
+    "dedup_valid": true,
+    "candidate_validation_passed": true,
+    "published_from_candidate": false,
+    "validator_version": "1.0.0"
+  },
+  "metadata": {
+    "coverage_limitations": [],
+    "optional_sources_not_run": [],
+    "stale_data_fields": [],
+    "source_warnings": [
+      "No flood category escalation detected; retaining observed context only.",
+      "No flood category escalation detected; retaining observed context only.",
+      "NWS returned a valid empty collection."
+    ],
+    "source_errors": [
+      "403 - \"<!DOCTYPE html><html lang=\\\"en-US\\\"><head><title>Just a moment...</title><meta http-equiv=\\\"Content-Type\\\" content=\\\"text/html; charset=UTF-8\\\"><meta http-equiv=\\\"X-UA-Compatible\\\" content=\\\"IE=Edge\\\"><meta name=\\\"robots\\\" content=\\\"noindex,nofollow\\\"><meta name=\\\"viewport\\\" content=\\\"width=device-width,initial-scale=1\\\"><meta http-equiv=\\\"content-security-policy\\\" content=\\\"default-src &#39;none&#39;; script-src &#39;nonce-GG4ah2OWMUMOjpfirDTGBX&#39; &#39;unsafe-eval&#39; https://challenges.cloudflare.com; script-src-attr &#39;none&#39;; style-src &#39;unsafe-inline&#39;; img-src &#39;self&#39; https://challenges.cloudflare.com; connect-src &#39;self&#39; https://challenges.cloudflare.com; frame-src &#39;self&#39; https://challenges.cloudflare.com blob:; child-src &#39;self&#39; https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri &#39;self&#39;\\\"><style>*{box-sizing:border-box;margin:0;padding:0}html{line-height:1.15;-webkit-text-size-adjust:100%;color:#313131;font-family:system-ui,-apple-system,BlinkMacSystemFont,\\\"Segoe UI\\\",Roboto,\\\"Helvetica Neue\\\",Arial,\\\"Noto Sans\\\",sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\",\\\"Segoe UI Symbol\\\",\\\"Noto Color Emoji\\\"}body{display:flex;flex-direction:column;height:100vh;min-height:100vh}.main-content{margin:8rem auto;padding-left:1.5rem;max-width:60rem}@media (width <= 720px){.main-content{margin-top:4rem}}#challenge-error-text{background-image:url(\\\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgZmlsbD0ibm9uZSI+PHBhdGggZmlsbD0iI0IyMEYwMyIgZD0iTTE2IDNhMTMgMTMgMCAxIDAgMTMgMTNBMTMuMDE1IDEzLjAxNSAwIDAgMCAxNiAzbTAgMjRhMTEgMTEgMCAxIDEgMTEtMTEgMTEuMDEgMTEuMDEgMCAwIDEtMTEgMTEiLz48cGF0aCBmaWxsPSIjQjIwRjAzIiBkPSJNMTcuMDM4IDE4LjYxNUgxNC44N0wxNC41NjMgOS41aDIuNzgzem0tMS4wODQgMS40MjdxLjY2IDAgMS4wNTcuMzg4LjQwNy4zODkuNDA3Ljk5NCAwIC41OTYtLjQwNy45ODQtLjM5Ny4zOS0xLjA1Ny4zODktLjY1IDAtMS4wNTYtLjM4OS0uMzk4LS4zODktLjM5OC0uOTg0IDAtLjU5Ny4zOTgtLjk4NS40MDYtLjM5NyAxLjA1Ni0uMzk3Ii8+PC9zdmc+\\\");background-repeat:no-repeat;background-size:contain;padding-left:34px}</style><meta http-equiv=\\\"refresh\\\" content=\\\"360\\\"></head><body><div class=\\\"main-wrapper\\\" role=\\\"main\\\"><div class=\\\"main-content\\\"><noscript><div class=\\\"h2\\\"><span id=\\\"challenge-error-text\\\">Enable JavaScript and cookies to continue</span></div></noscript></div></div><script nonce=\\\"GG4ah2OWMUMOjpfirDTGBX\\\">(function(){window._cf_chl_opt = {cFPWv: 'g',cH: 'rf36CxlJF9Vvu63Obaw8.NxdzU.nmOqGPL5JDKFc4ZY-1787119491-1.2.1.1-yi1hVqOuVv4eeQ168u0Bk0w4zRNj2RBVPT5kpwusURe6hOWj0xLBM9WWJOTLKlFV',cITimeS: '1787119491',cN: 'GG4ah2OWMUMOjpfirDTGBX',cRay: 'a2d6f6956f4a8e59',cTplB: '0',cTplC:0,cTplO:0,cTplV:5,cType: 'managed',cUPMDTk:\\\"/flood?__cf_chl_tk=dC0og.KOiGAHfjYT9tvWh.V9OJppmJQ2SgbIEiJOzkU-1787119491-1.0.1.1-3e0pbKx6HOZvVNDBqmmJWDLI9v7Oj6hFe9WNunaXKwk\\\",cvId: '3',cZone: 'www.issaquahwa.gov',fa:\\\"/flood?__cf_chl_f_tk=dC0og.KOiGAHfjYT9tvWh.V9OJppmJQ2SgbIEiJOzkU-1787119491-1.0.1.1-3e0pbKx6HOZvVNDBqmmJWDLI9v7Oj6hFe9WNunaXKwk\\\",md: 'EXr_9CEsoKnuJi0LU6qzF4aPJjCZqjaEEvIjHzTwMWM-1787119491-1.2.1.1-BmsajO7RJh_Lh8FOeYsiSyOuNIEdkE2gsDJrZrydVVp_aOfwkosdHRqh0y08mqd4u8uqRvZAFAH8_Kyl3CAXA2hqiRy5iMZybzRGY4tRvrR.k5nU99t45.hUWFCuEVO5ANkLQYHATisLStPtUAW5wLY5ZXv8T.CUZW.dHwgeN1a.2o_w54YvT8ugYSrA2BQJLD.tWBEULQOrmo6GGdd8VXNCOPNW0_cG2RgKsnMZJz3cZnZbg1jXqAFjWjuUoRJjwJwwDJUWoXKT7jkTy6vztY2GYNS9lce.ZW9rr2yHVhdItsTqZS7hWtbJUuvBBts3ClJR0Excilywx6WOg.XtRbM9HGdRa19mj6ZcfKbKXAZiNQ2ULwA3r1mBeeUe0wsE6rzSH.Fwk8bmJISaOCBzFRur_yv4d_Jkk7OAWpjDGhYM3TANv9BzkmZnkAOzRuBFk4z5QXAMYswG5gTIn6JRweJ5R1kmDONHEXHStuTevgC3dAE6BM4s0Vv9Nl9Jbd44ZumttDosHp34F2FcaYdufKfLQXZiyVjShkdv6GYSrlFfeFrI_7jwARk4QHRZ2XVuHTzKxo3RmAmMJr6g0PhE6oxbSLH5DW.76KqozgLkPhbmAbnczkVFf7yKdIctPWwyxyMQf2ZPFa__yu5gVK9mKss_cstlJTREmIvfYkock8mUzlzGy7zVpWZ6rDZ4PU3clJk5OKLsJ7OizHt3a2PJa0VINBsZr_s2XOs2K54RhZeWV_9QDOfd47yanwjzWmTiVOm0ufbdPjdNn7.N_PoUcpVbUGNGfnUxiVpdr0LloTsbIzdQ1enCTuT1bY1FodyT7gCIa8hCcZXpUBFvwKz6vrlmeRX27jO8hG19MzoLsJbUFaIcYXnHJHZpJeJ8zMA9SPIXPe1VA7LofLPLE.GmzgxGq3vKS4oTR.0UuDuUsHi.gX.hvHmw9L9gcKEhXdP1PJZfMXDr4KLu3W_Lh1ruJsT1Ds4pttuOaqHdaJhnpVPKs51wj4bTLR9tPYgLZkA82BXg2D4sgPA1dNE4nVUgwmnn3dc8k6qIJv7Br.Jjmtc',mdrd: 'nU6ZU5P0caqlyQe4.GcydE06grEIlvch1ILhPtWqmp8-1787119491-1.2.1.1-3iI6gmsK7rXganXS1zD9tSE0Hj00PS0AXkCsIC.gkP0h4tLLGw9bAdCtUHnYUmzq0.1ZhnKTUUTxruLwoLr5V7Q2o4dw5.Xuk8va6JIYpRt07hY2mmFqSls6B1VbnICuDqehesbGuuVFz_RtNqs9HnygnSq_TM.wrXx_8VRcjz8O.OTLkf5CbLNrNICLduZhZQ04_ffIqQYDAHpjyPhSOm_Jt58qXzj8MpR_XICFZkdVLhbjdp8MSYHOUyUmH34utt_SklTltF32rcTBz6f32Wo6IL9iw7VJT1qEHTq_f4g',};var a = document.createElement('script');a.nonce = 'GG4ah2OWMUMOjpfirDTGBX';a.src = '/cdn-cgi/challenge-platform/h/g/orchestrate/chl_page/v1?ray=a2d6f6956f4a8e59';window._cf_chl_opt.cOgUHash = location.hash === '' && location.href.indexOf('#') !== -1 ? '#' : location.hash;window._cf_chl_opt.cOgUQuery = location.search === '' && location.href.slice(0, location.href.length - window._cf_chl_opt.cOgUHash.length).indexOf('?') !== -1 ? '?' : location.search;if (window.history && window.history.replaceState) {var ogU = location.pathname + window._cf_chl_opt.cOgUQuery + window._cf_chl_opt.cOgUHash;history.replaceState(null, null,\\\"/flood?__cf_chl_rt_tk=dC0og.KOiGAHfjYT9tvWh.V9OJppmJQ2SgbIEiJOzkU-1787119491-1.0.1.1-3e0pbKx6HOZvVNDBqmmJWDLI9v7Oj6hFe9WNunaXKwk\\\"+ window._cf_chl_opt.cOgUHash);a.onload = function() {history.replaceState(null, null, ogU);}}document.getElementsByTagName('head')[0].appendChild(a);}());</script></body></html>\"",
+      "timeout of 30000ms exceeded",
+      "Failed to execute query.",
+      "access to env vars denied"
+    ]
+  }
+}

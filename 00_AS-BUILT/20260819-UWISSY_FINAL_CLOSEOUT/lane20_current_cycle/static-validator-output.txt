@@ -1,0 +1,1 @@
+PASS: 00_WORKFLOWS/v02.UWI_LANE20.json — name "v02.UWI_LANE20", 40 node(s), trigger present, active=false, connector_id/lane/run_id prefix all match "20_STATUS_PUBLISHER", tags: [uw_issy, connector, lane_20_status_publisher, no_direct_deploy]

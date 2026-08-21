@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0.0",
+  "connector_id": "05_FLOOD_CONDITIONS",
+  "lane": "05_FLOOD_CONDITIONS",
+  "run_id": "05_FLOOD_CONDITIONS-20260819T060417Z-001",
+  "handoff_generated_at": "2026-08-19T06:05:22.604Z",
+  "connector_output_path": "/files/uw-issy-connectors/published/05_FLOOD_CONDITIONS/05_FLOOD_CONDITIONS_published_20260819T060417Z.json",
+  "manifest_path": "/files/uw-issy-connectors/manifests/05_FLOOD_CONDITIONS/05_FLOOD_CONDITIONS_manifest_v0002.json",
+  "validation_result_path": "/files/uw-issy-connectors/health/05_FLOOD_CONDITIONS/status.json",
+  "execution_evidence_path": "/files/uw-issy-connectors/health/05_FLOOD_CONDITIONS/execution_evidence_20260819T060417Z.json",
+  "publication_status": "published",
+  "data_status": "degraded",
+  "uses_last_known_good": false,
+  "schema_compatible_with_workflow_08": true,
+  "source_ids_used": [
+    "05_FLOOD_CONDITIONS:USGS-01",
+    "05_FLOOD_CONDITIONS:USGS-02",
+    "05_FLOOD_CONDITIONS:USGS-03",
+    "05_FLOOD_CONDITIONS:NWPS-01",
+    "05_FLOOD_CONDITIONS:NWPS-02",
+    "05_FLOOD_CONDITIONS:NWS-01",
+    "05_FLOOD_CONDITIONS:ISS-01",
+    "05_FLOOD_CONDITIONS:REDM-01",
+    "05_FLOOD_CONDITIONS:KC-ROAD-01",
+    "05_FLOOD_CONDITIONS:WSDOT-01"
+  ],
+  "route_sections": [
+    {
+      "route_section_id": "01_uw_u_district",
+      "route_section_name": "UW / U-District",
+      "status": "no_current_events",
+      "event_ids": [],
+      "observation_ids": [],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    },
+    {
+      "route_section_id": "02_burke_gilman_seattle",
+      "route_section_name": "Burke-Gilman - Seattle",
+      "status": "no_current_events",
+      "event_ids": [],
+      "observation_ids": [],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    },
+    {
+      "route_section_id": "03_burke_gilman_north_lake_wa_kenmore",
+      "route_section_name": "Burke-Gilman - north Lake WA/Kenmore",
+      "status": "no_current_events",
+      "event_ids": [],
+      "observation_ids": [],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    },
+    {
+      "route_section_id": "04_burke_gilman_connector_bothell",
+      "route_section_name": "Burke-Gilman/connector - Bothell",
+      "status": "no_current_events",
+      "event_ids": [],
+      "observation_ids": [],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    },
+    {
+      "route_section_id": "05_sammamish_river_trail_bothell_woodinville",
+      "route_section_name": "Sammamish River Trail - Bothell/Woodinville",
+      "status": "no_current_events",
+      "event_ids": [],
+      "observation_ids": [],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    },
+    {
+      "route_section_id": "06_sammamish_river_trail_redmond",
+      "route_section_name": "Sammamish River Trail - Redmond",
+      "status": "no_current_events",
+      "event_ids": [],
+      "observation_ids": [],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    },
+    {
+      "route_section_id": "07_marymoor_park",
+      "route_section_name": "Marymoor Park",
+      "status": "monitoring",
+      "event_ids": [],
+      "observation_ids": [
+        "05_FLOOD_CONDITIONS:USGS-03:context"
+      ],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    },
+    {
+      "route_section_id": "08_east_lake_sammamish_trail_redmond",
+      "route_section_name": "East Lake Sammamish Trail - Redmond",
+      "status": "monitoring",
+      "event_ids": [],
+      "observation_ids": [
+        "05_FLOOD_CONDITIONS:USGS-03:context"
+      ],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    },
+    {
+      "route_section_id": "09_east_lake_sammamish_trail_sammamish",
+      "route_section_name": "East Lake Sammamish Trail - Sammamish",
+      "status": "monitoring",
+      "event_ids": [],
+      "observation_ids": [
+        "05_FLOOD_CONDITIONS:USGS-03:context"
+      ],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    },
+    {
+      "route_section_id": "10_issaquah_approach_terminus",
+      "route_section_name": "Issaquah approach / terminus",
+      "status": "no_current_events",
+      "event_ids": [],
+      "observation_ids": [],
+      "updated_at": "2026-08-19T06:04:17.348Z"
+    }
+  ]
+}

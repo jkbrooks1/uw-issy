@@ -1,0 +1,207 @@
+{
+  "releaseId": "20_STATUS_PUBLISHER-20260820T030156Z-001",
+  "assembledAt": "2026-08-20T03:01:56.162Z",
+  "totalCandidates": 20,
+  "records": [
+    {
+      "eventId": "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01",
+      "laneId": "01_ROUTE_CONDITIONS",
+      "presentationEligible": true,
+      "presentationReason": "eligible",
+      "routeRelevant": true,
+      "routeImpact": true,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "03_AIR_QUALITY:PSCAA-02:burn-ban:20260820T030052Z",
+      "laneId": "03_AIR_QUALITY",
+      "presentationEligible": false,
+      "presentationReason": "no_route_impact",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "stale",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "03_AIR_QUALITY:WASMOKE-01:8f69ba66",
+      "laneId": "03_AIR_QUALITY",
+      "presentationEligible": false,
+      "presentationReason": "no_route_impact",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "stale",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "05_FLOOD_CONDITIONS:USGS-01:b62db084",
+      "laneId": "05_FLOOD_CONDITIONS",
+      "presentationEligible": false,
+      "presentationReason": "flood_no_active_category",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "05_FLOOD_CONDITIONS:USGS-02:632d4c3f",
+      "laneId": "05_FLOOD_CONDITIONS",
+      "presentationEligible": false,
+      "presentationReason": "flood_no_active_category",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "05_FLOOD_CONDITIONS:USGS-03:7d7b2df4",
+      "laneId": "05_FLOOD_CONDITIONS",
+      "presentationEligible": false,
+      "presentationReason": "flood_no_active_category",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "05_FLOOD_CONDITIONS:NWPS-01:e1e70ab0",
+      "laneId": "05_FLOOD_CONDITIONS",
+      "presentationEligible": false,
+      "presentationReason": "flood_below_major",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "05_FLOOD_CONDITIONS:NWPS-02:721210d7",
+      "laneId": "05_FLOOD_CONDITIONS",
+      "presentationEligible": false,
+      "presentationReason": "flood_below_major",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:656ace49",
+      "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "presentationEligible": false,
+      "presentationReason": "off_route",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:115a3c27",
+      "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "presentationEligible": false,
+      "presentationReason": "off_route",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-03:69c3253a",
+      "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "presentationEligible": false,
+      "presentationReason": "off_route",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:d2c2a234",
+      "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "presentationEligible": false,
+      "presentationReason": "off_route",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02:3f489f7f",
+      "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "presentationEligible": false,
+      "presentationReason": "off_route",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c31a0f8a",
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "presentationEligible": false,
+      "presentationReason": "health_alert_excluded",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_29734473",
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "presentationEligible": false,
+      "presentationReason": "health_alert_excluded",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_bf9b0b4d",
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "presentationEligible": false,
+      "presentationReason": "health_alert_excluded",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_f2b6e839",
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "presentationEligible": false,
+      "presentationReason": "health_alert_excluded",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c29944a0",
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "presentationEligible": false,
+      "presentationReason": "health_alert_excluded",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_dc98040f",
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "presentationEligible": false,
+      "presentationReason": "health_alert_excluded",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_3a69f580",
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "presentationEligible": false,
+      "presentationReason": "health_alert_excluded",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    }
+  ]
+}

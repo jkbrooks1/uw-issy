@@ -1,0 +1,752 @@
+{
+  "updatedAt": "2026-08-01T04:22:41.718Z",
+  "createdAt": "2026-07-21T00:27:04.522Z",
+  "id": "CvzPNlnWXrzZfYGP",
+  "name": "v0001.02_WeatherConnector",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "connectorId",
+              "name": "connectorId",
+              "type": "string",
+              "value": "02_WEATHER"
+            },
+            {
+              "id": "connectorName",
+              "name": "connectorName",
+              "type": "string",
+              "value": "CDM Weather Connector"
+            },
+            {
+              "id": "timezone",
+              "name": "timezone",
+              "type": "string",
+              "value": "Europe/Paris"
+            },
+            {
+              "id": "generatedAt",
+              "name": "generatedAt",
+              "type": "string",
+              "value": "={{ $now.toUTC().toISO() }}"
+            },
+            {
+              "id": "departmentsJson",
+              "name": "departmentsJson",
+              "type": "string",
+              "value": "[{\"code\": \"33\", \"name\": \"Gironde\", \"rideDays\": [1]}, {\"code\": \"47\", \"name\": \"Lot-et-Garonne\", \"rideDays\": [1, 2, 3]}, {\"code\": \"82\", \"name\": \"Tarn-et-Garonne\", \"rideDays\": [3, 4]}, {\"code\": \"31\", \"name\": \"Haute-Garonne\", \"rideDays\": [4, 5]}, {\"code\": \"11\", \"name\": \"Aude\", \"rideDays\": [5, 6, 7, 8]}, {\"code\": \"34\", \"name\": \"H\\u00e9rault\", \"rideDays\": [8, 9]}]"
+            },
+            {
+              "id": "vigilanceEndpoint",
+              "name": "vigilanceEndpoint",
+              "type": "string",
+              "value": "https://public-api.meteofrance.fr/public/DPVigilance/v1/cartevigilance/encours"
+            },
+            {
+              "id": "observationsBaseUrl",
+              "name": "observationsBaseUrl",
+              "type": "string",
+              "value": "https://public-api.meteofrance.fr/public/DPPaquetObs/v2"
+            },
+            {
+              "id": "vigilanceStaleAfterMinutes",
+              "name": "vigilanceStaleAfterMinutes",
+              "type": "number",
+              "value": 90
+            },
+            {
+              "id": "observationsStaleAfterMinutes",
+              "name": "observationsStaleAfterMinutes",
+              "type": "number",
+              "value": 180
+            },
+            {
+              "id": "outputDirectory",
+              "name": "outputDirectory",
+              "type": "string",
+              "value": "/files/cdm-status-output"
+            },
+            {
+              "id": "acceptHeader",
+              "name": "acceptHeader",
+              "type": "string",
+              "value": "application/json"
+            },
+            {
+              "id": "runId",
+              "name": "runId",
+              "type": "string",
+              "value": "={{ $execution.id ? String($execution.id) : $now.toMillis().toString() }}"
+            },
+            {
+              "id": "startedAt",
+              "name": "startedAt",
+              "type": "string",
+              "value": "={{ $now.toUTC().toISO() }}"
+            },
+            {
+              "id": "finalOutputPath",
+              "name": "finalOutputPath",
+              "type": "string",
+              "value": "/files/cdm-status-output/02_weather.json"
+            },
+            {
+              "id": "stagingOutputPath",
+              "name": "stagingOutputPath",
+              "type": "string",
+              "value": "/files/cdm-status-output/02_weather.staging.json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-config",
+      "name": "Set Connector Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        288,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $input.all()[0].json;\nconst departments = JSON.parse(config.departmentsJson);\nconst items = [];\nitems.push({\n  json: {\n    requestKind: 'vigilance',\n    url: config.vigilanceEndpoint,\n    generatedAt: config.generatedAt,\n  }\n});\nfor (const dept of departments) {\n  items.push({\n    json: {\n      requestKind: 'observations',\n      url: `${config.observationsBaseUrl}/paquet/horaire?format=json&id-departement=${encodeURIComponent(dept.code)}`,\n      departmentCode: dept.code,\n      departmentName: dept.name,\n      departmentRideDaysJson: JSON.stringify(dept.rideDays),\n      generatedAt: config.generatedAt,\n    }\n  });\n}\nreturn items;"
+      },
+      "id": "build-request-config",
+      "name": "Build Weather Request Config",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "cond-filter-vigilance",
+              "leftValue": "={{ $json.requestKind }}",
+              "rightValue": "vigilance",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "filter-vigilance",
+      "name": "Vigilance Requests",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        848,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "cond-filter-observations",
+              "leftValue": "={{ $json.requestKind }}",
+              "rightValue": "observations",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "filter-observations",
+      "name": "Observations Requests",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        848,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "={{ $json.acceptHeader || 'application/json' }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 20000
+        }
+      },
+      "id": "fetch-vigilance",
+      "name": "Fetch Météo-France Vigilance",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1120,
+        128
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 3000,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "TuOUFpYUZjyEA1m5",
+          "name": "METEOFRANCE_VIGILANCE_API_KEY"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "={{ $json.acceptHeader || 'application/json' }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 20000
+        }
+      },
+      "id": "fetch-observations",
+      "name": "Fetch Météo-France Observations",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1120,
+        368
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 3000,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CdpXLJztQfUsQSkg",
+          "name": "METEOFRANCE_OBSERVATIONS_API_KEY"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const severityByRiskCode = { '1': 'green', '2': 'yellow', '3': 'orange', '4': 'red' };\nconst phenomenonById = { '1': 'Wind', '2': 'Rain-flooding', '3': 'Thunderstorms', '4': 'Flooding', '5': 'Snow-ice', '6': 'Heat', '7': 'Cold', '8': 'Avalanche', '9': 'Coastal flooding' };\nconst heatBandBySeverity = {\n  yellow: { titleContext: 'brief heat spike or prolonged warmth below heatwave level', explanation: 'Météo-France yellow heat vigilance means a brief heat spike or prolonged warmth below official heatwave thresholds.' },\n  orange: { titleContext: 'official heatwave; hot days and warm nights', explanation: 'Météo-France orange heat vigilance means official heatwave conditions, with high daytime temperatures and warm nights.' },\n  red: { titleContext: 'extreme heatwave; highs may reach 104°F/40°C+', explanation: 'Météo-France red heat vigilance means an extreme heatwave, with dangerous temperatures affecting the entire population.' },\n};\nfunction titleCase(v) { return v.charAt(0).toUpperCase() + v.slice(1); }\nfunction condensedHazardLabel(v) { return v.toLowerCase().replace(/\\s+/g, ' '); }\nfunction genericVigilanceExplanation(severity, hazard) {\n  const hazardLabel = condensedHazardLabel(hazard);\n  return {\n    yellow: `Météo-France yellow ${hazardLabel} vigilance means a localized or short-lived risk that still requires attention in this department.`,\n    orange: `Météo-France orange ${hazardLabel} vigilance means dangerous conditions are expected and this department is under heightened official alert.`,\n    red: `Météo-France red ${hazardLabel} vigilance means exceptional conditions with major impacts expected across the affected department.`,\n  }[severity];\n}\nfunction buildStatusDetails({ severity, departmentName, phenomena, checkedAt }) {\n  const primaryHazard = phenomena[0] || 'Official weather warning';\n  const heatAlert = phenomena.includes('Heat');\n  if (heatAlert) {\n    const band = heatBandBySeverity[severity];\n    return {\n      statusTitle: `${titleCase(severity)} heat warning in ${departmentName} (${band.titleContext}).`,\n      statusExplanation: band.explanation,\n      statusSource: { name: 'Météo-France Vigilance', url: 'https://vigilance.meteofrance.fr/fr', official: true, checkedAt, sourceLanguage: 'fr', translationMethod: 'condensed_official_source' },\n    };\n  }\n  const hazardPhrase = condensedHazardLabel(primaryHazard);\n  return {\n    statusTitle: `${titleCase(severity)} ${hazardPhrase} warning in ${departmentName} (official departmental vigilance).`,\n    statusExplanation: genericVigilanceExplanation(severity, primaryHazard),\n    statusSource: { name: 'Météo-France Vigilance', url: 'https://vigilance.meteofrance.fr/fr', official: true, checkedAt, sourceLanguage: 'fr', translationMethod: 'condensed_official_source' },\n  };\n}\n\nconst config = $items('Set Connector Config')[0].json;\nconst departments = JSON.parse(config.departmentsJson);\nconst departmentByCode = new Map(departments.map((d) => [d.code, d]));\nconst checkedAt = new Date().toISOString();\n\nconst inputItems = $input.all();\nif (!inputItems.length) {\n  return [{ json: { recordKind: 'sourceHealth', sourceId: 'meteo-france-vigilance', sourceName: 'Météo-France Vigilance', status: 'failed', fetchedAt: checkedAt, staleAfterMinutes: Number(config.vigilanceStaleAfterMinutes), httpStatus: 0, recordCount: 0, errors: ['No Vigilance request reached this node'], warnings: [] } }];\n}\nconst raw = inputItems[0].json || {};\nconst status = Number(raw.statusCode || 0);\nconst bodyText = String(raw.data ?? raw.body ?? '');\n\nif (!status || status < 200 || status >= 300 || !bodyText) {\n  return [{ json: { recordKind: 'sourceHealth', sourceId: 'meteo-france-vigilance', sourceName: 'Météo-France Vigilance', status: 'failed', fetchedAt: checkedAt, staleAfterMinutes: Number(config.vigilanceStaleAfterMinutes), httpStatus: status || 0, recordCount: 0, errors: ['Vigilance fetch failed or returned an empty body'], warnings: [] } }];\n}\n\nlet payload;\ntry {\n  payload = JSON.parse(bodyText);\n} catch (err) {\n  return [{ json: { recordKind: 'sourceHealth', sourceId: 'meteo-france-vigilance', sourceName: 'Météo-France Vigilance', status: 'failed', fetchedAt: checkedAt, staleAfterMinutes: Number(config.vigilanceStaleAfterMinutes), httpStatus: status, recordCount: 0, errors: ['Vigilance response was not valid JSON: ' + err.message], warnings: [] } }];\n}\n\nfunction collectDepartmentRisks(product) {\n  const periods = (product && product.periods) || [];\n  const rows = [];\n  periods.forEach((period, periodIndex) => {\n    const domains = (period.timelaps && period.timelaps.domain_ids) || {};\n    for (const dept of departments) {\n      const domain = domains[dept.code];\n      if (!domain) continue;\n      const riskCode = String(domain.max_color_id || '');\n      if (!severityByRiskCode[riskCode]) continue;\n      rows.push({\n        departmentCode: dept.code,\n        periodIndex,\n        riskCode,\n        phenomenonItems: Array.isArray(domain.phenomenon_items) ? domain.phenomenon_items.filter((item) => Number(item.phenomenon_max_color_id) > 1) : [],\n        beginValidityTime: period.begin_validity_time || product.update_time,\n        endValidityTime: period.end_validity_time || null,\n      });\n    }\n  });\n  return rows;\n}\n\nconst risks = collectDepartmentRisks(payload.product).filter((r) => r.riskCode !== '1');\nconst records = [];\nfor (const risk of risks) {\n  const department = departmentByCode.get(risk.departmentCode);\n  if (!department) continue;\n  const phenomenonTimes = risk.phenomenonItems.flatMap((item) => (Array.isArray(item.timelaps_items) ? item.timelaps_items : []));\n  const phenomena = risk.phenomenonItems\n    .map((item) => phenomenonById[String(item.phenomenon_id)] || item.phenomenon_name || `Phenomenon ${item.phenomenon_id}`)\n    .filter(Boolean);\n  const phenomenonText = phenomena.length ? phenomena.join(', ') : 'Official weather warning';\n  const startTime = phenomenonTimes.map((item) => item.begin_time).filter(Boolean).sort()[0] || risk.beginValidityTime || (payload.product && payload.product.update_time) || checkedAt;\n  const expectedEndTimeCandidates = phenomenonTimes.map((item) => item.end_time).filter(Boolean).sort();\n  const expectedEndTime = expectedEndTimeCandidates.length ? expectedEndTimeCandidates[expectedEndTimeCandidates.length - 1] : risk.endValidityTime;\n  const severity = severityByRiskCode[risk.riskCode];\n  const statusDetails = buildStatusDetails({ severity, departmentName: department.name, phenomena, checkedAt });\n  for (const rideDay of department.rideDays) {\n    records.push({\n      json: {\n        recordKind: 'vigilance',\n        externalId: `meteo-france-vigilance-${risk.departmentCode}-p${risk.periodIndex}-${risk.riskCode}-${rideDay}`,\n        sourceId: 'meteo-france-vigilance',\n        category: 'weather',\n        severity,\n        status: 'forecast',\n        title: statusDetails.statusTitle,\n        nearestPlace: department.name,\n        rideDay,\n        distanceFromRouteKm: null,\n        routeInfluenceConfirmed: true,\n        startTime,\n        expectedEndTime,\n        checkedAt,\n        sourceUrl: 'https://vigilance.meteofrance.fr/fr',\n        summary: `${department.name} is under ${severity} Météo-France Vigilance for ${phenomenonText}.`,\n        statusTitle: statusDetails.statusTitle,\n        statusExplanation: statusDetails.statusExplanation,\n        statusSource: statusDetails.statusSource,\n        whyItMatters: 'The warning applies at department level and overlaps one or more planned riding days.',\n        recommendedAction: 'Review the official bulletin and timing before riding the affected day.',\n        suggestedDetour: null,\n        detourImpact: null,\n      },\n    });\n  }\n}\n\nrecords.push({\n  json: {\n    recordKind: 'sourceHealth', sourceId: 'meteo-france-vigilance', sourceName: 'Météo-France Vigilance',\n    status: 'ok', fetchedAt: checkedAt, staleAfterMinutes: Number(config.vigilanceStaleAfterMinutes),\n    httpStatus: status, recordCount: records.length, errors: [], warnings: [],\n  },\n});\nreturn records;"
+      },
+      "id": "normalize-vigilance",
+      "name": "Normalize Météo-France Vigilance",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1408,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function celsiusFromKelvin(v) { return Number.isFinite(v) ? v - 273.15 : null; }\nfunction fahrenheitFromCelsius(c) { return Math.round((c * 9) / 5 + 32); }\nfunction msToKmh(v) { return v * 3.6; }\nfunction kmhToMph(v) { return Math.round(v * 0.621371); }\nfunction mmToIn(v) { return (v / 25.4).toFixed(2); }\nfunction kmToMi(v) { return (v * 0.621371).toFixed(1); }\nfunction groundStateLabel(code) {\n  return { 1: 'wet ground', 2: 'standing water on ground', 3: 'flooded ground', 4: 'frozen ground', 5: 'ice on ground', 9: 'very dry cracked ground' }[Number(code)] || null;\n}\n\nconst config = $items('Set Connector Config')[0].json;\nconst checkedAt = new Date().toISOString();\nconst requestMeta = $items('Observations Requests');\nconst inputItems = $input.all();\n\nfunction makeAlert({ department, rideDay, kind, severity, title, summary, whyItMatters, recommendedAction, statusExplanation, record }) {\n  return {\n    recordKind: 'observations',\n    externalId: `meteo-france-observations-${kind}-${record.geo_id_insee}-${record.validity_time}-${rideDay}`,\n    sourceId: 'meteo-france-observations',\n    category: kind === 'ground' ? 'surface' : 'weather',\n    severity, status: 'confirmed', title,\n    nearestPlace: record.geo_id_insee, latitude: record.lat, longitude: record.lon,\n    rideDay, distanceFromRouteKm: null, routeInfluenceConfirmed: true,\n    startTime: record.validity_time, expectedEndTime: null, checkedAt,\n    sourceUrl: 'https://meteofrance.com/', statusTitle: title, statusExplanation,\n    statusSource: { name: 'Météo-France Observations', url: 'https://meteofrance.com/', official: true, checkedAt, sourceLanguage: 'fr', translationMethod: 'condensed_official_source' },\n    summary, whyItMatters, recommendedAction, suggestedDetour: null, detourImpact: null,\n  };\n}\n\nfunction alertsForRecord(record, department) {\n  const alerts = [];\n  const tempC = celsiusFromKelvin(Number(record.t));\n  if (tempC !== null && tempC >= 30) {\n    const severity = tempC >= 35 ? 'orange' : 'yellow';\n    alerts.push({ kind: 'temperature', severity, title: `Measured heat near route: ${Math.round(tempC)}°C / ${fahrenheitFromCelsius(tempC)}°F`, summary: `Météo-France measured ${Math.round(tempC)}°C / ${fahrenheitFromCelsius(tempC)}°F at ${record.validity_time}.`, statusExplanation: `Météo-France measured ${Math.round(tempC)}°C near ${department.name}, confirming ${severity === 'orange' ? 'severe' : 'notable'} current heat rather than only a forecast warning.`, whyItMatters: 'Measured heat confirms current conditions near the route, not just forecast risk.', recommendedAction: 'Check timing, water availability and shade for the affected riding day.' });\n  }\n  const gustKmh = Number.isFinite(Number(record.raf)) ? msToKmh(Number(record.raf)) : null;\n  if (gustKmh !== null && gustKmh >= 40) {\n    const severity = gustKmh >= 55 ? 'orange' : 'yellow';\n    alerts.push({ kind: 'gust', severity, title: `Measured gusts near route: ${Math.round(gustKmh)} km/h / ${kmhToMph(gustKmh)} mph`, summary: `Météo-France measured gusts of ${Math.round(gustKmh)} km/h / ${kmhToMph(gustKmh)} mph at ${record.validity_time}.`, statusExplanation: `Météo-France measured ${Math.round(gustKmh)} km/h gusts near ${department.name}, confirming wind strong enough to affect exposed sections.`, whyItMatters: 'Measured gusts can affect exposed road and canal sections.', recommendedAction: 'Check exposed segments and bridges before riding the affected day.' });\n  }\n  const rainMm = Number(record.rr1);\n  if (Number.isFinite(rainMm) && rainMm > 0) {\n    alerts.push({ kind: 'rain', severity: rainMm >= 5 ? 'orange' : 'yellow', title: `Measured rain near route: ${rainMm.toFixed(1)} mm / ${mmToIn(rainMm)} in`, summary: `Météo-France measured ${rainMm.toFixed(1)} mm / ${mmToIn(rainMm)} in of rain in the last hour at ${record.validity_time}.`, statusExplanation: `Météo-France measured ${rainMm.toFixed(1)} mm of recent rain near ${department.name}, indicating wetter surfaces and reduced visibility.`, whyItMatters: 'Recent measured rain can mean wet surfaces, reduced visibility and localized standing water.', recommendedAction: 'Check surfaces and low points on the affected riding day.' });\n  }\n  const visibilityKm = Number.isFinite(Number(record.vv)) && Number(record.vv) > 0 ? Number(record.vv) / 1000 : null;\n  if (visibilityKm !== null && visibilityKm < 2) {\n    alerts.push({ kind: 'visibility', severity: visibilityKm < 1 ? 'orange' : 'yellow', title: `Measured visibility near route: ${visibilityKm.toFixed(1)} km / ${kmToMi(visibilityKm)} mi`, summary: `Météo-France measured visibility of ${visibilityKm.toFixed(1)} km / ${kmToMi(visibilityKm)} mi at ${record.validity_time}.`, statusExplanation: `Météo-France measured visibility below ${visibilityKm.toFixed(1)} km near ${department.name}, confirming reduced sight distance for crossings and traffic.`, whyItMatters: 'Low visibility affects road crossings, traffic exposure and navigation.', recommendedAction: 'Use lights and verify whether the affected section should be delayed.' });\n  }\n  const groundLabel = groundStateLabel(record.etat_sol);\n  if (groundLabel) {\n    const code = Number(record.etat_sol);\n    const severity = code === 3 || code === 5 ? 'red' : code === 4 ? 'orange' : 'yellow';\n    alerts.push({ kind: 'ground', severity, title: `Measured ground state near route: ${groundLabel}`, summary: `Météo-France reported ${groundLabel} at ${record.validity_time}.`, statusExplanation: `Météo-France reported ${groundLabel} near ${department.name}, confirming current surface conditions that may materially affect traction.`, whyItMatters: 'Ground state is a measured surface condition that may affect traction or passability.', recommendedAction: 'Verify the nearby route surface before riding through this area.' });\n  }\n  return alerts;\n}\n\nconst severityRank = { yellow: 1, orange: 2, red: 3 };\nconst bestByKey = new Map();\nlet okResponses = 0;\nlet failedResponses = 0;\n\nfor (let index = 0; index < inputItems.length; index++) {\n  const raw = inputItems[index].json || {};\n  const meta = (requestMeta[index] && requestMeta[index].json) || {};\n  const status = Number(raw.statusCode || 0);\n  const bodyText = String(raw.data ?? raw.body ?? '');\n  if (!status || status < 200 || status >= 300 || !bodyText) { failedResponses++; continue; }\n  let records;\n  try {\n    records = JSON.parse(bodyText);\n  } catch (err) {\n    failedResponses++;\n    continue;\n  }\n  if (!Array.isArray(records)) { failedResponses++; continue; }\n  okResponses++;\n  const department = { code: meta.departmentCode, name: meta.departmentName, rideDays: JSON.parse(meta.departmentRideDaysJson || '[]') };\n  for (const record of records) {\n    if (!Number.isFinite(record.lat) || !Number.isFinite(record.lon) || !record.validity_time) continue;\n    const alerts = alertsForRecord(record, department);\n    for (const alert of alerts) {\n      for (const rideDay of department.rideDays) {\n        const key = `${rideDay}-${alert.kind}`;\n        const rank = severityRank[alert.severity] || 0;\n        const current = bestByKey.get(key);\n        const currentRank = current ? (severityRank[current.alert.severity] || 0) : 0;\n        if (!current || rank > currentRank || (rank === currentRank && new Date(record.validity_time) > new Date(current.record.validity_time))) {\n          bestByKey.set(key, { alert, record, department, rideDay });\n        }\n      }\n    }\n  }\n}\n\nconst output = [];\nfor (const { alert, record, department, rideDay } of bestByKey.values()) {\n  output.push({\n    json: makeAlert({\n      department, rideDay, kind: alert.kind, severity: alert.severity, title: alert.title,\n      summary: alert.summary, whyItMatters: alert.whyItMatters, recommendedAction: alert.recommendedAction,\n      statusExplanation: alert.statusExplanation, record,\n    }),\n  });\n}\n\nconst healthStatus = failedResponses > 0 && okResponses === 0 ? 'failed' : (failedResponses > 0 ? 'degraded' : 'ok');\noutput.push({\n  json: {\n    recordKind: 'sourceHealth', sourceId: 'meteo-france-observations', sourceName: 'Météo-France Observations',\n    status: healthStatus, fetchedAt: checkedAt, staleAfterMinutes: Number(config.observationsStaleAfterMinutes),\n    httpStatus: okResponses > 0 ? 200 : 0, recordCount: output.length,\n    errors: healthStatus === 'failed' ? ['All department observation requests failed or returned invalid data'] : [],\n    warnings: failedResponses > 0 && okResponses > 0 ? [`${failedResponses} of ${inputItems.length} department requests failed`] : [],\n  },\n});\nreturn output;"
+      },
+      "id": "normalize-observations",
+      "name": "Normalize Météo-France Observations",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1408,
+        368
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "merge-weather",
+      "name": "Merge Weather Source Outputs",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1680,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const requiredRecordFields = ['externalId', 'sourceId', 'category', 'severity', 'status', 'title', 'checkedAt', 'statusTitle', 'statusExplanation', 'statusSource'];\nconst severityEnum = ['green', 'yellow', 'orange', 'red'];\nconst sourceHealthRequired = ['sourceId', 'sourceName', 'status', 'fetchedAt', 'staleAfterMinutes', 'httpStatus', 'recordCount', 'errors', 'warnings'];\nfunction validIso(v) { return !v || !Number.isNaN(Date.parse(v)); }\nfunction looksLikeSecret(v) {\n  if (typeof v !== 'string') return false;\n  return /^[A-Za-z0-9_-]{24,}$/.test(v) && !/^https?:\\/\\//.test(v);\n}\n\nconst config = $items('Set Connector Config')[0].json;\nconst errors = [];\nconst out = [];\n\nfor (const item of $input.all()) {\n  const r = item.json || {};\n  if (r.recordKind === 'sourceHealth') {\n    for (const field of sourceHealthRequired) {\n      if (r[field] === undefined || r[field] === null) errors.push(`sourceHealth ${r.sourceId || 'unknown'} missing ${field}`);\n    }\n    if (!validIso(r.fetchedAt)) errors.push(`sourceHealth ${r.sourceId} has invalid fetchedAt`);\n    if (!['ok', 'degraded', 'failed', 'stale'].includes(r.status)) errors.push(`sourceHealth ${r.sourceId} has invalid status enum: ${r.status}`);\n    out.push(item);\n    continue;\n  }\n  const recErrors = [];\n  for (const field of requiredRecordFields) {\n    if (r[field] === undefined || r[field] === null || r[field] === '') recErrors.push('Missing required field: ' + field);\n  }\n  if (r.severity && !severityEnum.includes(r.severity)) recErrors.push('Invalid severity enum: ' + r.severity);\n  if (!validIso(r.checkedAt) || !validIso(r.startTime)) recErrors.push('Invalid ISO timestamp');\n  if (['yellow', 'orange', 'red'].includes(r.severity) && (!r.statusSource || r.statusSource.official !== true)) {\n    recErrors.push('Elevated severity requires statusSource.official === true');\n  }\n  if (recErrors.length) errors.push(...recErrors.map((e) => `${r.recordKind || 'record'}/${r.externalId || 'unknown'}: ${e}`));\n  out.push({ json: { ...r, validationErrors: recErrors } });\n}\n\nif (!config.connectorId) errors.push('Missing connectorId in Set Connector Config');\nif (!validIso(config.generatedAt)) errors.push('Missing or invalid generatedAt in Set Connector Config');\nif (!config.outputDirectory || !config.outputDirectory.startsWith('/files/cdm-status-output')) {\n  errors.push('Forbidden or missing output directory: expected /files/cdm-status-output');\n}\n\nreturn [{ json: { recordKind: 'validationResult', passed: errors.length === 0, errors, warnings: [] } }, ...out];"
+      },
+      "id": "validate-output",
+      "name": "Validate Weather Connector Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1968,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst items = $input.all().map((item) => item.json || {});\nconst validationResult = items.find((item) => item.recordKind === 'validationResult') || { passed: true, errors: [], warnings: [] };\nconst validationErrors = Array.isArray(validationResult.errors) ? validationResult.errors : [];\nconst validationWarnings = Array.isArray(validationResult.warnings) ? validationResult.warnings : [];\nconst vigilance = items.filter((item) => item.recordKind === 'vigilance');\nconst observations = items.filter((item) => item.recordKind === 'observations');\nconst sourceHealth = items.filter((item) => item.recordKind === 'sourceHealth');\nconst records = [...vigilance, ...observations];\nconst sourceDescriptors = [\n  {\n    sourceId: 'meteo-france-vigilance',\n    sourceName: 'Météo-France Vigilance',\n    endpoint: config.vigilanceEndpoint,\n    category: 'weather',\n  },\n  {\n    sourceId: 'meteo-france-observations',\n    sourceName: 'Météo-France Observations',\n    endpoint: config.observationsBaseUrl + '/paquet/horaire',\n    category: 'weather',\n  },\n];\n\nconst sourceWarnings = sourceHealth.flatMap((item) => Array.isArray(item.warnings) ? item.warnings : []);\nconst sourceErrors = sourceHealth.flatMap((item) => Array.isArray(item.errors) ? item.errors : []);\nconst warnings = [...validationWarnings, ...sourceWarnings];\nconst errors = [...validationErrors, ...sourceErrors];\nconst allSourcesOk = sourceHealth.length === sourceDescriptors.length && sourceHealth.every((item) => item.status === 'ok');\nconst stale = sourceHealth.some((item) => item.status === 'stale');\nconst sourceUpdatedCandidates = sourceHealth.map((item) => item.fetchedAt).filter((value) => value && !Number.isNaN(Date.parse(value)));\nconst sourceUpdatedAt = sourceUpdatedCandidates.length\n  ? new Date(Math.max(...sourceUpdatedCandidates.map((value) => new Date(value).getTime()))).toISOString()\n  : null;\nconst completedAt = new Date().toISOString();\nconst startedAt = config.startedAt || config.generatedAt || completedAt;\nconst promotionEligible = validationResult.passed === true && allSourcesOk;\nconst contractStatus = promotionEligible\n  ? (warnings.length > 0 ? 'SUCCESS_WITH_WARNINGS' : 'SUCCESS')\n  : 'FAILED_NO_OUTPUT';\n\nconst combined = {\n  connectorId: config.connectorId,\n  connectorName: config.connectorName,\n  generatedAt: config.generatedAt,\n  timezone: config.timezone,\n  status: validationResult.passed === true\n    ? (allSourcesOk ? 'ok' : 'failed')\n    : 'failed',\n  sources: sourceDescriptors,\n  vigilance,\n  observations,\n  records,\n  sourceHealth,\n  validation: {\n    passed: validationResult.passed === true,\n    errors: validationErrors,\n    warnings: validationWarnings,\n  },\n  compatibility: {\n    targetCurrentFeed: 'public/cdm-monitoring-status.json',\n    mode: 'compatibility_candidate',\n  },\n};\n\nconst payload = {\n  schema_version: '1.0.0',\n  connector_id: config.connectorId,\n  connector_name: config.connectorName,\n  run_id: String(config.runId || ''),\n  status: contractStatus,\n  started_at: startedAt,\n  completed_at: completedAt,\n  generated_at: config.generatedAt || startedAt,\n  source_updated_at: sourceUpdatedAt,\n  record_count: records.length,\n  source_count: sourceDescriptors.length,\n  sources: sourceDescriptors.map((item) => ({ name: item.sourceName, url: item.endpoint })),\n  data: combined,\n  warnings,\n  errors,\n  stale,\n  last_known_good: {\n    is_last_known_good: false,\n    reason: promotionEligible\n      ? 'Fresh output generated and promoted atomically.'\n      : 'Candidate output was not promoted because source fetches or validation checks failed.',\n  },\n  validation: {\n    schema_valid: validationResult.passed === true,\n    passed: validationResult.passed === true,\n    errors: validationErrors,\n    warnings: validationWarnings,\n  },\n  connectorId: combined.connectorId,\n  connectorName: combined.connectorName,\n  generatedAt: combined.generatedAt,\n  timezone: combined.timezone,\n  source_status: combined.status,\n  vigilance: combined.vigilance,\n  observations: combined.observations,\n  records: combined.records,\n  sourceHealth: combined.sourceHealth,\n  compatibility: combined.compatibility,\n};\n\nreturn [\n  {\n    json: {\n      outputDirectory: config.outputDirectory,\n      finalPath: config.finalOutputPath,\n      stagingPath: config.stagingOutputPath,\n      renameCommand: `mv \"${config.stagingOutputPath}\" \"${config.finalOutputPath}\"`,\n      jsonText: JSON.stringify(payload, null, 2) + '\\n',\n      promotionEligible,\n      warnings,\n      errors,\n    },\n  },\n];"
+      },
+      "id": "build-payloads",
+      "name": "Build Weather Output Payloads",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2240,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = [];\nfor (const item of $input.all()) {\n  const buf = Buffer.from(item.json.jsonText, 'utf8');\n  const fileName = String(item.json.targetPath).split('/').pop();\n  const binary = await this.helpers.prepareBinaryData(buf, fileName, 'application/json');\n  output.push({ json: item.json, binary: { data: binary } });\n}\nreturn output;"
+      },
+      "id": "prepare-binary",
+      "name": "Prepare Binary Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2528,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.stagingPath }}",
+        "options": {}
+      },
+      "id": "write-files",
+      "name": "Write Weather Staging File",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        2800,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "fileSelector": "={{ $json.stagingPath }}",
+        "options": {}
+      },
+      "id": "read-back-files",
+      "name": "Read Back Weather Staging File",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        3088,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nif (!item || !item.binary || !item.binary.data) {\n  throw new Error('No staged file binary data was available for validation.');\n}\n\nconst config = $items('Set Connector Config')[0].json;\nconst buffer = await this.helpers.getBinaryDataBuffer(0, 'data');\nconst text = buffer.toString('utf8');\nlet parsed;\ntry {\n  parsed = JSON.parse(text);\n} catch (error) {\n  throw new Error('Staged weather output is not valid JSON: ' + error.message);\n}\n\nconst requiredFields = [\n  'schema_version',\n  'connector_id',\n  'connector_name',\n  'run_id',\n  'status',\n  'started_at',\n  'completed_at',\n  'generated_at',\n  'source_updated_at',\n  'record_count',\n  'source_count',\n  'sources',\n  'data',\n  'warnings',\n  'errors',\n  'stale',\n  'last_known_good',\n  'validation',\n];\n\nconst missing = requiredFields.filter((field) => !(field in parsed));\nif (missing.length > 0) {\n  throw new Error('Staged weather output is missing required top-level fields: ' + missing.join(', '));\n}\n\nif (parsed.schema_version !== '1.0.0') {\n  throw new Error('Unexpected schema_version in staged weather output: ' + parsed.schema_version);\n}\n\nif (!Array.isArray(parsed.sources) || !Array.isArray(parsed.warnings) || !Array.isArray(parsed.errors)) {\n  throw new Error('Staged weather output does not satisfy array requirements for sources/warnings/errors.');\n}\n\nif (!parsed.validation || parsed.validation.schema_valid !== true) {\n  throw new Error('Staged weather output failed schema validation.');\n}\n\nif (parsed.status === 'FAILED_NO_OUTPUT') {\n  const details = [...(parsed.errors || []), ...(parsed.warnings || [])].join(' | ');\n  throw new Error('Candidate weather output is not eligible for promotion. ' + details);\n}\n\nreturn [\n  {\n    json: {\n      finalPath: config.finalOutputPath,\n      stagingPath: config.stagingOutputPath,\n      renameCommand: `mv \"${config.stagingOutputPath}\" \"${config.finalOutputPath}\"`,\n      validatedAt: new Date().toISOString(),\n      stagedBytes: Buffer.byteLength(text, 'utf8'),\n    },\n  },\n];"
+      },
+      "id": "validate-written",
+      "name": "Validate Weather Staging File",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3360,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nif (!item || !item.binary || !item.binary.data) {\n  throw new Error('Final weather output file could not be read back for verification.');\n}\n\nconst finalPath = item.json.finalPath || 'unknown';\nconst buffer = await this.helpers.getBinaryDataBuffer(0, 'data');\nconst text = buffer.toString('utf8');\nlet parsed;\ntry {\n  parsed = JSON.parse(text);\n} catch (error) {\n  throw new Error('Final weather output is not valid JSON: ' + error.message);\n}\n\nconst requiredFields = [\n  'schema_version',\n  'connector_id',\n  'connector_name',\n  'run_id',\n  'status',\n  'started_at',\n  'completed_at',\n  'generated_at',\n  'source_updated_at',\n  'record_count',\n  'source_count',\n  'sources',\n  'data',\n  'warnings',\n  'errors',\n  'stale',\n  'last_known_good',\n  'validation',\n];\n\nconst missing = requiredFields.filter((field) => !(field in parsed));\nif (missing.length > 0) {\n  throw new Error('Final weather output is missing required fields: ' + missing.join(', '));\n}\n\nif (!parsed.validation || parsed.validation.schema_valid !== true) {\n  throw new Error('Final weather output reported schema_valid !== true.');\n}\n\nreturn [\n  {\n    json: {\n      recordKind: 'runDiagnostics',\n      ok: true,\n      generatedAt: parsed.generated_at,\n      completedAt: parsed.completed_at,\n      validationStatus: 'passed',\n      writeStatus: 'promoted',\n      infraBlocked: false,\n      outputFilenames: [finalPath],\n      finalPath,\n      bytes: Buffer.byteLength(text, 'utf8'),\n      status: parsed.status,\n      sourceCount: parsed.source_count,\n      recordCount: parsed.record_count,\n      warnings: Array.isArray(parsed.warnings) ? parsed.warnings : [],\n      errors: [],\n      note: 'Weather output validated from staging file and promoted with mv.',\n    },\n  },\n];"
+      },
+      "id": "build-diagnostics",
+      "name": "Build Run Diagnostics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4464,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "executeOnce": true,
+        "command": "={{ $json.renameCommand }}"
+      },
+      "id": "promote-weather-output",
+      "name": "Atomically Promote Weather Output",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        3648,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst commandResult = $input.first().json || {};\nreturn [\n  {\n    json: {\n      finalPath: config.finalOutputPath,\n      renameExitCode: commandResult.exitCode,\n      renameStdout: commandResult.stdout || '',\n      renameStderr: commandResult.stderr || '',\n    },\n  },\n];"
+      },
+      "id": "prepare-final-read",
+      "name": "Prepare Final Weather Read",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3920,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "fileSelector": "={{ $json.finalPath }}",
+        "options": {}
+      },
+      "id": "read-final-file",
+      "name": "Read Back Final Weather Output",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        4192,
+        240
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Connector Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Connector Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Connector Config": {
+      "main": [
+        [
+          {
+            "node": "Build Weather Request Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Weather Request Config": {
+      "main": [
+        [
+          {
+            "node": "Vigilance Requests",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Observations Requests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vigilance Requests": {
+      "main": [
+        [
+          {
+            "node": "Fetch Météo-France Vigilance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Observations Requests": {
+      "main": [
+        [
+          {
+            "node": "Fetch Météo-France Observations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Météo-France Vigilance": {
+      "main": [
+        [
+          {
+            "node": "Normalize Météo-France Vigilance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Météo-France Observations": {
+      "main": [
+        [
+          {
+            "node": "Normalize Météo-France Observations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Météo-France Vigilance": {
+      "main": [
+        [
+          {
+            "node": "Merge Weather Source Outputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Météo-France Observations": {
+      "main": [
+        [
+          {
+            "node": "Merge Weather Source Outputs",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Weather Source Outputs": {
+      "main": [
+        [
+          {
+            "node": "Validate Weather Connector Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Weather Connector Output": {
+      "main": [
+        [
+          {
+            "node": "Build Weather Output Payloads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Weather Output Payloads": {
+      "main": [
+        [
+          {
+            "node": "Prepare Binary Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Binary Payload": {
+      "main": [
+        [
+          {
+            "node": "Write Weather Staging File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Weather Staging File": {
+      "main": [
+        [
+          {
+            "node": "Read Back Weather Staging File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Back Weather Staging File": {
+      "main": [
+        [
+          {
+            "node": "Validate Weather Staging File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Weather Staging File": {
+      "main": [
+        [
+          {
+            "node": "Atomically Promote Weather Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atomically Promote Weather Output": {
+      "main": [
+        [
+          {
+            "node": "Prepare Final Weather Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Final Weather Read": {
+      "main": [
+        [
+          {
+            "node": "Read Back Final Weather Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Back Final Weather Output": {
+      "main": [
+        [
+          {
+            "node": "Build Run Diagnostics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "timezone": "Europe/Paris",
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": null,
+  "pinData": {},
+  "versionId": "d1f91cb3-e5f8-4e58-abd3-86ae7e7552f1",
+  "activeVersionId": "d1f91cb3-e5f8-4e58-abd3-86ae7e7552f1",
+  "versionCounter": 2,
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-07-21T00:27:04.522Z",
+      "createdAt": "2026-07-21T00:27:04.522Z",
+      "role": "workflow:owner",
+      "workflowId": "CvzPNlnWXrzZfYGP",
+      "projectId": "Y0Ygmqe59jevHoeV",
+      "project": {
+        "updatedAt": "2026-07-10T05:38:45.677Z",
+        "createdAt": "2026-06-02T20:51:11.579Z",
+        "id": "Y0Ygmqe59jevHoeV",
+        "name": "John Brooks <john@biketourfrance.net>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "5dadc5f6-6bff-44cf-9566-6b82f3d768dc"
+      }
+    }
+  ],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

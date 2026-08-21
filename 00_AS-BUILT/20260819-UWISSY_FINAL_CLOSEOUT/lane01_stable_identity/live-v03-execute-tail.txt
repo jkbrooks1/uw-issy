@@ -1,0 +1,80 @@
+        ],
+        "Final Status Report": [
+          {
+            "startTime": 1787194283955,
+            "executionIndex": 30,
+            "source": [
+              {
+                "previousNode": "Write Final Artifacts",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            ],
+            "hints": [],
+            "executionTime": 8,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "run_id": "01_ROUTE_CONDITIONS-20260820T025022Z-001",
+                      "status": "DEGRADED",
+                      "data_status": "degraded",
+                      "candidate_written": true,
+                      "published_written": true,
+                      "quarantine_written": false,
+                      "validation_log_written": true,
+                      "status_written": true,
+                      "handoff_written": true,
+                      "execution_evidence_written": true,
+                      "artifact_count_written": 8,
+                      "event_count": 1,
+                      "route_event_count": 1,
+                      "source_count": 4,
+                      "failed_source_count": 3,
+                      "using_last_known_good": false,
+                      "published_path": "/files/uw-issy-connectors/published/01_ROUTE_CONDITIONS/01_ROUTE_CONDITIONS_published_20260820T025022Z.json",
+                      "timestamp": "2026-08-20T02:51:23.963Z"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      "lastNodeExecuted": "Final Status Report"
+    },
+    "executionData": {
+      "contextData": {},
+      "nodeExecutionStack": [],
+      "metadata": {},
+      "waitingExecution": {},
+      "waitingExecutionSource": {},
+      "runtimeData": {
+        "version": 1,
+        "establishedAt": 1787194221830,
+        "source": "cli",
+        "redaction": {
+          "version": 1,
+          "policy": "none"
+        },
+        "triggerNode": {
+          "name": "Manual Trigger",
+          "type": "n8n-nodes-base.manualTrigger"
+        }
+      }
+    },
+    "resumeToken": "4252e873f888ac6fc1623742b49e8b1bbf77d18dba4169b4a4bd05c825d878e0"
+  },
+  "mode": "cli",
+  "startedAt": "2026-08-20T02:50:21.824Z",
+  "stoppedAt": "2026-08-20T02:51:23.963Z",
+  "storedAt": "db",
+  "status": "success",
+  "finished": true
+}

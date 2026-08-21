@@ -1,0 +1,28 @@
+{
+  "hasResult": true,
+  "executionId": 3673,
+  "nodeRuns": 39,
+  "finalNodeRuns": 1
+}
+{
+  "run_id": "02_WEATHER-20260819T053755Z-001",
+  "status": "PASSED",
+  "data_status": "no_relevant_events",
+  "candidate_written": true,
+  "published_written": true,
+  "quarantine_written": false,
+  "validation_log_written": true,
+  "status_written": true,
+  "handoff_written": true,
+  "execution_evidence_written": true,
+  "artifact_count_written": 8,
+  "event_count": 0,
+  "source_count": 6,
+  "failed_source_count": 0,
+  "using_last_known_good": false,
+  "forecast_count": 0,
+  "observation_count": 32,
+  "weather_alert_count": 0,
+  "published_path": "/files/uw-issy-connectors/published/02_WEATHER/02_WEATHER_published_20260819T053755Z.json",
+  "timestamp": "2026-08-19T05:37:55.749Z"
+}

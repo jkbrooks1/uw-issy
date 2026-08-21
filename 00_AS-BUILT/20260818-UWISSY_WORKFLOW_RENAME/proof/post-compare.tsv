@@ -1,0 +1,11 @@
+lane	id	old_name	new_name	active_same	nodes_same	folder_after	logic_same_ignoring_name	connections_same	settings_same	credentials_same	shared_project_same	versionCounter_same
+01	RR7cLSV9oGngrJdA	v0001.01_RouteConditionsConnector	v01.UWI_LANE01	true	true	John Brooks <john@biketourfrance.net>	true	true	true	true	true	true
+02	fA0ZjWH3Itl83aPC	v0001.02_WeatherConnector	v01.UWI_LANE02	true	true	John Brooks <john@biketourfrance.net>	true	true	true	true	true	true
+03	qlM2XIv2BbFSh3in	v0001.03_AirQualityConnector	v01.UWI_LANE03	true	true	John Brooks <john@biketourfrance.net>	true	true	true	true	true	true
+04	w6xnelPQeRFZk8BG	v0001.04_WildfireConnector	v01.UWI_LANE04	true	true	John Brooks <john@biketourfrance.net>	true	true	true	true	true	true
+05	4RiNqOKD9BCZFH6P	v0001.05_FloodConditionsConnector	v01.UWI_LANE05	true	true	John Brooks <john@biketourfrance.net>	true	true	true	true	true	true
+06	poGV37VLUGIUxfGK	v0001.06_TrailInfrastructureStatusConnector	v01.UWI_LANE06	true	true	John Brooks <john@biketourfrance.net>	true	true	true	true	true	true
+07	08g3JNwQPVSxUl2H	v0001.07_GovernmentSafetyAlertsConnector	v01.UWI_LANE07	true	true	John Brooks <john@biketourfrance.net>	true	true	true	true	true	true
+08	uwIssy08RouteFacilities	v0001.08_RouteFacilitiesConnector	v01.UWI_LANE08	true	true	John Brooks <john@biketourfrance.net>	true	true	true	true	true	true
+20	gp8WlccGwLydNWG7	v0001.20_StatusPublisherConnector	v01.UWI_LANE20	true	true	John Brooks <john@biketourfrance.net>	true	true	true	true	true	true
+30	KhbGg5gBn7Rbne68	v0001.30_AlertMonitorConnector	v01.UWI_LANE30	true	true	John Brooks <john@biketourfrance.net>	true	true	true	true	true	true

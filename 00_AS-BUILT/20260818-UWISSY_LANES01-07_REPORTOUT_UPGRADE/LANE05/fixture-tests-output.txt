@@ -1,0 +1,9 @@
+PASS a: live success stayed live
+PASS b: usable LKG served with original timestamp
+PASS c: expired LKG rejected
+PASS d: malformed LKG handled without throw
+PASS e: mixed source state degraded
+PASS f: all-LKG candidate classified correctly
+PASS g: all-failed candidate unchanged
+PASS h: live recovery overrode LKG as expected
+PASS summary: 8/8 scenarios passed

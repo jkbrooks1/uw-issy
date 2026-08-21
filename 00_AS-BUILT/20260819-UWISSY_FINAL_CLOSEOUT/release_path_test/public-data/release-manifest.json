@@ -1,0 +1,19 @@
+{
+  "releaseId": "20_STATUS_PUBLISHER-20260820T030156Z-001",
+  "assembledAt": "2026-08-20T03:01:56.162Z",
+  "schemaVersion": "1.0.0",
+  "laneRunIds": {
+    "01_ROUTE_CONDITIONS": null,
+    "02_WEATHER": null,
+    "03_AIR_QUALITY": null,
+    "04_WILDFIRE": null,
+    "05_FLOOD_CONDITIONS": null,
+    "06_TRAIL_INFRASTRUCTURE_STATUS": null,
+    "07_GOVERNMENT_SAFETY_ALERTS": null,
+    "08_ROUTE_FACILITIES": null
+  },
+  "sourceGitCommit": null,
+  "buildState": "unknown",
+  "deployState": "unknown",
+  "productionProofState": "unknown"
+}

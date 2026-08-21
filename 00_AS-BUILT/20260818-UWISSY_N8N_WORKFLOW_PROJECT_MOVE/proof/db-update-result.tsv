@@ -1,0 +1,15 @@
+BEGIN
+UPDATE 10
+id	name	active	nodes	parentFolderId
+RR7cLSV9oGngrJdA	v0001.01_RouteConditionsConnector	t	32	LaS9Q6sil9yCDzrV
+fA0ZjWH3Itl83aPC	v0001.02_WeatherConnector	t	40	LaS9Q6sil9yCDzrV
+qlM2XIv2BbFSh3in	v0001.03_AirQualityConnector	t	48	LaS9Q6sil9yCDzrV
+w6xnelPQeRFZk8BG	v0001.04_WildfireConnector	t	36	LaS9Q6sil9yCDzrV
+4RiNqOKD9BCZFH6P	v0001.05_FloodConditionsConnector	t	56	LaS9Q6sil9yCDzrV
+poGV37VLUGIUxfGK	v0001.06_TrailInfrastructureStatusConnector	t	48	LaS9Q6sil9yCDzrV
+08g3JNwQPVSxUl2H	v0001.07_GovernmentSafetyAlertsConnector	t	48	LaS9Q6sil9yCDzrV
+uwIssy08RouteFacilities	v0001.08_RouteFacilitiesConnector	f	24	LaS9Q6sil9yCDzrV
+gp8WlccGwLydNWG7	v0001.20_StatusPublisherConnector	f	36	LaS9Q6sil9yCDzrV
+KhbGg5gBn7Rbne68	v0001.30_AlertMonitorConnector	f	41	LaS9Q6sil9yCDzrV
+(10 rows)
+COMMIT

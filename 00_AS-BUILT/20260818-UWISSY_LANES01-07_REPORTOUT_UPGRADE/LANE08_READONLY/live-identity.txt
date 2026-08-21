@@ -1,0 +1,5 @@
+           id            |      name      | active |  parentFolderId  | folder_name | node_count |              versionId               | versionCounter 
+-------------------------+----------------+--------+------------------+-------------+------------+--------------------------------------+----------------
+ uwIssy08RouteFacilities | v01.UWI_LANE08 | f      | LaS9Q6sil9yCDzrV | UWISSY      |         24 | 565a68a1-3265-4d22-beb7-05360d1de30e |              1
+(1 row)
+

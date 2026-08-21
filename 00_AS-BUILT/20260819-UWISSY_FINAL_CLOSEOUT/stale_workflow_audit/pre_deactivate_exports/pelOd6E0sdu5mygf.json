@@ -1,0 +1,569 @@
+{
+  "updatedAt": "2026-08-01T04:22:51.392Z",
+  "createdAt": "2026-07-20T21:48:21.914Z",
+  "id": "pelOd6E0sdu5mygf",
+  "name": "v0001.01_RouteConditionsConnector",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "beb2d198-ea79-4b07-a0a6-370b1ba8a26e",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -3504,
+        -384
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "27f73a8f-a588-4319-a7d2-e89c79133347",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -3504,
+        -144
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "generatedAt",
+              "name": "generatedAt",
+              "type": "string",
+              "value": "={{ $now.toUTC().toISO() }}"
+            },
+            {
+              "id": "runStartedAt",
+              "name": "runStartedAt",
+              "type": "string",
+              "value": "={{ $now.toUTC().toISO() }}"
+            },
+            {
+              "id": "runId",
+              "name": "runId",
+              "type": "string",
+              "value": "={{ String($execution.id || $now.toMillis()) }}"
+            },
+            {
+              "id": "routeCrosswalkPath",
+              "name": "routeCrosswalkPath",
+              "type": "string",
+              "value": "/data/route-monitoring/route-geography-crosswalk.json"
+            },
+            {
+              "id": "finalOutputPath",
+              "name": "finalOutputPath",
+              "type": "string",
+              "value": "/files/cdm-status-output/01_route_conditions.json"
+            },
+            {
+              "id": "eventsOutputPath",
+              "name": "eventsOutputPath",
+              "type": "string",
+              "value": "/files/cdm-status-output/route-status-events.json"
+            },
+            {
+              "id": "userAgent",
+              "name": "userAgent",
+              "type": "string",
+              "value": "BikeTourFrance-CDM-RouteMonitor/0.1 (+https://biketourfrance.net; route status research)"
+            },
+            {
+              "id": "acceptHeader",
+              "name": "acceptHeader",
+              "type": "string",
+              "value": "text/html,application/xhtml+xml,application/xml,text/plain,application/json;q=0.9,*/*;q=0.8"
+            },
+            {
+              "id": "allowFixtures",
+              "name": "allowFixtures",
+              "type": "boolean",
+              "value": false
+            },
+            {
+              "id": "fallbackSegmentsJson",
+              "name": "fallbackSegmentsJson",
+              "type": "string",
+              "value": "[{\"stageName\":\"Piste Cyclable Roger Lapebie : Bordeaux / Creon\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/piste-cyclable-roger-lapebie-bordeaux-creon\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/bordeaux-creon\",\"startTown\":\"Bordeaux\",\"endTown\":\"Creon\"},{\"stageName\":\"Piste Cyclable Roger Lapebie : Creon / Sauveterre\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/piste-cyclable-roger-lapebie-creon-sauveterre\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/creon-sauveterre\",\"startTown\":\"Creon\",\"endTown\":\"Sauveterre\"},{\"stageName\":\"De Sauveterre au Canal de Garonne a velo\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/de-sauveterre-au-canal-de-garonne-a-velo\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/sauveterre-la-reole\",\"startTown\":\"Sauveterre\",\"endTown\":\"La Reole\"},{\"stageName\":\"Le Canal de Garonne a velo : La Reole / Marmande\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-de-garonne-a-velo-la-reole-marmande\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/la-reole-marmande\",\"startTown\":\"La Reole\",\"endTown\":\"Marmande\"},{\"stageName\":\"Le Canal de la Garonne a velo : Marmande / Damazan\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-de-la-garonne-a-velo-marmande-damazan\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/marmande-damazan\",\"startTown\":\"Marmande\",\"endTown\":\"Damazan\"},{\"stageName\":\"Le canal de Garonne a velo : Damazan / Agen\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-de-garonne-a-velo-damazan-agen\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/damazan-agen\",\"startTown\":\"Damazan\",\"endTown\":\"Agen\"},{\"stageName\":\"Le canal de Garonne a velo : Agen / Valence d'Agen\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-de-garonne-a-velo-agen-valence-d-agen\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/agen-valence-d-agen\",\"startTown\":\"Agen\",\"endTown\":\"Valence d'Agen\"},{\"stageName\":\"Le canal de Garonne a velo : Valence d'Agen / Moissac\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-de-garonne-a-velo-valence-d-agen-moissac\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/valence-d-agen-moissac\",\"startTown\":\"Valence d'Agen\",\"endTown\":\"Moissac\"},{\"stageName\":\"Le canal de Garonne a velo : Moissac / Castelsarrasin / Montech / Montauban\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-de-garonne-a-velo-moissac-castelsarrasin-montech-montauban\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/moissac-montauban\",\"startTown\":\"Moissac\",\"endTown\":\"Montauban\"},{\"stageName\":\"Le canal de Garonne a velo : Montech / Castelnau-d'Estretefonds\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-de-garonne-a-velo-montech-castelnau-d-estretefonds\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/montech-castelnau-d-estretefonds\",\"startTown\":\"Montech\",\"endTown\":\"Castelnau-d'Estretefonds\"},{\"stageName\":\"Le canal de Garonne a velo : Castelnau-d'Estretefonds / Toulouse\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-de-garonne-a-velo-castelnau-d-estretefonds-toulouse\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/castelnau-d-estretefonds-toulouse\",\"startTown\":\"Castelnau-d'Estretefonds\",\"endTown\":\"Toulouse\"},{\"stageName\":\"Le Canal du Midi a velo : Toulouse / Montgiscard\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-toulouse-montgiscard\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/toulouse-montgiscard\",\"startTown\":\"Toulouse\",\"endTown\":\"Montgiscard\"},{\"stageName\":\"Le Canal du Midi a velo : Montgiscard / Seuil de Naurouze\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-montgiscard-seuil-de-naurouze\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/montgiscard-seuil-de-naurouze\",\"startTown\":\"Montgiscard\",\"endTown\":\"Seuil de Naurouze\"},{\"stageName\":\"Le Canal du Midi a velo : Seuil de Naurouze / Castelnaudary\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-seuil-de-naurouze-castelnaudary\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/seuil-de-naurouze-castelnaudary\",\"startTown\":\"Seuil de Naurouze\",\"endTown\":\"Castelnaudary\"},{\"stageName\":\"Le Canal du Midi a velo : Castelnaudary / Bram\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-castelnaudary-bram\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/castelnaudary-bram\",\"startTown\":\"Castelnaudary\",\"endTown\":\"Bram\"},{\"stageName\":\"Le Canal du Midi a velo : Bram / Carcassonne\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-bram-carcassonne\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/bram-carcassonne\",\"startTown\":\"Bram\",\"endTown\":\"Carcassonne\"},{\"stageName\":\"Le Canal du Midi a velo : Carcassonne / Marseillette\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-carcassonne-marseillette\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/carcassonne-marseillette\",\"startTown\":\"Carcassonne\",\"endTown\":\"Marseillette\"},{\"stageName\":\"Le Canal du Midi a velo : Marseillette / Homps\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-marseillette-homps\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/marseillette-homps\",\"startTown\":\"Marseillette\",\"endTown\":\"Homps\"},{\"stageName\":\"Le Canal du Midi a velo : Homps / Le Somail\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-homps-le-somail\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/homps-le-somail\",\"startTown\":\"Homps\",\"endTown\":\"Le Somail\"},{\"stageName\":\"Le Canal du Midi a velo : Le Somail / Capestang\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-le-somail-capestang\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/le-somail-capestang\",\"startTown\":\"Le Somail\",\"endTown\":\"Capestang\"},{\"stageName\":\"Le Canal du Midi a velo : Capestang / Beziers\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-capestang-beziers\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/capestang-beziers\",\"startTown\":\"Capestang\",\"endTown\":\"Beziers\"},{\"stageName\":\"Le Canal du Midi a velo : Beziers / Agde\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-beziers-agde\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/beziers-agde\",\"startTown\":\"Beziers\",\"endTown\":\"Agde\"},{\"stageName\":\"Le Canal du Midi a velo : Agde / Sete\",\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-agde-sete\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/agde-sete\",\"startTown\":\"Agde\",\"endTown\":\"Sete\"}]"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "23052ef7-25fb-44d8-b0d3-85e754a7f875",
+      "name": "Set Connector Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3232,
+        -272
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const fs = require('fs');\nfunction readJson(filePath) { return JSON.parse(fs.readFileSync(filePath, 'utf8')); }\nfunction asArray(value) { return Array.isArray(value) ? value : []; }\nfunction firstConfig(items) { if (!items.length) throw new Error('Set Connector Config produced no item'); return items[0].json; }\nfunction loadRows(config) {\n  const fallbackRows = asArray(config.fallbackSegmentsJson ? JSON.parse(config.fallbackSegmentsJson) : []);\n  if (!config.routeCrosswalkPath) return fallbackRows;\n  try {\n    const crosswalkRaw = readJson(config.routeCrosswalkPath);\n    const rows = asArray(crosswalkRaw.segments || crosswalkRaw.routeSegments || crosswalkRaw.days || crosswalkRaw);\n    return rows.length ? rows : fallbackRows;\n  } catch (error) {\n    return fallbackRows;\n  }\n}\nconst config = firstConfig($input.all());\nconst rows = loadRows(config);\nconst seen = new Set();\nconst output = [];\nfunction pushUrl(url, role, segment) {\n  if (!url || typeof url !== 'string') return;\n  const clean = url.trim();\n  if (!clean || seen.has(clean)) return;\n  seen.add(clean);\n  output.push({ json: { ...config, sourceId: 'cdm-official', sourceName: 'Canal des 2 Mers à Vélo', sourceType: 'cdm_official', url: clean, urlRole: role, segment: segment || null, requestHeaders: config.requestHeaders } });\n}\npushUrl('https://www.canaldes2mersavelo.com/', 'main', null);\npushUrl('https://www.canaldes2mersavelo.com/travaux-canal-du-midi-v80', 'works', null);\nfor (const row of rows) pushUrl(row && row.officialStageUrl, 'stage', row || null);\nreturn output;"
+      },
+      "id": "2f8d0408-3699-4bcd-a385-3377b96af8da",
+      "name": "Build CDM URL List",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2944,
+        -384
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "={{ $json.userAgent }}"
+            },
+            {
+              "name": "Accept",
+              "value": "={{ $json.acceptHeader }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 20000
+        }
+      },
+      "id": "8cfbcd79-b318-47af-9bef-37180906ce3d",
+      "name": "Fetch CDM Pages",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2672,
+        -384
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 3000,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\nfunction hash(value, len) { return crypto.createHash('sha256').update(String(value)).digest('hex').slice(0, len); }\nfunction normalizeText(value) { return String(value || '').replace(/<script[\\s\\S]*?<\\/script>/gi, ' ').replace(/<style[\\s\\S]*?<\\/style>/gi, ' ').replace(/<noscript[\\s\\S]*?<\\/noscript>/gi, ' ').replace(/<img\\b[^>]*>/gi, ' ').replace(/<footer[\\s\\S]*?<\\/footer>/gi, ' ').replace(/<nav[\\s\\S]*?<\\/nav>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&eacute;/g, 'é').replace(/&egrave;/g, 'è').replace(/&ecirc;/g, 'ê').replace(/&agrave;/g, 'à').replace(/&ccedil;/g, 'ç').replace(/&#39;/g, \"'\").replace(/&quot;/g, '\"').replace(/\\s+/g, ' ').trim(); }\nfunction lower(value) { return normalizeText(value).toLowerCase(); }\nfunction excerpt(value, max) { const t = normalizeText(value); return t.length > max ? t.slice(0, max - 1).trim() + '…' : t; }\nfunction getBody(item) { return item.body || item.data || item.response || item.html || item.text || ''; }\nfunction getStatus(item) { return Number(item.statusCode || item.status || (item.response && item.response.statusCode) || 0); }\nfunction classify(text) { const t = lower(text); if (/inondation|crue|submerg/.test(t)) return { eventType: 'flood_hazard', severity: 'orange' }; if (/fermeture|ferm[ée]|interdit|barr[ée]|coup[ée]|impraticable/.test(t)) return { eventType: 'closure', severity: /route|chemin de halage|voie verte|v[ée]loroute/.test(t) ? 'red' : 'orange' }; if (/d[ée]viation|d[ée]vi[ée]|provisoire|itin[ée]raire modifi/.test(t)) return { eventType: 'detour', severity: 'yellow' }; if (/acc[èe]s interdit/.test(t)) return { eventType: 'access_restriction', severity: 'orange' }; if (/non rev[êe]tu|rugueux|boue|gravier|glissant|chemin [ée]troit/.test(t)) return { eventType: 'surface', severity: 'green' }; if (/travaux|chantier|remise en [ée]tat/.test(t)) return { eventType: 'works', severity: 'yellow' }; return { eventType: 'hazard', severity: 'yellow' }; }\nfunction department(text) { const t = lower(text); const pairs = [['33', /gironde|\\b33\\b/], ['47', /lot-et-garonne|lot et garonne|\\b47\\b/], ['82', /tarn-et-garonne|tarn et garonne|\\b82\\b/], ['31', /haute-garonne|haute garonne|\\b31\\b/], ['11', /aude|\\b11\\b/], ['34', /h[ée]rault|herault|\\b34\\b/]]; const found = pairs.filter(([, re]) => re.test(t)).map(([code]) => code); return found.length ? [...new Set(found)].join(',') : 'unknown'; }\nfunction titleFrom(text, fallback) { const t = excerpt(text, 88); return t || fallback || 'Alerte itinéraire Canal des 2 Mers'; }\nconst warningTerms = /attention|travaux|fermeture|ferm[ée]e?|d[ée]viation|d[ée]vi[ée]|itin[ée]raire modifi|impraticable|inondation|acc[èe]s interdit|cheminement|remise en [ée]tat|provisoire/i;\nconst cyclistTerms = /route cyclable|voie verte|chemin de halage|halage|piste cyclable|cyclable|cyclistes?|v[ée]lo|v[ée]loroute|itin[ée]raire|parcours/i;\nconst notImpacted = /cyclistes? ne sont pas directement impact|pas d'impact direct|sans impact.*cycl/i;\nconst config = $items('Set Connector Config')[0].json;\nconst generatedAt = config.generatedAt;\nconst seen = new Set();\nconst candidates = [];\nlet okPages = 0, failedPages = 0;\nconst sourceItems = $items('Build CDM URL List');\nconst inputItems = $input.all();\nfor (let index = 0; index < inputItems.length; index++) {\n  const input = inputItems[index];\n  const raw = input.json || {};\n  const sourceMeta = (sourceItems[index] && sourceItems[index].json) || {};\n  const sourceUrl = raw.url || raw.requestUrl || raw.sourceUrl || raw.configUrl || sourceMeta.url || 'unknown';\n  const status = getStatus(raw);\n  const html = String(getBody(raw));\n  if (status && (status < 200 || status >= 300)) { failedPages++; continue; }\n  if (!html) { failedPages++; continue; }\n  okPages++;\n  const mainMatch = html.match(/<main\\b[\\s\\S]*?<\\/main>/i);\n  const scoped = mainMatch ? mainMatch[0] : html;\n  const pieces = [];\n  const re = /<(article|h[1-6]|p|li)\\b[^>]*>([\\s\\S]*?)<\\/\\1>/gi;\n  let m;\n  while ((m = re.exec(scoped)) !== null) {\n    const text = normalizeText(m[2]);\n    if (text.length >= 30) pieces.push(text);\n  }\n  const blocks = pieces.length ? pieces : [normalizeText(scoped)];\n  for (const block of blocks) {\n    if (!warningTerms.test(block) || !cyclistTerms.test(block) || notImpacted.test(block)) continue;\n    const key = sourceUrl + '|' + lower(block);\n    if (seen.has(key)) continue;\n    seen.add(key);\n    const cls = classify(block);\n    const dept = department(block);\n    const id = 'cdm-official-' + hash(sourceUrl + lower(block), 18);\n    candidates.push({ json: { recordKind: 'candidate', id, sourceId: 'cdm-official', sourceName: 'Canal des 2 Mers à Vélo', sourceUrl, sourceType: 'cdm_official', title: titleFrom(block, 'Alerte officielle Canal des 2 Mers'), summary: excerpt(block, 260), severity: cls.severity, status: 'confirmed', eventType: cls.eventType, confidence: dept === 'unknown' ? 'low' : 'high', reviewState: dept === 'unknown' ? 'manual_review_required' : 'auto_publish', updatedAt: generatedAt, startedAt: generatedAt, locationText: dept === 'unknown' ? 'Canal des 2 Mers route corridor' : 'Département ' + dept, department: dept, routeRelation: dept === 'unknown' ? 'unknown_location' : 'same_department', evidenceText: block, evidenceUrl: sourceUrl, cyclistImpact: excerpt(block, 220), actionForRider: 'Consulter la source officielle avant de rouler et suivre la signalisation locale.', lifecycleState: 'new', statusExplanation: excerpt(block, 180), statusSource: { sourceId: 'cdm-official', sourceName: 'Canal des 2 Mers à Vélo', sourceUrl, checkedAt: generatedAt }, identityKey: hash('cdm-official|' + sourceUrl + '|' + lower(block), 32) } });\n  }\n}\ncandidates.push({ json: { recordKind: 'sourceHealth', sourceId: 'cdm-official', sourceName: 'Canal des 2 Mers à Vélo', checkedAt: generatedAt, parserOk: failedPages === 0 || okPages > 0, itemsFound: candidates.length, candidatesGenerated: candidates.length, freshness: failedPages && !okPages ? 'failed' : 'fresh', fetchErrors: failedPages, lastError: failedPages && !okPages ? 'One or more CDM pages failed or returned empty HTML' : null } });\nreturn candidates;"
+      },
+      "id": "72c20d9a-3685-4294-9f97-03c66e44196d",
+      "name": "Parse CDM Warning Blocks",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2384,
+        -384
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const fs = require('fs');\nfunction readJson(filePath) { return JSON.parse(fs.readFileSync(filePath, 'utf8')); }\nfunction asArray(value) { return Array.isArray(value) ? value : []; }\nfunction loadRows(config) {\n  const fallbackRows = asArray(config.fallbackSegmentsJson ? JSON.parse(config.fallbackSegmentsJson) : []);\n  if (!config.routeCrosswalkPath) return fallbackRows;\n  try {\n    const crosswalkRaw = readJson(config.routeCrosswalkPath);\n    const rows = asArray(crosswalkRaw.segments || crosswalkRaw.routeSegments || crosswalkRaw.days || crosswalkRaw);\n    return rows.length ? rows : fallbackRows;\n  } catch (error) {\n    return fallbackRows;\n  }\n}\nconst config = $input.all()[0] && $input.all()[0].json;\nif (!config) throw new Error('Set Connector Config produced no item');\nconst rows = loadRows(config);\nconst seen = new Set();\nconst output = [];\nfunction rideDayFrom(row) {\n  const value = row && (row.rideDay || row.day || row.rd || row.tourDayId || row.id);\n  const text = String(value || '');\n  const match = text.match(/(?:RD)?0?([1-9])\\b/i);\n  return match ? Number(match[1]) : null;\n}\nfunction stageName(row) { return row && (row.stageName || row.name || row.title || [row.startTown, row.endTown].filter(Boolean).join(' / ')) || null; }\nfunction pushUrl(url, role, segment) {\n  if (!url || typeof url !== 'string') return;\n  const clean = url.trim();\n  if (!clean || seen.has(clean)) return;\n  seen.add(clean);\n  output.push({ json: { ...config, sourceId: 'fvt', sourceName: 'France Vélo Tourisme', sourceType: 'fvt_editorial', url: clean, urlRole: role, stageHint: stageName(segment), rideDay: rideDayFrom(segment), segment: segment || null, requestHeaders: config.requestHeaders } });\n}\npushUrl('https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo', 'overview', null);\nfor (const row of rows) pushUrl(row && row.franceVeloUrl, 'stage', row || null);\nreturn output;"
+      },
+      "id": "c0a4f899-4c69-41a9-9c3f-17bc1f41f064",
+      "name": "Build FVT URL List",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2944,
+        -144
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "={{ $json.userAgent }}"
+            },
+            {
+              "name": "Accept",
+              "value": "={{ $json.acceptHeader }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 20000
+        }
+      },
+      "id": "9177bb6b-7eeb-46a6-b146-148669481922",
+      "name": "Fetch FVT Pages",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2672,
+        -144
+      ],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\nfunction hash(value, len) { return crypto.createHash('sha256').update(String(value)).digest('hex').slice(0, len); }\nfunction normalizeText(value) { return String(value || '').replace(/<script[\\s\\S]*?<\\/script>/gi, ' ').replace(/<style[\\s\\S]*?<\\/style>/gi, ' ').replace(/<noscript[\\s\\S]*?<\\/noscript>/gi, ' ').replace(/<footer[\\s\\S]*?<\\/footer>/gi, ' ').replace(/<nav[\\s\\S]*?<\\/nav>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&eacute;/g, 'é').replace(/&egrave;/g, 'è').replace(/&ecirc;/g, 'ê').replace(/&agrave;/g, 'à').replace(/&ccedil;/g, 'ç').replace(/&#39;/g, \"'\").replace(/&quot;/g, '\"').replace(/\\s+/g, ' ').trim(); }\nfunction lower(value) { return normalizeText(value).toLowerCase(); }\nfunction excerpt(value, max) { const t = normalizeText(value); return t.length > max ? t.slice(0, max - 1).trim() + '…' : t; }\nfunction getBody(item) { return item.body || item.data || item.response || item.html || item.text || ''; }\nfunction getStatus(item) { return Number(item.statusCode || item.status || 0); }\nfunction classify(text) { const t = lower(text); if (/inondation|crue|submerg/.test(t)) return { eventType: 'flood_hazard', severity: 'orange' }; if (/fermeture|ferm[ée]|interdit|barr[ée]|coup[ée]|impraticable/.test(t)) return { eventType: 'closure', severity: 'orange' }; if (/d[ée]viation|d[ée]vi[ée]|provisoire|itin[ée]raire modifi/.test(t)) return { eventType: 'detour', severity: 'yellow' }; if (/travaux|chantier/.test(t)) return { eventType: 'works', severity: 'yellow' }; if (/non rev[êe]tu|rugueux|boue|gravier|glissant/.test(t)) return { eventType: 'surface', severity: 'green' }; return { eventType: 'hazard', severity: 'yellow' }; }\nconst problemTerms = /attention|travaux|fermeture|ferm[ée]e?|d[ée]viation|d[ée]vi[ée]|provisoire|impraticable|inondation|acc[èe]s interdit|chantier|boue|gravier|glissant/i;\nconst routeTerms = /canal des 2 mers|voie verte|v[ée]lo|v[ée]loroute|cyclable|itin[ée]raire|parcours|[ée]tape|halage/i;\nconst reviewAttr = /avis|review|comment|contribution|temoignage|témoignage/i;\nconst config = $items('Set Connector Config')[0].json;\nconst generatedAt = config.generatedAt;\nconst seen = new Set();\nconst output = [];\nlet okPages = 0, failedPages = 0;\nconst sourceItems = $items('Build FVT URL List');\nconst inputItems = $input.all();\nfor (let index = 0; index < inputItems.length; index++) {\n  const input = inputItems[index];\n  const raw = input.json || {};\n  const sourceMeta = (sourceItems[index] && sourceItems[index].json) || {};\n  const sourceUrl = raw.url || raw.requestUrl || raw.sourceUrl || sourceMeta.url || 'unknown';\n  const status = getStatus(raw);\n  const html = String(getBody(raw));\n  if (status && (status < 200 || status >= 300)) { failedPages++; continue; }\n  if (!html) { failedPages++; continue; }\n  okPages++;\n  const titleMatch = html.match(/<h1\\b[^>]*>([\\s\\S]*?)<\\/h1>/i) || html.match(/<title\\b[^>]*>([\\s\\S]*?)<\\/title>/i);\n  const stageHint = normalizeText(raw.stageHint || sourceMeta.stageHint || (titleMatch && titleMatch[1]) || 'Canal des 2 Mers');\n  const blocks = [];\n  const attrRe = /<([a-z0-9]+)\\b[^>]*(alert|warning|alerte|danger|review|avis|comment)[^>]*>([\\s\\S]*?)<\\/\\1>/gi;\n  let m;\n  while ((m = attrRe.exec(html)) !== null) blocks.push({ text: normalizeText(m[3]), userReview: reviewAttr.test(m[0]) });\n  const paraRe = /<(p|li)\\b[^>]*>([\\s\\S]*?)<\\/\\1>/gi;\n  while ((m = paraRe.exec(html)) !== null) blocks.push({ text: normalizeText(m[2]), userReview: reviewAttr.test(m[0]) });\n  for (const block of blocks) {\n    if (block.text.length < 30 || !problemTerms.test(block.text) || !routeTerms.test(block.text)) continue;\n    const sourceType = block.userReview ? 'fvt_user_review' : 'fvt_editorial';\n    const rd = raw.rideDay || sourceMeta.rideDay || (raw.segment && (raw.segment.rideDay || raw.segment.day)) || (sourceMeta.segment && (sourceMeta.segment.rideDay || sourceMeta.segment.day));\n    const key = sourceType + '|' + lower(block.text) + '|' + (rd || 'unknown');\n    if (seen.has(key)) continue;\n    seen.add(key);\n    const cls = classify(block.text);\n    const id = 'fvt_' + sourceType + '_' + hash(sourceUrl + '|' + block.text, 16);\n    const mapped = Boolean(rd);\n    output.push({ json: { recordKind: block.userReview ? 'commentCandidate' : 'candidate', id, sourceId: 'fvt', sourceName: 'France Vélo Tourisme', sourceUrl, sourceType, title: excerpt(stageHint + ' - ' + block.text, 88), summary: excerpt(block.text, 260), severity: cls.severity, status: 'confirmed', eventType: cls.eventType, confidence: block.userReview ? 'low' : (mapped ? 'high' : 'low'), reviewState: block.userReview ? 'manual_review_required' : (mapped ? 'auto_publish' : 'manual_review_required'), updatedAt: generatedAt, startedAt: generatedAt, locationText: stageHint || 'Canal des 2 Mers route corridor', department: 'unknown', routeRelation: mapped ? 'on_route' : 'unknown_location', evidenceText: block.text, evidenceUrl: sourceUrl, cyclistImpact: excerpt(block.text, 220), actionForRider: 'Vérifier la page France Vélo Tourisme et la signalisation locale avant de rouler.', lifecycleState: 'new', rdStart: mapped ? Number(rd) : undefined, rdEnd: mapped ? Number(rd) : undefined, tourDayIds: mapped ? ['RD' + String(rd).padStart(2, '0')] : [], statusExplanation: excerpt(block.text, 180), statusSource: { sourceId: 'fvt', sourceName: 'France Vélo Tourisme', sourceUrl, checkedAt: generatedAt }, stageName: stageHint, identityKey: hash('fvt|' + sourceType + '|' + sourceUrl + '|' + lower(block.text), 32) } });\n  }\n}\noutput.push({ json: { recordKind: 'sourceHealth', sourceId: 'fvt', sourceName: 'France Vélo Tourisme', checkedAt: generatedAt, parserOk: failedPages === 0 || okPages > 0, itemsFound: output.filter(i => i.json.recordKind !== 'sourceHealth').length, candidatesGenerated: output.filter(i => i.json.recordKind === 'candidate').length, freshness: failedPages && !okPages ? 'failed' : 'fresh', fetchErrors: failedPages, lastError: failedPages && !okPages ? 'One or more FVT pages failed or returned empty HTML' : null } });\nreturn output;"
+      },
+      "id": "c3f13c8f-73e1-4098-b8d6-8ad34d98d62e",
+      "name": "Parse FVT Warning Blocks",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2384,
+        -144
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "e7b80a23-ff28-4fda-8699-2b094f0ebb2b",
+      "name": "Merge Source Candidates",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        -2112,
+        -272
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const allowedSourceTypes = new Set(['cdm_official', 'fvt_editorial', 'fvt_user_review']);\nfunction clean(value) { return String(value || '').replace(/\\s+/g, ' ').trim(); }\nfunction classify(text, fallback) { const t = clean(text).toLowerCase(); if (/inondation|crue|submerg/.test(t)) return 'flood_hazard'; if (/fermeture|ferm[ée]|interdit|barr[ée]|coup[ée]|impraticable/.test(t)) return 'closure'; if (/d[ée]viation|d[ée]vi[ée]|provisoire|itin[ée]raire modifi/.test(t)) return 'detour'; if (/acc[èe]s interdit/.test(t)) return 'access_restriction'; if (/non rev[êe]tu|rugueux|boue|gravier|glissant/.test(t)) return 'surface'; if (/travaux|chantier|remise en [ée]tat/.test(t)) return 'works'; return fallback || 'hazard'; }\nfunction severity(eventType, text, fallback) { const t = clean(text).toLowerCase(); if (eventType === 'closure') return /chemin de halage|voie verte|v[ée]loroute|route cyclable/.test(t) ? 'red' : 'orange'; if (eventType === 'flood_hazard' || eventType === 'access_restriction') return 'orange'; if (eventType === 'detour' || eventType === 'works') return 'yellow'; if (eventType === 'surface') return 'green'; return fallback || 'yellow'; }\nfunction recommendation(eventType) { const map = { closure: 'Prévoir une alternative et suivre la déviation officielle sur place.', detour: 'Suivre le balisage provisoire et prévoir du temps supplémentaire.', works: 'Ralentir dans la zone de travaux et vérifier la praticabilité avant départ.', access_restriction: 'Ne pas emprunter la section interdite; attendre une confirmation officielle ou suivre la déviation.', surface: 'Adapter la vitesse et le choix de pneus; surveiller la météo et l’état du revêtement.', flood_hazard: 'Ne pas franchir une section submergée; vérifier les consignes locales.', hazard: 'Vérifier la source et rester attentif sur la section indiquée.' }; return map[eventType] || map.hazard; }\nconst out = [];\nfor (const item of $input.all()) {\n  const r = item.json || {};\n  if (r.recordKind === 'sourceHealth') { out.push(item); continue; }\n  if (!allowedSourceTypes.has(r.sourceType)) { out.push({ json: { ...r, recordKind: 'validationIssue', validationErrors: ['Unsupported sourceType'] } }); continue; }\n  const eventType = classify(r.evidenceText || r.summary || r.title, r.eventType);\n  const sev = severity(eventType, r.evidenceText || r.summary, r.severity);\n  const routeRelation = r.routeRelation || (r.rdStart ? 'on_route' : 'unknown_location');\n  const confidence = r.sourceType === 'fvt_user_review' ? 'low' : (routeRelation === 'on_route' ? 'high' : (routeRelation === 'same_department' ? 'medium' : 'low'));\n  const reviewState = r.sourceType === 'fvt_user_review' ? 'manual_review_required' : ((confidence === 'high' || (r.sourceId === 'cdm-official' && confidence === 'medium')) ? 'auto_publish' : 'manual_review_required');\n  out.push({ json: { ...r, recordKind: r.recordKind || 'candidate', title: clean(r.title) || 'Alerte itinéraire', summary: clean(r.summary || r.evidenceText || r.title), evidenceText: clean(r.evidenceText || r.summary || r.title), sourceUrl: clean(r.sourceUrl), evidenceUrl: clean(r.evidenceUrl || r.sourceUrl), eventType, severity: sev, status: r.status || 'confirmed', confidence, reviewState, routeRelation, cyclistImpact: clean(r.cyclistImpact || r.summary || r.evidenceText), actionForRider: clean(r.actionForRider) || recommendation(eventType), statusExplanation: clean(r.statusExplanation || r.summary || r.evidenceText), statusSource: r.statusSource || { sourceId: r.sourceId, sourceName: r.sourceName, sourceUrl: r.sourceUrl, checkedAt: r.updatedAt }, lifecycleState: r.lifecycleState || 'new' } });\n}\nreturn out;"
+      },
+      "id": "07fa8d4f-d4e4-4904-b8cd-1c7e50ed8cfb",
+      "name": "Normalize Route Events",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1824,
+        -272
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const required = ['id','sourceId','sourceName','sourceUrl','sourceType','title','summary','severity','status','eventType','confidence','reviewState','updatedAt','locationText','department','routeRelation','evidenceText','evidenceUrl','cyclistImpact','lifecycleState'];\nconst enums = { severity: ['green','yellow','orange','red','gray'], status: ['forecast','confirmed','resolved','unknown'], eventType: ['closure','detour','works','access_restriction','surface','hazard','safety','flood_hazard'], confidence: ['low','medium','high'], reviewState: ['auto_publish','manual_review_required','approved','rejected'], lifecycleState: ['new','active','updated','possibly_resolved','resolved','expired'], routeRelation: ['on_route','required_access','near_route','same_department','regional_only','unknown_location'], sourceType: ['cdm_official','fvt_editorial','fvt_user_review'] };\nfunction validIso(value) { return !value || !Number.isNaN(Date.parse(value)); }\nfunction validRd(value) { return value === undefined || value === null || (Number.isInteger(Number(value)) && Number(value) >= 1 && Number(value) <= 9); }\nconst out = [];\nfor (const item of $input.all()) {\n  const r = item.json || {};\n  if (r.recordKind === 'sourceHealth') { out.push(item); continue; }\n  const errors = [];\n  for (const field of required) if (r[field] === undefined || r[field] === null || r[field] === '') errors.push('Missing required field: ' + field);\n  for (const [field, values] of Object.entries(enums)) if (r[field] && !values.includes(r[field])) errors.push('Invalid enum ' + field + ': ' + r[field]);\n  if (!validIso(r.updatedAt) || !validIso(r.startedAt) || !validIso(r.endedAt)) errors.push('Invalid date field');\n  if (!validRd(r.rdStart) || !validRd(r.rdEnd)) errors.push('rdStart/rdEnd must be integers 1-9 when present');\n  if (Array.isArray(r.tourDayIds)) for (const id of r.tourDayIds) if (!/^RD0[1-9]$/.test(String(id))) errors.push('Invalid tourDayId: ' + id);\n  if (r.coordinates && (typeof r.coordinates.lat !== 'number' || typeof r.coordinates.lon !== 'number')) errors.push('coordinates must contain numeric lat and lon');\n  if (r.reviewState === 'auto_publish' && ['yellow','orange','red'].includes(r.severity) && (!r.statusExplanation || !r.statusSource || !r.statusSource.sourceUrl)) errors.push('Elevated published events require source-backed explanation and statusSource');\n  out.push({ json: errors.length ? { ...r, recordKind: 'reviewItem', reviewState: 'manual_review_required', validationErrors: errors } : { ...r, recordKind: r.sourceType === 'fvt_user_review' ? 'commentCandidate' : 'candidate', validationErrors: [] } });\n}\nreturn out;"
+      },
+      "id": "7cd528a3-45c5-4926-ac94-75d223aff070",
+      "name": "Validate Route Events",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1552,
+        -272
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const fs = require('fs');\nconst crypto = require('crypto');\nfunction hash(value) { return crypto.createHash('sha256').update(String(value)).digest('hex'); }\nfunction readJson(filePath, fallback) { try { return JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch (error) { return fallback; } }\nfunction identity(r) { return r.identityKey || hash([r.sourceId, r.sourceUrl, r.title, r.startedAt || ''].join('|')).slice(0, 32); }\nfunction comparable(r) { return JSON.stringify({ title: r.title, summary: r.summary, severity: r.severity, status: r.status, eventType: r.eventType, locationText: r.locationText, evidenceText: r.evidenceText }); }\nconst config = $items('Set Connector Config')[0].json;\nconst previousFeed = readJson(config.eventsOutputPath, { events: [], recentlyResolved: [] });\nconst previousEvents = Array.isArray(previousFeed.events) ? previousFeed.events.filter(e => !e.fixtureBacked) : [];\nconst current = $input.all().map(i => i.json || {});\nconst health = current.filter(r => r.recordKind === 'sourceHealth');\nconst failedSources = new Set(health.filter(h => h.freshness === 'failed').map(h => h.sourceId));\nconst candidates = current.filter(r => r.recordKind === 'candidate' && r.reviewState === 'auto_publish' && r.lifecycleState !== 'expired' && r.lifecycleState !== 'resolved');\nconst review = current.filter(r => r.recordKind === 'reviewItem' || (r.recordKind === 'candidate' && r.reviewState !== 'auto_publish'));\nconst comments = current.filter(r => r.recordKind === 'commentCandidate');\nconst prevByIdentity = new Map();\nfor (const event of previousEvents) prevByIdentity.set(event.identityKey || event.externalId || event.id, event);\nconst seen = new Set();\nconst published = [];\nfor (const candidate of candidates) {\n  const key = identity(candidate);\n  if (seen.has(key)) continue;\n  seen.add(key);\n  const previous = prevByIdentity.get(key);\n  const lifecycleState = previous ? (comparable(previous) === comparable(candidate) ? 'active' : 'updated') : 'new';\n  published.push({ ...candidate, identityKey: key, lifecycleState, lastVerified: config.generatedAt });\n}\nfor (const previous of previousEvents) {\n  const sourceId = previous.sourceId;\n  const key = previous.identityKey || previous.externalId || previous.id;\n  if (seen.has(key)) continue;\n  if (sourceId && failedSources.has(sourceId)) published.push({ ...previous, lifecycleState: 'active', preservedBecauseSourceFailed: true, checkedAt: config.generatedAt });\n}\nconst recentCutoff = Date.parse(config.generatedAt) - 14 * 24 * 60 * 60 * 1000;\nconst recentlyResolved = Array.isArray(previousFeed.recentlyResolved) ? previousFeed.recentlyResolved.filter(e => Date.parse(e.resolvedAt || e.checkedAt || 0) >= recentCutoff) : [];\nreturn [{ json: { generatedAt: config.generatedAt, publishedEvents: published, reviewItems: review, comments, sourceHealth: health, recentlyResolved } }];"
+      },
+      "id": "f5a642c2-028a-42b7-89c9-6c580aea27fe",
+      "name": "Deduplicate and Reconcile",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1264,
+        -272
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function isoOrNow(value) {\n  return value && !Number.isNaN(Date.parse(value)) ? new Date(value).toISOString() : new Date().toISOString();\n}\nconst config = $items('Set Connector Config')[0].json;\nconst state = $input.all()[0].json || {};\nconst sourceHealth = Array.isArray(state.sourceHealth) ? state.sourceHealth : [];\nconst data = {\n  events: Array.isArray(state.publishedEvents) ? state.publishedEvents : [],\n  reviewItems: Array.isArray(state.reviewItems) ? state.reviewItems : [],\n  comments: Array.isArray(state.comments) ? state.comments : [],\n  sourceHealth,\n  recentlyResolved: Array.isArray(state.recentlyResolved) ? state.recentlyResolved : []\n};\nconst sourceNames = [...new Set(sourceHealth.map((s) => s.sourceName).filter(Boolean))];\nconst sourceFailures = sourceHealth.filter((s) => s.freshness === 'failed' || s.parserOk === false);\nconst allSourcesFailed = sourceHealth.length > 0 && sourceFailures.length === sourceHealth.length;\nconst warnings = [];\nif (sourceFailures.length) warnings.push(sourceFailures.length + ' source fetch/parser checks reported failure');\nif (data.reviewItems.length) warnings.push(data.reviewItems.length + ' items require manual review');\nif (data.comments.length) warnings.push(data.comments.length + ' community comments captured without auto-publication');\nconst status = allSourcesFailed ? 'STALE_LAST_KNOWN_GOOD' : (warnings.length ? 'SUCCESS_WITH_WARNINGS' : 'SUCCESS');\nconst stale = status === 'STALE_LAST_KNOWN_GOOD';\nconst completedAt = isoOrNow(new Date().toISOString());\nconst payload = {\n  schema_version: '1.0.0',\n  connector_id: '01_route_conditions',\n  connector_name: 'Route Conditions',\n  run_id: String(config.runId || Date.now()),\n  status,\n  started_at: isoOrNow(config.runStartedAt || config.generatedAt),\n  completed_at: completedAt,\n  generated_at: isoOrNow(config.generatedAt),\n  source_updated_at: null,\n  record_count: data.events.length,\n  source_count: sourceHealth.length,\n  sources: sourceNames,\n  data,\n  warnings,\n  errors: [],\n  stale,\n  last_known_good: {\n    is_last_known_good: stale,\n    reason: stale ? 'All monitored sources failed during this run, so the event set was preserved from the prior compatible feed where available.' : 'Current run produced fresh connector output.'\n  },\n  validation: {\n    schema_valid: true\n  }\n};\nreturn [{ json: { finalOutputPath: config.finalOutputPath, payload } }];"
+      },
+      "id": "f2afea8c-48be-4125-834d-8a2b547b1a87",
+      "name": "Build Output Payloads",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -992,
+        -272
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const fs = require('fs');\nconst path = require('path');\nconst crypto = require('crypto');\nfunction isIso(value) { return typeof value === 'string' && !Number.isNaN(Date.parse(value)); }\nfunction validateContract(obj) {\n  const required = ['schema_version', 'connector_id', 'connector_name', 'run_id', 'status', 'started_at', 'completed_at', 'generated_at', 'source_updated_at', 'record_count', 'source_count', 'sources', 'data', 'warnings', 'errors', 'stale', 'last_known_good', 'validation'];\n  for (const key of required) {\n    if (!(key in obj)) throw new Error('Missing required top-level field: ' + key);\n  }\n  if (obj.schema_version !== '1.0.0') throw new Error('schema_version must be 1.0.0');\n  if (!['SUCCESS', 'SUCCESS_WITH_WARNINGS', 'STALE_LAST_KNOWN_GOOD', 'FAILED_NO_OUTPUT'].includes(obj.status)) throw new Error('Invalid status: ' + obj.status);\n  if (!isIso(obj.started_at) || !isIso(obj.completed_at) || !isIso(obj.generated_at)) throw new Error('Timestamp fields must be ISO 8601');\n  if (obj.source_updated_at !== null && !isIso(obj.source_updated_at)) throw new Error('source_updated_at must be null or ISO 8601');\n  if (!Array.isArray(obj.sources) || !Array.isArray(obj.warnings) || !Array.isArray(obj.errors)) throw new Error('sources, warnings, and errors must be arrays');\n  if (typeof obj.record_count !== 'number' || typeof obj.source_count !== 'number') throw new Error('record_count and source_count must be numbers');\n  if (typeof obj.stale !== 'boolean') throw new Error('stale must be boolean');\n  if (!obj.last_known_good || typeof obj.last_known_good.is_last_known_good !== 'boolean' || typeof obj.last_known_good.reason !== 'string') throw new Error('last_known_good shape is invalid');\n  if (!obj.validation || obj.validation.schema_valid !== true) throw new Error('validation.schema_valid must be true');\n}\nconst input = $input.all()[0].json || {};\nconst finalOutputPath = input.finalOutputPath;\nconst payload = input.payload;\nif (!finalOutputPath || typeof finalOutputPath !== 'string') throw new Error('Missing finalOutputPath');\nif (finalOutputPath.startsWith('/Users/')) throw new Error('Refusing to write Mac-local path on remote Docker target: ' + finalOutputPath);\nvalidateContract(payload);\nconst dir = path.dirname(finalOutputPath);\nconst stagingPath = path.join(dir, path.basename(finalOutputPath).replace(/\\.json$/i, '') + '.staging.json');\nfs.mkdirSync(dir, { recursive: true });\nconst jsonText = JSON.stringify(payload, null, 2) + '\\n';\nJSON.parse(jsonText);\nfs.writeFileSync(stagingPath, jsonText, 'utf8');\nconst stagedParsed = JSON.parse(fs.readFileSync(stagingPath, 'utf8'));\nvalidateContract(stagedParsed);\nfs.renameSync(stagingPath, finalOutputPath);\nconst finalText = fs.readFileSync(finalOutputPath, 'utf8');\nconst finalParsed = JSON.parse(finalText);\nvalidateContract(finalParsed);\nreturn [{ json: {\n  finalOutputPath,\n  stagingPath,\n  validJson: true,\n  schemaValid: true,\n  bytes: Buffer.byteLength(finalText, 'utf8'),\n  sha256: crypto.createHash('sha256').update(finalText).digest('hex'),\n  writtenAt: new Date().toISOString(),\n  payloadStatus: finalParsed.status,\n  recordCount: finalParsed.record_count,\n  sourceCount: finalParsed.source_count\n} }];"
+      },
+      "id": "32370637-5e7e-4dc0-97b6-c4331d11f796",
+      "name": "Write Public Data Files",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -704,
+        -272
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const fs = require('fs');\nfunction isIso(value) { return typeof value === 'string' && !Number.isNaN(Date.parse(value)); }\nfunction validateContract(obj) {\n  const required = ['schema_version', 'connector_id', 'connector_name', 'run_id', 'status', 'started_at', 'completed_at', 'generated_at', 'source_updated_at', 'record_count', 'source_count', 'sources', 'data', 'warnings', 'errors', 'stale', 'last_known_good', 'validation'];\n  for (const key of required) if (!(key in obj)) throw new Error('Missing required top-level field: ' + key);\n  if (!['SUCCESS', 'SUCCESS_WITH_WARNINGS', 'STALE_LAST_KNOWN_GOOD', 'FAILED_NO_OUTPUT'].includes(obj.status)) throw new Error('Invalid status: ' + obj.status);\n  if (!isIso(obj.started_at) || !isIso(obj.completed_at) || !isIso(obj.generated_at)) throw new Error('Invalid ISO timestamp');\n  if (obj.source_updated_at !== null && !isIso(obj.source_updated_at)) throw new Error('Invalid source_updated_at');\n  if (!Array.isArray(obj.sources) || !Array.isArray(obj.warnings) || !Array.isArray(obj.errors)) throw new Error('sources/warnings/errors must be arrays');\n  if (!obj.validation || obj.validation.schema_valid !== true) throw new Error('schema_valid must be true');\n}\nconst info = $input.all()[0].json || {};\nconst text = fs.readFileSync(info.finalOutputPath, 'utf8');\nconst parsed = JSON.parse(text);\nvalidateContract(parsed);\nreturn [{ json: {\n  finalOutputPath: info.finalOutputPath,\n  stagingPath: info.stagingPath,\n  validJson: true,\n  schemaValid: true,\n  bytes: Buffer.byteLength(text, 'utf8'),\n  sha256: info.sha256,\n  payloadStatus: parsed.status,\n  recordCount: parsed.record_count,\n  sourceCount: parsed.source_count,\n  warningCount: parsed.warnings.length,\n  errorCount: parsed.errors.length,\n  connectorName: parsed.connector_name,\n  checkedAt: new Date().toISOString()\n} }];"
+      },
+      "id": "927ea947-159a-4e55-90f0-76bb9b8708db",
+      "name": "Validate Written Files",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        -272
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json || {};\nconst validation = $input.all()[0].json || {};\nreturn [{ json: {\n  recordKind: 'runDiagnostics',\n  generatedAt: config.generatedAt || new Date().toISOString(),\n  completedAt: new Date().toISOString(),\n  ok: validation.validJson === true && validation.schemaValid === true,\n  finalOutputPath: validation.finalOutputPath || config.finalOutputPath || null,\n  payloadStatus: validation.payloadStatus || null,\n  recordCount: Number(validation.recordCount || 0),\n  sourceCount: Number(validation.sourceCount || 0),\n  sha256: validation.sha256 || null,\n  warnings: validation.warningCount || 0,\n  errors: validation.errorCount || 0,\n  sourceFailureHandling: 'The workflow writes a staged candidate JSON beside the final file, validates the contract before and after staging, and only then renames the staged file into place. Upstream source failures are surfaced in warnings or stale status without truncating the final file in place.'\n} }];"
+      },
+      "id": "211d6782-d747-4cdc-b712-52c735622ce2",
+      "name": "Build Error Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -144,
+        -272
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Connector Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Connector Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Connector Config": {
+      "main": [
+        [
+          {
+            "node": "Build CDM URL List",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Build FVT URL List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build CDM URL List": {
+      "main": [
+        [
+          {
+            "node": "Fetch CDM Pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch CDM Pages": {
+      "main": [
+        [
+          {
+            "node": "Parse CDM Warning Blocks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build FVT URL List": {
+      "main": [
+        [
+          {
+            "node": "Fetch FVT Pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch FVT Pages": {
+      "main": [
+        [
+          {
+            "node": "Parse FVT Warning Blocks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse CDM Warning Blocks": {
+      "main": [
+        [
+          {
+            "node": "Merge Source Candidates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse FVT Warning Blocks": {
+      "main": [
+        [
+          {
+            "node": "Merge Source Candidates",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Source Candidates": {
+      "main": [
+        [
+          {
+            "node": "Normalize Route Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Route Events": {
+      "main": [
+        [
+          {
+            "node": "Validate Route Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Route Events": {
+      "main": [
+        [
+          {
+            "node": "Deduplicate and Reconcile",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deduplicate and Reconcile": {
+      "main": [
+        [
+          {
+            "node": "Build Output Payloads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Output Payloads": {
+      "main": [
+        [
+          {
+            "node": "Write Public Data Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Public Data Files": {
+      "main": [
+        [
+          {
+            "node": "Validate Written Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Written Files": {
+      "main": [
+        [
+          {
+            "node": "Build Error Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "7f070612-dfb6-44dd-b5ba-8a698f08b652",
+  "activeVersionId": null,
+  "versionCounter": 1,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-07-20T21:48:21.914Z",
+      "createdAt": "2026-07-20T21:48:21.914Z",
+      "role": "workflow:owner",
+      "workflowId": "pelOd6E0sdu5mygf",
+      "projectId": "Y0Ygmqe59jevHoeV",
+      "project": {
+        "updatedAt": "2026-07-10T05:38:45.677Z",
+        "createdAt": "2026-06-02T20:51:11.579Z",
+        "id": "Y0Ygmqe59jevHoeV",
+        "name": "John Brooks <john@biketourfrance.net>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "5dadc5f6-6bff-44cf-9566-6b82f3d768dc"
+      }
+    }
+  ],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

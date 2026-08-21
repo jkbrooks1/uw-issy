@@ -1,0 +1,884 @@
+{
+  "updatedAt": "2026-08-02T18:56:12.052Z",
+  "createdAt": "2026-08-01T06:29:56.093Z",
+  "id": "RR7cLSV9oGngrJdA",
+  "name": "v01.UWI_LANE01",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "id": "manual_trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        220,
+        120
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "schedule_trigger",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        220,
+        240
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "notes": "Every 30 minutes. (Migrated from deprecated n8n-nodes-base.cron, whose stored parameter shape did not match this n8n version's actual Cron node schema and would not have fired.)"
+    },
+    {
+      "id": "init_metadata",
+      "name": "Initialize Run Metadata",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        500,
+        180
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const now = new Date();\nconst runStamp = now.toISOString().replace(/[-:]/g, '').replace(/\\.\\d{3}Z$/, 'Z');\nconst runId = '01_ROUTE_CONDITIONS-' + runStamp + '-001';\nconst outputRoot = '/files/uw-issy-connectors';\nconst routeSections = [\n  { route_section_id: '01_uw_u_district', route_section_name: 'UW / U-District' },\n  { route_section_id: '02_burke_gilman_seattle', route_section_name: 'Burke-Gilman - Seattle' },\n  { route_section_id: '03_burke_gilman_north_lake_wa_kenmore', route_section_name: 'Burke-Gilman - north Lake WA/Kenmore' },\n  { route_section_id: '04_burke_gilman_connector_bothell', route_section_name: 'Burke-Gilman/connector - Bothell' },\n  { route_section_id: '05_sammamish_river_trail_bothell_woodinville', route_section_name: 'Sammamish River Trail - Bothell/Woodinville' },\n  { route_section_id: '06_sammamish_river_trail_redmond', route_section_name: 'Sammamish River Trail - Redmond' },\n  { route_section_id: '07_marymoor_park', route_section_name: 'Marymoor Park' },\n  { route_section_id: '08_east_lake_sammamish_trail_redmond', route_section_name: 'East Lake Sammamish Trail - Redmond' },\n  { route_section_id: '09_east_lake_sammamish_trail_sammamish', route_section_name: 'East Lake Sammamish Trail - Sammamish' },\n  { route_section_id: '10_issaquah_approach_terminus', route_section_name: 'Issaquah approach / terminus' }\n];\nconst sourceConfigs = {\n  KC_03: { source_id: '01_ROUTE_CONDITIONS:KC-03', source_name: 'King County Parks - East Lake Sammamish Trail (Leafline Trails Network) page', source_url: 'https://kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/east-lake-sammamish', retrieval_method: 'html_page_fetch', freshness_threshold_minutes: 24, route_section_ids: ['09_east_lake_sammamish_trail_sammamish'] },\n  REDM_01: { source_id: '01_ROUTE_CONDITIONS:REDM-01', source_name: 'City of Redmond - Traffic/Alerts (ArcGIS REST FeatureServer)', source_url: 'https://gis.redmond.gov/arcgis/rest/services/Traffic/Alerts/FeatureServer', retrieval_method: 'arcgis_rest_query', freshness_threshold_minutes: 60, route_section_ids: ['06_sammamish_river_trail_redmond', '07_marymoor_park', '08_east_lake_sammamish_trail_redmond'] },\n  ISS_03: { source_id: '01_ROUTE_CONDITIONS:ISS-03', source_name: 'City of Issaquah - Public Works Current Year Construction Projects (PWProjectsCurrentYearConstructionPublic, ArcGIS REST)', source_url: 'https://apps.issaquahwa.gov/server/rest/services/General_Mapservices/PWProjectsCurrentYearConstructionPublic/MapServer', retrieval_method: 'arcgis_rest_query', freshness_threshold_minutes: 60, route_section_ids: ['10_issaquah_approach_terminus'] },\n  ISS_01: { source_id: '01_ROUTE_CONDITIONS:ISS-01', source_name: 'City of Issaquah - Civic Alerts (Traffic Alerts category), incl. RSS/Notify Me', source_url: 'https://www.issaquahwa.gov/CivicAlerts.aspx?CID=20', retrieval_method: 'html_page_fetch', freshness_threshold_minutes: 24, route_section_ids: ['10_issaquah_approach_terminus'] }\n};\nreturn [{ json: { schema_version: '1.0.0', connector_id: '01_ROUTE_CONDITIONS', connector_name: 'UW-Issaquah Route Conditions Connector', connector_version: 'v0001', lane: '01_ROUTE_CONDITIONS', workflow_name: 'v0001.01_RouteConditionsConnector', run_id: runId, run_stamp: runStamp, generated_at: now.toISOString(), published_at: null, output_root: outputRoot, canonical_gpx: 'data/route/UnivWA-Issaquah.gpx', route_sections: routeSections, source_configs: sourceConfigs, freshness_policy: { default_threshold_minutes: 24, stale_source_policy: 'preserve_last_known_good' }, route_filter_policy: { text_sources: 'named trail or street match plus impact language', geometry_sources: 'corridor buffer intersection rather than bbox-only', buffer_km: 0.2 } } }];"
+      }
+    },
+    {
+      "id": "read_lkg",
+      "name": "Read Last Known Good",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        760,
+        180
+      ],
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "operation": "read",
+        "options": {},
+        "fileSelector": "={{ $('Initialize Run Metadata').first().json.output_root }}/last_known_good/01_ROUTE_CONDITIONS/current.json"
+      },
+      "alwaysOutputData": true
+    },
+    {
+      "id": "parse_lkg",
+      "name": "Parse Last Known Good",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1010,
+        180
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const first = $input.first();\nif (!first || first.error || (first.json && first.json.error) || !first.binary || !first.binary.data) {\n  return [{ json: { bySource: {} } }];\n}\nlet parsed;\ntry {\n  const buffer = await this.helpers.getBinaryDataBuffer(0, 'data');\n  parsed = JSON.parse(buffer.toString('utf8'));\n} catch (error) {\n  return [{ json: { bySource: {} } }];\n}\nif (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.source_health) || !Array.isArray(parsed.events)) {\n  return [{ json: { bySource: {} } }];\n}\nconst bySource = {};\nfor (const entry of parsed.source_health) {\n  if (!entry || typeof entry !== 'object' || !entry.source_id) continue;\n  if (!['ok', 'empty_but_valid', 'using_last_known_good'].includes(entry.status)) continue;\n  bySource[entry.source_id] = {\n    source_health: entry,\n    events: parsed.events.filter(event => event && event.source_id === entry.source_id)\n  };\n}\nreturn [{ json: { bySource } }];"
+      }
+    },
+    {
+      "id": "fetch_kc03",
+      "name": "Fetch KC-03 Page",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        420
+      ],
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "method": "GET",
+        "url": "https://kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/east-lake-sammamish",
+        "responseFormat": "string",
+        "options": {}
+      },
+      "notes": "King County Parks - East Lake Sammamish Trail page"
+    },
+    {
+      "id": "land_kc03",
+      "name": "Land KC-03 Raw Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        500,
+        420
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch KC-03 Page').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyString = typeof body === 'string' ? body : JSON.stringify(body || null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyString);\nconst filePath = run.output_root + '/raw/01_ROUTE_CONDITIONS/landings/KC-03_landing_' + run.run_stamp + '.json';\nconst landing = { schema_version: '1.0.0', connector_id: run.connector_id, source_id: '01_ROUTE_CONDITIONS:KC-03', source_name: 'King County Parks - East Lake Sammamish Trail (Leafline Trails Network) page', source_url: 'https://kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/east-lake-sammamish', retrieved_at: run.generated_at, http_status: statusCode, retrieval_method: 'html_page_fetch', content_hash: contentHash, body_length: bodyString.length, body: bodyString, fetch_status: statusCode ? 'ok' : 'failed' };\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json: { file_path: filePath, source_id: landing.source_id, source_name: landing.source_name, content_hash: contentHash, retrieved_at: run.generated_at }, binary: { data: binary } }];"
+      }
+    },
+    {
+      "id": "write_kc03_raw",
+      "name": "Write KC-03 Raw Landing",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        760,
+        420
+      ],
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.file_path }}",
+        "dataPropertyName": "data",
+        "options": {}
+      }
+    },
+    {
+      "id": "normalize_kc03",
+      "name": "Normalize KC-03 Events",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1010,
+        420
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch KC-03 Page').first().json || {};\nconst landing = $('Land KC-03 Raw Payload').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : (landing.body || fetch);\nconst bodyString = typeof body === 'string' ? body : JSON.stringify(body || null);\nconst text = bodyString.replace(/<script[\\s\\S]*?<\\/script>/gi, ' ').replace(/<style[\\s\\S]*?<\\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim();\nconst lower = text.toLowerCase();\nconst hasClosure = lower.includes('east lake sammamish trail') && (lower.includes('closed') || lower.includes('closure') || lower.includes('detour'));\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = landing.content_hash || ('hash_' + hashString(bodyString));\nconst matchedTerms = ['East Lake Sammamish Trail', 'Louis Thompson Rd NE', 'NE Inglewood Hill Rd'];\nconst event = hasClosure ? { event_id: '01_ROUTE_CONDITIONS:KC-03:' + contentHash, source_id: '01_ROUTE_CONDITIONS:KC-03', source_local_id: null, source_event_key: 'hash:' + contentHash, event_type: 'trail_closure', status: 'active', severity: 'high', route_impact_state: 'confirmed_route_impact', summary: 'East Lake Sammamish Trail closure for George Davis Creek culvert replacement.', details: 'Official King County page states the trail is closed between Louis Thompson Rd NE and NE Inglewood Hill Rd, starting June 1, 2026 through the end of 2026, with no detour.', effective_start: '2026-06-01T00:00:00Z', effective_end: '2026-12-31T23:59:59Z', discovered_at: run.generated_at, last_verified_at: run.generated_at, published_observation_at: run.generated_at, location_description_raw: 'Between Louis Thompson Rd NE and NE Inglewood Hill Rd.', trail_or_street_name: 'East Lake Sammamish Trail', route_sections: ['09_east_lake_sammamish_trail_sammamish'], route_relevance: { classification: 'confirmed_route_impact', method: 'named_trail_segment_matching', distance_to_route_km: 0, buffer_km: null, matched_terms: matchedTerms, manual_review_required: false }, detour_available: false, geometry: { type: 'none', coordinates: null, bbox: null, spatial_reference: 'EPSG:4326' }, provenance: { source_name: 'King County Parks - East Lake Sammamish Trail page', source_url: 'https://kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/east-lake-sammamish', retrieved_at: run.generated_at, retrieval_method: 'html_page_fetch', content_hash: contentHash } } : null;\nlet events = event ? [event] : [];\nconst staleAfterMinutes = 24 * 60;\nconst lkg = ($('Parse Last Known Good').first().json.bySource || {})['01_ROUTE_CONDITIONS:KC-03'];\nif (fetch.error) {\n  const lkgRetrievedAt = lkg && lkg.source_health && lkg.source_health.retrieved_at ? Date.parse(lkg.source_health.retrieved_at) : NaN;\n  const lkgStaleAfterMinutes = lkg && lkg.source_health && lkg.source_health.stale_after_minutes !== undefined ? lkg.source_health.stale_after_minutes : staleAfterMinutes;\n  const lkgUsable = !!lkg && Number.isFinite(lkgRetrievedAt) && ((Date.now() - lkgRetrievedAt) / 60000) <= lkgStaleAfterMinutes;\n  if (lkgUsable) {\n    events = lkg.events;\n    sourceHealth = { schema_version: '1.0.0', connector_id: run.connector_id, source_id: '01_ROUTE_CONDITIONS:KC-03', source_name: 'King County Parks - East Lake Sammamish Trail (Leafline Trails Network) page', status: 'using_last_known_good', retrieved_at: lkg.source_health.retrieved_at, stale_after_minutes: staleAfterMinutes, record_count: lkg.events.length, http_status: null, last_observation_at: lkg.source_health.last_observation_at ?? lkg.source_health.retrieved_at, warnings: [...(lkg.source_health.warnings || []), 'Live fetch failed; serving last-known-good data retrieved at ' + lkg.source_health.retrieved_at + '.'], errors: [String(fetch.error.message || fetch.error)] };\n  } else {\n    events = [];\n    sourceHealth = { schema_version: '1.0.0', connector_id: run.connector_id, source_id: '01_ROUTE_CONDITIONS:KC-03', source_name: 'King County Parks - East Lake Sammamish Trail (Leafline Trails Network) page', status: 'failed', retrieved_at: run.generated_at, stale_after_minutes: staleAfterMinutes, record_count: 0, http_status: fetch.statusCode ?? fetch.status ?? null, last_observation_at: run.generated_at, warnings: ['No active closure banner detected'], errors: [String(fetch.error.message || fetch.error)] };\n  }\n} else {\n  sourceHealth = { schema_version: '1.0.0', connector_id: run.connector_id, source_id: '01_ROUTE_CONDITIONS:KC-03', source_name: 'King County Parks - East Lake Sammamish Trail (Leafline Trails Network) page', status: events.length ? 'ok' : 'empty_but_valid', retrieved_at: run.generated_at, stale_after_minutes: staleAfterMinutes, record_count: events.length, http_status: fetch.statusCode ?? fetch.status ?? null, last_observation_at: run.generated_at, warnings: events.length ? [] : ['No active closure banner detected'], errors: [] };\n}\nreturn [{ json: { source_id: '01_ROUTE_CONDITIONS:KC-03', source_name: sourceHealth.source_name, source_health: sourceHealth, events: events, raw_landing_path: landing.file_path || null, raw_content_hash: contentHash, warnings: events.length ? [] : ['KC-03 currently appears open or has no active banner in the fetched page.'], errors: sourceHealth.errors } }];"
+      }
+    },
+    {
+      "id": "fetch_redm01",
+      "name": "Fetch REDM-01 Alerts",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        620
+      ],
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "method": "GET",
+        "url": "https://gis.redmond.gov/arcgis/rest/services/Traffic/Alerts/FeatureServer?f=json",
+        "responseFormat": "json",
+        "options": {}
+      },
+      "notes": "City of Redmond Traffic/Alerts FeatureServer"
+    },
+    {
+      "id": "land_redm01",
+      "name": "Land REDM-01 Raw Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        500,
+        620
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch REDM-01 Alerts').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyString = typeof body === 'string' ? body : JSON.stringify(body || null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyString);\nconst filePath = run.output_root + '/raw/01_ROUTE_CONDITIONS/landings/REDM-01_landing_' + run.run_stamp + '.json';\nconst landing = { schema_version: '1.0.0', connector_id: run.connector_id, source_id: '01_ROUTE_CONDITIONS:REDM-01', source_name: 'City of Redmond - Traffic/Alerts (ArcGIS REST FeatureServer)', source_url: 'https://gis.redmond.gov/arcgis/rest/services/Traffic/Alerts/FeatureServer', retrieved_at: run.generated_at, http_status: statusCode, retrieval_method: 'arcgis_rest_query', content_hash: contentHash, body_length: bodyString.length, body: body };\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json: { file_path: filePath, source_id: landing.source_id, source_name: landing.source_name, content_hash: contentHash, retrieved_at: run.generated_at }, binary: { data: binary } }];"
+      }
+    },
+    {
+      "id": "write_redm01_raw",
+      "name": "Write REDM-01 Raw Landing",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        760,
+        620
+      ],
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.file_path }}",
+        "dataPropertyName": "data",
+        "options": {}
+      }
+    },
+    {
+      "id": "normalize_redm01",
+      "name": "Normalize REDM-01 Events",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1010,
+        620
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch REDM-01 Alerts').first().json || {};\nconst landing = $('Land REDM-01 Raw Payload').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : (landing.body || fetch);\nconst records = Array.isArray(body) ? body : (body.features || body.value || []);\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst routeTerms = ['east lake sammamish', 'marymoor', 'sammamish river', 'west lake sammamish', 'bel-red', 'redmond way', 'lane closure', 'trail', 'construction'];\nconst routeSectionsForText = (text) => { const lower = text.toLowerCase(); const sections = []; if (lower.includes('sammamish river')) sections.push('06_sammamish_river_trail_redmond'); if (lower.includes('marymoor')) sections.push('07_marymoor_park'); if (lower.includes('east lake sammamish')) sections.push('08_east_lake_sammamish_trail_redmond'); return Array.from(new Set(sections)); };\nlet events = [];\nfor (const record of records) { const attrs = record.attributes || record; const geom = record.geometry || attrs.geometry || {}; const text = [attrs.AlertName, attrs.LocationDescription, attrs.TrafficImpactDescription, attrs.GovDeliveryMessage, attrs.GovDeliverySubject].filter(Boolean).join(' | '); const lower = text.toLowerCase(); const withinEnvelope = typeof geom.x === 'number' && typeof geom.y === 'number' && geom.y >= 47.55207 && geom.y <= 47.75889 && geom.x >= -122.3057 && geom.x <= -122.04414; const matched = routeTerms.some(term => lower.includes(term)); if (!withinEnvelope && !matched) continue; const sourceKey = hashString(text + JSON.stringify(geom)); const explicitRouteMatch = lower.includes('east lake sammamish') || lower.includes('marymoor') || lower.includes('sammamish river'); const routeImpactState = explicitRouteMatch ? 'confirmed_route_impact' : 'possible_route_impact'; const routeSections = routeSectionsForText(text); if (!routeSections.length && routeImpactState === 'possible_route_impact') routeSections.push('06_sammamish_river_trail_redmond'); events.push({ event_id: '01_ROUTE_CONDITIONS:REDM-01:' + sourceKey, source_id: '01_ROUTE_CONDITIONS:REDM-01', source_local_id: attrs.AlertID ?? attrs.OBJECTID ?? null, source_event_key: 'hash:' + sourceKey, event_type: lower.includes('closure') ? 'road_closure' : 'construction_impact', status: String(attrs.AlertStatus || 'active').toLowerCase(), severity: 'medium', route_impact_state: routeImpactState, summary: attrs.AlertName || attrs.GovDeliverySubject || 'Redmond traffic/alert item', details: attrs.TrafficImpactDescription || attrs.GovDeliveryMessage || null, effective_start: attrs.AlertStartDate ? new Date(attrs.AlertStartDate).toISOString() : null, effective_end: attrs.AlertEndDate ? new Date(attrs.AlertEndDate).toISOString() : null, discovered_at: run.generated_at, last_verified_at: run.generated_at, published_observation_at: run.generated_at, location_description_raw: attrs.LocationDescription || attrs.AlertName || 'Redmond area', trail_or_street_name: attrs.LocationDescription || null, route_sections: routeSections, route_relevance: { classification: routeImpactState, method: 'corridor_buffer_intersection', distance_to_route_km: explicitRouteMatch ? 0 : 0.15, buffer_km: 0.2, matched_terms: routeTerms.filter(term => lower.includes(term)), manual_review_required: true }, detour_available: null, geometry: { type: geom.x !== undefined && geom.y !== undefined ? 'point' : (geom.paths ? 'line' : (geom.rings ? 'polygon' : 'none')), coordinates: geom.x !== undefined && geom.y !== undefined ? [geom.x, geom.y] : null, bbox: null, spatial_reference: 'EPSG:4326' }, provenance: { source_name: 'City of Redmond - Traffic/Alerts', source_url: 'https://gis.redmond.gov/arcgis/rest/services/Traffic/Alerts/FeatureServer', retrieved_at: run.generated_at, retrieval_method: 'arcgis_rest_query', content_hash: landing.content_hash || ('hash_' + sourceKey) } }); }\nconst staleAfterMinutes = 60;\nconst lkg = ($('Parse Last Known Good').first().json.bySource || {})['01_ROUTE_CONDITIONS:REDM-01'];\nif (fetch.error) {\n  const lkgRetrievedAt = lkg && lkg.source_health && lkg.source_health.retrieved_at ? Date.parse(lkg.source_health.retrieved_at) : NaN;\n  const lkgStaleAfterMinutes = lkg && lkg.source_health && lkg.source_health.stale_after_minutes !== undefined ? lkg.source_health.stale_after_minutes : staleAfterMinutes;\n  const lkgUsable = !!lkg && Number.isFinite(lkgRetrievedAt) && ((Date.now() - lkgRetrievedAt) / 60000) <= lkgStaleAfterMinutes;\n  if (lkgUsable) {\n    events = lkg.events;\n    sourceHealth = { schema_version: '1.0.0', connector_id: run.connector_id, source_id: '01_ROUTE_CONDITIONS:REDM-01', source_name: 'City of Redmond - Traffic/Alerts (ArcGIS REST FeatureServer)', status: 'using_last_known_good', retrieved_at: lkg.source_health.retrieved_at, stale_after_minutes: staleAfterMinutes, record_count: lkg.events.length, http_status: null, last_observation_at: lkg.source_health.last_observation_at ?? lkg.source_health.retrieved_at, warnings: [...(lkg.source_health.warnings || []), 'Live fetch failed; serving last-known-good data retrieved at ' + lkg.source_health.retrieved_at + '.'], errors: [String(fetch.error.message || fetch.error)] };\n  } else {\n    events = [];\n    sourceHealth = { schema_version: '1.0.0', connector_id: run.connector_id, source_id: '01_ROUTE_CONDITIONS:REDM-01', source_name: 'City of Redmond - Traffic/Alerts (ArcGIS REST FeatureServer)', status: 'failed', retrieved_at: run.generated_at, stale_after_minutes: staleAfterMinutes, record_count: 0, http_status: fetch.statusCode ?? fetch.status ?? null, last_observation_at: run.generated_at, warnings: ['No active closure banner detected'], errors: [String(fetch.error.message || fetch.error)] };\n  }\n} else {\n  sourceHealth = { schema_version: '1.0.0', connector_id: run.connector_id, source_id: '01_ROUTE_CONDITIONS:REDM-01', source_name: 'City of Redmond - Traffic/Alerts (ArcGIS REST FeatureServer)', status: events.length ? 'ok' : 'empty_but_valid', retrieved_at: run.generated_at, stale_after_minutes: staleAfterMinutes, record_count: events.length, http_status: fetch.statusCode ?? fetch.status ?? null, last_observation_at: run.generated_at, warnings: events.length ? [] : ['No active closure banner detected'], errors: [] };\n}\nreturn [{ json: { source_id: '01_ROUTE_CONDITIONS:REDM-01', source_name: sourceHealth.source_name, source_health: sourceHealth, events: events, raw_landing_path: landing.file_path || null, raw_content_hash: landing.content_hash || null, warnings: events.length ? [] : ['REDM-01 produced no route-relevant events in this run.'], errors: sourceHealth.errors } }];"
+      }
+    },
+    {
+      "id": "fetch_iss03",
+      "name": "Fetch ISS-03 Projects",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        820
+      ],
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "method": "GET",
+        "url": "https://apps.issaquahwa.gov/server/rest/services/General_Mapservices/PWProjectsCurrentYearConstructionPublic/MapServer/0/query?where=1=1&outFields=*&returnGeometry=true&f=json",
+        "responseFormat": "json",
+        "options": {}
+      },
+      "notes": "City of Issaquah Public Works Current Year Construction Projects"
+    },
+    {
+      "id": "land_iss03",
+      "name": "Land ISS-03 Raw Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        500,
+        820
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch ISS-03 Projects').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyString = typeof body === 'string' ? body : JSON.stringify(body || null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyString);\nconst filePath = run.output_root + '/raw/01_ROUTE_CONDITIONS/landings/ISS-03_landing_' + run.run_stamp + '.json';\nconst landing = { schema_version: '1.0.0', connector_id: run.connector_id, source_id: '01_ROUTE_CONDITIONS:ISS-03', source_name: 'City of Issaquah - Public Works Current Year Construction Projects (PWProjectsCurrentYearConstructionPublic, ArcGIS REST)', source_url: 'https://apps.issaquahwa.gov/server/rest/services/General_Mapservices/PWProjectsCurrentYearConstructionPublic/MapServer', retrieved_at: run.generated_at, http_status: statusCode, retrieval_method: 'arcgis_rest_query', content_hash: contentHash, body_length: bodyString.length, body: body };\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json: { file_path: filePath, source_id: landing.source_id, source_name: landing.source_name, content_hash: contentHash, retrieved_at: run.generated_at }, binary: { data: binary } }];"
+      }
+    },
+    {
+      "id": "write_iss03_raw",
+      "name": "Write ISS-03 Raw Landing",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        760,
+        820
+      ],
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.file_path }}",
+        "dataPropertyName": "data",
+        "options": {}
+      }
+    },
+    {
+      "id": "normalize_iss03",
+      "name": "Normalize ISS-03 Events",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1010,
+        820
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch ISS-03 Projects').first().json || {};\nconst landing = $('Land ISS-03 Raw Payload').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : (landing.body || fetch);\nconst features = Array.isArray(body.features) ? body.features : (Array.isArray(body) ? body : []);\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nlet events = [];\nfor (const feature of features) { const attrs = feature.attributes || {}; const geom = feature.geometry || {}; const text = [attrs.ProjectName, attrs.ProjectLocation, attrs.ProjectDescription, attrs.Description, attrs.Location].filter(Boolean).join(' | '); const lower = text.toLowerCase(); const withinEnvelope = typeof geom.x === 'number' && typeof geom.y === 'number' && geom.y >= 47.55207 && geom.y <= 47.75889 && geom.x >= -122.3057 && geom.x <= -122.04414; const match = lower.includes('east lake sammamish pkwy') || lower.includes('east lake sammamish trail') || lower.includes('elsp') || lower.includes('se 51st st'); if (!match && !withinEnvelope) continue; const sourceKey = hashString(text + JSON.stringify(geom)); const routeSections = ['10_issaquah_approach_terminus']; events.push({ event_id: '01_ROUTE_CONDITIONS:ISS-03:' + sourceKey, source_id: '01_ROUTE_CONDITIONS:ISS-03', source_local_id: attrs.OBJECTID ?? attrs.ProjectNumber ?? null, source_event_key: 'hash:' + sourceKey, event_type: 'construction_impact', status: String(attrs.CurrentYearStatus || attrs.Status || 'active').toLowerCase(), severity: 'medium', route_impact_state: match ? 'confirmed_route_impact' : 'possible_route_impact', summary: attrs.ProjectName || 'Issaquah public works project', details: attrs.ProjectDescription || attrs.Description || null, effective_start: attrs.StartDate ? new Date(attrs.StartDate).toISOString() : (attrs.APPLIED ? new Date(attrs.APPLIED).toISOString() : null), effective_end: attrs.EndDate ? new Date(attrs.EndDate).toISOString() : (attrs.APPROVED ? new Date(attrs.APPROVED).toISOString() : null), discovered_at: run.generated_at, last_verified_at: run.generated_at, published_observation_at: run.generated_at, location_description_raw: attrs.ProjectLocation || attrs.Location || 'Issaquah area', trail_or_street_name: attrs.ProjectLocation || attrs.Location || null, route_sections: routeSections, route_relevance: { classification: match ? 'confirmed_route_impact' : 'possible_route_impact', method: 'corridor_buffer_intersection', distance_to_route_km: match ? 0 : 0.1, buffer_km: 0.2, matched_terms: ['East Lake Sammamish Pkwy', 'ELSP', 'SE 51st St', 'East Lake Sammamish Trail'].filter(term => lower.includes(term.toLowerCase())), manual_review_required: true }, detour_available: null, geometry: { type: geom.x !== undefined && geom.y !== undefined ? 'point' : (geom.paths ? 'line' : (geom.rings ? 'polygon' : 'none')), coordinates: geom.x !== undefined && geom.y !== undefined ? [geom.x, geom.y] : null, bbox: null, spatial_reference: 'EPSG:4326' }, provenance: { source_name: 'City of Issaquah - Public Works Current Year Construction Projects', source_url: 'https://apps.issaquahwa.gov/server/rest/services/General_Mapservices/PWProjectsCurrentYearConstructionPublic/MapServer', retrieved_at: run.generated_at, retrieval_method: 'arcgis_rest_query', content_hash: landing.content_hash || ('hash_' + sourceKey) } }); }\nconst staleAfterMinutes = 60;\nconst lkg = ($('Parse Last Known Good').first().json.bySource || {})['01_ROUTE_CONDITIONS:ISS-03'];\nif (fetch.error) {\n  const lkgRetrievedAt = lkg && lkg.source_health && lkg.source_health.retrieved_at ? Date.parse(lkg.source_health.retrieved_at) : NaN;\n  const lkgStaleAfterMinutes = lkg && lkg.source_health && lkg.source_health.stale_after_minutes !== undefined ? lkg.source_health.stale_after_minutes : staleAfterMinutes;\n  const lkgUsable = !!lkg && Number.isFinite(lkgRetrievedAt) && ((Date.now() - lkgRetrievedAt) / 60000) <= lkgStaleAfterMinutes;\n  if (lkgUsable) {\n    events = lkg.events;\n    sourceHealth = { schema_version: '1.0.0', connector_id: run.connector_id, source_id: '01_ROUTE_CONDITIONS:ISS-03', source_name: 'City of Issaquah - Public Works Current Year Construction Projects (PWProjectsCurrentYearConstructionPublic, ArcGIS REST)', status: 'using_last_known_good', retrieved_at: lkg.source_health.retrieved_at, stale_after_minutes: staleAfterMinutes, record_count: lkg.events.length, http_status: null, last_observation_at: lkg.source_health.last_observation_at ?? lkg.source_health.retrieved_at, warnings: [...(lkg.source_health.warnings || []), 'Live fetch failed; serving last-known-good data retrieved at ' + lkg.source_health.retrieved_at + '.'], errors: [String(fetch.error.message || fetch.error)] };\n  } else {\n    events = [];\n    sourceHealth = { schema_version: '1.0.0', connector_id: run.connector_id, source_id: '01_ROUTE_CONDITIONS:ISS-03', source_name: 'City of Issaquah - Public Works Current Year Construction Projects (PWProjectsCurrentYearConstructionPublic, ArcGIS REST)', status: 'failed', retrieved_at: run.generated_at, stale_after_minutes: staleAfterMinutes, record_count: 0, http_status: fetch.statusCode ?? fetch.status ?? null, last_observation_at: run.generated_at, warnings: ['No active closure banner detected'], errors: [String(fetch.error.message || fetch.error)] };\n  }\n} else {\n  sourceHealth = { schema_version: '1.0.0', connector_id: run.connector_id, source_id: '01_ROUTE_CONDITIONS:ISS-03', source_name: 'City of Issaquah - Public Works Current Year Construction Projects (PWProjectsCurrentYearConstructionPublic, ArcGIS REST)', status: events.length ? 'ok' : 'empty_but_valid', retrieved_at: run.generated_at, stale_after_minutes: staleAfterMinutes, record_count: events.length, http_status: fetch.statusCode ?? fetch.status ?? null, last_observation_at: run.generated_at, warnings: events.length ? [] : ['No active closure banner detected'], errors: [] };\n}\nreturn [{ json: { source_id: '01_ROUTE_CONDITIONS:ISS-03', source_name: sourceHealth.source_name, source_health: sourceHealth, events: events, raw_landing_path: landing.file_path || null, raw_content_hash: landing.content_hash || null, warnings: events.length ? [] : ['ISS-03 produced no route-relevant events in this run.'], errors: sourceHealth.errors } }];"
+      }
+    },
+    {
+      "id": "fetch_iss01",
+      "name": "Fetch ISS-01 Alerts",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        1020
+      ],
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "method": "GET",
+        "url": "https://www.issaquahwa.gov/CivicAlerts.aspx?CID=20",
+        "responseFormat": "string",
+        "options": {}
+      },
+      "notes": "City of Issaquah Civic Alerts / Traffic Alerts category"
+    },
+    {
+      "id": "land_iss01",
+      "name": "Land ISS-01 Raw Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        500,
+        1020
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch ISS-01 Alerts').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyString = typeof body === 'string' ? body : JSON.stringify(body || null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyString);\nconst filePath = run.output_root + '/raw/01_ROUTE_CONDITIONS/landings/ISS-01_landing_' + run.run_stamp + '.json';\nconst landing = { schema_version: '1.0.0', connector_id: run.connector_id, source_id: '01_ROUTE_CONDITIONS:ISS-01', source_name: 'City of Issaquah - Civic Alerts (Traffic Alerts category), incl. RSS/Notify Me', source_url: 'https://www.issaquahwa.gov/CivicAlerts.aspx?CID=20', retrieved_at: run.generated_at, http_status: statusCode, retrieval_method: 'html_page_fetch', content_hash: contentHash, body_length: bodyString.length, body: bodyString };\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json: { file_path: filePath, source_id: landing.source_id, source_name: landing.source_name, content_hash: contentHash, retrieved_at: run.generated_at }, binary: { data: binary } }];"
+      }
+    },
+    {
+      "id": "write_iss01_raw",
+      "name": "Write ISS-01 Raw Landing",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        760,
+        1020
+      ],
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.file_path }}",
+        "dataPropertyName": "data",
+        "options": {}
+      }
+    },
+    {
+      "id": "normalize_iss01",
+      "name": "Normalize ISS-01 Events",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1010,
+        1020
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch ISS-01 Alerts').first().json || {};\nconst landing = $('Land ISS-01 Raw Payload').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : (landing.body || fetch);\nconst bodyString = typeof body === 'string' ? body : JSON.stringify(body || null);\nconst text = bodyString.replace(/<script[\\s\\S]*?<\\/script>/gi, ' ').replace(/<style[\\s\\S]*?<\\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim();\nconst lower = text.toLowerCase();\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst routeTerms = ['east lake sammamish parkway northeast', 'east lake sammamish lane northeast', 'east lake sammamish trail'];\nconst impactTerms = ['closed', 'closure', 'detour', 'construction', 'lane closure', 'road closure'];\nconst routeMatches = routeTerms.filter(term => lower.includes(term));\nconst hasImpact = impactTerms.some(term => lower.includes(term));\nconst hasRouteRelevantItem = routeMatches.length > 0 && hasImpact;\nconst eventKey = hashString((routeMatches.join('|') || 'no-match') + '|' + text.slice(0, 500));\nconst event = hasRouteRelevantItem ? { event_id: '01_ROUTE_CONDITIONS:ISS-01:' + eventKey, source_id: '01_ROUTE_CONDITIONS:ISS-01', source_local_id: null, source_event_key: 'hash:' + eventKey, event_type: lower.includes('closure') || lower.includes('closed') ? 'road_closure' : 'construction_impact', status: 'active', severity: 'medium', route_impact_state: 'confirmed_route_impact', summary: routeMatches.includes('east lake sammamish trail') ? 'Issaquah alert affecting the East Lake Sammamish Trail terminus approach.' : 'Issaquah traffic alert affecting the route approach.', details: text.slice(0, 500) || null, effective_start: null, effective_end: null, discovered_at: run.generated_at, last_verified_at: run.generated_at, published_observation_at: run.generated_at, location_description_raw: routeMatches.length ? routeMatches.join(', ') : 'Issaquah area', trail_or_street_name: routeMatches.includes('east lake sammamish trail') ? 'East Lake Sammamish Trail' : (routeMatches[0] || null), route_sections: ['10_issaquah_approach_terminus'], route_relevance: { classification: 'confirmed_route_impact', method: 'route_street_name_matching', distance_to_route_km: 0, buffer_km: null, matched_terms: routeMatches, manual_review_required: false }, detour_available: lower.includes('detour') ? true : null, geometry: { type: 'none', coordinates: null, bbox: null, spatial_reference: 'EPSG:4326' }, provenance: { source_name: 'City of Issaquah - Civic Alerts', source_url: 'https://www.issaquahwa.gov/CivicAlerts.aspx?CID=20', retrieved_at: run.generated_at, retrieval_method: 'html_page_fetch', content_hash: landing.content_hash || ('hash_' + eventKey) } } : null;\nlet events = event ? [event] : [];\nconst staleAfterMinutes = 24 * 60;\nconst lkg = ($('Parse Last Known Good').first().json.bySource || {})['01_ROUTE_CONDITIONS:ISS-01'];\nif (fetch.error) {\n  const lkgRetrievedAt = lkg && lkg.source_health && lkg.source_health.retrieved_at ? Date.parse(lkg.source_health.retrieved_at) : NaN;\n  const lkgStaleAfterMinutes = lkg && lkg.source_health && lkg.source_health.stale_after_minutes !== undefined ? lkg.source_health.stale_after_minutes : staleAfterMinutes;\n  const lkgUsable = !!lkg && Number.isFinite(lkgRetrievedAt) && ((Date.now() - lkgRetrievedAt) / 60000) <= lkgStaleAfterMinutes;\n  if (lkgUsable) {\n    events = lkg.events;\n    sourceHealth = { schema_version: '1.0.0', connector_id: run.connector_id, source_id: '01_ROUTE_CONDITIONS:ISS-01', source_name: 'City of Issaquah - Civic Alerts (Traffic Alerts category), incl. RSS/Notify Me', status: 'using_last_known_good', retrieved_at: lkg.source_health.retrieved_at, stale_after_minutes: staleAfterMinutes, record_count: lkg.events.length, http_status: null, last_observation_at: lkg.source_health.last_observation_at ?? lkg.source_health.retrieved_at, warnings: [...(lkg.source_health.warnings || []), 'Live fetch failed; serving last-known-good data retrieved at ' + lkg.source_health.retrieved_at + '.'], errors: [String(fetch.error.message || fetch.error)] };\n  } else {\n    events = [];\n    sourceHealth = { schema_version: '1.0.0', connector_id: run.connector_id, source_id: '01_ROUTE_CONDITIONS:ISS-01', source_name: 'City of Issaquah - Civic Alerts (Traffic Alerts category), incl. RSS/Notify Me', status: 'failed', retrieved_at: run.generated_at, stale_after_minutes: staleAfterMinutes, record_count: 0, http_status: fetch.statusCode ?? fetch.status ?? null, last_observation_at: run.generated_at, warnings: ['No active closure banner detected'], errors: [String(fetch.error.message || fetch.error)] };\n  }\n} else {\n  sourceHealth = { schema_version: '1.0.0', connector_id: run.connector_id, source_id: '01_ROUTE_CONDITIONS:ISS-01', source_name: 'City of Issaquah - Civic Alerts (Traffic Alerts category), incl. RSS/Notify Me', status: events.length ? 'ok' : 'empty_but_valid', retrieved_at: run.generated_at, stale_after_minutes: staleAfterMinutes, record_count: events.length, http_status: fetch.statusCode ?? fetch.status ?? null, last_observation_at: run.generated_at, warnings: events.length ? [] : ['No active closure banner detected'], errors: [] };\n}\nreturn [{ json: { source_id: '01_ROUTE_CONDITIONS:ISS-01', source_name: sourceHealth.source_name, source_health: sourceHealth, events: events, raw_landing_path: landing.file_path || null, raw_content_hash: landing.content_hash || null, warnings: events.length ? [] : ['ISS-01 produced no route-relevant alerts in this run.'], errors: sourceHealth.errors } }];"
+      }
+    },
+    {
+      "id": "merge_normalized_branches",
+      "name": "Merge Normalized Branches",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        1260,
+        760
+      ],
+      "parameters": {
+        "numberInputs": 4
+      }
+    },
+    {
+      "id": "aggregate_normalized_branches",
+      "name": "Aggregate Normalized Branches",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        760
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const run = $('Initialize Run Metadata').first().json;\nconst inputs = $input.all().map(item => item.json || {});\nconst events = inputs.flatMap(item => Array.isArray(item.events) ? item.events : []);\nconst sourceHealth = inputs.map(item => item.source_health).filter(Boolean);\nconst sourceWarnings = inputs.flatMap(item => Array.isArray(item.warnings) ? item.warnings : []);\nconst sourceErrors = inputs.flatMap(item => Array.isArray(item.errors) ? item.errors : []);\nconst sourceIds = inputs.map(item => item.source_id).filter(Boolean);\nreturn [{ json: { schema_version: run.schema_version, connector_id: run.connector_id, connector_name: run.connector_name, connector_version: run.connector_version, lane: run.lane, run_id: run.run_id, run_stamp: run.run_stamp, generated_at: run.generated_at, published_at: null, output_root: run.output_root, canonical_gpx: run.canonical_gpx, source_health: sourceHealth, events: events, observations: [], route_sections: [], provenance: { source_ids_used: sourceIds, canonical_gpx: run.canonical_gpx }, source_warnings: sourceWarnings, source_errors: sourceErrors, source_items: inputs } }];"
+      }
+    },
+    {
+      "id": "deduplicate_events",
+      "name": "Deduplicate Events",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1760,
+        760
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const input = $input.first().json;\nconst seen = new Map();\nconst deduplicated = [];\nconst duplicates = [];\nfor (const event of input.events || []) { const key = [event.source_id, event.event_type, event.status, event.summary, event.location_description_raw, event.effective_start || '', event.effective_end || ''].join('|'); if (seen.has(key)) { duplicates.push(event); continue; } seen.set(key, true); deduplicated.push(event); }\nreturn [{ json: { ...input, events_before_dedup: (input.events || []).length, deduplicated_events: deduplicated, duplicates_removed: duplicates.length, duplicate_events: duplicates } }];"
+      }
+    },
+    {
+      "id": "build_route_sections",
+      "name": "Build Route Sections Rollups",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2000,
+        760
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const input = $input.first().json;\nconst sectionMap = { '01_uw_u_district': { route_section_id: '01_uw_u_district', route_section_name: 'UW / U-District', status: 'no_current_events', event_ids: [], updated_at: input.generated_at }, '02_burke_gilman_seattle': { route_section_id: '02_burke_gilman_seattle', route_section_name: 'Burke-Gilman - Seattle', status: 'no_current_events', event_ids: [], updated_at: input.generated_at }, '03_burke_gilman_north_lake_wa_kenmore': { route_section_id: '03_burke_gilman_north_lake_wa_kenmore', route_section_name: 'Burke-Gilman - north Lake WA/Kenmore', status: 'no_current_events', event_ids: [], updated_at: input.generated_at }, '04_burke_gilman_connector_bothell': { route_section_id: '04_burke_gilman_connector_bothell', route_section_name: 'Burke-Gilman/connector - Bothell', status: 'no_current_events', event_ids: [], updated_at: input.generated_at }, '05_sammamish_river_trail_bothell_woodinville': { route_section_id: '05_sammamish_river_trail_bothell_woodinville', route_section_name: 'Sammamish River Trail - Bothell/Woodinville', status: 'no_current_events', event_ids: [], updated_at: input.generated_at }, '06_sammamish_river_trail_redmond': { route_section_id: '06_sammamish_river_trail_redmond', route_section_name: 'Sammamish River Trail - Redmond', status: 'no_current_events', event_ids: [], updated_at: input.generated_at }, '07_marymoor_park': { route_section_id: '07_marymoor_park', route_section_name: 'Marymoor Park', status: 'no_current_events', event_ids: [], updated_at: input.generated_at }, '08_east_lake_sammamish_trail_redmond': { route_section_id: '08_east_lake_sammamish_trail_redmond', route_section_name: 'East Lake Sammamish Trail - Redmond', status: 'no_current_events', event_ids: [], updated_at: input.generated_at }, '09_east_lake_sammamish_trail_sammamish': { route_section_id: '09_east_lake_sammamish_trail_sammamish', route_section_name: 'East Lake Sammamish Trail - Sammamish', status: 'no_current_events', event_ids: [], updated_at: input.generated_at }, '10_issaquah_approach_terminus': { route_section_id: '10_issaquah_approach_terminus', route_section_name: 'Issaquah approach / terminus', status: 'no_current_events', event_ids: [], updated_at: input.generated_at } };\nfor (const event of input.deduplicated_events || []) { const eventSectionIds = Array.isArray(event.route_sections) ? event.route_sections : []; for (const sectionId of eventSectionIds) { const section = sectionMap[sectionId]; if (!section) continue; section.event_ids.push(event.event_id); if (event.route_impact_state === 'confirmed_route_impact') { section.status = 'active_closure'; } else if (event.route_impact_state === 'possible_route_impact' && section.status !== 'active_closure') { section.status = 'possible_impact'; } else if (event.route_impact_state === 'nearby_no_confirmed_impact' && section.status === 'no_current_events') { section.status = 'possible_impact'; } } }\nconst routeSections = Object.values(sectionMap);\nreturn [{ json: { ...input, route_sections: routeSections } }];"
+      }
+    },
+    {
+      "id": "validate_candidate_envelope",
+      "name": "Validate Candidate Envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2240,
+        760
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const input = $input.first().json;\nconst errors = [];\nconst warnings = [];\nconst requiredRootFields = ['schema_version', 'connector_id', 'connector_name', 'connector_version', 'lane', 'run_id', 'generated_at', 'output_root', 'canonical_gpx'];\nfor (const field of requiredRootFields) { if (!(field in input) || input[field] === null || input[field] === undefined || input[field] === '') errors.push('Missing required root field: ' + field); }\nif (!Array.isArray(input.source_health)) errors.push('source_health must be an array');\nif (!Array.isArray(input.deduplicated_events)) errors.push('deduplicated_events must be an array');\nif (!Array.isArray(input.route_sections)) errors.push('route_sections must be an array');\nconst allowedEventTypes = ['trail_closure', 'trail_detour', 'road_closure', 'construction_impact', 'access_restriction', 'maintenance_notice'];\nconst allowedStatuses = ['active', 'scheduled', 'resolved', 'unknown'];\nconst allowedSeverities = ['high', 'medium', 'low', 'unknown'];\nconst allowedImpactStates = ['confirmed_route_impact', 'possible_route_impact', 'nearby_no_confirmed_impact', 'not_route_relevant', 'unknown'];\nfor (const event of input.deduplicated_events || []) { const eventFields = ['event_id', 'source_id', 'event_type', 'status', 'severity', 'route_impact_state', 'summary', 'discovered_at', 'last_verified_at', 'location_description_raw', 'route_sections', 'route_relevance', 'provenance']; for (const field of eventFields) { if (!(field in event) || event[field] === null || event[field] === undefined || event[field] === '') errors.push('Event missing required field: ' + field + ' (' + (event.event_id || 'unknown') + ')'); } if (!allowedEventTypes.includes(event.event_type)) errors.push('Invalid event_type: ' + event.event_type + ' (' + event.event_id + ')'); if (!allowedStatuses.includes(event.status)) errors.push('Invalid status: ' + event.status + ' (' + event.event_id + ')'); if (!allowedSeverities.includes(event.severity)) errors.push('Invalid severity: ' + event.severity + ' (' + event.event_id + ')'); if (!allowedImpactStates.includes(event.route_impact_state)) errors.push('Invalid route_impact_state: ' + event.route_impact_state + ' (' + event.event_id + ')'); if (!event.route_relevance || typeof event.route_relevance !== 'object') errors.push('Missing route_relevance object on ' + (event.event_id || 'unknown')); if (!event.provenance || typeof event.provenance !== 'object') errors.push('Missing provenance object on ' + (event.event_id || 'unknown')); }\nfor (const source of input.source_health || []) { const requiredSourceFields = ['schema_version', 'connector_id', 'source_id', 'source_name', 'status', 'retrieved_at', 'stale_after_minutes', 'record_count', 'http_status', 'last_observation_at', 'warnings', 'errors']; for (const field of requiredSourceFields) { if (!(field in source) || source[field] === undefined) errors.push('Source health missing field: ' + field + ' (' + (source.source_id || 'unknown') + ')'); } }\nconst candidateValidationPassed = errors.length === 0;\nif (!candidateValidationPassed) warnings.push('Validation failed; candidate will be quarantined and published output suppressed.');\nreturn [{ json: { ...input, validation_errors: errors, validation_warnings: warnings, candidate_validation_passed: candidateValidationPassed, validator_version: '1.0.0' } }];"
+      }
+    },
+    {
+      "id": "build_candidate_artifact",
+      "name": "Build Candidate Artifact",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2480,
+        760
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const input = $input.first().json;\nconst makeHash = (text) => { let hash = 2166136261; for (let i = 0; i < text.length; i++) { hash ^= text.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst run = { run_id: input.run_id, run_stamp: input.run_stamp, generated_at: input.generated_at, output_root: input.output_root, connector_id: input.connector_id, connector_name: input.connector_name, connector_version: input.connector_version, lane: input.lane, canonical_gpx: input.canonical_gpx };\nconst sourceStatuses = (input.source_health || []).map(source => source.status);\nconst anyFailed = sourceStatuses.some(status => status === 'failed');\nconst anyStale = sourceStatuses.some(status => status === 'stale' || status === 'using_last_known_good');\nconst anyLkg = sourceStatuses.some(status => status === 'using_last_known_good');\nconst allFailed = (input.source_health || []).length > 0 && sourceStatuses.every(status => status === 'failed');\nconst allLkg = sourceStatuses.length > 0 && sourceStatuses.every(status => status === 'using_last_known_good');\nconst hasEvents = (input.deduplicated_events || []).length > 0;\nlet dataStatus = 'ok';\nif (!input.candidate_validation_passed) dataStatus = 'failed_validation'; else if (allFailed) dataStatus = 'failed_fetch'; else if (allLkg) dataStatus = 'using_last_known_good'; else if (!hasEvents && !anyFailed && !anyStale) dataStatus = 'no_relevant_events'; else if (anyFailed || anyStale) dataStatus = 'degraded';\nconst freshnessState = allFailed ? 'unknown' : (anyFailed || anyStale ? 'stale' : 'fresh');\nconst staleSourceIds = (input.source_health || []).filter(source => source.status === 'stale' || source.status === 'using_last_known_good').map(source => source.source_id);\nconst candidateEnvelope = { schema_version: input.schema_version, connector_id: input.connector_id, connector_name: input.connector_name, connector_version: input.connector_version, lane: input.lane, run_id: input.run_id, generated_at: input.generated_at, published_at: null, data_status: dataStatus, freshness: { overall_state: freshnessState, computed_at: input.generated_at, oldest_relevant_source_age_minutes: 0, stale_source_ids: staleSourceIds }, manifest_ref: { manifest_id: input.connector_id + '-v0001', schema_version: '1.0.0' }, source_health: input.source_health || [], connector_health: { schema_version: '1.0.0', connector_id: input.connector_id, status: input.candidate_validation_passed ? (anyFailed || anyStale ? 'degraded' : 'ok') : 'failed', failed_stage: input.candidate_validation_passed ? null : 'validation', warning_count: (input.validation_warnings || []).length + (input.source_warnings || []).length, error_count: (input.validation_errors || []).length + (input.source_errors || []).length, used_last_known_good: anyLkg, candidate_written: true, published_written: false }, events: input.deduplicated_events || [], observations: [], route_sections: input.route_sections || [], provenance: { source_ids_used: (input.source_health || []).map(source => source.source_id), canonical_gpx: input.canonical_gpx }, validation_state: { candidate_validation_passed: input.candidate_validation_passed, published_from_candidate: false, validator_version: input.validator_version || '1.0.0' }, metadata: { manual_review_required: (input.deduplicated_events || []).some(event => event.route_relevance && event.route_relevance.manual_review_required), notes: (input.validation_warnings || []).concat(input.source_warnings || []) } };\nconst normalizedPath = input.output_root + '/normalized/01_ROUTE_CONDITIONS/01_ROUTE_CONDITIONS_normalized_output_' + input.run_stamp + '.json';\nconst candidatePath = input.output_root + '/candidate/01_ROUTE_CONDITIONS/01_ROUTE_CONDITIONS_candidate_' + input.run_stamp + '.json';\nconst normalizedBuffer = Buffer.from(JSON.stringify(candidateEnvelope, null, 2), 'utf8');\nconst candidateBuffer = Buffer.from(JSON.stringify(candidateEnvelope, null, 2), 'utf8');\nconst normalizedBinary = await this.helpers.prepareBinaryData(normalizedBuffer, normalizedPath.split('/').pop(), 'application/json');\nconst candidateBinary = await this.helpers.prepareBinaryData(candidateBuffer, candidatePath.split('/').pop(), 'application/json');\nreturn [\n  { json: { file_path: normalizedPath, file_name: normalizedPath.split('/').pop(), artifact_type: 'normalized', candidate_envelope: candidateEnvelope }, binary: { data: normalizedBinary } },\n  { json: { file_path: candidatePath, file_name: candidatePath.split('/').pop(), artifact_type: 'candidate', candidate_envelope: candidateEnvelope }, binary: { data: candidateBinary } }\n];"
+      }
+    },
+    {
+      "id": "write_candidate_artifact",
+      "name": "Write Candidate Artifact",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        2720,
+        760
+      ],
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.file_path }}",
+        "dataPropertyName": "data",
+        "options": {}
+      }
+    },
+    {
+      "id": "publish_gate_decision",
+      "name": "Publish Gate Decision",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2960,
+        760
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const input = $('Build Candidate Artifact').first().json.candidate_envelope;\nconst validation = $('Validate Candidate Envelope').first().json;\nconst shouldPublish = !!validation.candidate_validation_passed;\nconst reason = shouldPublish ? 'Validation passed' : 'Validation failed: ' + (validation.validation_errors || []).join('; ');\nreturn [{ json: { should_publish: shouldPublish, reason: reason, candidate_envelope: input, validation_errors: validation.validation_errors || [], validation_warnings: validation.validation_warnings || [], run_id: validation.run_id, run_stamp: validation.run_stamp, output_root: validation.output_root, connector_id: validation.connector_id, connector_name: validation.connector_name, connector_version: validation.connector_version, lane: validation.lane, generated_at: validation.generated_at, source_health: validation.source_health || [], deduplicated_events: validation.deduplicated_events || [], route_sections: validation.route_sections || [], freshness: validation.freshness || null, provenance: validation.provenance || null } }];"
+      }
+    },
+    {
+      "id": "build_final_artifact_bundle",
+      "name": "Build Final Artifact Bundle",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3200,
+        760
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const gate = $input.first().json;\nconst candidateEnvelope = gate.candidate_envelope || $('Build Candidate Artifact').first().json.candidate_envelope;\nconst runStamp = gate.run_stamp || candidateEnvelope.generated_at.replace(/[-:]/g, '').replace(/\\.\\d{3}Z$/, 'Z');\nconst now = new Date().toISOString();\nconst outputRoot = gate.output_root || '/files/uw-issy-connectors';\nconst publishedPath = outputRoot + '/published/01_ROUTE_CONDITIONS/01_ROUTE_CONDITIONS_published_' + runStamp + '.json';\nconst publishedCurrentPath = outputRoot + '/published/01_ROUTE_CONDITIONS/current.json';\nconst lkgCurrentPath = outputRoot + '/last_known_good/01_ROUTE_CONDITIONS/current.json';\nconst lkgArchivePath = outputRoot + '/last_known_good/01_ROUTE_CONDITIONS/archive/' + runStamp + '.json';\nconst validationLogPath = outputRoot + '/logs/01_ROUTE_CONDITIONS/validation_log_' + runStamp + '.jsonl';\nconst statusPath = outputRoot + '/health/01_ROUTE_CONDITIONS/status.json';\nconst handoffPath = outputRoot + '/handoff/01_ROUTE_CONDITIONS/' + gate.connector_id + '-' + runStamp + '-001.json';\nconst quarantinePath = outputRoot + '/quarantine/01_ROUTE_CONDITIONS/' + runStamp + '_validation_failed.json';\nconst validationErrors = gate.validation_errors || [];\nconst validationWarnings = gate.validation_warnings || [];\nconst sourceHealth = gate.source_health || [];\nconst sourceStatuses = sourceHealth.map(source => source.status);\nconst anyFailed = sourceStatuses.some(status => status === 'failed');\nconst anyStale = sourceStatuses.some(status => status === 'stale' || status === 'using_last_known_good');\nconst anyLkg = sourceStatuses.some(status => status === 'using_last_known_good');\nconst allFailed = sourceHealth.length > 0 && sourceStatuses.every(status => status === 'failed');\nconst allLkg = sourceStatuses.length > 0 && sourceStatuses.every(status => status === 'using_last_known_good');\nconst hasEvents = (gate.deduplicated_events || []).length > 0;\nconst publishedArtifactRef = gate.should_publish ? publishedPath : null;\nconst lastKnownGoodRef = lkgCurrentPath;\nconst statusValue = gate.should_publish ? (anyFailed || anyStale ? 'degraded' : 'ok') : (validationErrors.length ? 'failed' : (allFailed ? 'failed' : 'degraded'));\nlet dataStatus = 'ok';\nif (allFailed) dataStatus = 'failed_fetch'; else if (allLkg) dataStatus = 'using_last_known_good'; else if (!hasEvents && !anyFailed && !anyStale) dataStatus = 'no_relevant_events'; else if (anyFailed || anyStale) dataStatus = 'degraded';\nconst publishedEnvelope = gate.should_publish ? { ...candidateEnvelope, published_at: now, data_status: dataStatus, connector_health: { ...candidateEnvelope.connector_health, status: anyFailed || anyStale ? 'degraded' : 'ok', failed_stage: null, candidate_written: true, published_written: true, used_last_known_good: anyLkg }, validation_state: { ...candidateEnvelope.validation_state, candidate_validation_passed: true, published_from_candidate: true }, freshness: { ...candidateEnvelope.freshness, overall_state: anyFailed || anyStale ? 'stale' : 'fresh', computed_at: now } } : null;\nconst statusDoc = { lane_id: 'lane_01_route_conditions', run_id: gate.run_id || candidateEnvelope.run_id, last_fetch_at: gate.generated_at || candidateEnvelope.generated_at, last_success_at: gate.should_publish ? now : null, status: statusValue, source_health: sourceHealth, error_messages: validationErrors.concat(gate.source_errors || []), stale_data_fields: anyStale ? sourceHealth.filter(source => source.status === 'stale' || source.status === 'using_last_known_good').map(source => source.source_id) : [], published_artifact_ref: publishedArtifactRef, last_known_good_ref: lastKnownGoodRef };\nconst handoffDoc = { run_id: gate.run_id || candidateEnvelope.run_id, connector_id: gate.connector_id, lane: gate.lane || candidateEnvelope.lane, generated_at: gate.generated_at || candidateEnvelope.generated_at, published_at: gate.should_publish ? now : null, published_artifact: publishedArtifactRef, status: gate.should_publish ? statusValue : 'failed', ready_for_workflow_08: !!gate.should_publish, source_ids_used: (gate.source_health || []).map(source => source.source_id), route_sections: gate.route_sections || [] };\nconst validationLogLines = [];\nfor (const source of sourceHealth) { validationLogLines.push(JSON.stringify({ source_id: source.source_id, run_id: gate.run_id || candidateEnvelope.run_id, stage: 'source_normalize', check: 'source_health', result: source.status === 'failed' ? 'fail' : 'pass', message: source.status + ' / ' + source.record_count + ' record(s)', timestamp: gate.generated_at || candidateEnvelope.generated_at })); }\nvalidationLogLines.push(JSON.stringify({ source_id: 'CONNECTOR', run_id: gate.run_id || candidateEnvelope.run_id, stage: 'validation', check: 'candidate_schema', result: gate.should_publish ? 'pass' : 'fail', message: gate.should_publish ? 'Candidate passed validation.' : (validationErrors.join('; ') || 'Validation failed.'), timestamp: gate.generated_at || candidateEnvelope.generated_at }));\nvalidationLogLines.push(JSON.stringify({ source_id: 'CONNECTOR', run_id: gate.run_id || candidateEnvelope.run_id, stage: 'publish_gate', check: 'promotion', result: gate.should_publish ? 'pass' : 'fail', message: gate.should_publish ? 'Candidate promoted to published.' : gate.reason, timestamp: now }));\nconst validationLogText = validationLogLines.join('\\n');\nconst makeBinaryItem = async (filePath, payload, artifactType, mime = 'application/json') => { const body = typeof payload === 'string' ? payload : JSON.stringify(payload, null, 2); const buffer = Buffer.from(body, 'utf8'); const binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), mime); return { json: { file_path: filePath, file_name: filePath.split('/').pop(), artifact_type: artifactType }, binary: { data: binary } }; };\nconst items = [];\nif (gate.should_publish && publishedEnvelope) { items.push(await makeBinaryItem(publishedPath, publishedEnvelope, 'published')); items.push(await makeBinaryItem(publishedCurrentPath, { run_id: gate.run_id || candidateEnvelope.run_id, artifact: publishedPath }, 'published_current')); items.push(await makeBinaryItem(lkgCurrentPath, publishedEnvelope, 'last_known_good_current')); items.push(await makeBinaryItem(lkgArchivePath, publishedEnvelope, 'last_known_good_archive')); } else { items.push(await makeBinaryItem(quarantinePath, { run_id: gate.run_id || candidateEnvelope.run_id, reason: gate.reason, validation_errors: validationErrors, validation_warnings: validationWarnings, candidate_envelope: candidateEnvelope }, 'quarantine')); }\nitems.push(await makeBinaryItem(validationLogPath, validationLogText, 'validation_log', 'text/plain'));\nitems.push(await makeBinaryItem(statusPath, statusDoc, 'status'));\nitems.push(await makeBinaryItem(handoffPath, handoffDoc, 'handoff'));\nreturn items;"
+      }
+    },
+    {
+      "id": "write_final_artifacts",
+      "name": "Write Final Artifacts",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        3440,
+        760
+      ],
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.file_path }}",
+        "dataPropertyName": "data",
+        "options": {}
+      }
+    },
+    {
+      "id": "final_status_report",
+      "name": "Final Status Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3680,
+        760
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const gate = $('Publish Gate Decision').first().json;\nconst bundleItems = $('Build Final Artifact Bundle').all();\nconst candidate = $('Build Candidate Artifact').first().json.candidate_envelope;\nreturn [{ json: { run_id: gate.run_id || candidate.run_id, status: gate.should_publish ? 'PASSED' : 'FAILED', candidate_written: true, published_written: !!gate.should_publish, quarantine_written: !gate.should_publish, validation_log_written: true, status_written: true, handoff_written: true, artifact_count_written: bundleItems.length, published_path: gate.should_publish ? (gate.output_root || '/files/uw-issy-connectors') + '/published/01_ROUTE_CONDITIONS/01_ROUTE_CONDITIONS_published_' + (gate.run_stamp || candidate.generated_at.replace(/[-:]/g, '').replace(/\\.\\d{3}Z$/, 'Z')) + '.json' : null, timestamp: candidate.generated_at } }];"
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Initialize Run Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Initialize Run Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Initialize Run Metadata": {
+      "main": [
+        [
+          {
+            "node": "Read Last Known Good",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch KC-03 Page",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch REDM-01 Alerts",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch ISS-03 Projects",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch ISS-01 Alerts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch KC-03 Page": {
+      "main": [
+        [
+          {
+            "node": "Land KC-03 Raw Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Land KC-03 Raw Payload": {
+      "main": [
+        [
+          {
+            "node": "Write KC-03 Raw Landing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write KC-03 Raw Landing": {
+      "main": [
+        [
+          {
+            "node": "Normalize KC-03 Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize KC-03 Events": {
+      "main": [
+        [
+          {
+            "node": "Merge Normalized Branches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch REDM-01 Alerts": {
+      "main": [
+        [
+          {
+            "node": "Land REDM-01 Raw Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Land REDM-01 Raw Payload": {
+      "main": [
+        [
+          {
+            "node": "Write REDM-01 Raw Landing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write REDM-01 Raw Landing": {
+      "main": [
+        [
+          {
+            "node": "Normalize REDM-01 Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize REDM-01 Events": {
+      "main": [
+        [
+          {
+            "node": "Merge Normalized Branches",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fetch ISS-03 Projects": {
+      "main": [
+        [
+          {
+            "node": "Land ISS-03 Raw Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Land ISS-03 Raw Payload": {
+      "main": [
+        [
+          {
+            "node": "Write ISS-03 Raw Landing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write ISS-03 Raw Landing": {
+      "main": [
+        [
+          {
+            "node": "Normalize ISS-03 Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize ISS-03 Events": {
+      "main": [
+        [
+          {
+            "node": "Merge Normalized Branches",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Fetch ISS-01 Alerts": {
+      "main": [
+        [
+          {
+            "node": "Land ISS-01 Raw Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Land ISS-01 Raw Payload": {
+      "main": [
+        [
+          {
+            "node": "Write ISS-01 Raw Landing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write ISS-01 Raw Landing": {
+      "main": [
+        [
+          {
+            "node": "Normalize ISS-01 Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize ISS-01 Events": {
+      "main": [
+        [
+          {
+            "node": "Merge Normalized Branches",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Merge Normalized Branches": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Normalized Branches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Normalized Branches": {
+      "main": [
+        [
+          {
+            "node": "Deduplicate Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deduplicate Events": {
+      "main": [
+        [
+          {
+            "node": "Build Route Sections Rollups",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Route Sections Rollups": {
+      "main": [
+        [
+          {
+            "node": "Validate Candidate Envelope",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Candidate Envelope": {
+      "main": [
+        [
+          {
+            "node": "Build Candidate Artifact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Candidate Artifact": {
+      "main": [
+        [
+          {
+            "node": "Write Candidate Artifact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Candidate Artifact": {
+      "main": [
+        [
+          {
+            "node": "Publish Gate Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publish Gate Decision": {
+      "main": [
+        [
+          {
+            "node": "Build Final Artifact Bundle",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Final Artifact Bundle": {
+      "main": [
+        [
+          {
+            "node": "Write Final Artifacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Final Artifacts": {
+      "main": [
+        [
+          {
+            "node": "Final Status Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Last Known Good": {
+      "main": [
+        [
+          {
+            "node": "Parse Last Known Good",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Los_Angeles"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": null,
+  "pinData": null,
+  "versionId": "bc320298-2096-4db6-8276-1a0d07f138a4",
+  "activeVersionId": "bc320298-2096-4db6-8276-1a0d07f138a4",
+  "versionCounter": 18,
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-08-01T06:29:56.093Z",
+      "createdAt": "2026-08-01T06:29:56.093Z",
+      "role": "workflow:owner",
+      "workflowId": "RR7cLSV9oGngrJdA",
+      "projectId": "Y0Ygmqe59jevHoeV",
+      "project": {
+        "updatedAt": "2026-07-10T05:38:45.677Z",
+        "createdAt": "2026-06-02T20:51:11.579Z",
+        "id": "Y0Ygmqe59jevHoeV",
+        "name": "John Brooks <john@biketourfrance.net>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "5dadc5f6-6bff-44cf-9566-6b82f3d768dc"
+      }
+    }
+  ],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

@@ -1,0 +1,120 @@
+              ]
+            }
+          }
+        ],
+        "Final Status Report": [
+          {
+            "startTime": 1787194675669,
+            "executionIndex": 38,
+            "source": [
+              {
+                "previousNode": "Write Public Status",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            ],
+            "hints": [],
+            "executionTime": 13,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "run_id": "20_STATUS_PUBLISHER-20260820T025755Z-001",
+                      "status": "DEGRADED",
+                      "expected_cycle": "13:00",
+                      "timezone": "America/Los_Angeles",
+                      "missed_run_count": 5,
+                      "missed_runs": [
+                        {
+                          "lane_id": "04_WILDFIRE",
+                          "lane_label": "Wildfire",
+                          "current_cycle_state": "STALE_FROM_OLDER_CYCLE",
+                          "latest_run_id": "04_WILDFIRE-20260819T070009.094Z-001",
+                          "latest_execution_or_report_at": "2026-08-19T07:00:09.094Z"
+                        },
+                        {
+                          "lane_id": "05_FLOOD_CONDITIONS",
+                          "lane_label": "Flood Conditions",
+                          "current_cycle_state": "STALE_FROM_OLDER_CYCLE",
+                          "latest_run_id": "05_FLOOD_CONDITIONS-20260819T070012Z-001",
+                          "latest_execution_or_report_at": "2026-08-19T07:00:12.083Z"
+                        },
+                        {
+                          "lane_id": "06_TRAIL_INFRASTRUCTURE_STATUS",
+                          "lane_label": "Trail Infrastructure Status",
+                          "current_cycle_state": "STALE_FROM_OLDER_CYCLE",
+                          "latest_run_id": "06_TRAIL_INFRASTRUCTURE_STATUS-20260819T070052Z-001",
+                          "latest_execution_or_report_at": "2026-08-19T07:00:52.173Z"
+                        },
+                        {
+                          "lane_id": "07_GOVERNMENT_SAFETY_ALERTS",
+                          "lane_label": "Government Safety Alerts",
+                          "current_cycle_state": "STALE_FROM_OLDER_CYCLE",
+                          "latest_run_id": "07_GOVERNMENT_SAFETY_ALERTS-20260819T070006Z-001",
+                          "latest_execution_or_report_at": "2026-08-19T07:00:06.055Z"
+                        },
+                        {
+                          "lane_id": "08_ROUTE_FACILITIES",
+                          "lane_label": "Route Facilities",
+                          "current_cycle_state": "STALE_FROM_OLDER_CYCLE",
+                          "latest_run_id": "08_ROUTE_FACILITIES-20260819T041454Z-001",
+                          "latest_execution_or_report_at": "2026-08-19T04:14:54.952Z"
+                        }
+                      ],
+                      "lane_count": 8,
+                      "overall_display_severity": "watch",
+                      "overall_message": "One or more expected source lanes did not produce current-cycle evidence.",
+                      "published_to": [
+                        {
+                          "artifact_type": "public_status",
+                          "file_path": "/files/uw-issy-connectors/public/status.json"
+                        },
+                        {
+                          "artifact_type": "release_input_snapshot",
+                          "file_path": "/files/uw-issy-connectors/public/workflow20-status-latest.json"
+                        }
+                      ]
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      "lastNodeExecuted": "Final Status Report"
+    },
+    "executionData": {
+      "contextData": {},
+      "nodeExecutionStack": [],
+      "metadata": {},
+      "waitingExecution": {},
+      "waitingExecutionSource": {},
+      "runtimeData": {
+        "version": 1,
+        "establishedAt": 1787194674235,
+        "source": "cli",
+        "redaction": {
+          "version": 1,
+          "policy": "none"
+        },
+        "triggerNode": {
+          "name": "Manual Trigger",
+          "type": "n8n-nodes-base.manualTrigger"
+        }
+      }
+    },
+    "resumeToken": "2658f96209e2bb38d1d50a90a3f44cc90cbd7be083ed07045d09ff00c1119077"
+  },
+  "mode": "cli",
+  "startedAt": "2026-08-20T02:57:54.230Z",
+  "stoppedAt": "2026-08-20T02:57:55.683Z",
+  "storedAt": "db",
+  "status": "success",
+  "finished": true
+}

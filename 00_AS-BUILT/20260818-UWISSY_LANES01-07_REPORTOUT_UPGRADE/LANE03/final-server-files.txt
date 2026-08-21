@@ -1,0 +1,15 @@
+/files/uw-issy-connectors/candidate/03_AIR_QUALITY/03_AIR_QUALITY_candidate_20260819T054427Z.json
+/files/uw-issy-connectors/handoff/03_AIR_QUALITY/03_AIR_QUALITY-20260819T054427Z-001.json
+/files/uw-issy-connectors/health/03_AIR_QUALITY/execution_evidence_20260819T054427Z.json
+/files/uw-issy-connectors/last_known_good/03_AIR_QUALITY/archive/20260819T054427Z.json
+/files/uw-issy-connectors/logs/03_AIR_QUALITY/validation_log_20260819T054427Z.jsonl
+/files/uw-issy-connectors/normalized/03_AIR_QUALITY/03_AIR_QUALITY_normalized_output_20260819T054427Z.json
+/files/uw-issy-connectors/published/03_AIR_QUALITY/03_AIR_QUALITY_published_20260819T054427Z.json
+/files/uw-issy-connectors/raw/03_AIR_QUALITY/landings/AIRNOW-01_landing_20260819T054427Z.json
+/files/uw-issy-connectors/raw/03_AIR_QUALITY/landings/AIRNOW-02_landing_20260819T054427Z.json
+/files/uw-issy-connectors/raw/03_AIR_QUALITY/landings/ECO-01_landing_20260819T054427Z.json
+/files/uw-issy-connectors/raw/03_AIR_QUALITY/landings/ECO-02_landing_20260819T054427Z.json
+/files/uw-issy-connectors/raw/03_AIR_QUALITY/landings/NWS-AQ-01_landing_20260819T054427Z.json
+/files/uw-issy-connectors/raw/03_AIR_QUALITY/landings/PSCAA-01_landing_20260819T054427Z.json
+/files/uw-issy-connectors/raw/03_AIR_QUALITY/landings/PSCAA-02_landing_20260819T054427Z.json
+/files/uw-issy-connectors/raw/03_AIR_QUALITY/landings/WASMOKE-01_landing_20260819T054427Z.json

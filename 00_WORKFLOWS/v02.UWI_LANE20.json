@@ -1,0 +1,1153 @@
+{
+  "updatedAt": "2026-08-03T17:27:10.556Z",
+  "createdAt": "2026-08-02T16:21:39.839Z",
+  "id": "gp8WlccGwLydNWG7",
+  "name": "v02.UWI_LANE20",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "id": "manual_trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "schedule_trigger",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        180
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "init_run",
+      "name": "Initialize Run Metadata",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        90
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const lanes = [\n  { lane_id: '01_ROUTE_CONDITIONS', label: 'Route Conditions' },\n  { lane_id: '02_WEATHER', label: 'Weather' },\n  { lane_id: '03_AIR_QUALITY', label: 'Air Quality' },\n  { lane_id: '04_WILDFIRE', label: 'Wildfire' },\n  { lane_id: '05_FLOOD_CONDITIONS', label: 'Flood Conditions' },\n  { lane_id: '06_TRAIL_INFRASTRUCTURE_STATUS', label: 'Trail Infrastructure Status' },\n  { lane_id: '07_GOVERNMENT_SAFETY_ALERTS', label: 'Government Safety Alerts' },\n  { lane_id: '08_ROUTE_FACILITIES', label: 'Route Facilities' }\n];\nconst now = new Date();\nconst runStamp = now.toISOString().replace(/[-:]/g, '').replace(/\\.\\d{3}Z$/, 'Z');\nreturn [{ json: { schema_version: '1.0.0', connector_id: '20_STATUS_PUBLISHER', connector_name: 'UW-Issaquah Status Publisher', connector_version: 'v0002', lane: '20_STATUS_PUBLISHER', workflow_name: 'v02.UWI_LANE20', run_id: '20_STATUS_PUBLISHER-' + runStamp + '-001', run_stamp: runStamp, generated_at: now.toISOString(), output_root: '/files/uw-issy-connectors', timezone: 'America/Los_Angeles', lanes } }];"
+      }
+    },
+    {
+      "id": "read_ptr_01_route_conditions",
+      "name": "Read 01_ROUTE_CONDITIONS Pointer",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        460,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $('Initialize Run Metadata').first().json.output_root }}/published/01_ROUTE_CONDITIONS/current.json",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse_ptr_01_route_conditions",
+      "name": "Parse 01_ROUTE_CONDITIONS Pointer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const helpers = this.helpers;\nlet artifactPath = null;\nlet inlineData = null;\nlet pointerError = null;\ntry {\n  const item = $input.first();\n  if (item.binary && item.binary.data) {\n    const buffer = await helpers.getBinaryDataBuffer(0, 'data');\n    const parsed = JSON.parse(buffer.toString('utf8'));\n    if (parsed && typeof parsed.artifact === 'string') artifactPath = parsed.artifact;\n    else if (parsed && typeof parsed === 'object') inlineData = parsed;\n  }\n} catch (error) { pointerError = String(error.message || error); }\nreturn [{ json: { artifact_path: artifactPath, inline_data: inlineData, pointer_error: pointerError } }];"
+      }
+    },
+    {
+      "id": "read_artifact_01_route_conditions",
+      "name": "Read 01_ROUTE_CONDITIONS Status",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        940,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $json.artifact_path || '__no_artifact_yet__' }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse_01_route_conditions",
+      "name": "Parse 01_ROUTE_CONDITIONS Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const helpers = this.helpers;\nconst laneId = '01_ROUTE_CONDITIONS';\nconst laneLabel = 'Route Conditions';\nlet parsed = $('Parse 01_ROUTE_CONDITIONS Pointer').first().json.inline_data || null;\nlet available = !!parsed;\nlet parse_error = $('Parse 01_ROUTE_CONDITIONS Pointer').first().json.pointer_error || null;\ntry {\n  const item = $input.first();\n  if (item.binary && item.binary.data) {\n    const buffer = await helpers.getBinaryDataBuffer(0, 'data');\n    const text = buffer.toString('utf8');\n    const candidate = JSON.parse(text);\n    if (candidate && typeof candidate === 'object') { parsed = candidate; available = true; }\n  }\n} catch (error) { if (!parsed) { available = false; parse_error = String(error.message || error); } }\nreturn [{ json: { lane_id: laneId, lane_label: laneLabel, available, data: parsed, parse_error } }];"
+      }
+    },
+    {
+      "id": "read_ptr_02_weather",
+      "name": "Read 02_WEATHER Pointer",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        460,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $('Initialize Run Metadata').first().json.output_root }}/published/02_WEATHER/current.json",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse_ptr_02_weather",
+      "name": "Parse 02_WEATHER Pointer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const helpers = this.helpers;\nlet artifactPath = null;\nlet inlineData = null;\nlet pointerError = null;\ntry {\n  const item = $input.first();\n  if (item.binary && item.binary.data) {\n    const buffer = await helpers.getBinaryDataBuffer(0, 'data');\n    const parsed = JSON.parse(buffer.toString('utf8'));\n    if (parsed && typeof parsed.artifact === 'string') artifactPath = parsed.artifact;\n    else if (parsed && typeof parsed === 'object') inlineData = parsed;\n  }\n} catch (error) { pointerError = String(error.message || error); }\nreturn [{ json: { artifact_path: artifactPath, inline_data: inlineData, pointer_error: pointerError } }];"
+      }
+    },
+    {
+      "id": "read_artifact_02_weather",
+      "name": "Read 02_WEATHER Status",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        940,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $json.artifact_path || '__no_artifact_yet__' }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse_02_weather",
+      "name": "Parse 02_WEATHER Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const helpers = this.helpers;\nconst laneId = '02_WEATHER';\nconst laneLabel = 'Weather';\nlet parsed = $('Parse 02_WEATHER Pointer').first().json.inline_data || null;\nlet available = !!parsed;\nlet parse_error = $('Parse 02_WEATHER Pointer').first().json.pointer_error || null;\ntry {\n  const item = $input.first();\n  if (item.binary && item.binary.data) {\n    const buffer = await helpers.getBinaryDataBuffer(0, 'data');\n    const text = buffer.toString('utf8');\n    const candidate = JSON.parse(text);\n    if (candidate && typeof candidate === 'object') { parsed = candidate; available = true; }\n  }\n} catch (error) { if (!parsed) { available = false; parse_error = String(error.message || error); } }\nreturn [{ json: { lane_id: laneId, lane_label: laneLabel, available, data: parsed, parse_error } }];"
+      }
+    },
+    {
+      "id": "read_ptr_03_air_quality",
+      "name": "Read 03_AIR_QUALITY Pointer",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        460,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $('Initialize Run Metadata').first().json.output_root }}/published/03_AIR_QUALITY/current.json",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse_ptr_03_air_quality",
+      "name": "Parse 03_AIR_QUALITY Pointer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const helpers = this.helpers;\nlet artifactPath = null;\nlet inlineData = null;\nlet pointerError = null;\ntry {\n  const item = $input.first();\n  if (item.binary && item.binary.data) {\n    const buffer = await helpers.getBinaryDataBuffer(0, 'data');\n    const parsed = JSON.parse(buffer.toString('utf8'));\n    if (parsed && typeof parsed.artifact === 'string') artifactPath = parsed.artifact;\n    else if (parsed && typeof parsed === 'object') inlineData = parsed;\n  }\n} catch (error) { pointerError = String(error.message || error); }\nreturn [{ json: { artifact_path: artifactPath, inline_data: inlineData, pointer_error: pointerError } }];"
+      }
+    },
+    {
+      "id": "read_artifact_03_air_quality",
+      "name": "Read 03_AIR_QUALITY Status",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        940,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $json.artifact_path || '__no_artifact_yet__' }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse_03_air_quality",
+      "name": "Parse 03_AIR_QUALITY Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const helpers = this.helpers;\nconst laneId = '03_AIR_QUALITY';\nconst laneLabel = 'Air Quality';\nlet parsed = $('Parse 03_AIR_QUALITY Pointer').first().json.inline_data || null;\nlet available = !!parsed;\nlet parse_error = $('Parse 03_AIR_QUALITY Pointer').first().json.pointer_error || null;\ntry {\n  const item = $input.first();\n  if (item.binary && item.binary.data) {\n    const buffer = await helpers.getBinaryDataBuffer(0, 'data');\n    const text = buffer.toString('utf8');\n    const candidate = JSON.parse(text);\n    if (candidate && typeof candidate === 'object') { parsed = candidate; available = true; }\n  }\n} catch (error) { if (!parsed) { available = false; parse_error = String(error.message || error); } }\nreturn [{ json: { lane_id: laneId, lane_label: laneLabel, available, data: parsed, parse_error } }];"
+      }
+    },
+    {
+      "id": "read_ptr_04_wildfire",
+      "name": "Read 04_WILDFIRE Pointer",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        460,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $('Initialize Run Metadata').first().json.output_root }}/published/04_WILDFIRE/current.json",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse_ptr_04_wildfire",
+      "name": "Parse 04_WILDFIRE Pointer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const helpers = this.helpers;\nlet artifactPath = null;\nlet inlineData = null;\nlet pointerError = null;\ntry {\n  const item = $input.first();\n  if (item.binary && item.binary.data) {\n    const buffer = await helpers.getBinaryDataBuffer(0, 'data');\n    const parsed = JSON.parse(buffer.toString('utf8'));\n    if (parsed && typeof parsed.artifact === 'string') artifactPath = parsed.artifact;\n    else if (parsed && typeof parsed === 'object') inlineData = parsed;\n  }\n} catch (error) { pointerError = String(error.message || error); }\nreturn [{ json: { artifact_path: artifactPath, inline_data: inlineData, pointer_error: pointerError } }];"
+      }
+    },
+    {
+      "id": "read_artifact_04_wildfire",
+      "name": "Read 04_WILDFIRE Status",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        940,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $json.artifact_path || '__no_artifact_yet__' }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse_04_wildfire",
+      "name": "Parse 04_WILDFIRE Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const helpers = this.helpers;\nconst laneId = '04_WILDFIRE';\nconst laneLabel = 'Wildfire';\nlet parsed = $('Parse 04_WILDFIRE Pointer').first().json.inline_data || null;\nlet available = !!parsed;\nlet parse_error = $('Parse 04_WILDFIRE Pointer').first().json.pointer_error || null;\ntry {\n  const item = $input.first();\n  if (item.binary && item.binary.data) {\n    const buffer = await helpers.getBinaryDataBuffer(0, 'data');\n    const text = buffer.toString('utf8');\n    const candidate = JSON.parse(text);\n    if (candidate && typeof candidate === 'object') { parsed = candidate; available = true; }\n  }\n} catch (error) { if (!parsed) { available = false; parse_error = String(error.message || error); } }\nreturn [{ json: { lane_id: laneId, lane_label: laneLabel, available, data: parsed, parse_error } }];"
+      }
+    },
+    {
+      "id": "read_ptr_05_flood_conditions",
+      "name": "Read 05_FLOOD_CONDITIONS Pointer",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        460,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $('Initialize Run Metadata').first().json.output_root }}/published/05_FLOOD_CONDITIONS/current.json",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse_ptr_05_flood_conditions",
+      "name": "Parse 05_FLOOD_CONDITIONS Pointer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const helpers = this.helpers;\nlet artifactPath = null;\nlet inlineData = null;\nlet pointerError = null;\ntry {\n  const item = $input.first();\n  if (item.binary && item.binary.data) {\n    const buffer = await helpers.getBinaryDataBuffer(0, 'data');\n    const parsed = JSON.parse(buffer.toString('utf8'));\n    if (parsed && typeof parsed.artifact === 'string') artifactPath = parsed.artifact;\n    else if (parsed && typeof parsed === 'object') inlineData = parsed;\n  }\n} catch (error) { pointerError = String(error.message || error); }\nreturn [{ json: { artifact_path: artifactPath, inline_data: inlineData, pointer_error: pointerError } }];"
+      }
+    },
+    {
+      "id": "read_artifact_05_flood_conditions",
+      "name": "Read 05_FLOOD_CONDITIONS Status",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        940,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $json.artifact_path || '__no_artifact_yet__' }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse_05_flood_conditions",
+      "name": "Parse 05_FLOOD_CONDITIONS Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const helpers = this.helpers;\nconst laneId = '05_FLOOD_CONDITIONS';\nconst laneLabel = 'Flood Conditions';\nlet parsed = $('Parse 05_FLOOD_CONDITIONS Pointer').first().json.inline_data || null;\nlet available = !!parsed;\nlet parse_error = $('Parse 05_FLOOD_CONDITIONS Pointer').first().json.pointer_error || null;\ntry {\n  const item = $input.first();\n  if (item.binary && item.binary.data) {\n    const buffer = await helpers.getBinaryDataBuffer(0, 'data');\n    const text = buffer.toString('utf8');\n    const candidate = JSON.parse(text);\n    if (candidate && typeof candidate === 'object') { parsed = candidate; available = true; }\n  }\n} catch (error) { if (!parsed) { available = false; parse_error = String(error.message || error); } }\nreturn [{ json: { lane_id: laneId, lane_label: laneLabel, available, data: parsed, parse_error } }];"
+      }
+    },
+    {
+      "id": "read_ptr_06_trail_infrastructure_status",
+      "name": "Read 06_TRAIL_INFRASTRUCTURE_STATUS Pointer",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        460,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $('Initialize Run Metadata').first().json.output_root }}/published/06_TRAIL_INFRASTRUCTURE_STATUS/current.json",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse_ptr_06_trail_infrastructure_status",
+      "name": "Parse 06_TRAIL_INFRASTRUCTURE_STATUS Pointer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const helpers = this.helpers;\nlet artifactPath = null;\nlet inlineData = null;\nlet pointerError = null;\ntry {\n  const item = $input.first();\n  if (item.binary && item.binary.data) {\n    const buffer = await helpers.getBinaryDataBuffer(0, 'data');\n    const parsed = JSON.parse(buffer.toString('utf8'));\n    if (parsed && typeof parsed.artifact === 'string') artifactPath = parsed.artifact;\n    else if (parsed && typeof parsed === 'object') inlineData = parsed;\n  }\n} catch (error) { pointerError = String(error.message || error); }\nreturn [{ json: { artifact_path: artifactPath, inline_data: inlineData, pointer_error: pointerError } }];"
+      }
+    },
+    {
+      "id": "read_artifact_06_trail_infrastructure_status",
+      "name": "Read 06_TRAIL_INFRASTRUCTURE_STATUS Status",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        940,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $json.artifact_path || '__no_artifact_yet__' }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse_06_trail_infrastructure_status",
+      "name": "Parse 06_TRAIL_INFRASTRUCTURE_STATUS Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const helpers = this.helpers;\nconst laneId = '06_TRAIL_INFRASTRUCTURE_STATUS';\nconst laneLabel = 'Trail Infrastructure Status';\nlet parsed = $('Parse 06_TRAIL_INFRASTRUCTURE_STATUS Pointer').first().json.inline_data || null;\nlet available = !!parsed;\nlet parse_error = $('Parse 06_TRAIL_INFRASTRUCTURE_STATUS Pointer').first().json.pointer_error || null;\ntry {\n  const item = $input.first();\n  if (item.binary && item.binary.data) {\n    const buffer = await helpers.getBinaryDataBuffer(0, 'data');\n    const text = buffer.toString('utf8');\n    const candidate = JSON.parse(text);\n    if (candidate && typeof candidate === 'object') { parsed = candidate; available = true; }\n  }\n} catch (error) { if (!parsed) { available = false; parse_error = String(error.message || error); } }\nreturn [{ json: { lane_id: laneId, lane_label: laneLabel, available, data: parsed, parse_error } }];"
+      }
+    },
+    {
+      "id": "read_ptr_07_government_safety_alerts",
+      "name": "Read 07_GOVERNMENT_SAFETY_ALERTS Pointer",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        460,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $('Initialize Run Metadata').first().json.output_root }}/published/07_GOVERNMENT_SAFETY_ALERTS/current.json",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse_ptr_07_government_safety_alerts",
+      "name": "Parse 07_GOVERNMENT_SAFETY_ALERTS Pointer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const helpers = this.helpers;\nlet artifactPath = null;\nlet inlineData = null;\nlet pointerError = null;\ntry {\n  const item = $input.first();\n  if (item.binary && item.binary.data) {\n    const buffer = await helpers.getBinaryDataBuffer(0, 'data');\n    const parsed = JSON.parse(buffer.toString('utf8'));\n    if (parsed && typeof parsed.artifact === 'string') artifactPath = parsed.artifact;\n    else if (parsed && typeof parsed === 'object') inlineData = parsed;\n  }\n} catch (error) { pointerError = String(error.message || error); }\nreturn [{ json: { artifact_path: artifactPath, inline_data: inlineData, pointer_error: pointerError } }];"
+      }
+    },
+    {
+      "id": "read_artifact_07_government_safety_alerts",
+      "name": "Read 07_GOVERNMENT_SAFETY_ALERTS Status",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        940,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $json.artifact_path || '__no_artifact_yet__' }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse_07_government_safety_alerts",
+      "name": "Parse 07_GOVERNMENT_SAFETY_ALERTS Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const helpers = this.helpers;\nconst laneId = '07_GOVERNMENT_SAFETY_ALERTS';\nconst laneLabel = 'Government Safety Alerts';\nlet parsed = $('Parse 07_GOVERNMENT_SAFETY_ALERTS Pointer').first().json.inline_data || null;\nlet available = !!parsed;\nlet parse_error = $('Parse 07_GOVERNMENT_SAFETY_ALERTS Pointer').first().json.pointer_error || null;\ntry {\n  const item = $input.first();\n  if (item.binary && item.binary.data) {\n    const buffer = await helpers.getBinaryDataBuffer(0, 'data');\n    const text = buffer.toString('utf8');\n    const candidate = JSON.parse(text);\n    if (candidate && typeof candidate === 'object') { parsed = candidate; available = true; }\n  }\n} catch (error) { if (!parsed) { available = false; parse_error = String(error.message || error); } }\nreturn [{ json: { lane_id: laneId, lane_label: laneLabel, available, data: parsed, parse_error } }];"
+      }
+    },
+    {
+      "id": "merge_lanes",
+      "name": "Merge Lane Status",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        940,
+        0
+      ],
+      "parameters": {
+        "numberInputs": 8
+      }
+    },
+    {
+      "id": "aggregate_lanes",
+      "name": "Aggregate All Lanes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const items = $input.all().map(i => i.json);\nconst run = $('Initialize Run Metadata').first().json;\nconst timezone = run.timezone || 'America/Los_Angeles';\nfunction zonedParts(date, timeZone) { const parts = new Intl.DateTimeFormat('en-US', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).formatToParts(date); const out = {}; for (const p of parts) if (p.type !== 'literal') out[p.type] = Number(p.value); if (out.hour === 24) out.hour = 0; return out; }\nfunction zonedTimeToUtcMs(y, m, d, h, min, s, timeZone) { let utc = Date.UTC(y, m - 1, d, h, min, s || 0); for (let i = 0; i < 4; i++) { const p = zonedParts(new Date(utc), timeZone); const asIfUtc = Date.UTC(p.year, p.month - 1, p.day, p.hour, p.minute, p.second || 0); const target = Date.UTC(y, m - 1, d, h, min, s || 0); utc -= (asIfUtc - target); } return utc; }\nfunction addDaysYmd(y, m, d, delta) { const dt = new Date(Date.UTC(y, m - 1, d + delta, 12)); return { year: dt.getUTCFullYear(), month: dt.getUTCMonth() + 1, day: dt.getUTCDate() }; }\nfunction expectedCycle(now) { const p = zonedParts(now, timezone); let y = p.year, m = p.month, d = p.day, h = 13; if (p.hour < 3) { const prev = addDaysYmd(y, m, d, -1); y = prev.year; m = prev.month; d = prev.day; h = 13; } else if (p.hour < 13) h = 3; else h = 13; const startUtcMs = zonedTimeToUtcMs(y, m, d, h, 0, 0, timezone); const pad = n => String(n).padStart(2, '0'); return { cycle_label: pad(h) + ':00', timezone, expected_start_local: y + '-' + pad(m) + '-' + pad(d) + 'T' + pad(h) + ':00:00', expected_start_utc: new Date(startUtcMs).toISOString(), start_utc_ms: startUtcMs }; }\nfunction displaySeverity(dataStatus, currentState) { if (currentState === 'MISSED_RUN' || currentState === 'STALE_FROM_OLDER_CYCLE') return 'watch'; if (dataStatus === 'blocked' || dataStatus === 'failed_validation') return 'alert'; if (['degraded', 'stale', 'failed_fetch', 'using_last_known_good'].includes(dataStatus)) return 'watch'; if (dataStatus === 'ok' || dataStatus === 'no_relevant_events') return 'normal'; return 'unknown'; }\nfunction getTime(d) { const t = Date.parse(d?.generated_at || d?.published_at || d?.last_fetch_at || ''); return Number.isFinite(t) ? t : null; }\nconst cycle = expectedCycle(new Date(run.generated_at));\nconst severityRank = { normal: 0, unknown: 1, watch: 2, alert: 3 };\nconst lanes = {}; const completeness = []; const missedRuns = []; let worst = 'normal'; let hasFailed = false;\nfor (const expected of run.lanes) { const item = items.find(i => i.lane_id === expected.lane_id) || { lane_id: expected.lane_id, lane_label: expected.label, available: false, data: null, parse_error: 'lane output not present in merge input' }; const d = item.data; const observedMs = getTime(d); const ranCurrentCycle = item.available && observedMs !== null && observedMs >= cycle.start_utc_ms; const currentCycleState = !item.available ? 'MISSED_RUN' : (ranCurrentCycle ? 'RAN_CURRENT_CYCLE' : 'STALE_FROM_OLDER_CYCLE'); const dataStatus = d?.data_status || (d?.status === 'ok' ? 'ok' : d?.status || null); const lkgUsed = !!(d?.connector_health?.used_last_known_good || d?.uses_last_known_good || dataStatus === 'using_last_known_good'); const eventCount = Array.isArray(d?.events) ? d.events.length : (Array.isArray(d?.deduplicated_events) ? d.deduplicated_events.length : 0); const sev = displaySeverity(dataStatus, currentCycleState); const laneRecord = { lane_label: item.lane_label || expected.label, available: !!item.available, current_cycle_state: currentCycleState, ran_current_cycle: ranCurrentCycle, expected_cycle: cycle.cycle_label, expected_start_utc: cycle.expected_start_utc, latest_run_id: d?.run_id || null, latest_execution_or_report_at: observedMs === null ? null : new Date(observedMs).toISOString(), display_severity: sev, data_status: dataStatus, freshness: d?.freshness || null, published_at: d?.published_at || null, generated_at: d?.generated_at || null, connector_health: d?.connector_health || null, lkg_used: lkgUsed, event_count: eventCount, source_health_summary: Array.isArray(d?.source_health) ? d.source_health.map(s => ({ source_id: s.source_id, status: s.status, error_count: Array.isArray(s.errors) ? s.errors.length : 0, warning_count: Array.isArray(s.warnings) ? s.warnings.length : 0 })) : [], pointer_or_parse_error: item.parse_error || null, events: d?.events || d?.deduplicated_events || [] }; lanes[expected.lane_id] = laneRecord; completeness.push({ lane_id: expected.lane_id, latest_run_id: laneRecord.latest_run_id, current_cycle_state: currentCycleState, ran_current_cycle: ranCurrentCycle, latest_execution_or_report_at: laneRecord.latest_execution_or_report_at, data_status: dataStatus, lkg_used: lkgUsed, event_count: eventCount }); if (currentCycleState !== 'RAN_CURRENT_CYCLE') missedRuns.push({ lane_id: expected.lane_id, lane_label: expected.label, current_cycle_state: currentCycleState, latest_run_id: laneRecord.latest_run_id, latest_execution_or_report_at: laneRecord.latest_execution_or_report_at }); if (['failed_validation', 'failed_fetch', 'blocked'].includes(dataStatus)) hasFailed = true; if (severityRank[sev] > severityRank[worst]) worst = sev; }\nconst systemResult = hasFailed ? 'FAILED' : (missedRuns.length || worst === 'watch' || worst === 'unknown' ? 'DEGRADED' : 'PASSED');\nconst overallMessage = systemResult === 'FAILED' ? 'One or more source lanes failed validation, fetch, or are blocked.' : missedRuns.length ? 'One or more expected source lanes did not produce current-cycle evidence.' : worst === 'watch' ? 'All expected source lanes ran, with one or more degraded, stale, or using last-known-good data.' : 'All expected source lanes ran for the current cycle.';\nreturn [{ json: { schema_version: '1.0.0', connector_id: '20_STATUS_PUBLISHER', connector_version: 'v0002', workflow_name: 'v02.UWI_LANE20', generated_at: run.generated_at, run_id: run.run_id, current_cycle: { expected_cycle: cycle.cycle_label, timezone, expected_start_local: cycle.expected_start_local, expected_start_utc: cycle.expected_start_utc, lane20_generated_at: run.generated_at }, system_result: systemResult, overall: { display_severity: worst, message: overallMessage }, missed_runs: missedRuns, lane_cycle_completeness: completeness, lanes, release_input: { path: run.output_root + '/public/workflow20-status-latest.json', policy: 'current Lane 20 assembled snapshot for GitHub public-package build input' }, severity_mapping_note: 'display_severity is a workflow-20-only display tier; each lane native data_status and events are preserved above.' } }];"
+      }
+    },
+    {
+      "id": "build_public_artifact",
+      "name": "Build Public Status Artifact",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1420,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const helpers = this.helpers;\nconst run = $('Initialize Run Metadata').first().json;\nconst status = $input.first().json;\nconst files = [ { path: run.output_root + '/public/status.json', type: 'public_status' }, { path: run.output_root + '/public/workflow20-status-latest.json', type: 'release_input_snapshot' } ];\nconst out = [];\nfor (const file of files) { const buffer = Buffer.from(JSON.stringify(status, null, 2), 'utf8'); const binary = await helpers.prepareBinaryData(buffer, file.path.split('/').pop(), 'application/json'); out.push({ json: { file_path: file.path, artifact_type: file.type, status }, binary: { data: binary } }); }\nreturn out;"
+      }
+    },
+    {
+      "id": "write_public_status",
+      "name": "Write Public Status",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1660,
+        0
+      ],
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.file_path }}",
+        "dataPropertyName": "data",
+        "options": {}
+      }
+    },
+    {
+      "id": "final_status_report",
+      "name": "Final Status Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1900,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const item = $input.first().json;\nconst status = item.status;\nconst written = $('Build Public Status Artifact').all().map(i => ({ artifact_type: i.json.artifact_type, file_path: i.json.file_path }));\nreturn [{ json: { run_id: status.run_id, status: status.system_result, expected_cycle: status.current_cycle.expected_cycle, timezone: status.current_cycle.timezone, missed_run_count: status.missed_runs.length, missed_runs: status.missed_runs, lane_count: Object.keys(status.lanes || {}).length, overall_display_severity: status.overall.display_severity, overall_message: status.overall.message, published_to: written } }];"
+      }
+    },
+    {
+      "id": "read_ptr_08_route_facilities",
+      "name": "Read 08_ROUTE_FACILITIES Pointer",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        460,
+        260
+      ],
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $('Initialize Run Metadata').first().json.output_root }}/published/08_ROUTE_FACILITIES/current.json",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse_ptr_08_route_facilities",
+      "name": "Parse 08_ROUTE_FACILITIES Pointer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        260
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const helpers = this.helpers;\nlet artifactPath = null;\nlet inlineData = null;\nlet pointerError = null;\ntry {\n  const item = $input.first();\n  if (item.binary && item.binary.data) {\n    const buffer = await helpers.getBinaryDataBuffer(0, 'data');\n    const parsed = JSON.parse(buffer.toString('utf8'));\n    if (parsed && typeof parsed.artifact === 'string') artifactPath = parsed.artifact;\n    else if (parsed && typeof parsed === 'object') inlineData = parsed;\n  }\n} catch (error) { pointerError = String(error.message || error); }\nreturn [{ json: { artifact_path: artifactPath, inline_data: inlineData, pointer_error: pointerError } }];"
+      }
+    },
+    {
+      "id": "read_artifact_08_route_facilities",
+      "name": "Read 08_ROUTE_FACILITIES Status",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        940,
+        260
+      ],
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $json.artifact_path || '__no_artifact_yet__' }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "parse_08_route_facilities",
+      "name": "Parse 08_ROUTE_FACILITIES Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        260
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const helpers = this.helpers;\nconst laneId = '08_ROUTE_FACILITIES';\nconst laneLabel = 'Route Facilities';\nlet parsed = $('Parse 08_ROUTE_FACILITIES Pointer').first().json.inline_data || null;\nlet available = !!parsed;\nlet parse_error = $('Parse 08_ROUTE_FACILITIES Pointer').first().json.pointer_error || null;\ntry {\n  const item = $input.first();\n  if (item.binary && item.binary.data) {\n    const buffer = await helpers.getBinaryDataBuffer(0, 'data');\n    const text = buffer.toString('utf8');\n    const candidate = JSON.parse(text);\n    if (candidate && typeof candidate === 'object') { parsed = candidate; available = true; }\n  }\n} catch (error) { if (!parsed) { available = false; parse_error = String(error.message || error); } }\nreturn [{ json: { lane_id: laneId, lane_label: laneLabel, available, data: parsed, parse_error } }];"
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Initialize Run Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Initialize Run Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read 01_ROUTE_CONDITIONS Pointer": {
+      "main": [
+        [
+          {
+            "node": "Parse 01_ROUTE_CONDITIONS Pointer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse 01_ROUTE_CONDITIONS Pointer": {
+      "main": [
+        [
+          {
+            "node": "Read 01_ROUTE_CONDITIONS Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read 01_ROUTE_CONDITIONS Status": {
+      "main": [
+        [
+          {
+            "node": "Parse 01_ROUTE_CONDITIONS Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read 02_WEATHER Pointer": {
+      "main": [
+        [
+          {
+            "node": "Parse 02_WEATHER Pointer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse 02_WEATHER Pointer": {
+      "main": [
+        [
+          {
+            "node": "Read 02_WEATHER Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read 02_WEATHER Status": {
+      "main": [
+        [
+          {
+            "node": "Parse 02_WEATHER Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read 03_AIR_QUALITY Pointer": {
+      "main": [
+        [
+          {
+            "node": "Parse 03_AIR_QUALITY Pointer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse 03_AIR_QUALITY Pointer": {
+      "main": [
+        [
+          {
+            "node": "Read 03_AIR_QUALITY Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read 03_AIR_QUALITY Status": {
+      "main": [
+        [
+          {
+            "node": "Parse 03_AIR_QUALITY Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read 04_WILDFIRE Pointer": {
+      "main": [
+        [
+          {
+            "node": "Parse 04_WILDFIRE Pointer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse 04_WILDFIRE Pointer": {
+      "main": [
+        [
+          {
+            "node": "Read 04_WILDFIRE Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read 04_WILDFIRE Status": {
+      "main": [
+        [
+          {
+            "node": "Parse 04_WILDFIRE Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read 05_FLOOD_CONDITIONS Pointer": {
+      "main": [
+        [
+          {
+            "node": "Parse 05_FLOOD_CONDITIONS Pointer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse 05_FLOOD_CONDITIONS Pointer": {
+      "main": [
+        [
+          {
+            "node": "Read 05_FLOOD_CONDITIONS Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read 05_FLOOD_CONDITIONS Status": {
+      "main": [
+        [
+          {
+            "node": "Parse 05_FLOOD_CONDITIONS Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read 06_TRAIL_INFRASTRUCTURE_STATUS Pointer": {
+      "main": [
+        [
+          {
+            "node": "Parse 06_TRAIL_INFRASTRUCTURE_STATUS Pointer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse 06_TRAIL_INFRASTRUCTURE_STATUS Pointer": {
+      "main": [
+        [
+          {
+            "node": "Read 06_TRAIL_INFRASTRUCTURE_STATUS Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read 06_TRAIL_INFRASTRUCTURE_STATUS Status": {
+      "main": [
+        [
+          {
+            "node": "Parse 06_TRAIL_INFRASTRUCTURE_STATUS Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read 07_GOVERNMENT_SAFETY_ALERTS Pointer": {
+      "main": [
+        [
+          {
+            "node": "Parse 07_GOVERNMENT_SAFETY_ALERTS Pointer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse 07_GOVERNMENT_SAFETY_ALERTS Pointer": {
+      "main": [
+        [
+          {
+            "node": "Read 07_GOVERNMENT_SAFETY_ALERTS Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read 07_GOVERNMENT_SAFETY_ALERTS Status": {
+      "main": [
+        [
+          {
+            "node": "Parse 07_GOVERNMENT_SAFETY_ALERTS Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Initialize Run Metadata": {
+      "main": [
+        [
+          {
+            "node": "Read 01_ROUTE_CONDITIONS Pointer",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Read 02_WEATHER Pointer",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Read 03_AIR_QUALITY Pointer",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Read 04_WILDFIRE Pointer",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Read 05_FLOOD_CONDITIONS Pointer",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Read 06_TRAIL_INFRASTRUCTURE_STATUS Pointer",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Read 07_GOVERNMENT_SAFETY_ALERTS Pointer",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Read 08_ROUTE_FACILITIES Pointer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse 01_ROUTE_CONDITIONS Status": {
+      "main": [
+        [
+          {
+            "node": "Merge Lane Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse 02_WEATHER Status": {
+      "main": [
+        [
+          {
+            "node": "Merge Lane Status",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Parse 03_AIR_QUALITY Status": {
+      "main": [
+        [
+          {
+            "node": "Merge Lane Status",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Parse 04_WILDFIRE Status": {
+      "main": [
+        [
+          {
+            "node": "Merge Lane Status",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Parse 05_FLOOD_CONDITIONS Status": {
+      "main": [
+        [
+          {
+            "node": "Merge Lane Status",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Parse 06_TRAIL_INFRASTRUCTURE_STATUS Status": {
+      "main": [
+        [
+          {
+            "node": "Merge Lane Status",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "Parse 07_GOVERNMENT_SAFETY_ALERTS Status": {
+      "main": [
+        [
+          {
+            "node": "Merge Lane Status",
+            "type": "main",
+            "index": 6
+          }
+        ]
+      ]
+    },
+    "Merge Lane Status": {
+      "main": [
+        [
+          {
+            "node": "Aggregate All Lanes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate All Lanes": {
+      "main": [
+        [
+          {
+            "node": "Build Public Status Artifact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Public Status Artifact": {
+      "main": [
+        [
+          {
+            "node": "Write Public Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Public Status": {
+      "main": [
+        [
+          {
+            "node": "Final Status Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read 08_ROUTE_FACILITIES Pointer": {
+      "main": [
+        [
+          {
+            "node": "Parse 08_ROUTE_FACILITIES Pointer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse 08_ROUTE_FACILITIES Pointer": {
+      "main": [
+        [
+          {
+            "node": "Read 08_ROUTE_FACILITIES Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read 08_ROUTE_FACILITIES Status": {
+      "main": [
+        [
+          {
+            "node": "Parse 08_ROUTE_FACILITIES Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse 08_ROUTE_FACILITIES Status": {
+      "main": [
+        [
+          {
+            "node": "Merge Lane Status",
+            "type": "main",
+            "index": 7
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Los_Angeles"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": null,
+  "pinData": null,
+  "versionId": "980d1131-6871-4e09-9d6d-1456686d569f",
+  "activeVersionId": null,
+  "versionCounter": 5,
+  "triggerCount": 1,
+  "tags": [
+    {
+      "updatedAt": "2026-08-03T17:27:10.556Z",
+      "createdAt": "2026-08-03T17:27:10.556Z",
+      "id": "tag-uw-issy",
+      "name": "uw_issy"
+    },
+    {
+      "updatedAt": "2026-08-03T17:27:10.556Z",
+      "createdAt": "2026-08-03T17:27:10.556Z",
+      "id": "tag-connector",
+      "name": "connector"
+    },
+    {
+      "updatedAt": "2026-08-03T17:27:10.556Z",
+      "createdAt": "2026-08-03T17:27:10.556Z",
+      "id": "tag-lane-20-status-publisher",
+      "name": "lane_20_status_publisher"
+    },
+    {
+      "updatedAt": "2026-08-03T17:27:10.556Z",
+      "createdAt": "2026-08-03T17:27:10.556Z",
+      "id": "tag-no-direct-deploy",
+      "name": "no_direct_deploy"
+    }
+  ],
+  "shared": [
+    {
+      "updatedAt": "2026-08-02T16:21:39.839Z",
+      "createdAt": "2026-08-02T16:21:39.839Z",
+      "role": "workflow:owner",
+      "workflowId": "gp8WlccGwLydNWG7",
+      "projectId": "Y0Ygmqe59jevHoeV",
+      "project": {
+        "updatedAt": "2026-07-10T05:38:45.677Z",
+        "createdAt": "2026-06-02T20:51:11.579Z",
+        "id": "Y0Ygmqe59jevHoeV",
+        "name": "John Brooks <john@biketourfrance.net>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "5dadc5f6-6bff-44cf-9566-6b82f3d768dc"
+      }
+    }
+  ],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

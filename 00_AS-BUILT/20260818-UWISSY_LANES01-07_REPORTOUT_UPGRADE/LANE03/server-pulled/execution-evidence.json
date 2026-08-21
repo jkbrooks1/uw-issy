@@ -1,0 +1,155 @@
+{
+  "run_id": "03_AIR_QUALITY-20260819T054427Z-001",
+  "connector_id": "03_AIR_QUALITY",
+  "lane": "03_AIR_QUALITY",
+  "workflow_name": "v02.UWI_LANE03",
+  "workflow_id": "qlM2XIv2BbFSh3in",
+  "generated_at": "2026-08-19T05:44:27.151Z",
+  "published_at": "2026-08-19T05:44:38.060Z",
+  "should_publish": true,
+  "status": "degraded",
+  "data_status": "degraded",
+  "source_health": [
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "03_AIR_QUALITY",
+      "source_id": "03_AIR_QUALITY:ECO-01",
+      "source_name": "Washington State Department of Ecology Air Quality Monitoring Hourly Results",
+      "status": "failed",
+      "retrieved_at": "2026-08-19T05:44:27.151Z",
+      "stale_after_minutes": 90,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": null,
+      "warnings": [],
+      "errors": [
+        "404 - \"<!DOCTYPE html PUBLIC \\\"-//W3C//DTD XHTML 1.0 Strict//EN\\\" \\\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\\\">\\r\\n<html xmlns=\\\"http://www.w3.org/1999/xhtml\\\">\\r\\n<head>\\r\\n<meta http-equiv=\\\"Content-Type\\\" content=\\\"text/html; charset=iso-8859-1\\\"/>\\r\\n<title>404 - File or directory not found.</title>\\r\\n<style type=\\\"text/css\\\">\\r\\n<!--\\r\\nbody{margin:0;font-size:.7em;font-family:Verdana, Arial, Helvetica, sans-serif;background:#EEEEEE;}\\r\\nfieldset{padding:0 15px 10px 15px;} \\r\\nh1{font-size:2.4em;margin:0;color:#FFF;}\\r\\nh2{font-size:1.7em;margin:0;color:#CC0000;} \\r\\nh3{font-size:1.2em;margin:10px 0 0 0;color:#000000;} \\r\\n#header{width:96%;margin:0 0 0 0;padding:6px 2% 6px 2%;font-family:\\\"trebuchet MS\\\", Verdana, sans-serif;color:#FFF;\\r\\nbackground-color:#555555;}\\r\\n#content{margin:0 0 0 2%;position:relative;}\\r\\n.content-container{background:#FFF;width:96%;margin-top:8px;padding:10px;position:relative;}\\r\\n-->\\r\\n</style>\\r\\n</head>\\r\\n<body>\\r\\n<div id=\\\"header\\\"><h1>Server Error</h1></div>\\r\\n<div id=\\\"content\\\">\\r\\n <div class=\\\"content-container\\\"><fieldset>\\r\\n  <h2>404 - File or directory not found.</h2>\\r\\n  <h3>The resource you are looking for might have been removed, had its name changed, or is temporarily unavailable.</h3>\\r\\n </fieldset></div>\\r\\n</div>\\r\\n</body>\\r\\n</html>\\r\\n\""
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "03_AIR_QUALITY",
+      "source_id": "03_AIR_QUALITY:ECO-02",
+      "source_name": "Washington State Department of Ecology Smoke Forecast",
+      "status": "failed",
+      "retrieved_at": "2026-08-19T05:44:27.151Z",
+      "stale_after_minutes": 720,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": null,
+      "warnings": [],
+      "errors": [
+        "getaddrinfo EAI_AGAIN gis.ecology.wa.gov"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "03_AIR_QUALITY",
+      "source_id": "03_AIR_QUALITY:PSCAA-02",
+      "source_name": "Puget Sound Clean Air Agency Air Quality Burn Ban Status",
+      "status": "failed",
+      "retrieved_at": "2026-08-19T05:44:27.151Z",
+      "stale_after_minutes": 1440,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": null,
+      "warnings": [
+        "Burn-ban status could not be parsed confidently."
+      ],
+      "errors": [
+        "404 - \"\""
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "03_AIR_QUALITY",
+      "source_id": "03_AIR_QUALITY:AIRNOW-02",
+      "source_name": "AirNow public file products",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T05:44:27.151Z",
+      "stale_after_minutes": 90,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": null,
+      "warnings": [
+        "AirNow reporting area matched contextual area names only; no primary route classification performed."
+      ],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "03_AIR_QUALITY",
+      "source_id": "03_AIR_QUALITY:WASMOKE-01",
+      "source_name": "Washington Smoke Blog RSS",
+      "status": "ok",
+      "retrieved_at": "2026-08-19T05:44:27.151Z",
+      "stale_after_minutes": 720,
+      "record_count": 1,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T05:44:27.151Z",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "03_AIR_QUALITY",
+      "source_id": "03_AIR_QUALITY:NWS-AQ-01",
+      "source_name": "NWS Air Quality Alert feed",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T05:44:27.151Z",
+      "stale_after_minutes": 15,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": null,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "03_AIR_QUALITY",
+      "source_id": "03_AIR_QUALITY:PSCAA-01",
+      "source_name": "Puget Sound Clean Air Agency NetworkMap session source",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T05:44:27.151Z",
+      "stale_after_minutes": 90,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": null,
+      "warnings": [
+        "PSCAA station page was reachable but no canonical station snapshot was extracted in this build."
+      ],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "03_AIR_QUALITY",
+      "source_id": "03_AIR_QUALITY:AIRNOW-01",
+      "source_name": "AirNow API observations",
+      "status": "failed",
+      "retrieved_at": "2026-08-19T05:44:27.151Z",
+      "stale_after_minutes": 90,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": null,
+      "warnings": [],
+      "errors": [
+        "access to env vars denied"
+      ]
+    }
+  ],
+  "validation_errors": [],
+  "validation_warnings": [],
+  "published_artifact_ref": "/files/uw-issy-connectors/published/03_AIR_QUALITY/03_AIR_QUALITY_published_20260819T054427Z.json",
+  "last_known_good_ref": "/files/uw-issy-connectors/last_known_good/03_AIR_QUALITY/current.json",
+  "artifact_paths": {
+    "published": "/files/uw-issy-connectors/published/03_AIR_QUALITY/03_AIR_QUALITY_published_20260819T054427Z.json",
+    "published_current": "/files/uw-issy-connectors/published/03_AIR_QUALITY/current.json",
+    "last_known_good_current": "/files/uw-issy-connectors/last_known_good/03_AIR_QUALITY/current.json",
+    "last_known_good_archive": "/files/uw-issy-connectors/last_known_good/03_AIR_QUALITY/archive/20260819T054427Z.json",
+    "quarantine": null,
+    "validation_log": "/files/uw-issy-connectors/logs/03_AIR_QUALITY/validation_log_20260819T054427Z.jsonl",
+    "status": "/files/uw-issy-connectors/health/03_AIR_QUALITY/status.json",
+    "handoff": "/files/uw-issy-connectors/handoff/03_AIR_QUALITY/03_AIR_QUALITY-20260819T054427Z-001.json",
+    "execution_evidence": "/files/uw-issy-connectors/health/03_AIR_QUALITY/execution_evidence_20260819T054427Z.json"
+  }
+}

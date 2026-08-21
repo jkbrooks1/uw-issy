@@ -1,0 +1,12 @@
+id	name	active	nodes	versionCounter	versionId	updatedAt	folder_name	parentFolderId
+RR7cLSV9oGngrJdA	v0001.01_RouteConditionsConnector	t	32	18	bc320298-2096-4db6-8276-1a0d07f138a4	2026-08-02 18:56:12.052+00	UWISSY	LaS9Q6sil9yCDzrV
+fA0ZjWH3Itl83aPC	v0001.02_WeatherConnector	t	40	6	e98037ed-2e1e-4054-a5d9-1a626339bc05	2026-08-02 18:56:14.134+00	UWISSY	LaS9Q6sil9yCDzrV
+qlM2XIv2BbFSh3in	v0001.03_AirQualityConnector	t	48	4	14087715-85b3-4f03-b3b5-5ab2cc94e04f	2026-08-02 18:56:15.952+00	UWISSY	LaS9Q6sil9yCDzrV
+w6xnelPQeRFZk8BG	v0001.04_WildfireConnector	t	36	2	0e4dd526-c55a-4ab0-bfc9-2cec91bf50f0	2026-08-02 18:56:17.033+00	UWISSY	LaS9Q6sil9yCDzrV
+4RiNqOKD9BCZFH6P	v0001.05_FloodConditionsConnector	t	56	4	f790d7db-3407-4bab-ab09-3be06a54a65e	2026-08-02 18:56:18.319+00	UWISSY	LaS9Q6sil9yCDzrV
+poGV37VLUGIUxfGK	v0001.06_TrailInfrastructureStatusConnector	t	48	4	0ca79cfc-a582-42e9-8f0b-d30017ef1348	2026-08-02 18:56:19.957+00	UWISSY	LaS9Q6sil9yCDzrV
+08g3JNwQPVSxUl2H	v0001.07_GovernmentSafetyAlertsConnector	t	48	4	3ab787a9-286e-4078-ba52-698395ab72f4	2026-08-02 18:56:21.33+00	UWISSY	LaS9Q6sil9yCDzrV
+uwIssy08RouteFacilities	v0001.08_RouteFacilitiesConnector	f	24	1	565a68a1-3265-4d22-beb7-05360d1de30e	2026-08-04 00:20:49.903+00	UWISSY	LaS9Q6sil9yCDzrV
+gp8WlccGwLydNWG7	v0001.20_StatusPublisherConnector	f	36	5	980d1131-6871-4e09-9d6d-1456686d569f	2026-08-03 17:27:10.556+00	UWISSY	LaS9Q6sil9yCDzrV
+KhbGg5gBn7Rbne68	v0001.30_AlertMonitorConnector	f	41	2	09e23d5d-00fb-420c-85f1-8d90cf93d52d	2026-08-03 17:27:20.25+00	UWISSY	LaS9Q6sil9yCDzrV
+(10 rows)

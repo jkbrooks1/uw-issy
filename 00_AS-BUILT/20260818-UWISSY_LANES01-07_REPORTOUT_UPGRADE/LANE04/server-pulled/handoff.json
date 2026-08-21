@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.0.0",
+  "connector_id": "04_WILDFIRE",
+  "lane": "04_WILDFIRE",
+  "run_id": "04_WILDFIRE-20260819T055323Z-001",
+  "handoff_generated_at": "2026-08-19T05:53:38.126Z",
+  "connector_output_path": "/files/uw-issy-connectors/published/04_WILDFIRE/04_WILDFIRE_published_20260819T055323Z.json",
+  "manifest_path": "/files/uw-issy-connectors/manifests/04_WILDFIRE/connector-manifest.json",
+  "validation_result_path": "/files/uw-issy-connectors/logs/04_WILDFIRE/validation_log_20260819T055323Z.jsonl",
+  "execution_evidence_path": "/files/uw-issy-connectors/health/04_WILDFIRE/execution_evidence_20260819T055323Z.json",
+  "publication_status": "published",
+  "data_status": "degraded",
+  "uses_last_known_good": false,
+  "schema_compatible_with_workflow_08": true,
+  "route_sections": [
+    {
+      "segment_id": "01_uw_u_district",
+      "segment_name": "UW / U-District",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    },
+    {
+      "segment_id": "02_burke_gilman_seattle",
+      "segment_name": "Burke-Gilman - Seattle",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    },
+    {
+      "segment_id": "03_burke_gilman_north_lake_wa_kenmore",
+      "segment_name": "Burke-Gilman - north Lake WA/Kenmore",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    },
+    {
+      "segment_id": "04_burke_gilman_connector_bothell",
+      "segment_name": "Burke-Gilman/connector - Bothell",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    },
+    {
+      "segment_id": "05_sammamish_river_trail_bothell_woodinville",
+      "segment_name": "Sammamish River Trail - Bothell/Woodinville",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    },
+    {
+      "segment_id": "06_sammamish_river_trail_redmond",
+      "segment_name": "Sammamish River Trail - Redmond",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    },
+    {
+      "segment_id": "07_marymoor_park",
+      "segment_name": "Marymoor Park",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    },
+    {
+      "segment_id": "08_east_lake_sammamish_trail_redmond",
+      "segment_name": "East Lake Sammamish Trail - Redmond",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    },
+    {
+      "segment_id": "09_east_lake_sammamish_trail_sammamish",
+      "segment_name": "East Lake Sammamish Trail - Sammamish",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    },
+    {
+      "segment_id": "10_issaquah_approach_terminus",
+      "segment_name": "Issaquah approach / terminus",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    }
+  ]
+}

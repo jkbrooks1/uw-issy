@@ -1,0 +1,10 @@
+id	same
+name	same
+active	same
+nodes	same
+connections	same
+settings	same
+staticData	same
+pinData	same
+meta	same
+PASS: live v03 Lane20 matches local v03 canonical fields

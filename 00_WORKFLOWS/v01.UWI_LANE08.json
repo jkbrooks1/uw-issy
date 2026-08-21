@@ -1,0 +1,692 @@
+{
+  "updatedAt": "2026-08-04T00:20:49.903Z",
+  "createdAt": "2026-08-04T00:20:49.903Z",
+  "id": "uwIssy08RouteFacilities",
+  "name": "v01.UWI_LANE08",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "id": "manual_trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "schedule_trigger",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        120
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 3,13 * * *"
+            }
+          ]
+        }
+      },
+      "notes": "Every 6 hours. Facility open/closed status changes far less often than flood gauges; 6-hour cadence keeps rider-facing status reasonably current without hammering two public GIS services."
+    },
+    {
+      "id": "init_metadata",
+      "name": "Initialize Run Metadata",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        260,
+        60
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst now = new Date();\nconst runStamp = now.toISOString().replace(/[-:]/g, '').replace(/\\.\\d{3}Z$/, 'Z');\nconst runId = '08_ROUTE_FACILITIES-' + runStamp + '-001';\nconst routeSections = [\n  {\"route_section_id\":\"01_uw_u_district\",\"route_section_name\":\"UW / U-District\"},\n  {\"route_section_id\":\"02_burke_gilman_seattle\",\"route_section_name\":\"Burke-Gilman - Seattle\"},\n  {\"route_section_id\":\"03_burke_gilman_north_lake_wa_kenmore\",\"route_section_name\":\"Burke-Gilman - north Lake WA/Kenmore\"},\n  {\"route_section_id\":\"04_burke_gilman_connector_bothell\",\"route_section_name\":\"Burke-Gilman/connector - Bothell\"},\n  {\"route_section_id\":\"05_sammamish_river_trail_bothell_woodinville\",\"route_section_name\":\"Sammamish River Trail - Bothell/Woodinville\"},\n  {\"route_section_id\":\"06_sammamish_river_trail_redmond\",\"route_section_name\":\"Sammamish River Trail - Redmond\"},\n  {\"route_section_id\":\"07_marymoor_park\",\"route_section_name\":\"Marymoor Park\"},\n  {\"route_section_id\":\"08_east_lake_sammamish_trail_redmond\",\"route_section_name\":\"East Lake Sammamish Trail - Redmond\"},\n  {\"route_section_id\":\"09_east_lake_sammamish_trail_sammamish\",\"route_section_name\":\"East Lake Sammamish Trail - Sammamish\"},\n  {\"route_section_id\":\"10_issaquah_approach_terminus\",\"route_section_name\":\"Issaquah approach / terminus\"}\n];\nconst facilityConfigs = {\n  \"matthews_beach_bathhouse\": {\n    facility_id: \"matthews_beach_bathhouse\",\n    name: \"Matthews Beach Bathhouse\",\n    agency: \"Seattle Parks and Recreation\",\n    latitude: 47.696373,\n    longitude: -122.273312,\n    source_id: \"08_ROUTE_FACILITIES:SEA-01\",\n    route_section_ids: [\"02_burke_gilman_seattle\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.161,\n    tier: \"publish\",\n    has_water_fill: null,\n    has_water_fill_source: null,\n    notes: null\n  },\n  \"pathways_park\": {\n    facility_id: \"pathways_park\",\n    name: \"Pathways Park\",\n    agency: \"Seattle Parks and Recreation\",\n    latitude: 47.667397,\n    longitude: -122.281052,\n    source_id: \"08_ROUTE_FACILITIES:SEA-01\",\n    route_section_ids: [\"01_uw_u_district\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.096,\n    tier: \"publish\",\n    has_water_fill: null,\n    has_water_fill_source: null,\n    notes: null\n  },\n  \"ravenna_park_lower_sh\": {\n    facility_id: \"ravenna_park_lower_sh\",\n    name: \"Ravenna Park Lower SH\",\n    agency: \"Seattle Parks and Recreation\",\n    latitude: 47.66922,\n    longitude: -122.30292,\n    source_id: \"08_ROUTE_FACILITIES:SEA-01\",\n    route_section_ids: [\"01_uw_u_district\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.363,\n    tier: \"publish\",\n    has_water_fill: null,\n    has_water_fill_source: null,\n    notes: null\n  },\n  \"tracy_owen_station_log_boom_park\": {\n    facility_id: \"tracy_owen_station_log_boom_park\",\n    name: \"Tracy Owen Station / Log Boom Park\",\n    agency: \"City of Kenmore\",\n    latitude: 47.7578094918862,\n    longitude: -122.26519773951055,\n    source_id: \"08_ROUTE_FACILITIES:KC-01\",\n    route_section_ids: [\"03_burke_gilman_north_lake_wa_kenmore\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.022,\n    tier: \"publish\",\n    has_water_fill: null,\n    has_water_fill_source: null,\n    notes: \"Rider-confirmed: \\\"excellent bathroom stop on trail.\\\"\"\n  },\n  \"blyth_park\": {\n    facility_id: \"blyth_park\",\n    name: \"Blyth Park\",\n    agency: \"City of Bothell\",\n    latitude: 47.750530002208684,\n    longitude: -122.208949952467,\n    source_id: \"08_ROUTE_FACILITIES:KC-01\",\n    route_section_ids: [\"04_burke_gilman_connector_bothell\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.136,\n    tier: \"publish\",\n    has_water_fill: null,\n    has_water_fill_source: null,\n    notes: \"Rider-confirmed reachable; \\\"a little off\\\" the Burke-Gilman/Sammamish River Trail line.\"\n  },\n  \"park_at_bothell_landing\": {\n    facility_id: \"park_at_bothell_landing\",\n    name: \"Park at Bothell Landing\",\n    agency: \"City of Bothell\",\n    latitude: 47.75823551892187,\n    longitude: -122.20721796131076,\n    source_id: \"08_ROUTE_FACILITIES:KC-01\",\n    route_section_ids: [\"04_burke_gilman_connector_bothell\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.078,\n    tier: \"publish\",\n    has_water_fill: null,\n    has_water_fill_source: null,\n    notes: \"Rider-confirmed: restrooms near the trail crossing.\"\n  },\n  \"wilmot_gateway_park\": {\n    facility_id: \"wilmot_gateway_park\",\n    name: \"Wilmot Gateway Park\",\n    agency: \"City of Woodinville\",\n    latitude: 47.75342196426706,\n    longitude: -122.16660421621036,\n    source_id: \"08_ROUTE_FACILITIES:KC-01\",\n    route_section_ids: [\"05_sammamish_river_trail_bothell_woodinville\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.016,\n    tier: \"publish\",\n    has_water_fill: null,\n    has_water_fill_source: null,\n    notes: \"Rider-confirmed: \\\"excellent option on the trail.\\\"\"\n  },\n  \"northshore_athletic_fields\": {\n    facility_id: \"northshore_athletic_fields\",\n    name: \"Northshore Athletic Fields\",\n    agency: \"King County Parks and Recreation\",\n    latitude: 47.735,\n    longitude: -122.146,\n    source_id: \"08_ROUTE_FACILITIES:KC-01\",\n    route_section_ids: [\"06_sammamish_river_trail_redmond\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.019,\n    tier: \"publish\",\n    has_water_fill: true,\n    has_water_fill_source: \"Rider testimony (project owner, direct riding experience) - not confirmed by an official source.\",\n    notes: null\n  },\n  \"marymoor_pt2\": {\n    facility_id: \"marymoor_pt2\",\n    name: \"Marymoor Park - Restroom (pt2)\",\n    agency: \"King County Parks and Recreation\",\n    latitude: 47.661,\n    longitude: -122.106,\n    source_id: \"08_ROUTE_FACILITIES:KC-01\",\n    route_section_ids: [\"07_marymoor_park\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.02,\n    tier: \"publish\",\n    has_water_fill: null,\n    has_water_fill_source: null,\n    notes: null\n  },\n  \"marymoor_pt5\": {\n    facility_id: \"marymoor_pt5\",\n    name: \"Marymoor Park - Restroom (pt5)\",\n    agency: \"King County Parks and Recreation\",\n    latitude: 47.664,\n    longitude: -122.126,\n    source_id: \"08_ROUTE_FACILITIES:KC-01\",\n    route_section_ids: [\"07_marymoor_park\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.064,\n    tier: \"publish\",\n    has_water_fill: null,\n    has_water_fill_source: null,\n    notes: null\n  },\n  \"marymoor_pt3\": {\n    facility_id: \"marymoor_pt3\",\n    name: \"Marymoor Park - Restroom (pt3)\",\n    agency: \"King County Parks and Recreation\",\n    latitude: 47.665,\n    longitude: -122.113,\n    source_id: \"08_ROUTE_FACILITIES:KC-01\",\n    route_section_ids: [\"07_marymoor_park\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.116,\n    tier: \"publish\",\n    has_water_fill: null,\n    has_water_fill_source: null,\n    notes: null\n  },\n  \"marymoor_pt4_best_concessions\": {\n    facility_id: \"marymoor_pt4_best_concessions\",\n    name: \"Marymoor Park - Restroom (pt4, best / concessions bldg)\",\n    agency: \"King County Parks and Recreation\",\n    latitude: 47.665,\n    longitude: -122.114,\n    source_id: \"08_ROUTE_FACILITIES:KC-01\",\n    route_section_ids: [\"07_marymoor_park\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.105,\n    tier: \"publish\",\n    has_water_fill: null,\n    has_water_fill_source: null,\n    notes: \"Rider-recommended best restroom in the park - co-located with concessions, near the main ballfields, ~200 yards west of the velodrome (triangulated, see 00_PROJECT_BUILDLOG.md 2026-08-03 21:04:52 UTC).\"\n  },\n  \"marymoor_pt7\": {\n    facility_id: \"marymoor_pt7\",\n    name: \"Marymoor Park - Restroom (pt7)\",\n    agency: \"King County Parks and Recreation\",\n    latitude: 47.665,\n    longitude: -122.121,\n    source_id: \"08_ROUTE_FACILITIES:KC-01\",\n    route_section_ids: [\"07_marymoor_park\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.105,\n    tier: \"publish\",\n    has_water_fill: null,\n    has_water_fill_source: null,\n    notes: null\n  },\n  \"marymoor_pt1\": {\n    facility_id: \"marymoor_pt1\",\n    name: \"Marymoor Park - Restroom (pt1)\",\n    agency: \"King County Parks and Recreation\",\n    latitude: 47.662,\n    longitude: -122.119,\n    source_id: \"08_ROUTE_FACILITIES:KC-01\",\n    route_section_ids: [\"07_marymoor_park\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.229,\n    tier: \"publish\",\n    has_water_fill: null,\n    has_water_fill_source: null,\n    notes: null\n  },\n  \"marymoor_pt6\": {\n    facility_id: \"marymoor_pt6\",\n    name: \"Marymoor Park - Restroom (pt6)\",\n    agency: \"King County Parks and Recreation\",\n    latitude: 47.666,\n    longitude: -122.121,\n    source_id: \"08_ROUTE_FACILITIES:KC-01\",\n    route_section_ids: [\"07_marymoor_park\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.215,\n    tier: \"publish\",\n    has_water_fill: null,\n    has_water_fill_source: null,\n    notes: null\n  },\n  \"marymoor_pt8\": {\n    facility_id: \"marymoor_pt8\",\n    name: \"Marymoor Park - Restroom (pt8)\",\n    agency: \"King County Parks and Recreation\",\n    latitude: 47.663,\n    longitude: -122.117,\n    source_id: \"08_ROUTE_FACILITIES:KC-01\",\n    route_section_ids: [\"07_marymoor_park\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.141,\n    tier: \"publish\",\n    has_water_fill: null,\n    has_water_fill_source: null,\n    notes: null\n  },\n  \"marymoor_pt9\": {\n    facility_id: \"marymoor_pt9\",\n    name: \"Marymoor Park - Restroom (pt9)\",\n    agency: \"King County Parks and Recreation\",\n    latitude: 47.661,\n    longitude: -122.117,\n    source_id: \"08_ROUTE_FACILITIES:KC-01\",\n    route_section_ids: [\"07_marymoor_park\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.349,\n    tier: \"publish\",\n    has_water_fill: null,\n    has_water_fill_source: null,\n    notes: null\n  },\n  \"sixty_acres_park\": {\n    facility_id: \"sixty_acres_park\",\n    name: \"Sixty Acres Park (park access point - reduced confidence)\",\n    agency: \"King County Parks and Recreation (LWYSA-operated)\",\n    latitude: 47.704065,\n    longitude: -122.140898,\n    source_id: \"08_ROUTE_FACILITIES:KC-01-fallback\",\n    route_section_ids: [\"06_sammamish_river_trail_redmond\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.141,\n    tier: \"publish\",\n    has_water_fill: true,\n    has_water_fill_source: \"Rider testimony (project owner, direct riding experience) - not confirmed by an official source.\",\n    notes: \"No official restroom-type GIS record exists for this park; coordinate is the park's official access point, not a building-specific restroom coordinate. Restroom's real-world existence is credible (park confirmation + independent secondary corroboration + rider testimony) but not officially source-confirmed. See 00_PROJECT_BUILDLOG.md 2026-08-03 21:00:14 UTC entry, item 4.\"\n  },\n  \"rhododendron_park\": {\n    facility_id: \"rhododendron_park\",\n    name: \"Rhododendron Park\",\n    agency: \"City of Kenmore\",\n    latitude: 47.751931177043566,\n    longitude: -122.24839166194674,\n    source_id: \"08_ROUTE_FACILITIES:KC-01\",\n    route_section_ids: [\"03_burke_gilman_north_lake_wa_kenmore\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.654,\n    tier: \"exception_review\",\n    has_water_fill: null,\n    has_water_fill_source: null,\n    notes: \"Exceeds the 500m default corridor radius (real computed distance). No rider testimony either confirming or disqualifying practicality. Held at exception-review tier pending project owner review, not silently published or dropped.\"\n  },\n  \"ravenna_park_upper_cs\": {\n    facility_id: \"ravenna_park_upper_cs\",\n    name: \"Ravenna Park Upper CS\",\n    agency: \"Seattle Parks and Recreation\",\n    latitude: 47.671526,\n    longitude: -122.305605,\n    source_id: \"08_ROUTE_FACILITIES:SEA-01\",\n    route_section_ids: [\"01_uw_u_district\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.682,\n    tier: \"exception_review\",\n    has_water_fill: null,\n    has_water_fill_source: null,\n    notes: \"Exceeds the 500m default corridor radius (real computed distance). Officially open per Seattle Parks live feed; not among the rider's confirmed practical trail stops. Held at exception-review tier.\"\n  },\n  \"laurelhurst_playfield\": {\n    facility_id: \"laurelhurst_playfield\",\n    name: \"Laurelhurst Playfield / CC\",\n    agency: \"Seattle Parks and Recreation\",\n    latitude: 47.659076,\n    longitude: -122.277867,\n    source_id: \"08_ROUTE_FACILITIES:SEA-01\",\n    route_section_ids: [\"02_burke_gilman_seattle\"],\n    route_method: 'point_to_route_distance',\n    route_distance_km: 0.768,\n    tier: \"exception_review\",\n    has_water_fill: null,\n    has_water_fill_source: null,\n    notes: \"Exceeds the 500m default corridor radius (real computed distance). Disclosed rider tension: officially open and within the University-Village-to-Kenmore stretch, but not among the rider's named three practical stops. Held at exception-review tier, see 00_PROJECT_BUILDLOG.md 2026-08-03 20:46:25 UTC entry.\"\n  }\n};\nreturn [{\n  json: {\n    schema_version: '1.0.0',\n    connector_id: '08_ROUTE_FACILITIES',\n    connector_name: 'UW-Issaquah Route Facilities Connector',\n    connector_version: 'v0001',\n    lane: '08_ROUTE_FACILITIES',\n    workflow_name: 'v0001.08_RouteFacilitiesConnector',\n    run_id: runId,\n    run_stamp: runStamp,\n    generated_at: now.toISOString(),\n    published_at: null,\n    output_root: '/files/uw-issy-connectors',\n    canonical_gpx: 'data/route/UnivWA-Issaquah.gpx',\n    manifest_ref: {\n      manifest_id: '08_ROUTE_FACILITIES-v0001',\n      schema_version: '1.0.0'\n    },\n    route_sections: routeSections,\n    facility_configs: facilityConfigs,\n    freshness_policy: {\n      sea01_minutes: 1440,\n      kc01_minutes: 1440\n    },\n    route_filter_policy: {\n      default_radius_km: 0.5,\n      exception_path: 'documented reason + true distance shown, no automatic inclusion beyond default radius',\n      geometry_requires_line_buffer_intersection: true\n    },\n    coverage_limitations: [\n      'No coordinate-bearing candidate exists yet for the East Lake Sammamish Trail / Sammamish / Issaquah stretch (route sections 08-10); Sammamish Landing Park, Lake Sammamish State Park, Confluence Park, and Redmond City Hall trailside restroom remain address/map-position-only and are not ingested by this connector version.',\n      'Woodin Creek Park (Woodinville) has a confirmed park but no source that itself states a restroom exists; not ingested.',\n      'King County GIS source (KC-01) has no live open/closed status or hours field of any kind; all KC-01-sourced facilities are structurally status_unknown by source design, not a connector defect.',\n      'Water-refill capability is confirmed only where a source (including direct rider testimony) explicitly states it; all other facilities carry has_water_fill: null (unknown), not false.'\n    ],\n    facility_type: 'restroom'\n  }\n}];\n"
+      }
+    },
+    {
+      "id": "read_lkg",
+      "name": "Read Last Known Good",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        520,
+        60
+      ],
+      "parameters": {
+        "operation": "read",
+        "options": {},
+        "fileSelector": "={{ $('Initialize Run Metadata').first().json.output_root }}/last_known_good/08_ROUTE_FACILITIES/current.json"
+      },
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true
+    },
+    {
+      "id": "parse_lkg",
+      "name": "Parse Last Known Good",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        780,
+        60
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst lkgItem = $input.first();\nlet bySource = {};\nlet byFacility = {};\ntry {\n  const binary = lkgItem.binary && lkgItem.binary.data;\n  if (binary) {\n    const text = Buffer.isBuffer(binary.data) ? binary.data.toString('utf8') : Buffer.from(binary.data, 'base64').toString('utf8');\n    const parsed = JSON.parse(text);\n    for (const obs of (parsed.observations || [])) {\n      if (obs && obs.details && obs.details.facility_id) byFacility[obs.details.facility_id] = obs;\n    }\n    for (const sh of (parsed.source_health || [])) {\n      if (sh && sh.source_id) bySource[sh.source_id] = sh;\n    }\n  }\n} catch (e) {\n  // No usable LKG yet - first run, or LKG file not present. Not an error.\n}\nreturn [{ json: { bySource, byFacility } }];\n"
+      }
+    },
+    {
+      "id": "fetch_sea01",
+      "name": "Fetch SEA-01 Seattle Parks Restrooms Feed",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        260,
+        260
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "=https://services.arcgis.com/ZOyb2t4B0UYuYNYH/arcgis/rest/services/Parks_Restrooms/FeatureServer/0/query?where=1%3D1&outFields=*&f=json&outSR=4326",
+        "responseFormat": "json",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "onError": "continueRegularOutput",
+      "notes": "Full unfiltered Seattle Parks Restrooms FeatureServer feed (outSR=4326). Matched to known facilities by nearest-coordinate, per the Phase 3 lesson: pull the complete dataset, do not query by an assumed landmark-name list."
+    },
+    {
+      "id": "land_sea01",
+      "name": "Land SEA-01 Raw Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        520,
+        260
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch SEA-01 Seattle Parks Restrooms Feed').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyText = typeof body === 'string' ? body : JSON.stringify(body ?? null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyText);\nconst filePath = run.output_root + '/raw/08_ROUTE_FACILITIES/landings/SEA-01_landing_' + run.run_stamp + '.json';\nconst landing = {\n  schema_version: '1.0.0',\n  connector_id: run.connector_id,\n  source_id: \"08_ROUTE_FACILITIES:SEA-01\",\n  source_name: \"Seattle Parks and Recreation - Park Restrooms (live GIS FeatureServer)\",\n  source_url: \"https://services.arcgis.com/ZOyb2t4B0UYuYNYH/arcgis/rest/services/Parks_Restrooms/FeatureServer/0/query?where=1%3D1&outFields=*&f=json&outSR=4326\",\n  retrieved_at: run.generated_at,\n  http_status: statusCode,\n  content_hash: contentHash,\n  body_length: bodyText.length,\n  fetch_status: fetch.error ? 'failed' : 'ok',\n  body: body\n};\nif (fetch.error) landing.error_message = String(fetch.error.message || fetch.error);\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json: { file_path: filePath, source_id: landing.source_id, source_name: landing.source_name, content_hash: contentHash, retrieved_at: run.generated_at, fetch_status: landing.fetch_status, error_message: landing.error_message || null }, binary: { data: binary } }];\n"
+      }
+    },
+    {
+      "id": "write_sea01",
+      "name": "Write SEA-01 Raw Landing",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        780,
+        260
+      ],
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.file_path }}",
+        "dataPropertyName": "data",
+        "options": {}
+      }
+    },
+    {
+      "id": "normalize_sea01",
+      "name": "Normalize SEA-01 Facility Matches",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        260
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch SEA-01 Seattle Parks Restrooms Feed').first().json || {};\nconst landing = $('Land SEA-01 Raw Payload').first().json || {};\nconst lkg = $('Parse Last Known Good').first().json || { byFacility: {} };\nconst liveFailed = !!fetch.error;\nconst raw = fetch.body !== undefined ? fetch.body : fetch;\nconst features = Array.isArray(raw && raw.features) ? raw.features : [];\n\nconst haversineMeters = (lat1, lon1, lat2, lon2) => {\n  const R = 6371000;\n  const toRad = (d) => d * Math.PI / 180;\n  const dLat = toRad(lat2 - lat1);\n  const dLon = toRad(lon2 - lon1);\n  const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;\n  return 2 * R * Math.asin(Math.sqrt(a));\n};\n\nconst MATCH_RADIUS_M = 120;\nconst facilityConfigs = run.facility_configs || {};\nconst seaFacilities = Object.values(facilityConfigs).filter((f) => f.source_id === '08_ROUTE_FACILITIES:SEA-01');\n\nconst mapStatus = (attrs) => {\n  const cs = (attrs.CURRENTSTATUS || '').toString().trim().toUpperCase();\n  if (cs === 'OPEN') return 'open';\n  if (cs === 'CLOSED') return 'closed';\n  return 'status_unknown';\n};\n\nconst observations = [];\nconst matchedIds = [];\nfor (const facility of seaFacilities) {\n  let bestFeature = null;\n  let bestDist = Infinity;\n  for (const feature of features) {\n    const geom = feature.geometry || {};\n    const flat = typeof geom.y === 'number' ? geom.y : null;\n    const flon = typeof geom.x === 'number' ? geom.x : null;\n    if (flat === null || flon === null) continue;\n    const d = haversineMeters(facility.latitude, facility.longitude, flat, flon);\n    if (d < bestDist) { bestDist = d; bestFeature = feature; }\n  }\n  const matched = bestFeature && bestDist <= MATCH_RADIUS_M && !liveFailed;\n  const attrs = matched ? (bestFeature.attributes || {}) : {};\n  if (matched) matchedIds.push(facility.facility_id);\n  const lkgObs = (lkg.byFacility || {})[facility.facility_id];\n  const status = matched ? mapStatus(attrs) : (lkgObs ? lkgObs.details.status : 'status_unknown');\n  observations.push({\n    observation_id: '08_ROUTE_FACILITIES:' + facility.facility_id,\n    observation_type: 'route_facility',\n    title: facility.name,\n    summary: facility.name + ' - ' + status + (facility.tier === 'exception_review' ? ' (exception-review tier: exceeds default 500m corridor radius)' : ''),\n    source_id: facility.source_id,\n    observed_at: run.generated_at,\n    route_section_ids: facility.route_section_ids,\n    details: {\n      facility_id: facility.facility_id,\n      facility_type: 'restroom',\n      agency: facility.agency,\n      status: status,\n      status_fields_raw: matched ? {\n        CURRENTSTATUS: attrs.CURRENTSTATUS ?? null,\n        OPENTOPUBLIC: attrs.OPENTOPUBLIC ?? null,\n        SEASON: attrs.SEASON ?? null,\n        HOURS: attrs.HOURS ?? null,\n        RSNCLOSED: attrs.RSNCLOSED ?? null,\n        DAILYLOCKSTATUS: attrs.DAILYLOCKSTATUS ?? null\n      } : null,\n      has_water_fill: facility.has_water_fill,\n      has_water_fill_source: facility.has_water_fill_source,\n      tier: facility.tier,\n      coordinates: { latitude: facility.latitude, longitude: facility.longitude },\n      route_relevance: {\n        method: facility.route_method,\n        distance_km: facility.route_distance_km,\n        confidence: 'high',\n        reason: facility.tier === 'publish'\n          ? 'Real point-to-route-polyline distance computed against public/routes/UnivWA-Issaquah.geojson; within the 500m default corridor radius.'\n          : 'Real point-to-route-polyline distance computed against public/routes/UnivWA-Issaquah.geojson; exceeds the 500m default corridor radius, no exception basis recorded - held at exception-review tier per the task\\'s documented exception path.'\n      },\n      notes: facility.notes,\n      live_match_found: matched,\n      live_match_distance_m: matched ? Math.round(bestDist) : null,\n      used_last_known_good: !matched && !!lkgObs\n    }\n  });\n}\n\nconst sourceHealth = {\n  schema_version: '1.0.0',\n  connector_id: run.connector_id,\n  source_id: '08_ROUTE_FACILITIES:SEA-01',\n  source_name: 'Seattle Parks and Recreation - Park Restrooms (live GIS FeatureServer)',\n  status: liveFailed ? 'failed' : (features.length ? 'ok' : 'empty_but_valid'),\n  retrieved_at: run.generated_at,\n  stale_after_minutes: run.freshness_policy.sea01_minutes,\n  record_count: features.length,\n  http_status: fetch.statusCode ?? fetch.status ?? null,\n  last_observation_at: run.generated_at,\n  warnings: matchedIds.length < seaFacilities.length ? ['Matched ' + matchedIds.length + ' of ' + seaFacilities.length + ' configured SEA-01 facilities within ' + MATCH_RADIUS_M + 'm this run; unmatched facilities fell back to last-known-good status or status_unknown.'] : [],\n  errors: liveFailed ? [String(fetch.error.message || fetch.error)] : []\n};\n\nreturn [{\n  json: {\n    source_id: '08_ROUTE_FACILITIES:SEA-01',\n    source_health: sourceHealth,\n    observations,\n    raw_landing_path: landing.file_path || null\n  }\n}];\n"
+      }
+    },
+    {
+      "id": "fetch_kc01",
+      "name": "Fetch KC-01 King County Facilities Restrooms",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        260,
+        460
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "=https://gismaps.kingcounty.gov/arcgis/rest/services/Parks/KingCo_ParksAndTrails/MapServer/3/query?where=F_Type+LIKE+%27%25Restroom%25%27&outFields=*&f=json&outSR=4326",
+        "responseFormat": "json",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "onError": "continueRegularOutput",
+      "notes": "King County KingCo_ParksAndTrails Facilities layer (Layer 3), filtered server-side to F_Type LIKE '%Restroom%', outSR=4326. Layer 2 ('Restroom') errors server-side; Layer 3 is the confirmed-working equivalent, per Phase 3 research."
+    },
+    {
+      "id": "land_kc01",
+      "name": "Land KC-01 Raw Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        520,
+        460
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch KC-01 King County Facilities Restrooms').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyText = typeof body === 'string' ? body : JSON.stringify(body ?? null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyText);\nconst filePath = run.output_root + '/raw/08_ROUTE_FACILITIES/landings/KC-01_landing_' + run.run_stamp + '.json';\nconst landing = {\n  schema_version: '1.0.0',\n  connector_id: run.connector_id,\n  source_id: \"08_ROUTE_FACILITIES:KC-01\",\n  source_name: \"King County DNRP Parks - KingCo_ParksAndTrails Facilities layer (F_Type=Restroom)\",\n  source_url: \"https://gismaps.kingcounty.gov/arcgis/rest/services/Parks/KingCo_ParksAndTrails/MapServer/3/query?where=F_Type+LIKE+%27%25Restroom%25%27&outFields=*&f=json&outSR=4326\",\n  retrieved_at: run.generated_at,\n  http_status: statusCode,\n  content_hash: contentHash,\n  body_length: bodyText.length,\n  fetch_status: fetch.error ? 'failed' : 'ok',\n  body: body\n};\nif (fetch.error) landing.error_message = String(fetch.error.message || fetch.error);\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json: { file_path: filePath, source_id: landing.source_id, source_name: landing.source_name, content_hash: contentHash, retrieved_at: run.generated_at, fetch_status: landing.fetch_status, error_message: landing.error_message || null }, binary: { data: binary } }];\n"
+      }
+    },
+    {
+      "id": "write_kc01",
+      "name": "Write KC-01 Raw Landing",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        780,
+        460
+      ],
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.file_path }}",
+        "dataPropertyName": "data",
+        "options": {}
+      }
+    },
+    {
+      "id": "normalize_kc01",
+      "name": "Normalize KC-01 Facility Matches",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        460
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch KC-01 King County Facilities Restrooms').first().json || {};\nconst landing = $('Land KC-01 Raw Payload').first().json || {};\nconst lkg = $('Parse Last Known Good').first().json || { byFacility: {} };\nconst liveFailed = !!fetch.error;\nconst raw = fetch.body !== undefined ? fetch.body : fetch;\nconst features = Array.isArray(raw && raw.features) ? raw.features : [];\n\nconst haversineMeters = (lat1, lon1, lat2, lon2) => {\n  const R = 6371000;\n  const toRad = (d) => d * Math.PI / 180;\n  const dLat = toRad(lat2 - lat1);\n  const dLon = toRad(lon2 - lon1);\n  const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;\n  return 2 * R * Math.asin(Math.sqrt(a));\n};\n\nconst MATCH_RADIUS_M = 120;\nconst facilityConfigs = run.facility_configs || {};\nconst kcFacilities = Object.values(facilityConfigs).filter((f) => f.source_id === '08_ROUTE_FACILITIES:KC-01');\n\nconst observations = [];\nconst matchedIds = [];\nfor (const facility of kcFacilities) {\n  let bestFeature = null;\n  let bestDist = Infinity;\n  for (const feature of features) {\n    const geom = feature.geometry || {};\n    const flat = typeof geom.y === 'number' ? geom.y : null;\n    const flon = typeof geom.x === 'number' ? geom.x : null;\n    if (flat === null || flon === null) continue;\n    const d = haversineMeters(facility.latitude, facility.longitude, flat, flon);\n    if (d < bestDist) { bestDist = d; bestFeature = feature; }\n  }\n  const matched = bestFeature && bestDist <= MATCH_RADIUS_M && !liveFailed;\n  const attrs = matched ? (bestFeature.attributes || {}) : {};\n  if (matched) matchedIds.push(facility.facility_id);\n  observations.push({\n    observation_id: '08_ROUTE_FACILITIES:' + facility.facility_id,\n    observation_type: 'route_facility',\n    title: facility.name,\n    summary: facility.name + ' - status_unknown (source has no live open/closed or hours field)' + (facility.tier === 'exception_review' ? ' (exception-review tier: exceeds default 500m corridor radius)' : ''),\n    source_id: facility.source_id,\n    observed_at: run.generated_at,\n    route_section_ids: facility.route_section_ids,\n    details: {\n      facility_id: facility.facility_id,\n      facility_type: 'restroom',\n      agency: facility.agency,\n      status: 'status_unknown',\n      status_fields_raw: matched ? { F_Name: attrs.F_Name ?? null, F_Type: attrs.F_Type ?? null, SiteName: attrs.SiteName ?? null, Owner: attrs.Owner ?? null } : null,\n      status_reason: 'King County GIS Facilities layer (KC-01) carries no open/closed/hours field of any kind for any facility type - this is a real source limitation, not a connector defect.',\n      has_water_fill: facility.has_water_fill,\n      has_water_fill_source: facility.has_water_fill_source,\n      tier: facility.tier,\n      coordinates: { latitude: facility.latitude, longitude: facility.longitude },\n      route_relevance: {\n        method: facility.route_method,\n        distance_km: facility.route_distance_km,\n        confidence: facility.source_id.endsWith('fallback') ? 'medium' : 'high',\n        reason: facility.tier === 'publish'\n          ? 'Real point-to-route-polyline distance computed against public/routes/UnivWA-Issaquah.geojson; within the 500m default corridor radius.'\n          : 'Real point-to-route-polyline distance computed against public/routes/UnivWA-Issaquah.geojson; exceeds the 500m default corridor radius, no exception basis recorded - held at exception-review tier per the task\\'s documented exception path.'\n      },\n      notes: facility.notes,\n      live_match_found: matched,\n      live_match_distance_m: matched ? Math.round(bestDist) : null,\n      used_last_known_good: false\n    }\n  });\n}\n\nconst sourceHealth = {\n  schema_version: '1.0.0',\n  connector_id: run.connector_id,\n  source_id: '08_ROUTE_FACILITIES:KC-01',\n  source_name: 'King County DNRP Parks - KingCo_ParksAndTrails Facilities layer (F_Type=Restroom)',\n  status: liveFailed ? 'failed' : (features.length ? 'ok' : 'empty_but_valid'),\n  retrieved_at: run.generated_at,\n  stale_after_minutes: run.freshness_policy.kc01_minutes,\n  record_count: features.length,\n  http_status: fetch.statusCode ?? fetch.status ?? null,\n  last_observation_at: run.generated_at,\n  warnings: matchedIds.length < kcFacilities.length ? ['Matched ' + matchedIds.length + ' of ' + kcFacilities.length + ' configured KC-01 facilities within ' + MATCH_RADIUS_M + 'm this run (Sixty Acres Park is expected to structurally never match - it uses a park-access-point fallback coordinate, not a restroom-type GIS record).'] : [],\n  errors: liveFailed ? [String(fetch.error.message || fetch.error)] : []\n};\n\nreturn [{\n  json: {\n    source_id: '08_ROUTE_FACILITIES:KC-01',\n    source_health: sourceHealth,\n    observations,\n    raw_landing_path: landing.file_path || null\n  }\n}];\n"
+      }
+    },
+    {
+      "id": "merge_normalized",
+      "name": "Merge Normalized Branches",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        1300,
+        360
+      ],
+      "parameters": {
+        "numberInputs": 2
+      }
+    },
+    {
+      "id": "aggregate",
+      "name": "Aggregate Normalized Branches",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        360
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst run = $('Initialize Run Metadata').first().json;\nconst inputs = $input.all().map(item => item.json || {});\nconst observations = inputs.flatMap(item => Array.isArray(item.observations) ? item.observations : []);\nconst sourceHealth = inputs.map(item => item.source_health).filter(Boolean);\nconst sourceIds = inputs.map(item => item.source_id).filter(Boolean);\nconst sourcePayloadRefs = inputs.map(item => item.raw_landing_path).filter(Boolean);\nreturn [{\n  json: {\n    schema_version: run.schema_version,\n    connector_id: run.connector_id,\n    connector_name: run.connector_name,\n    connector_version: run.connector_version,\n    lane: run.lane,\n    run_id: run.run_id,\n    run_stamp: run.run_stamp,\n    generated_at: run.generated_at,\n    published_at: null,\n    output_root: run.output_root,\n    canonical_gpx: run.canonical_gpx,\n    manifest_ref: run.manifest_ref,\n    route_sections: run.route_sections,\n    coverage_limitations: run.coverage_limitations,\n    source_health: sourceHealth,\n    events: [],\n    observations: observations,\n    provenance: {\n      source_ids_used: sourceIds,\n      route_gpx_ref: run.canonical_gpx,\n      source_payload_refs: sourcePayloadRefs,\n      normalization_notes: ['Facilities are never emitted as events[] - route_facility observations only, per the hard project rule that restroom/facility status must never be represented as a route-alert class.']\n    }\n  }\n}];\n"
+      }
+    },
+    {
+      "id": "dedupe",
+      "name": "Deduplicate Observations",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1820,
+        360
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst input = $input.first().json;\nconst seen = new Map();\nconst deduplicatedObservations = [];\nconst duplicateObservations = [];\nfor (const observation of input.observations || []) {\n  const key = observation.observation_id;\n  if (seen.has(key)) { duplicateObservations.push(observation); continue; }\n  seen.set(key, true);\n  deduplicatedObservations.push(observation);\n}\nreturn [{ json: { ...input, observations_before_dedup: (input.observations || []).length, deduplicated_events: [], deduplicated_observations: deduplicatedObservations, duplicate_observations: duplicateObservations, dedup_valid: duplicateObservations.length === 0 } }];\n"
+      }
+    },
+    {
+      "id": "rollups",
+      "name": "Build Route Sections Rollups",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2080,
+        360
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst input = $input.first().json;\nconst sectionMap = {};\nfor (const section of input.route_sections || []) {\n  sectionMap[section.route_section_id] = { ...section, status: 'no_facilities', event_ids: [], observation_ids: [], updated_at: input.generated_at };\n}\nfor (const obs of input.deduplicated_observations || []) {\n  for (const sectionId of (obs.route_section_ids || [])) {\n    const section = sectionMap[sectionId];\n    if (!section) continue;\n    section.updated_at = input.generated_at;\n    section.observation_ids.push(obs.observation_id);\n    section.status = obs.details.tier === 'publish' ? 'facilities_present' : 'facilities_present_exception_review';\n  }\n}\nreturn [{ json: { ...input, route_sections: Object.values(sectionMap) } }];\n"
+      }
+    },
+    {
+      "id": "validate",
+      "name": "Validate Candidate Envelope",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2340,
+        360
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst input = $input.first().json;\nconst errors = [];\nconst warnings = [];\nconst requiredRootFields = ['schema_version', 'connector_id', 'connector_name', 'connector_version', 'lane', 'run_id', 'generated_at', 'output_root', 'canonical_gpx', 'manifest_ref'];\nfor (const field of requiredRootFields) {\n  if (!(field in input) || input[field] === null || input[field] === undefined || input[field] === '') errors.push('Missing required root field: ' + field);\n}\nif (!Array.isArray(input.source_health)) errors.push('source_health must be an array');\nif (!Array.isArray(input.deduplicated_observations)) errors.push('deduplicated_observations must be an array');\nif (!Array.isArray(input.route_sections)) errors.push('route_sections must be an array');\nconst allowedSourceStatuses = ['ok', 'degraded', 'failed', 'stale', 'blocked', 'not_run', 'skipped_as_not_due', 'empty_but_valid', 'using_last_known_good'];\nconst allowedFacilityStatuses = ['open', 'closed', 'seasonal', 'hours_unknown', 'status_unknown'];\nconst allowedTiers = ['publish', 'exception_review'];\nfor (const obs of input.deduplicated_observations || []) {\n  const fields = ['observation_id', 'observation_type', 'title', 'summary', 'source_id', 'observed_at', 'route_section_ids', 'details'];\n  for (const field of fields) {\n    if (!(field in obs) || obs[field] === null || obs[field] === undefined || obs[field] === '') {\n      errors.push('Observation missing required field: ' + field + ' (' + (obs.observation_id || 'unknown') + ')');\n    }\n  }\n  if (obs.observation_type !== 'route_facility') errors.push('Invalid observation_type for lane 08: ' + obs.observation_type + ' (' + obs.observation_id + ')');\n  const details = obs.details || {};\n  if (details.facility_type !== 'restroom') errors.push('Invalid facility_type: ' + details.facility_type + ' (' + obs.observation_id + ')');\n  if (!allowedFacilityStatuses.includes(details.status)) errors.push('Invalid facility status: ' + details.status + ' (' + obs.observation_id + ')');\n  if (!allowedTiers.includes(details.tier)) errors.push('Invalid tier: ' + details.tier + ' (' + obs.observation_id + ')');\n  if (typeof details.has_water_fill !== 'boolean' && details.has_water_fill !== null) errors.push('has_water_fill must be true, false, or null: ' + obs.observation_id);\n  if (!details.coordinates || typeof details.coordinates.latitude !== 'number' || typeof details.coordinates.longitude !== 'number') errors.push('Missing or invalid coordinates: ' + obs.observation_id);\n  if (!details.route_relevance || typeof details.route_relevance.distance_km !== 'number') errors.push('Missing route_relevance.distance_km: ' + obs.observation_id);\n}\nfor (const source of input.source_health || []) {\n  const fields = ['schema_version', 'connector_id', 'source_id', 'source_name', 'status', 'retrieved_at', 'stale_after_minutes', 'record_count', 'http_status', 'last_observation_at', 'warnings', 'errors'];\n  for (const field of fields) {\n    if (!(field in source) || source[field] === undefined) errors.push('Source health missing field: ' + field + ' (' + (source.source_id || 'unknown') + ')');\n  }\n  if (source.status && !allowedSourceStatuses.includes(source.status)) errors.push('Invalid source health status: ' + source.status + ' (' + (source.source_id || 'unknown') + ')');\n}\nconst candidateValidationPassed = errors.length === 0;\nif (!candidateValidationPassed) warnings.push('Validation failed; candidate will be quarantined and published output suppressed.');\nreturn [{ json: { ...input, validation_errors: errors, validation_warnings: warnings, candidate_validation_passed: candidateValidationPassed, validator_version: '1.0.0' } }];\n"
+      }
+    },
+    {
+      "id": "build_candidate",
+      "name": "Build Candidate Artifact",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2600,
+        360
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst input = $input.first().json;\nconst sourceStatuses = (input.source_health || []).map(source => source.status);\nconst anyFailed = sourceStatuses.some(status => status === 'failed');\nconst anyStale = sourceStatuses.some(status => status === 'stale' || status === 'using_last_known_good');\nconst anyLkg = (input.deduplicated_observations || []).some(o => o.details && o.details.used_last_known_good);\nconst allFailed = sourceStatuses.length > 0 && sourceStatuses.every(status => status === 'failed');\nconst hasObservations = (input.deduplicated_observations || []).length > 0;\nlet dataStatus = 'ok';\nif (!input.candidate_validation_passed) dataStatus = 'failed_validation'; else if (allFailed) dataStatus = 'failed_fetch'; else if (!hasObservations) dataStatus = 'no_relevant_events'; else if (anyFailed || anyLkg) dataStatus = 'degraded';\nconst freshnessState = allFailed ? 'unknown' : (anyFailed || anyLkg ? 'stale' : 'fresh');\nconst staleSourceIds = (input.source_health || []).filter(source => source.status === 'stale' || source.status === 'using_last_known_good' || source.status === 'failed').map(source => source.source_id);\nconst candidateEnvelope = {\n  schema_version: input.schema_version,\n  connector_id: input.connector_id,\n  connector_name: input.connector_name,\n  connector_version: input.connector_version,\n  lane: input.lane,\n  run_id: input.run_id,\n  generated_at: input.generated_at,\n  published_at: null,\n  data_status: dataStatus,\n  freshness: {\n    overall_state: freshnessState,\n    computed_at: input.generated_at,\n    oldest_relevant_source_age_minutes: 0,\n    stale_source_ids: staleSourceIds\n  },\n  manifest_ref: input.manifest_ref,\n  source_health: input.source_health || [],\n  connector_health: {\n    schema_version: '1.0.0',\n    connector_id: input.connector_id,\n    status: input.candidate_validation_passed ? (anyFailed ? 'degraded' : 'ok') : 'failed',\n    failed_stage: input.candidate_validation_passed ? null : 'validation',\n    warning_count: (input.validation_warnings || []).length,\n    error_count: (input.validation_errors || []).length,\n    used_last_known_good: anyLkg,\n    candidate_written: true,\n    published_written: false\n  },\n  events: [],\n  observations: input.deduplicated_observations || [],\n  route_sections: input.route_sections || [],\n  provenance: {\n    source_ids_used: (input.source_health || []).map(source => source.source_id),\n    route_gpx_ref: input.canonical_gpx,\n    source_payload_refs: [],\n    normalization_notes: input.validation_warnings || []\n  },\n  validation_state: {\n    schema_valid: input.candidate_validation_passed,\n    freshness_valid: freshnessState !== 'unknown',\n    dedup_valid: input.dedup_valid !== false,\n    candidate_validation_passed: input.candidate_validation_passed,\n    published_from_candidate: false,\n    validator_version: input.validator_version || '1.0.0'\n  },\n  metadata: {\n    coverage_limitations: input.coverage_limitations || [],\n    facility_type: 'restroom',\n    publish_tier_count: (input.deduplicated_observations || []).filter(o => o.details.tier === 'publish').length,\n    exception_review_tier_count: (input.deduplicated_observations || []).filter(o => o.details.tier === 'exception_review').length\n  }\n};\nconst normalizedPath = input.output_root + '/normalized/08_ROUTE_FACILITIES/08_ROUTE_FACILITIES_normalized_output_' + input.run_stamp + '.json';\nconst candidatePath = input.output_root + '/candidate/08_ROUTE_FACILITIES/08_ROUTE_FACILITIES_candidate_' + input.run_stamp + '.json';\nconst buffer1 = Buffer.from(JSON.stringify(candidateEnvelope, null, 2), 'utf8');\nconst buffer2 = Buffer.from(JSON.stringify(candidateEnvelope, null, 2), 'utf8');\nconst bin1 = await this.helpers.prepareBinaryData(buffer1, normalizedPath.split('/').pop(), 'application/json');\nconst bin2 = await this.helpers.prepareBinaryData(buffer2, candidatePath.split('/').pop(), 'application/json');\nreturn [\n  { json: { file_path: normalizedPath, file_name: normalizedPath.split('/').pop(), artifact_type: 'normalized', candidate_envelope: candidateEnvelope }, binary: { data: bin1 } },\n  { json: { file_path: candidatePath, file_name: candidatePath.split('/').pop(), artifact_type: 'candidate', candidate_envelope: candidateEnvelope }, binary: { data: bin2 } }\n];\n"
+      }
+    },
+    {
+      "id": "write_candidate",
+      "name": "Write Candidate Artifact",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        2860,
+        360
+      ],
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.file_path }}",
+        "dataPropertyName": "data",
+        "options": {}
+      }
+    },
+    {
+      "id": "publish_gate",
+      "name": "Publish Gate Decision",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3120,
+        360
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst candidate = $('Build Candidate Artifact').first().json.candidate_envelope;\nconst validation = $('Validate Candidate Envelope').first().json;\nconst shouldPublish = !!validation.candidate_validation_passed;\nconst reason = shouldPublish ? 'Validation passed' : 'Validation failed: ' + (validation.validation_errors || []).join('; ');\nreturn [{ json: { should_publish: shouldPublish, reason, candidate_envelope: candidate, validation_errors: validation.validation_errors || [], validation_warnings: validation.validation_warnings || [], run_id: validation.run_id, run_stamp: validation.run_stamp, output_root: validation.output_root, connector_id: validation.connector_id, connector_name: validation.connector_name, connector_version: validation.connector_version, lane: validation.lane, generated_at: validation.generated_at, source_health: validation.source_health || [], deduplicated_observations: validation.deduplicated_observations || [], route_sections: validation.route_sections || [] } }];\n"
+      }
+    },
+    {
+      "id": "build_final",
+      "name": "Build Final Artifact Bundle",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3380,
+        360
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst hashString = (input) => { let hash = 2166136261; for (let i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst gate = $input.first().json;\nconst candidateEnvelope = gate.candidate_envelope || $('Build Candidate Artifact').first().json.candidate_envelope;\nconst runStamp = gate.run_stamp || candidateEnvelope.generated_at.replace(/[-:]/g, '').replace(/\\.\\d{3}Z$/, 'Z');\nconst now = new Date().toISOString();\nconst outputRoot = gate.output_root || '/files/uw-issy-connectors';\nconst runId = gate.run_id || candidateEnvelope.run_id;\nconst publishedPath = outputRoot + '/published/08_ROUTE_FACILITIES/08_ROUTE_FACILITIES_published_' + runStamp + '.json';\nconst publishedCurrentPath = outputRoot + '/published/08_ROUTE_FACILITIES/current.json';\nconst lkgCurrentPath = outputRoot + '/last_known_good/08_ROUTE_FACILITIES/current.json';\nconst lkgArchivePath = outputRoot + '/last_known_good/08_ROUTE_FACILITIES/archive/' + runStamp + '.json';\nconst validationLogPath = outputRoot + '/logs/08_ROUTE_FACILITIES/validation_log_' + runStamp + '.jsonl';\nconst statusPath = outputRoot + '/health/08_ROUTE_FACILITIES/status.json';\nconst statusArchivePath = outputRoot + '/health/08_ROUTE_FACILITIES/status_' + runStamp + '.json';\nconst executionEvidencePath = outputRoot + '/health/08_ROUTE_FACILITIES/execution_evidence_' + runStamp + '.json';\nconst handoffPath = outputRoot + '/handoff/08_ROUTE_FACILITIES/08_ROUTE_FACILITIES_handoff_' + runStamp + '.json';\nconst quarantinePath = outputRoot + '/health/08_ROUTE_FACILITIES/quarantine_' + runStamp + '.json';\nconst validationErrors = gate.validation_errors || [];\nconst validationWarnings = gate.validation_warnings || [];\nconst sourceHealth = gate.source_health || [];\nconst sourceStatuses = sourceHealth.map(source => source.status);\nconst anyFailed = sourceStatuses.some(status => status === 'failed');\nconst allFailed = sourceHealth.length > 0 && sourceStatuses.every(status => status === 'failed');\nconst hasObservations = (gate.deduplicated_observations || []).length > 0;\nconst publishedArtifactRef = gate.should_publish ? publishedPath : null;\nconst statusValue = gate.should_publish ? (anyFailed ? 'degraded' : 'ok') : 'failed';\nlet dataStatus = 'ok';\nif (allFailed) dataStatus = 'failed_fetch'; else if (!hasObservations) dataStatus = 'no_relevant_events'; else if (anyFailed) dataStatus = 'degraded';\nconst publishedEnvelope = gate.should_publish ? {\n  ...candidateEnvelope,\n  published_at: now,\n  data_status: dataStatus,\n  connector_health: { ...candidateEnvelope.connector_health, status: anyFailed ? 'degraded' : 'ok', failed_stage: null, candidate_written: true, published_written: true },\n  validation_state: { ...candidateEnvelope.validation_state, candidate_validation_passed: true, published_from_candidate: true },\n  freshness: { ...candidateEnvelope.freshness, overall_state: anyFailed ? 'stale' : 'fresh', computed_at: now }\n} : null;\nconst statusDoc = {\n  lane_id: '08_ROUTE_FACILITIES',\n  last_fetch_at: gate.generated_at || candidateEnvelope.generated_at,\n  last_success_at: gate.should_publish ? now : null,\n  status: statusValue,\n  source_health: sourceHealth,\n  error_messages: validationErrors,\n  stale_data_fields: [],\n  published_artifact_ref: publishedArtifactRef,\n  last_known_good_ref: lkgCurrentPath\n};\nconst handoffDoc = {\n  schema_version: '1.0.0',\n  connector_id: gate.connector_id,\n  lane: gate.lane || candidateEnvelope.lane,\n  run_id: runId,\n  handoff_generated_at: now,\n  connector_output_path: gate.should_publish ? publishedPath : quarantinePath,\n  manifest_path: '/files/uw-issy-connectors/manifests/08_ROUTE_FACILITIES/08_ROUTE_FACILITIES_manifest_v0001.json',\n  validation_result_path: statusPath,\n  execution_evidence_path: executionEvidencePath,\n  publication_status: gate.should_publish ? 'published' : 'quarantined',\n  data_status: gate.should_publish ? dataStatus : candidateEnvelope.data_status,\n  uses_last_known_good: (gate.deduplicated_observations || []).some(o => o.details && o.details.used_last_known_good),\n  schema_compatible_with_workflow_20: !!gate.should_publish,\n  source_ids_used: (gate.source_health || []).map(source => source.source_id),\n  route_sections: gate.route_sections || []\n};\nconst evidencePayload = {\n  schema_version: '1.0.0',\n  connector_id: gate.connector_id,\n  run_id: runId,\n  workflow_name: 'v0001.08_RouteFacilitiesConnector',\n  workflow_internal_id: 'pending_n8n_id',\n  execution_id: 'pending_n8n_execution_id',\n  connector_version: gate.connector_version || 'v0001',\n  started_at: candidateEnvelope.generated_at,\n  finished_at: now,\n  result: gate.should_publish ? 'success' : 'failed',\n  artifacts: [],\n  promotion_scope: gate.should_publish ? 'candidate_and_published' : 'none',\n  candidate_generated: true,\n  published_generated: !!gate.should_publish\n};\nconst makeBinaryItem = async (filePath, payload, artifactType, mime = 'application/json') => {\n  const text = typeof payload === 'string' ? payload : JSON.stringify(payload, null, 2);\n  const buffer = Buffer.from(text, 'utf8');\n  const binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), mime);\n  return { json: { file_path: filePath, file_name: filePath.split('/').pop(), artifact_type: artifactType, content_hash: 'hash_' + hashString(text) }, binary: { data: binary } };\n};\nconst files = [];\nif (gate.should_publish && publishedEnvelope) {\n  const publishedText = JSON.stringify(publishedEnvelope, null, 2);\n  const publishedHash = 'hash_' + hashString(publishedText);\n  evidencePayload.artifacts.push({ path: publishedPath, sha256: publishedHash });\n  evidencePayload.artifacts.push({ path: publishedCurrentPath, sha256: publishedHash });\n  evidencePayload.artifacts.push({ path: lkgCurrentPath, sha256: publishedHash });\n  evidencePayload.artifacts.push({ path: lkgArchivePath, sha256: publishedHash });\n  files.push(await makeBinaryItem(publishedPath, publishedEnvelope, 'published'));\n  files.push(await makeBinaryItem(publishedCurrentPath, { run_id: runId, artifact: publishedPath }, 'published_current'));\n  files.push(await makeBinaryItem(lkgCurrentPath, publishedEnvelope, 'last_known_good_current'));\n  files.push(await makeBinaryItem(lkgArchivePath, publishedEnvelope, 'last_known_good_archive'));\n  files.push(await makeBinaryItem(statusPath, statusDoc, 'status'));\n  files.push(await makeBinaryItem(statusArchivePath, statusDoc, 'status_archive'));\n} else {\n  const quarantineEnvelope = { run_id: runId, reason: gate.reason, validation_errors: validationErrors, validation_warnings: validationWarnings, candidate_envelope: candidateEnvelope };\n  evidencePayload.artifacts.push({ path: quarantinePath, sha256: 'hash_' + hashString(JSON.stringify(quarantineEnvelope, null, 2)) });\n  files.push(await makeBinaryItem(quarantinePath, quarantineEnvelope, 'quarantine'));\n  files.push(await makeBinaryItem(statusPath, statusDoc, 'status'));\n  files.push(await makeBinaryItem(statusArchivePath, statusDoc, 'status_archive'));\n}\nconst validationLogLines = [];\nfor (const source of sourceHealth) {\n  validationLogLines.push(JSON.stringify({ source_id: source.source_id, check_name: 'source_health', pass_fail: source.status === 'failed' ? 'fail' : 'pass', message: source.status + ' / ' + source.record_count + ' record(s)', timestamp: gate.generated_at || candidateEnvelope.generated_at }));\n}\nvalidationLogLines.push(JSON.stringify({ source_id: 'CONNECTOR', check_name: 'candidate_schema', pass_fail: gate.should_publish ? 'pass' : 'fail', message: gate.should_publish ? 'Candidate passed validation.' : (validationErrors.join('; ') || 'Validation failed.'), timestamp: gate.generated_at || candidateEnvelope.generated_at }));\nvalidationLogLines.push(JSON.stringify({ source_id: 'CONNECTOR', check_name: 'publish_gate', pass_fail: gate.should_publish ? 'pass' : 'fail', message: gate.should_publish ? 'Candidate promoted to published.' : gate.reason, timestamp: now }));\nfiles.push(await makeBinaryItem(validationLogPath, validationLogLines.join('\\n'), 'validation_log', 'text/plain'));\nfiles.push(await makeBinaryItem(executionEvidencePath, evidencePayload, 'execution_evidence'));\nfiles.push(await makeBinaryItem(handoffPath, handoffDoc, 'handoff'));\nreturn files;\n"
+      }
+    },
+    {
+      "id": "write_final",
+      "name": "Write Final Artifacts",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        3640,
+        360
+      ],
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.file_path }}",
+        "dataPropertyName": "data",
+        "options": {}
+      }
+    },
+    {
+      "id": "final_status",
+      "name": "Final Status Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3900,
+        360
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "\nconst gate = $('Publish Gate Decision').first().json;\nconst bundleItems = $('Build Final Artifact Bundle').all();\nconst candidate = $('Build Candidate Artifact').first().json.candidate_envelope;\nreturn [{ json: {\n  run_id: gate.run_id || candidate.run_id,\n  status: gate.should_publish ? 'PASSED' : 'FAILED',\n  candidate_written: true,\n  published_written: !!gate.should_publish,\n  quarantine_written: !gate.should_publish,\n  validation_log_written: true,\n  status_written: true,\n  handoff_written: true,\n  execution_evidence_written: true,\n  artifact_count_written: bundleItems.length,\n  publish_tier_count: candidate.metadata.publish_tier_count,\n  exception_review_tier_count: candidate.metadata.exception_review_tier_count,\n  timestamp: candidate.generated_at\n} }];\n"
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Initialize Run Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Initialize Run Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Initialize Run Metadata": {
+      "main": [
+        [
+          {
+            "node": "Read Last Known Good",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch SEA-01 Seattle Parks Restrooms Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch KC-01 King County Facilities Restrooms",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Last Known Good": {
+      "main": [
+        [
+          {
+            "node": "Parse Last Known Good",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Last Known Good": {
+      "main": [
+        []
+      ]
+    },
+    "Fetch SEA-01 Seattle Parks Restrooms Feed": {
+      "main": [
+        [
+          {
+            "node": "Land SEA-01 Raw Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Land SEA-01 Raw Payload": {
+      "main": [
+        [
+          {
+            "node": "Write SEA-01 Raw Landing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write SEA-01 Raw Landing": {
+      "main": [
+        [
+          {
+            "node": "Normalize SEA-01 Facility Matches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize SEA-01 Facility Matches": {
+      "main": [
+        [
+          {
+            "node": "Merge Normalized Branches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch KC-01 King County Facilities Restrooms": {
+      "main": [
+        [
+          {
+            "node": "Land KC-01 Raw Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Land KC-01 Raw Payload": {
+      "main": [
+        [
+          {
+            "node": "Write KC-01 Raw Landing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write KC-01 Raw Landing": {
+      "main": [
+        [
+          {
+            "node": "Normalize KC-01 Facility Matches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize KC-01 Facility Matches": {
+      "main": [
+        [
+          {
+            "node": "Merge Normalized Branches",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Normalized Branches": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Normalized Branches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Normalized Branches": {
+      "main": [
+        [
+          {
+            "node": "Deduplicate Observations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deduplicate Observations": {
+      "main": [
+        [
+          {
+            "node": "Build Route Sections Rollups",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Route Sections Rollups": {
+      "main": [
+        [
+          {
+            "node": "Validate Candidate Envelope",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Candidate Envelope": {
+      "main": [
+        [
+          {
+            "node": "Build Candidate Artifact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Candidate Artifact": {
+      "main": [
+        [
+          {
+            "node": "Write Candidate Artifact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Candidate Artifact": {
+      "main": [
+        [
+          {
+            "node": "Publish Gate Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publish Gate Decision": {
+      "main": [
+        [
+          {
+            "node": "Build Final Artifact Bundle",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Final Artifact Bundle": {
+      "main": [
+        [
+          {
+            "node": "Write Final Artifacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Final Artifacts": {
+      "main": [
+        [
+          {
+            "node": "Final Status Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Los_Angeles"
+  },
+  "staticData": {},
+  "meta": null,
+  "pinData": {},
+  "versionId": "565a68a1-3265-4d22-beb7-05360d1de30e",
+  "activeVersionId": null,
+  "versionCounter": 1,
+  "triggerCount": 0,
+  "tags": [
+    {
+      "updatedAt": "2026-08-03T17:27:10.556Z",
+      "createdAt": "2026-08-03T17:27:10.556Z",
+      "id": "tag-uw-issy",
+      "name": "uw_issy"
+    },
+    {
+      "updatedAt": "2026-08-03T17:27:10.556Z",
+      "createdAt": "2026-08-03T17:27:10.556Z",
+      "id": "tag-connector",
+      "name": "connector"
+    },
+    {
+      "updatedAt": "2026-08-03T17:27:10.556Z",
+      "createdAt": "2026-08-03T17:27:10.556Z",
+      "id": "tag-no-direct-deploy",
+      "name": "no_direct_deploy"
+    },
+    {
+      "updatedAt": "2026-08-04T00:20:49.903Z",
+      "createdAt": "2026-08-04T00:20:49.903Z",
+      "id": "tag-lane-08-route-facilities",
+      "name": "lane_08_route_facilities"
+    }
+  ],
+  "shared": [
+    {
+      "updatedAt": "2026-08-04T00:20:49.903Z",
+      "createdAt": "2026-08-04T00:20:49.903Z",
+      "role": "workflow:owner",
+      "workflowId": "uwIssy08RouteFacilities",
+      "projectId": "Y0Ygmqe59jevHoeV",
+      "project": {
+        "updatedAt": "2026-07-10T05:38:45.677Z",
+        "createdAt": "2026-06-02T20:51:11.579Z",
+        "id": "Y0Ygmqe59jevHoeV",
+        "name": "John Brooks <john@biketourfrance.net>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "5dadc5f6-6bff-44cf-9566-6b82f3d768dc"
+      }
+    }
+  ],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

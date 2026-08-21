@@ -1,0 +1,249 @@
+{
+  "schema_version": "1.0.0",
+  "connector_id": "01_ROUTE_CONDITIONS",
+  "connector_name": "UW-Issaquah Route Conditions Connector",
+  "connector_version": "v0002",
+  "lane": "01_ROUTE_CONDITIONS",
+  "run_id": "01_ROUTE_CONDITIONS-20260819T052056Z-001",
+  "generated_at": "2026-08-19T05:20:56.397Z",
+  "published_at": "2026-08-19T05:21:58.114Z",
+  "data_status": "degraded",
+  "freshness": {
+    "overall_state": "stale",
+    "computed_at": "2026-08-19T05:21:58.114Z",
+    "oldest_relevant_source_age_minutes": 0,
+    "stale_source_ids": []
+  },
+  "manifest_ref": {
+    "manifest_id": "01_ROUTE_CONDITIONS-v0002",
+    "schema_version": "1.0.0"
+  },
+  "source_health": [
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "01_ROUTE_CONDITIONS",
+      "source_id": "01_ROUTE_CONDITIONS:KC-03",
+      "source_name": "King County Parks - East Lake Sammamish Trail (Leafline Trails Network) page",
+      "status": "ok",
+      "retrieved_at": "2026-08-19T05:20:56.397Z",
+      "stale_after_minutes": 1440,
+      "record_count": 1,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T05:20:56.397Z",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "01_ROUTE_CONDITIONS",
+      "source_id": "01_ROUTE_CONDITIONS:REDM-01",
+      "source_name": "City of Redmond - Traffic/Alerts (ArcGIS REST FeatureServer)",
+      "status": "failed",
+      "retrieved_at": "2026-08-19T05:20:56.397Z",
+      "stale_after_minutes": 60,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T05:20:56.397Z",
+      "warnings": [
+        "No active closure banner detected"
+      ],
+      "errors": [
+        "timeout of 30000ms exceeded"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "01_ROUTE_CONDITIONS",
+      "source_id": "01_ROUTE_CONDITIONS:ISS-03",
+      "source_name": "City of Issaquah - Public Works Current Year Construction Projects (PWProjectsCurrentYearConstructionPublic, ArcGIS REST)",
+      "status": "failed",
+      "retrieved_at": "2026-08-19T05:20:56.397Z",
+      "stale_after_minutes": 60,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T05:20:56.397Z",
+      "warnings": [
+        "No active closure banner detected"
+      ],
+      "errors": [
+        "timeout of 30000ms exceeded"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "01_ROUTE_CONDITIONS",
+      "source_id": "01_ROUTE_CONDITIONS:ISS-01",
+      "source_name": "City of Issaquah - Civic Alerts (Traffic Alerts category), incl. RSS/Notify Me",
+      "status": "failed",
+      "retrieved_at": "2026-08-19T05:20:56.397Z",
+      "stale_after_minutes": 1440,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T05:20:56.397Z",
+      "warnings": [
+        "No active closure banner detected"
+      ],
+      "errors": [
+        "403 - \"<!DOCTYPE html><html lang=\\\"en-US\\\"><head><title>Just a moment...</title><meta http-equiv=\\\"Content-Type\\\" content=\\\"text/html; charset=UTF-8\\\"><meta http-equiv=\\\"X-UA-Compatible\\\" content=\\\"IE=Edge\\\"><meta name=\\\"robots\\\" content=\\\"noindex,nofollow\\\"><meta name=\\\"viewport\\\" content=\\\"width=device-width,initial-scale=1\\\"><meta http-equiv=\\\"content-security-policy\\\" content=\\\"default-src &#39;none&#39;; script-src &#39;nonce-upfJsLm7acm3kYiT99vAQV&#39; &#39;unsafe-eval&#39; https://challenges.cloudflare.com; script-src-attr &#39;none&#39;; style-src &#39;unsafe-inline&#39;; img-src &#39;self&#39; https://challenges.cloudflare.com; connect-src &#39;self&#39; https://challenges.cloudflare.com; frame-src &#39;self&#39; https://challenges.cloudflare.com blob:; child-src &#39;self&#39; https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri &#39;self&#39;\\\"><style>*{box-sizing:border-box;margin:0;padding:0}html{line-height:1.15;-webkit-text-size-adjust:100%;color:#313131;font-family:system-ui,-apple-system,BlinkMacSystemFont,\\\"Segoe UI\\\",Roboto,\\\"Helvetica Neue\\\",Arial,\\\"Noto Sans\\\",sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\",\\\"Segoe UI Symbol\\\",\\\"Noto Color Emoji\\\"}body{display:flex;flex-direction:column;height:100vh;min-height:100vh}.main-content{margin:8rem auto;padding-left:1.5rem;max-width:60rem}@media (width <= 720px){.main-content{margin-top:4rem}}#challenge-error-text{background-image:url(\\\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgZmlsbD0ibm9uZSI+PHBhdGggZmlsbD0iI0IyMEYwMyIgZD0iTTE2IDNhMTMgMTMgMCAxIDAgMTMgMTNBMTMuMDE1IDEzLjAxNSAwIDAgMCAxNiAzbTAgMjRhMTEgMTEgMCAxIDEgMTEtMTEgMTEuMDEgMTEuMDEgMCAwIDEtMTEgMTEiLz48cGF0aCBmaWxsPSIjQjIwRjAzIiBkPSJNMTcuMDM4IDE4LjYxNUgxNC44N0wxNC41NjMgOS41aDIuNzgzem0tMS4wODQgMS40MjdxLjY2IDAgMS4wNTcuMzg4LjQwNy4zODkuNDA3Ljk5NCAwIC41OTYtLjQwNy45ODQtLjM5Ny4zOS0xLjA1Ny4zODktLjY1IDAtMS4wNTYtLjM4OS0uMzk4LS4zODktLjM5OC0uOTg0IDAtLjU5Ny4zOTgtLjk4NS40MDYtLjM5NyAxLjA1Ni0uMzk3Ii8+PC9zdmc+\\\");background-repeat:no-repeat;background-size:contain;padding-left:34px}</style><meta http-equiv=\\\"refresh\\\" content=\\\"360\\\"></head><body><div class=\\\"main-wrapper\\\" role=\\\"main\\\"><div class=\\\"main-content\\\"><noscript><div class=\\\"h2\\\"><span id=\\\"challenge-error-text\\\">Enable JavaScript and cookies to continue</span></div></noscript></div></div><script nonce=\\\"upfJsLm7acm3kYiT99vAQV\\\">(function(){window._cf_chl_opt = {cFPWv: 'g',cH: 'zEF5LWXe5xaDgxC_AwuWmPwI9Fk4H2mvOkk8dSR2Fcc-1787116917-1.2.1.1-R6N6wSpeuJDemNzMa9TCKq9OFTMnNXwMk2y30s1bo_rlgkMqr20VQ8rzRHa7pSvy',cITimeS: '1787116917',cN: 'upfJsLm7acm3kYiT99vAQV',cRay: 'a2d6b7c10dca3843',cTplB: '0',cTplC:0,cTplO:0,cTplV:5,cType: 'managed',cUPMDTk:\\\"/CivicAlerts.aspx?CID=20\\\\u0026__cf_chl_tk=lU5ghA9bajjTbmWmDwzYhucNlo._YuTEA.KSMi19XNk-1787116917-1.0.1.1-6SSxGPkMcvub2pv_dwKMgkVbIOQm6TZupS2.DnMsYTc\\\",cvId: '3',cZone: 'www.issaquahwa.gov',fa:\\\"/CivicAlerts.aspx?CID=20\\\\u0026__cf_chl_f_tk=lU5ghA9bajjTbmWmDwzYhucNlo._YuTEA.KSMi19XNk-1787116917-1.0.1.1-6SSxGPkMcvub2pv_dwKMgkVbIOQm6TZupS2.DnMsYTc\\\",md: 'BjmAxhxhRAxCofvOa9msYtGC1x0ZvzrwuQ138wnWYLo-1787116917-1.2.1.1-1ZRaCjtoFLCssBR4urDx05Z9eFRkp_YBxcmsuys2IFKXArCNPHZyP9Z4qstaa4PwXeHxvkLh5thnZOSiDTTUbFLP.Xeg6MLomUfxbyFOHqHtVLaFRCq8vXkBbhaFS4byX2gOmprjEiSeDiiPlSGVs9jFbJT.8CuZT7nNOyr1KmH3FRHxLO_FHjrzmJvBcNZ77mkWgGiHKVVk18hbahxx1n6kvWxbp5oaiFbrdaybjHLQy..hfgDLusDNb36Jay3DJe848JIQyTmHaFPw7zSB7133KFEMIS_Y_hO.vMpjuEBCEQ9bC5DiVQR4u91xly6smyOqAZgboEJgcMKmiWOOn.RZAdwIAxRDG7Ca0FI9XwKiEfUMt.XdsvVtSEt9OEco3TAaNDhXUmlSXa6dUPFEOuFukK_VeGft_OWmaRjLBoUTadzjih4gLkyfAnCFkx2DrF9dv5nyY7seYgZjEq8hEjNAxcc1lnA2jDRLRt_xNNKtCin5ht3TeejZEv5xNFbeqnCoDQcbO.NXU68aedcdFxS2diQpTrmFfNOMFA2BRXhUhZfhMFkXvOBXGMTxkc2kP14Iw7aSOllaFXV3agDYCHPzFfEbCLXMQy95K.xr5PsYDTwAk1LC9RkXAK50sFVi9LDAlflvvb49xghX_mFRV1BhM7K4bd9sqZb19_fMP8T2GRE3vR.cC7RGX5ndZHVlyq2mTei8Q5akUoRZ154fagw0Z6.sZbCFjd5WxQmNcuf5Kj.XCGBHNPOuGRz1ejBKY4L2uwGnO483v0MO.IWSZ_X7Cxt6935str81P2BY._Cz.iAf1koOQSc_91fSgCdW8OiRf67fV3rlhyyVPDr4uwfHRvIWQAkDsOXFpUwK.SLLTDKws9o6ddxGQQJX1jUoJvhmCidfQITbK61HTDkEAcKWUlrJsHbQzWxuU4bp8ip9QiOmj0yT7cEnbzDlxp9n75L2mXZghtkteZUwvniSxIyWI1Sv0LNr4Le3GCW5LaY8v3m2Do1MW15lRDTrB.9l11PhJsY.jONzfRWDXvZOGLlBcV0Dt8KoytrTQ1ghI2P_ksMYSdnLGpkPiAM9QKhd',mdrd: 'w.O7En6BFyTrs1tvIAccHsJQLgfOV_CoyeuljHDvWf4-1787116917-1.2.1.1-W_BVVyi11yVXl56X2x92ZHkagc.eDzN5uV0ExOOcmxcGAg0rmuH2mRJQWfhlBXuhGN1e2qrNdkc0t2sXquP5Nc5wAJQjk9.Ma87Qek9AWZrLwpPmbjSLZ4Wk1..TZZAcD4pElzREH5gM4ZtsTv9beuf0.OrucDps6j95GbsNq8fDSY6T9sxc6.wxBtPSk4KdylNcnBqVSkHltz_tSlnI7JajC4iCZpoWyYm37bEg3IvlAw8lfSqkWynTeHz93Bw3yj8GKmHmjWUEFKw545vCxPGto4bkt1Bk2RQZKmJuim4',};var a = document.createElement('script');a.nonce = 'upfJsLm7acm3kYiT99vAQV';a.src = '/cdn-cgi/challenge-platform/h/g/orchestrate/chl_page/v1?ray=a2d6b7c10dca3843';window._cf_chl_opt.cOgUHash = location.hash === '' && location.href.indexOf('#') !== -1 ? '#' : location.hash;window._cf_chl_opt.cOgUQuery = location.search === '' && location.href.slice(0, location.href.length - window._cf_chl_opt.cOgUHash.length).indexOf('?') !== -1 ? '?' : location.search;if (window.history && window.history.replaceState) {var ogU = location.pathname + window._cf_chl_opt.cOgUQuery + window._cf_chl_opt.cOgUHash;history.replaceState(null, null,\\\"/CivicAlerts.aspx?CID=20\\\\u0026__cf_chl_rt_tk=lU5ghA9bajjTbmWmDwzYhucNlo._YuTEA.KSMi19XNk-1787116917-1.0.1.1-6SSxGPkMcvub2pv_dwKMgkVbIOQm6TZupS2.DnMsYTc\\\"+ window._cf_chl_opt.cOgUHash);a.onload = function() {history.replaceState(null, null, ogU);}}document.getElementsByTagName('head')[0].appendChild(a);}());</script></body></html>\""
+      ]
+    }
+  ],
+  "connector_health": {
+    "schema_version": "1.0.0",
+    "connector_id": "01_ROUTE_CONDITIONS",
+    "status": "degraded",
+    "failed_stage": null,
+    "warning_count": 3,
+    "error_count": 3,
+    "used_last_known_good": false,
+    "candidate_written": true,
+    "published_written": true
+  },
+  "events": [
+    {
+      "event_id": "01_ROUTE_CONDITIONS:KC-03:hash_47441766",
+      "source_id": "01_ROUTE_CONDITIONS:KC-03",
+      "source_local_id": null,
+      "source_event_key": "hash:hash_47441766",
+      "event_type": "trail_closure",
+      "status": "active",
+      "severity": "high",
+      "route_impact_state": "confirmed_route_impact",
+      "summary": "East Lake Sammamish Trail closure for George Davis Creek culvert replacement.",
+      "details": "Official King County page states the trail is closed between Louis Thompson Rd NE and NE Inglewood Hill Rd, starting June 1, 2026 through the end of 2026, with no detour.",
+      "effective_start": "2026-06-01T00:00:00Z",
+      "effective_end": "2026-12-31T23:59:59Z",
+      "discovered_at": "2026-08-19T05:20:56.397Z",
+      "last_verified_at": "2026-08-19T05:20:56.397Z",
+      "published_observation_at": "2026-08-19T05:20:56.397Z",
+      "location_description_raw": "Between Louis Thompson Rd NE and NE Inglewood Hill Rd.",
+      "trail_or_street_name": "East Lake Sammamish Trail",
+      "route_sections": [
+        "09_east_lake_sammamish_trail_sammamish"
+      ],
+      "route_relevance": {
+        "classification": "confirmed_route_impact",
+        "method": "named_trail_segment_matching",
+        "distance_to_route_km": 0,
+        "buffer_km": null,
+        "matched_terms": [
+          "East Lake Sammamish Trail",
+          "Louis Thompson Rd NE",
+          "NE Inglewood Hill Rd"
+        ],
+        "manual_review_required": false
+      },
+      "detour_available": false,
+      "geometry": {
+        "type": "none",
+        "coordinates": null,
+        "bbox": null,
+        "spatial_reference": "EPSG:4326"
+      },
+      "provenance": {
+        "source_name": "King County Parks - East Lake Sammamish Trail page",
+        "source_url": "https://kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/east-lake-sammamish",
+        "retrieved_at": "2026-08-19T05:20:56.397Z",
+        "retrieval_method": "html_page_fetch",
+        "content_hash": "hash_47441766"
+      }
+    }
+  ],
+  "observations": [],
+  "route_sections": [
+    {
+      "route_section_id": "01_uw_u_district",
+      "route_section_name": "UW / U-District",
+      "status": "no_current_events",
+      "event_ids": [],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    },
+    {
+      "route_section_id": "02_burke_gilman_seattle",
+      "route_section_name": "Burke-Gilman - Seattle",
+      "status": "no_current_events",
+      "event_ids": [],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    },
+    {
+      "route_section_id": "03_burke_gilman_north_lake_wa_kenmore",
+      "route_section_name": "Burke-Gilman - north Lake WA/Kenmore",
+      "status": "no_current_events",
+      "event_ids": [],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    },
+    {
+      "route_section_id": "04_burke_gilman_connector_bothell",
+      "route_section_name": "Burke-Gilman/connector - Bothell",
+      "status": "no_current_events",
+      "event_ids": [],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    },
+    {
+      "route_section_id": "05_sammamish_river_trail_bothell_woodinville",
+      "route_section_name": "Sammamish River Trail - Bothell/Woodinville",
+      "status": "no_current_events",
+      "event_ids": [],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    },
+    {
+      "route_section_id": "06_sammamish_river_trail_redmond",
+      "route_section_name": "Sammamish River Trail - Redmond",
+      "status": "no_current_events",
+      "event_ids": [],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    },
+    {
+      "route_section_id": "07_marymoor_park",
+      "route_section_name": "Marymoor Park",
+      "status": "no_current_events",
+      "event_ids": [],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    },
+    {
+      "route_section_id": "08_east_lake_sammamish_trail_redmond",
+      "route_section_name": "East Lake Sammamish Trail - Redmond",
+      "status": "no_current_events",
+      "event_ids": [],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    },
+    {
+      "route_section_id": "09_east_lake_sammamish_trail_sammamish",
+      "route_section_name": "East Lake Sammamish Trail - Sammamish",
+      "status": "active_closure",
+      "event_ids": [
+        "01_ROUTE_CONDITIONS:KC-03:hash_47441766"
+      ],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    },
+    {
+      "route_section_id": "10_issaquah_approach_terminus",
+      "route_section_name": "Issaquah approach / terminus",
+      "status": "no_current_events",
+      "event_ids": [],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    }
+  ],
+  "provenance": {
+    "source_ids_used": [
+      "01_ROUTE_CONDITIONS:KC-03",
+      "01_ROUTE_CONDITIONS:REDM-01",
+      "01_ROUTE_CONDITIONS:ISS-03",
+      "01_ROUTE_CONDITIONS:ISS-01"
+    ],
+    "canonical_gpx": "data/route/UnivWA-Issaquah.gpx"
+  },
+  "validation_state": {
+    "candidate_validation_passed": true,
+    "published_from_candidate": true,
+    "validator_version": "1.0.0"
+  },
+  "metadata": {
+    "manual_review_required": false,
+    "notes": [
+      "REDM-01 produced no route-relevant events in this run.",
+      "ISS-03 produced no route-relevant events in this run.",
+      "ISS-01 produced no route-relevant alerts in this run."
+    ]
+  }
+}

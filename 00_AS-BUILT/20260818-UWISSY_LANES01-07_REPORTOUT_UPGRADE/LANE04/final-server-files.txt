@@ -1,0 +1,12 @@
+/files/uw-issy-connectors/candidate/04_WILDFIRE/04_WILDFIRE_candidate_20260819T055046Z.json
+/files/uw-issy-connectors/handoff/04_WILDFIRE/04_WILDFIRE-20260819T055046Z-001.json
+/files/uw-issy-connectors/health/04_WILDFIRE/execution_evidence_20260819T055046Z.json
+/files/uw-issy-connectors/last_known_good/04_WILDFIRE/archive/20260819T055046Z.json
+/files/uw-issy-connectors/logs/04_WILDFIRE/validation_log_20260819T055046Z.jsonl
+/files/uw-issy-connectors/normalized/04_WILDFIRE/04_WILDFIRE_normalized_output_20260819T055046Z.json
+/files/uw-issy-connectors/published/04_WILDFIRE/04_WILDFIRE_published_20260819T055046Z.json
+/files/uw-issy-connectors/raw/04_WILDFIRE/landings/KC-01_landing_20260819T055046Z.json
+/files/uw-issy-connectors/raw/04_WILDFIRE/landings/NIFC-01_landing_20260819T055046Z.json
+/files/uw-issy-connectors/raw/04_WILDFIRE/landings/NIFC-02_landing_20260819T055046Z.json
+/files/uw-issy-connectors/raw/04_WILDFIRE/landings/NOAA-01_landing_20260819T055046Z.json
+/files/uw-issy-connectors/raw/04_WILDFIRE/landings/NWS-01_landing_20260819T055046Z.json

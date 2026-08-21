@@ -1,0 +1,1725 @@
+{
+  "schema_version": "1.0.0",
+  "connector_id": "02_WEATHER",
+  "connector_name": "UW-Issaquah Weather Connector",
+  "connector_version": "v0002",
+  "lane": "02_WEATHER",
+  "run_id": "02_WEATHER-20260819T053755Z-001",
+  "generated_at": "2026-08-19T05:37:55.749Z",
+  "published_at": null,
+  "data_status": "no_relevant_events",
+  "freshness": {
+    "overall_state": "fresh",
+    "computed_at": "2026-08-19T05:37:55.749Z",
+    "oldest_relevant_source_age_minutes": 0,
+    "stale_source_ids": []
+  },
+  "manifest_ref": {
+    "manifest_id": "02_WEATHER-v0002",
+    "schema_version": "1.0.0"
+  },
+  "source_health": [
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "02_WEATHER",
+      "source_id": "02_WEATHER:NWS-01",
+      "source_name": "NWS points metadata resolution",
+      "status": "ok",
+      "retrieved_at": "2026-08-19T05:37:55.749Z",
+      "stale_after_minutes": 10080,
+      "record_count": 8,
+      "http_status": 200,
+      "last_observation_at": "2026-08-19T05:37:55.749Z",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "02_WEATHER",
+      "source_id": "02_WEATHER:NWS-02",
+      "source_name": "NWS 7-day / 12-hour forecast",
+      "status": "ok",
+      "retrieved_at": "2026-08-19T05:37:55.749Z",
+      "stale_after_minutes": 60,
+      "record_count": 8,
+      "http_status": 200,
+      "last_observation_at": "2026-08-19T05:37:55.749Z",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "02_WEATHER",
+      "source_id": "02_WEATHER:NWS-03",
+      "source_name": "NWS hourly forecast",
+      "status": "ok",
+      "retrieved_at": "2026-08-19T05:37:55.749Z",
+      "stale_after_minutes": 60,
+      "record_count": 8,
+      "http_status": 200,
+      "last_observation_at": "2026-08-19T05:37:55.749Z",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "02_WEATHER",
+      "source_id": "02_WEATHER:NWS-04",
+      "source_name": "NWS raw gridpoint forecast data",
+      "status": "ok",
+      "retrieved_at": "2026-08-19T05:37:55.749Z",
+      "stale_after_minutes": 60,
+      "record_count": 8,
+      "http_status": 200,
+      "last_observation_at": "2026-08-19T05:37:55.749Z",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "02_WEATHER",
+      "source_id": "02_WEATHER:NWS-05",
+      "source_name": "NWS observation stations and latest observations",
+      "status": "ok",
+      "retrieved_at": "2026-08-19T05:37:55.749Z",
+      "stale_after_minutes": 90,
+      "record_count": 8,
+      "http_status": 200,
+      "last_observation_at": "2026-08-19T05:37:55.749Z",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "02_WEATHER",
+      "source_id": "02_WEATHER:NWS-06",
+      "source_name": "NWS active alerts",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T05:37:55.749Z",
+      "stale_after_minutes": 15,
+      "record_count": 0,
+      "http_status": 200,
+      "last_observation_at": "2026-08-19T05:37:55.749Z",
+      "warnings": [],
+      "errors": []
+    }
+  ],
+  "connector_health": {
+    "schema_version": "1.0.0",
+    "connector_id": "02_WEATHER",
+    "status": "ok",
+    "failed_stage": null,
+    "warning_count": 0,
+    "error_count": 0,
+    "used_last_known_good": false,
+    "candidate_written": true,
+    "published_written": false
+  },
+  "events": [],
+  "observations": [
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP1",
+      "point_name": "UW / Seattle (Burke-Gilman start)",
+      "route_mile": 0,
+      "route_section_label": "UW campus; Burke-Gilman Trail, Seattle city segment",
+      "latitude": 47.65051,
+      "longitude": -122.30462,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 126,
+      "forecast_grid_y": 70,
+      "forecast_zone_id": "WAZ315",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ654",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T18:00:00-07:00",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 58,
+      "apparent_temperature_c": null,
+      "dewpoint_c": null,
+      "relative_humidity_percent": null,
+      "wind_speed_km_h": null,
+      "wind_gust_km_h": null,
+      "wind_direction_degrees": "WSW",
+      "visibility_m": null,
+      "probability_of_precipitation_percent": 3,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "snow_level_m": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [
+        {
+          "code": "heat_high_risk",
+          "severity": "high_risk",
+          "reason": "High temperature above high-risk threshold."
+        }
+      ],
+      "nearest_station": {
+        "station_id": "SEAW1",
+        "station_name": "NWS Seattle WFO (Sand Point)",
+        "station_distance_miles": 3.46,
+        "station_is_full_featured": false,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-02"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP2",
+      "point_name": "North Lake Washington / Kenmore–Lake Forest Park",
+      "route_mile": 6,
+      "route_section_label": "Burke-Gilman Trail, north Lake Washington segment",
+      "latitude": 47.70489,
+      "longitude": -122.27521,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 127,
+      "forecast_grid_y": 72,
+      "forecast_zone_id": "WAZ315",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T18:00:00-07:00",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 58,
+      "apparent_temperature_c": null,
+      "dewpoint_c": null,
+      "relative_humidity_percent": null,
+      "wind_speed_km_h": null,
+      "wind_gust_km_h": null,
+      "wind_direction_degrees": "SW",
+      "visibility_m": null,
+      "probability_of_precipitation_percent": 3,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "snow_level_m": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [
+        {
+          "code": "heat_high_risk",
+          "severity": "high_risk",
+          "reason": "High temperature above high-risk threshold."
+        }
+      ],
+      "nearest_station": {
+        "station_id": "SEAW1",
+        "station_name": "NWS Seattle WFO (Sand Point)",
+        "station_distance_miles": 1.76,
+        "station_is_full_featured": false,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-02"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP3",
+      "point_name": "Bothell",
+      "route_mile": 9,
+      "route_section_label": "Burke-Gilman terminus / Sammamish River Trail head",
+      "latitude": 47.74617,
+      "longitude": -122.28401,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 127,
+      "forecast_grid_y": 74,
+      "forecast_zone_id": "WAZ313",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T18:00:00-07:00",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 58,
+      "apparent_temperature_c": null,
+      "dewpoint_c": null,
+      "relative_humidity_percent": null,
+      "wind_speed_km_h": null,
+      "wind_gust_km_h": null,
+      "wind_direction_degrees": "WSW",
+      "visibility_m": null,
+      "probability_of_precipitation_percent": 3,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "snow_level_m": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [
+        {
+          "code": "heat_high_risk",
+          "severity": "high_risk",
+          "reason": "High temperature above high-risk threshold."
+        }
+      ],
+      "nearest_station": {
+        "station_id": "SEAW1",
+        "station_name": "NWS Seattle WFO (Sand Point)",
+        "station_distance_miles": 4.48,
+        "station_is_full_featured": false,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-02"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP4",
+      "point_name": "Woodinville",
+      "route_mile": 13,
+      "route_section_label": "Sammamish River Trail through Woodinville",
+      "latitude": 47.75031,
+      "longitude": -122.21119,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 130,
+      "forecast_grid_y": 74,
+      "forecast_zone_id": "WAZ314",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T18:00:00-07:00",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 58,
+      "apparent_temperature_c": null,
+      "dewpoint_c": null,
+      "relative_humidity_percent": null,
+      "wind_speed_km_h": null,
+      "wind_gust_km_h": null,
+      "wind_direction_degrees": "WSW",
+      "visibility_m": null,
+      "probability_of_precipitation_percent": 3,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "snow_level_m": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [
+        {
+          "code": "heat_high_risk",
+          "severity": "high_risk",
+          "reason": "High temperature above high-risk threshold."
+        }
+      ],
+      "nearest_station": {
+        "station_id": "KPAE",
+        "station_name": "Everett / Snohomish County",
+        "station_distance_miles": 12.41,
+        "station_is_full_featured": true,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-02"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP5",
+      "point_name": "Redmond (Sammamish River Trail, Marymoor approach)",
+      "route_mile": 18,
+      "route_section_label": "Sammamish River Trail, Redmond segment",
+      "latitude": 47.72964,
+      "longitude": -122.14268,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 132,
+      "forecast_grid_y": 73,
+      "forecast_zone_id": "WAZ314",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T18:00:00-07:00",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 58,
+      "apparent_temperature_c": null,
+      "dewpoint_c": null,
+      "relative_humidity_percent": null,
+      "wind_speed_km_h": null,
+      "wind_gust_km_h": null,
+      "wind_direction_degrees": "WSW",
+      "visibility_m": null,
+      "probability_of_precipitation_percent": 3,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "snow_level_m": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [
+        {
+          "code": "heat_high_risk",
+          "severity": "high_risk",
+          "reason": "High temperature above high-risk threshold."
+        }
+      ],
+      "nearest_station": {
+        "station_id": "KBFI",
+        "station_name": "Boeing Field / King County Intl",
+        "station_distance_miles": 15.03,
+        "station_is_full_featured": true,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-02"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP6",
+      "point_name": "Marymoor Park / East Lake Sammamish Trail head",
+      "route_mile": 24,
+      "route_section_label": "Marymoor Park; Marymoor Connector Trail; East Lake Sammamish Trail head",
+      "latitude": 47.66129,
+      "longitude": -122.11027,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 132,
+      "forecast_grid_y": 69,
+      "forecast_zone_id": "WAZ314",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T18:00:00-07:00",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 58,
+      "apparent_temperature_c": null,
+      "dewpoint_c": null,
+      "relative_humidity_percent": null,
+      "wind_speed_km_h": null,
+      "wind_gust_km_h": null,
+      "wind_direction_degrees": "WSW",
+      "visibility_m": null,
+      "probability_of_precipitation_percent": 3,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "snow_level_m": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [
+        {
+          "code": "heat_high_risk",
+          "severity": "high_risk",
+          "reason": "High temperature above high-risk threshold."
+        }
+      ],
+      "nearest_station": {
+        "station_id": "KRNT",
+        "station_name": "Renton Municipal Airport",
+        "station_distance_miles": 12.47,
+        "station_is_full_featured": true,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-02"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP7",
+      "point_name": "Sammamish (East Lake Sammamish Trail)",
+      "route_mile": 28,
+      "route_section_label": "East Lake Sammamish Trail, Sammamish segment",
+      "latitude": 47.61894,
+      "longitude": -122.06796,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 133,
+      "forecast_grid_y": 67,
+      "forecast_zone_id": "WAZ314",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T18:00:00-07:00",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 57,
+      "apparent_temperature_c": null,
+      "dewpoint_c": null,
+      "relative_humidity_percent": null,
+      "wind_speed_km_h": null,
+      "wind_gust_km_h": null,
+      "wind_direction_degrees": "WSW",
+      "visibility_m": null,
+      "probability_of_precipitation_percent": 3,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "snow_level_m": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [
+        {
+          "code": "heat_high_risk",
+          "severity": "high_risk",
+          "reason": "High temperature above high-risk threshold."
+        }
+      ],
+      "nearest_station": {
+        "station_id": "KRNT",
+        "station_name": "Renton Municipal Airport",
+        "station_distance_miles": 10.95,
+        "station_is_full_featured": true,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-02"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP8",
+      "point_name": "Issaquah approach/terminus",
+      "route_mile": 33.83,
+      "route_section_label": "East Lake Sammamish Trail terminus; Issaquah approach streets",
+      "latitude": 47.55207,
+      "longitude": -122.04429,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 133,
+      "forecast_grid_y": 64,
+      "forecast_zone_id": "WAZ314",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T18:00:00-07:00",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 58,
+      "apparent_temperature_c": null,
+      "dewpoint_c": null,
+      "relative_humidity_percent": null,
+      "wind_speed_km_h": null,
+      "wind_gust_km_h": null,
+      "wind_direction_degrees": "SW",
+      "visibility_m": null,
+      "probability_of_precipitation_percent": 3,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "snow_level_m": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [
+        {
+          "code": "heat_high_risk",
+          "severity": "high_risk",
+          "reason": "High temperature above high-risk threshold."
+        }
+      ],
+      "nearest_station": {
+        "station_id": "KRNT",
+        "station_name": "Renton Municipal Airport",
+        "station_distance_miles": 8.86,
+        "station_is_full_featured": true,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-02"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP1",
+      "point_name": "UW / Seattle (Burke-Gilman start)",
+      "route_mile": 0,
+      "route_section_label": "UW campus; Burke-Gilman Trail, Seattle city segment",
+      "latitude": 47.65051,
+      "longitude": -122.30462,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 126,
+      "forecast_grid_y": 70,
+      "forecast_zone_id": "WAZ315",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ654",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T22:00:00-07:00",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 69,
+      "apparent_temperature_c": null,
+      "dewpoint_c": 15,
+      "relative_humidity_percent": 70,
+      "wind_speed_km_h": null,
+      "wind_gust_km_h": null,
+      "wind_direction_degrees": "WNW",
+      "visibility_m": null,
+      "probability_of_precipitation_percent": 3,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "snow_level_m": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [
+        {
+          "code": "heat_high_risk",
+          "severity": "high_risk",
+          "reason": "High temperature above high-risk threshold."
+        }
+      ],
+      "nearest_station": {
+        "station_id": "SEAW1",
+        "station_name": "NWS Seattle WFO (Sand Point)",
+        "station_distance_miles": 3.46,
+        "station_is_full_featured": false,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-03"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP2",
+      "point_name": "North Lake Washington / Kenmore–Lake Forest Park",
+      "route_mile": 6,
+      "route_section_label": "Burke-Gilman Trail, north Lake Washington segment",
+      "latitude": 47.70489,
+      "longitude": -122.27521,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 127,
+      "forecast_grid_y": 72,
+      "forecast_zone_id": "WAZ315",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T22:00:00-07:00",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 69,
+      "apparent_temperature_c": null,
+      "dewpoint_c": 15,
+      "relative_humidity_percent": 70,
+      "wind_speed_km_h": null,
+      "wind_gust_km_h": null,
+      "wind_direction_degrees": "NNW",
+      "visibility_m": null,
+      "probability_of_precipitation_percent": 3,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "snow_level_m": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [
+        {
+          "code": "heat_high_risk",
+          "severity": "high_risk",
+          "reason": "High temperature above high-risk threshold."
+        }
+      ],
+      "nearest_station": {
+        "station_id": "SEAW1",
+        "station_name": "NWS Seattle WFO (Sand Point)",
+        "station_distance_miles": 1.76,
+        "station_is_full_featured": false,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-03"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP3",
+      "point_name": "Bothell",
+      "route_mile": 9,
+      "route_section_label": "Burke-Gilman terminus / Sammamish River Trail head",
+      "latitude": 47.74617,
+      "longitude": -122.28401,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 127,
+      "forecast_grid_y": 74,
+      "forecast_zone_id": "WAZ313",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T22:00:00-07:00",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 67,
+      "apparent_temperature_c": null,
+      "dewpoint_c": 14.444444444444445,
+      "relative_humidity_percent": 72,
+      "wind_speed_km_h": null,
+      "wind_gust_km_h": null,
+      "wind_direction_degrees": "N",
+      "visibility_m": null,
+      "probability_of_precipitation_percent": 3,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "snow_level_m": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [
+        {
+          "code": "heat_high_risk",
+          "severity": "high_risk",
+          "reason": "High temperature above high-risk threshold."
+        }
+      ],
+      "nearest_station": {
+        "station_id": "SEAW1",
+        "station_name": "NWS Seattle WFO (Sand Point)",
+        "station_distance_miles": 4.48,
+        "station_is_full_featured": false,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-03"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP4",
+      "point_name": "Woodinville",
+      "route_mile": 13,
+      "route_section_label": "Sammamish River Trail through Woodinville",
+      "latitude": 47.75031,
+      "longitude": -122.21119,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 130,
+      "forecast_grid_y": 74,
+      "forecast_zone_id": "WAZ314",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T22:00:00-07:00",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 68,
+      "apparent_temperature_c": null,
+      "dewpoint_c": 14.444444444444445,
+      "relative_humidity_percent": 71,
+      "wind_speed_km_h": null,
+      "wind_gust_km_h": null,
+      "wind_direction_degrees": "N",
+      "visibility_m": null,
+      "probability_of_precipitation_percent": 3,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "snow_level_m": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [
+        {
+          "code": "heat_high_risk",
+          "severity": "high_risk",
+          "reason": "High temperature above high-risk threshold."
+        }
+      ],
+      "nearest_station": {
+        "station_id": "KPAE",
+        "station_name": "Everett / Snohomish County",
+        "station_distance_miles": 12.41,
+        "station_is_full_featured": true,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-03"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP5",
+      "point_name": "Redmond (Sammamish River Trail, Marymoor approach)",
+      "route_mile": 18,
+      "route_section_label": "Sammamish River Trail, Redmond segment",
+      "latitude": 47.72964,
+      "longitude": -122.14268,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 132,
+      "forecast_grid_y": 73,
+      "forecast_zone_id": "WAZ314",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T22:00:00-07:00",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 68,
+      "apparent_temperature_c": null,
+      "dewpoint_c": 14.444444444444445,
+      "relative_humidity_percent": 71,
+      "wind_speed_km_h": null,
+      "wind_gust_km_h": null,
+      "wind_direction_degrees": "N",
+      "visibility_m": null,
+      "probability_of_precipitation_percent": 3,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "snow_level_m": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [
+        {
+          "code": "heat_high_risk",
+          "severity": "high_risk",
+          "reason": "High temperature above high-risk threshold."
+        }
+      ],
+      "nearest_station": {
+        "station_id": "KBFI",
+        "station_name": "Boeing Field / King County Intl",
+        "station_distance_miles": 15.03,
+        "station_is_full_featured": true,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-03"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP6",
+      "point_name": "Marymoor Park / East Lake Sammamish Trail head",
+      "route_mile": 24,
+      "route_section_label": "Marymoor Park; Marymoor Connector Trail; East Lake Sammamish Trail head",
+      "latitude": 47.66129,
+      "longitude": -122.11027,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 132,
+      "forecast_grid_y": 69,
+      "forecast_zone_id": "WAZ314",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T22:00:00-07:00",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 70,
+      "apparent_temperature_c": null,
+      "dewpoint_c": 15,
+      "relative_humidity_percent": 68,
+      "wind_speed_km_h": null,
+      "wind_gust_km_h": null,
+      "wind_direction_degrees": "WNW",
+      "visibility_m": null,
+      "probability_of_precipitation_percent": 3,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "snow_level_m": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [
+        {
+          "code": "heat_high_risk",
+          "severity": "high_risk",
+          "reason": "High temperature above high-risk threshold."
+        }
+      ],
+      "nearest_station": {
+        "station_id": "KRNT",
+        "station_name": "Renton Municipal Airport",
+        "station_distance_miles": 12.47,
+        "station_is_full_featured": true,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-03"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP7",
+      "point_name": "Sammamish (East Lake Sammamish Trail)",
+      "route_mile": 28,
+      "route_section_label": "East Lake Sammamish Trail, Sammamish segment",
+      "latitude": 47.61894,
+      "longitude": -122.06796,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 133,
+      "forecast_grid_y": 67,
+      "forecast_zone_id": "WAZ314",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T22:00:00-07:00",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 70,
+      "apparent_temperature_c": null,
+      "dewpoint_c": 15,
+      "relative_humidity_percent": 69,
+      "wind_speed_km_h": null,
+      "wind_gust_km_h": null,
+      "wind_direction_degrees": "W",
+      "visibility_m": null,
+      "probability_of_precipitation_percent": 3,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "snow_level_m": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [
+        {
+          "code": "heat_high_risk",
+          "severity": "high_risk",
+          "reason": "High temperature above high-risk threshold."
+        }
+      ],
+      "nearest_station": {
+        "station_id": "KRNT",
+        "station_name": "Renton Municipal Airport",
+        "station_distance_miles": 10.95,
+        "station_is_full_featured": true,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-03"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP8",
+      "point_name": "Issaquah approach/terminus",
+      "route_mile": 33.83,
+      "route_section_label": "East Lake Sammamish Trail terminus; Issaquah approach streets",
+      "latitude": 47.55207,
+      "longitude": -122.04429,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 133,
+      "forecast_grid_y": 64,
+      "forecast_zone_id": "WAZ314",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T22:00:00-07:00",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 71,
+      "apparent_temperature_c": null,
+      "dewpoint_c": 15.555555555555555,
+      "relative_humidity_percent": 67,
+      "wind_speed_km_h": null,
+      "wind_gust_km_h": null,
+      "wind_direction_degrees": "SW",
+      "visibility_m": null,
+      "probability_of_precipitation_percent": 3,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "snow_level_m": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [
+        {
+          "code": "heat_high_risk",
+          "severity": "high_risk",
+          "reason": "High temperature above high-risk threshold."
+        }
+      ],
+      "nearest_station": {
+        "station_id": "KRNT",
+        "station_name": "Renton Municipal Airport",
+        "station_distance_miles": 8.86,
+        "station_is_full_featured": true,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-03"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP1",
+      "point_name": "UW / Seattle (Burke-Gilman start)",
+      "route_mile": 0,
+      "route_section_label": "UW campus; Burke-Gilman Trail, Seattle city segment",
+      "latitude": 47.65051,
+      "longitude": -122.30462,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 126,
+      "forecast_grid_y": 70,
+      "forecast_zone_id": "WAZ315",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ654",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T12:00:00Z",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 15.555555555555555,
+      "apparent_temperature_c": 15.555555555555555,
+      "dewpoint_c": 13.88888888888889,
+      "relative_humidity_percent": 91,
+      "wind_speed_km_h": 5.556,
+      "wind_gust_km_h": 9.26,
+      "wind_direction_degrees": 230,
+      "visibility_m": 16093.44,
+      "probability_of_precipitation_percent": 0,
+      "quantitative_precipitation_mm": 0,
+      "probability_of_thunder_percent": 0,
+      "snowfall_amount_mm": 0,
+      "ice_accumulation_mm": 0,
+      "snow_level_m": null,
+      "weather_codes": [
+        {
+          "weather": "fog",
+          "intensity": null,
+          "coverage": "patchy",
+          "attributes": []
+        }
+      ],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [],
+      "nearest_station": {
+        "station_id": "SEAW1",
+        "station_name": "NWS Seattle WFO (Sand Point)",
+        "station_distance_miles": 3.46,
+        "station_is_full_featured": false,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-04"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP2",
+      "point_name": "North Lake Washington / Kenmore–Lake Forest Park",
+      "route_mile": 6,
+      "route_section_label": "Burke-Gilman Trail, north Lake Washington segment",
+      "latitude": 47.70489,
+      "longitude": -122.27521,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 127,
+      "forecast_grid_y": 72,
+      "forecast_zone_id": "WAZ315",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T12:00:00Z",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 15.555555555555555,
+      "apparent_temperature_c": 15.555555555555555,
+      "dewpoint_c": 13.88888888888889,
+      "relative_humidity_percent": 90,
+      "wind_speed_km_h": 3.704,
+      "wind_gust_km_h": 9.26,
+      "wind_direction_degrees": 210,
+      "visibility_m": 16093.44,
+      "probability_of_precipitation_percent": 0,
+      "quantitative_precipitation_mm": 0,
+      "probability_of_thunder_percent": 0,
+      "snowfall_amount_mm": 0,
+      "ice_accumulation_mm": 0,
+      "snow_level_m": null,
+      "weather_codes": [
+        {
+          "weather": "fog",
+          "intensity": null,
+          "coverage": "patchy",
+          "attributes": []
+        }
+      ],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [],
+      "nearest_station": {
+        "station_id": "SEAW1",
+        "station_name": "NWS Seattle WFO (Sand Point)",
+        "station_distance_miles": 1.76,
+        "station_is_full_featured": false,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-04"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP3",
+      "point_name": "Bothell",
+      "route_mile": 9,
+      "route_section_label": "Burke-Gilman terminus / Sammamish River Trail head",
+      "latitude": 47.74617,
+      "longitude": -122.28401,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 127,
+      "forecast_grid_y": 74,
+      "forecast_zone_id": "WAZ313",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T12:00:00Z",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 15,
+      "apparent_temperature_c": 15,
+      "dewpoint_c": 13.333333333333334,
+      "relative_humidity_percent": 91,
+      "wind_speed_km_h": 3.704,
+      "wind_gust_km_h": 9.26,
+      "wind_direction_degrees": 180,
+      "visibility_m": 16093.44,
+      "probability_of_precipitation_percent": 0,
+      "quantitative_precipitation_mm": 0,
+      "probability_of_thunder_percent": 0,
+      "snowfall_amount_mm": 0,
+      "ice_accumulation_mm": 0,
+      "snow_level_m": null,
+      "weather_codes": [
+        {
+          "weather": "fog",
+          "intensity": null,
+          "coverage": "patchy",
+          "attributes": []
+        }
+      ],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [],
+      "nearest_station": {
+        "station_id": "SEAW1",
+        "station_name": "NWS Seattle WFO (Sand Point)",
+        "station_distance_miles": 4.48,
+        "station_is_full_featured": false,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-04"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP4",
+      "point_name": "Woodinville",
+      "route_mile": 13,
+      "route_section_label": "Sammamish River Trail through Woodinville",
+      "latitude": 47.75031,
+      "longitude": -122.21119,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 130,
+      "forecast_grid_y": 74,
+      "forecast_zone_id": "WAZ314",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T12:00:00Z",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 15,
+      "apparent_temperature_c": 15,
+      "dewpoint_c": 13.333333333333334,
+      "relative_humidity_percent": 90,
+      "wind_speed_km_h": 3.704,
+      "wind_gust_km_h": 9.26,
+      "wind_direction_degrees": 180,
+      "visibility_m": 16093.44,
+      "probability_of_precipitation_percent": 0,
+      "quantitative_precipitation_mm": 0,
+      "probability_of_thunder_percent": 0,
+      "snowfall_amount_mm": 0,
+      "ice_accumulation_mm": 0,
+      "snow_level_m": null,
+      "weather_codes": [
+        {
+          "weather": "fog",
+          "intensity": null,
+          "coverage": "patchy",
+          "attributes": []
+        }
+      ],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [],
+      "nearest_station": {
+        "station_id": "KPAE",
+        "station_name": "Everett / Snohomish County",
+        "station_distance_miles": 12.41,
+        "station_is_full_featured": true,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-04"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP5",
+      "point_name": "Redmond (Sammamish River Trail, Marymoor approach)",
+      "route_mile": 18,
+      "route_section_label": "Sammamish River Trail, Redmond segment",
+      "latitude": 47.72964,
+      "longitude": -122.14268,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 132,
+      "forecast_grid_y": 73,
+      "forecast_zone_id": "WAZ314",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T12:00:00Z",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 15,
+      "apparent_temperature_c": 15,
+      "dewpoint_c": 13.333333333333334,
+      "relative_humidity_percent": 90,
+      "wind_speed_km_h": 1.852,
+      "wind_gust_km_h": 9.26,
+      "wind_direction_degrees": 190,
+      "visibility_m": 16093.44,
+      "probability_of_precipitation_percent": 0,
+      "quantitative_precipitation_mm": 0,
+      "probability_of_thunder_percent": 0,
+      "snowfall_amount_mm": 0,
+      "ice_accumulation_mm": 0,
+      "snow_level_m": null,
+      "weather_codes": [
+        {
+          "weather": "fog",
+          "intensity": null,
+          "coverage": "patchy",
+          "attributes": []
+        }
+      ],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [],
+      "nearest_station": {
+        "station_id": "KBFI",
+        "station_name": "Boeing Field / King County Intl",
+        "station_distance_miles": 15.03,
+        "station_is_full_featured": true,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-04"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP6",
+      "point_name": "Marymoor Park / East Lake Sammamish Trail head",
+      "route_mile": 24,
+      "route_section_label": "Marymoor Park; Marymoor Connector Trail; East Lake Sammamish Trail head",
+      "latitude": 47.66129,
+      "longitude": -122.11027,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 132,
+      "forecast_grid_y": 69,
+      "forecast_zone_id": "WAZ314",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T12:00:00Z",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 15.555555555555555,
+      "apparent_temperature_c": 15.555555555555555,
+      "dewpoint_c": 13.88888888888889,
+      "relative_humidity_percent": 89,
+      "wind_speed_km_h": 1.852,
+      "wind_gust_km_h": 7.408,
+      "wind_direction_degrees": 210,
+      "visibility_m": 16093.44,
+      "probability_of_precipitation_percent": 0,
+      "quantitative_precipitation_mm": 0,
+      "probability_of_thunder_percent": 0,
+      "snowfall_amount_mm": 0,
+      "ice_accumulation_mm": 0,
+      "snow_level_m": null,
+      "weather_codes": [
+        {
+          "weather": "fog",
+          "intensity": null,
+          "coverage": "patchy",
+          "attributes": []
+        }
+      ],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [],
+      "nearest_station": {
+        "station_id": "KRNT",
+        "station_name": "Renton Municipal Airport",
+        "station_distance_miles": 12.47,
+        "station_is_full_featured": true,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-04"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP7",
+      "point_name": "Sammamish (East Lake Sammamish Trail)",
+      "route_mile": 28,
+      "route_section_label": "East Lake Sammamish Trail, Sammamish segment",
+      "latitude": 47.61894,
+      "longitude": -122.06796,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 133,
+      "forecast_grid_y": 67,
+      "forecast_zone_id": "WAZ314",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T12:00:00Z",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 15,
+      "apparent_temperature_c": 15,
+      "dewpoint_c": 13.88888888888889,
+      "relative_humidity_percent": 92,
+      "wind_speed_km_h": 1.852,
+      "wind_gust_km_h": 7.408,
+      "wind_direction_degrees": 190,
+      "visibility_m": 16093.44,
+      "probability_of_precipitation_percent": 0,
+      "quantitative_precipitation_mm": 0,
+      "probability_of_thunder_percent": 0,
+      "snowfall_amount_mm": 0,
+      "ice_accumulation_mm": 0,
+      "snow_level_m": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [],
+      "nearest_station": {
+        "station_id": "KRNT",
+        "station_name": "Renton Municipal Airport",
+        "station_distance_miles": 10.95,
+        "station_is_full_featured": true,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-04"
+      ]
+    },
+    {
+      "record_type": "route_point_current_conditions",
+      "point_id": "WP8",
+      "point_name": "Issaquah approach/terminus",
+      "route_mile": 33.83,
+      "route_section_label": "East Lake Sammamish Trail terminus; Issaquah approach streets",
+      "latitude": 47.55207,
+      "longitude": -122.04429,
+      "forecast_grid_id": "SEW",
+      "forecast_grid_x": 133,
+      "forecast_grid_y": 64,
+      "forecast_zone_id": "WAZ314",
+      "county_zone_id": "WAC033",
+      "fire_weather_zone_id": "WAZ657",
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-18T12:00:00Z",
+      "forecast_update_time_utc": "2026-08-18T18:26:37.000Z",
+      "temperature_c": 15.555555555555555,
+      "apparent_temperature_c": 15.555555555555555,
+      "dewpoint_c": 13.88888888888889,
+      "relative_humidity_percent": 91,
+      "wind_speed_km_h": 1.852,
+      "wind_gust_km_h": 7.408,
+      "wind_direction_degrees": 180,
+      "visibility_m": 16093.44,
+      "probability_of_precipitation_percent": 0,
+      "quantitative_precipitation_mm": 0,
+      "probability_of_thunder_percent": 0,
+      "snowfall_amount_mm": 0,
+      "ice_accumulation_mm": 0,
+      "snow_level_m": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [],
+      "nearest_station": {
+        "station_id": "KRNT",
+        "station_name": "Renton Municipal Airport",
+        "station_distance_miles": 8.86,
+        "station_is_full_featured": true,
+        "quality_control_summary": null
+      },
+      "source_ids": [
+        "02_WEATHER:NWS-04"
+      ]
+    },
+    {
+      "record_type": "station_latest_observation",
+      "station_id": "SEAW1",
+      "station_name": "NWS Seattle WFO (Sand Point)",
+      "point_ids": [
+        "WP1"
+      ],
+      "latitude": 47.65051,
+      "longitude": -122.30462,
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-19T04:30:00.000Z",
+      "forecast_update_time_utc": null,
+      "temperature_c": 21.11,
+      "apparent_temperature_c": null,
+      "dewpoint_c": 16.58,
+      "relative_humidity_percent": 75.355421203952,
+      "wind_speed_km_h": 1.62,
+      "wind_gust_km_h": null,
+      "visibility_m": null,
+      "probability_of_precipitation_percent": null,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [],
+      "nearest_station": null,
+      "source_ids": [
+        "02_WEATHER:NWS-05"
+      ]
+    },
+    {
+      "record_type": "station_latest_observation",
+      "station_id": "SEAW1",
+      "station_name": "NWS Seattle WFO (Sand Point)",
+      "point_ids": [
+        "WP2"
+      ],
+      "latitude": 47.70489,
+      "longitude": -122.27521,
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-19T04:30:00.000Z",
+      "forecast_update_time_utc": null,
+      "temperature_c": 21.11,
+      "apparent_temperature_c": null,
+      "dewpoint_c": 16.58,
+      "relative_humidity_percent": 75.355421203952,
+      "wind_speed_km_h": 1.62,
+      "wind_gust_km_h": null,
+      "visibility_m": null,
+      "probability_of_precipitation_percent": null,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [],
+      "nearest_station": null,
+      "source_ids": [
+        "02_WEATHER:NWS-05"
+      ]
+    },
+    {
+      "record_type": "station_latest_observation",
+      "station_id": "SEAW1",
+      "station_name": "NWS Seattle WFO (Sand Point)",
+      "point_ids": [
+        "WP3"
+      ],
+      "latitude": 47.74617,
+      "longitude": -122.28401,
+      "source_observation_mode": "forecast_primary_station_corroboration",
+      "observation_time_utc": "2026-08-19T04:30:00.000Z",
+      "forecast_update_time_utc": null,
+      "temperature_c": 21.11,
+      "apparent_temperature_c": null,
+      "dewpoint_c": 16.58,
+      "relative_humidity_percent": 75.355421203952,
+      "wind_speed_km_h": 1.62,
+      "wind_gust_km_h": null,
+      "visibility_m": null,
+      "probability_of_precipitation_percent": null,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "weather_codes": [],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [],
+      "nearest_station": null,
+      "source_ids": [
+        "02_WEATHER:NWS-05"
+      ]
+    },
+    {
+      "record_type": "station_latest_observation",
+      "station_id": "KPAE",
+      "station_name": "Everett / Snohomish County",
+      "point_ids": [
+        "WP4"
+      ],
+      "latitude": 47.75031,
+      "longitude": -122.21119,
+      "source_observation_mode": "station_primary",
+      "observation_time_utc": "2026-08-19T05:25:00.000Z",
+      "forecast_update_time_utc": null,
+      "temperature_c": 17,
+      "apparent_temperature_c": null,
+      "dewpoint_c": 12,
+      "relative_humidity_percent": 72.401374699018,
+      "wind_speed_km_h": 0,
+      "wind_gust_km_h": null,
+      "visibility_m": 16093.44,
+      "probability_of_precipitation_percent": null,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "weather_codes": [
+        "Clear"
+      ],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [],
+      "nearest_station": null,
+      "source_ids": [
+        "02_WEATHER:NWS-05"
+      ]
+    },
+    {
+      "record_type": "station_latest_observation",
+      "station_id": "KBFI",
+      "station_name": "Boeing Field / King County Intl",
+      "point_ids": [
+        "WP5"
+      ],
+      "latitude": 47.72964,
+      "longitude": -122.14268,
+      "source_observation_mode": "station_primary",
+      "observation_time_utc": "2026-08-19T05:25:00.000Z",
+      "forecast_update_time_utc": null,
+      "temperature_c": 21,
+      "apparent_temperature_c": null,
+      "dewpoint_c": 14,
+      "relative_humidity_percent": 64.287246008636,
+      "wind_speed_km_h": 0,
+      "wind_gust_km_h": null,
+      "visibility_m": 16093.44,
+      "probability_of_precipitation_percent": null,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "weather_codes": [
+        "Clear"
+      ],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [],
+      "nearest_station": null,
+      "source_ids": [
+        "02_WEATHER:NWS-05"
+      ]
+    },
+    {
+      "record_type": "station_latest_observation",
+      "station_id": "KRNT",
+      "station_name": "Renton Municipal Airport",
+      "point_ids": [
+        "WP6"
+      ],
+      "latitude": 47.66129,
+      "longitude": -122.11027,
+      "source_observation_mode": "station_primary",
+      "observation_time_utc": "2026-08-19T05:25:00.000Z",
+      "forecast_update_time_utc": null,
+      "temperature_c": 21,
+      "apparent_temperature_c": null,
+      "dewpoint_c": 14,
+      "relative_humidity_percent": 64.287246008636,
+      "wind_speed_km_h": 12.96,
+      "wind_gust_km_h": null,
+      "visibility_m": 16093.44,
+      "probability_of_precipitation_percent": null,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "weather_codes": [
+        "Clear"
+      ],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [],
+      "nearest_station": null,
+      "source_ids": [
+        "02_WEATHER:NWS-05"
+      ]
+    },
+    {
+      "record_type": "station_latest_observation",
+      "station_id": "KRNT",
+      "station_name": "Renton Municipal Airport",
+      "point_ids": [
+        "WP7"
+      ],
+      "latitude": 47.61894,
+      "longitude": -122.06796,
+      "source_observation_mode": "station_primary",
+      "observation_time_utc": "2026-08-19T05:25:00.000Z",
+      "forecast_update_time_utc": null,
+      "temperature_c": 21,
+      "apparent_temperature_c": null,
+      "dewpoint_c": 14,
+      "relative_humidity_percent": 64.287246008636,
+      "wind_speed_km_h": 12.96,
+      "wind_gust_km_h": null,
+      "visibility_m": 16093.44,
+      "probability_of_precipitation_percent": null,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "weather_codes": [
+        "Clear"
+      ],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [],
+      "nearest_station": null,
+      "source_ids": [
+        "02_WEATHER:NWS-05"
+      ]
+    },
+    {
+      "record_type": "station_latest_observation",
+      "station_id": "KRNT",
+      "station_name": "Renton Municipal Airport",
+      "point_ids": [
+        "WP8"
+      ],
+      "latitude": 47.55207,
+      "longitude": -122.04429,
+      "source_observation_mode": "station_primary",
+      "observation_time_utc": "2026-08-19T05:25:00.000Z",
+      "forecast_update_time_utc": null,
+      "temperature_c": 21,
+      "apparent_temperature_c": null,
+      "dewpoint_c": 14,
+      "relative_humidity_percent": 64.287246008636,
+      "wind_speed_km_h": 12.96,
+      "wind_gust_km_h": null,
+      "visibility_m": 16093.44,
+      "probability_of_precipitation_percent": null,
+      "quantitative_precipitation_mm": null,
+      "probability_of_thunder_percent": null,
+      "snowfall_amount_mm": null,
+      "ice_accumulation_mm": null,
+      "weather_codes": [
+        "Clear"
+      ],
+      "official_nws_alert_ids": [],
+      "threshold_flags": [],
+      "nearest_station": null,
+      "source_ids": [
+        "02_WEATHER:NWS-05"
+      ]
+    }
+  ],
+  "route_sections": [
+    {
+      "section_id": "WP1",
+      "section_name": "UW / Seattle (Burke-Gilman start)",
+      "route_mile_start": 0,
+      "route_mile_end": 0,
+      "status": "high_risk",
+      "summary": "Current conditions indicate heat_high_risk.",
+      "point_ids": [
+        "WP1"
+      ],
+      "active_event_ids": []
+    },
+    {
+      "section_id": "WP2",
+      "section_name": "North Lake Washington / Kenmore–Lake Forest Park",
+      "route_mile_start": 6,
+      "route_mile_end": 6,
+      "status": "high_risk",
+      "summary": "Current conditions indicate heat_high_risk.",
+      "point_ids": [
+        "WP2"
+      ],
+      "active_event_ids": []
+    },
+    {
+      "section_id": "WP3",
+      "section_name": "Bothell",
+      "route_mile_start": 9,
+      "route_mile_end": 9,
+      "status": "high_risk",
+      "summary": "Current conditions indicate heat_high_risk.",
+      "point_ids": [
+        "WP3"
+      ],
+      "active_event_ids": []
+    },
+    {
+      "section_id": "WP4",
+      "section_name": "Woodinville",
+      "route_mile_start": 13,
+      "route_mile_end": 13,
+      "status": "high_risk",
+      "summary": "Current conditions indicate heat_high_risk.",
+      "point_ids": [
+        "WP4"
+      ],
+      "active_event_ids": []
+    },
+    {
+      "section_id": "WP5",
+      "section_name": "Redmond (Sammamish River Trail, Marymoor approach)",
+      "route_mile_start": 18,
+      "route_mile_end": 18,
+      "status": "high_risk",
+      "summary": "Current conditions indicate heat_high_risk.",
+      "point_ids": [
+        "WP5"
+      ],
+      "active_event_ids": []
+    },
+    {
+      "section_id": "WP6",
+      "section_name": "Marymoor Park / East Lake Sammamish Trail head",
+      "route_mile_start": 24,
+      "route_mile_end": 24,
+      "status": "high_risk",
+      "summary": "Current conditions indicate heat_high_risk.",
+      "point_ids": [
+        "WP6"
+      ],
+      "active_event_ids": []
+    },
+    {
+      "section_id": "WP7",
+      "section_name": "Sammamish (East Lake Sammamish Trail)",
+      "route_mile_start": 28,
+      "route_mile_end": 28,
+      "status": "high_risk",
+      "summary": "Current conditions indicate heat_high_risk.",
+      "point_ids": [
+        "WP7"
+      ],
+      "active_event_ids": []
+    },
+    {
+      "section_id": "WP8",
+      "section_name": "Issaquah approach/terminus",
+      "route_mile_start": 33.83,
+      "route_mile_end": 33.83,
+      "status": "high_risk",
+      "summary": "Current conditions indicate heat_high_risk.",
+      "point_ids": [
+        "WP8"
+      ],
+      "active_event_ids": []
+    }
+  ],
+  "provenance": {
+    "source_ids_used": [
+      "02_WEATHER:NWS-01",
+      "02_WEATHER:NWS-02",
+      "02_WEATHER:NWS-03",
+      "02_WEATHER:NWS-04",
+      "02_WEATHER:NWS-05",
+      "02_WEATHER:NWS-06"
+    ],
+    "route_gpx_ref": "data/route/UnivWA-Issaquah.gpx"
+  },
+  "validation_state": {
+    "candidate_validation_passed": true,
+    "published_from_candidate": false,
+    "validator_version": "1.0.0"
+  },
+  "metadata": {
+    "timezone": "America/Los_Angeles",
+    "alert_filter_policy": "exclude air quality, fire weather, and flood-owned products from lane 02 publication",
+    "threshold_policy_state": "owner_review_required_for_unresolved_items",
+    "notes": []
+  }
+}

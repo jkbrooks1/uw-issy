@@ -1,0 +1,1 @@
+PASS: 00_AS-BUILT/20260819-UWISSY_FINAL_CLOSEOUT/release_path_test/public-data — all four public package files are valid, release 20_STATUS_PUBLISHER-20260820T030156Z-001

@@ -1,0 +1,2 @@
+URL=https://apps.issaquahwa.gov/server/rest/services/General_Mapservices/PWProjectsCurrentYearConstructionPublic/MapServer/0/query?where=1=1\&outFields=*\&returnGeometry=true\&f=json
+URL=https://www.issaquahwa.gov/CivicAlerts.aspx?CID=20

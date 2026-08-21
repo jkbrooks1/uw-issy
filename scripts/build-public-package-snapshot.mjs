@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Usage: node scripts/build-public-package-snapshot.mjs <real-workflow08-snapshot-path> <output-dir> [audit-dir]
+// Usage: node scripts/build-public-package-snapshot.mjs <workflow20-status-latest-path> <output-dir> [audit-dir]
 //
 // Reads a real captured Status Publisher (workflow 20, formerly 08) combined status object (schema_version /
 // connector_id / generated_at / run_id / overall / lanes / severity_mapping_note)
@@ -34,6 +34,7 @@ const CANONICAL_LANE_ORDER = [
   "05_FLOOD_CONDITIONS",
   "06_TRAIL_INFRASTRUCTURE_STATUS",
   "07_GOVERNMENT_SAFETY_ALERTS",
+  "08_ROUTE_FACILITIES",
 ];
 
 const LANE_LABELS = {
@@ -44,6 +45,7 @@ const LANE_LABELS = {
   "05_FLOOD_CONDITIONS": "Flood conditions",
   "06_TRAIL_INFRASTRUCTURE_STATUS": "Trail infrastructure",
   "07_GOVERNMENT_SAFETY_ALERTS": "Government safety alerts",
+  "08_ROUTE_FACILITIES": "Route facilities",
 };
 
 const CANONICAL_TIERS = new Set(["normal", "watch", "alert", "unknown"]);
@@ -598,7 +600,7 @@ function buildRouteEventFeature(laneId, laneLabel, rawEvent, laneIsStale, laneUs
 function run(snapshotPath, outputDir, auditDir) {
   if (!snapshotPath || !outputDir) {
     throw new BuildFailure(
-      "usage: node scripts/build-public-package-snapshot.mjs <real-workflow08-snapshot-path> <output-dir> [audit-dir]",
+      "usage: node scripts/build-public-package-snapshot.mjs <workflow20-status-latest-path> <output-dir> [audit-dir]",
     );
   }
   if (!existsSync(snapshotPath)) {

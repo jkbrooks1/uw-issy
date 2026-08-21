@@ -1,0 +1,5 @@
+        id        |      name      | active |  parentFolderId  | folder_name | node_count | versionCounter |              versionId               |           activeVersionId            
+------------------+----------------+--------+------------------+-------------+------------+----------------+--------------------------------------+--------------------------------------
+ poGV37VLUGIUxfGK | v02.UWI_LANE06 | t      | LaS9Q6sil9yCDzrV | UWISSY      |         48 |              5 | 63cbd167-7602-4b88-a872-a9122542feaf | 63cbd167-7602-4b88-a872-a9122542feaf
+(1 row)
+

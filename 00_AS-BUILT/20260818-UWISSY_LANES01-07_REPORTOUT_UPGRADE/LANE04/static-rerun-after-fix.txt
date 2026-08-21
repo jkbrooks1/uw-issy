@@ -1,0 +1,6 @@
+{
+  "timestamp_regex_fixed": true,
+  "connector_id_format": true,
+  "manifest_v0002": true,
+  "final_report_regex": true
+}

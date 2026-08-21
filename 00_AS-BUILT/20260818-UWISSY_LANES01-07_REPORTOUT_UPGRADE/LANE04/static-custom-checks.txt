@@ -1,0 +1,457 @@
+[
+  {
+    "name": "workflow_name",
+    "ok": true,
+    "detail": "v02.UWI_LANE04"
+  },
+  {
+    "name": "workflow_id_preserved",
+    "ok": true,
+    "detail": "w6xnelPQeRFZk8BG"
+  },
+  {
+    "name": "active_state_preserved",
+    "ok": true,
+    "detail": "true"
+  },
+  {
+    "name": "node_count_preserved",
+    "ok": true,
+    "detail": "36"
+  },
+  {
+    "name": "report_degraded",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "report_execution_evidence",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "bundle_execution_evidence",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "timeout_Fetch NIFC-01 Locations",
+    "ok": true,
+    "detail": "{\"timeout\":30000}"
+  },
+  {
+    "name": "timeout_Fetch NIFC-02 Perimeters",
+    "ok": true,
+    "detail": "{\"timeout\":30000}"
+  },
+  {
+    "name": "timeout_Fetch NWS-01 Alerts",
+    "ok": true,
+    "detail": "{\"timeout\":30000}"
+  },
+  {
+    "name": "timeout_Fetch NOAA-01 HMS Smoke",
+    "ok": true,
+    "detail": "{\"timeout\":30000}"
+  },
+  {
+    "name": "timeout_Fetch KC-01 Burn Bans",
+    "ok": true,
+    "detail": "{\"timeout\":30000}"
+  },
+  {
+    "name": "timestamp_regex_fixed",
+    "ok": false,
+    "detail": ""
+  },
+  {
+    "name": "manifest_v0002",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "connector_v0002",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "workflow_name_metadata",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "connection_from_exists_Manual Trigger",
+    "ok": true,
+    "detail": "Manual Trigger"
+  },
+  {
+    "name": "connection_to_exists_Manual Trigger_to_Initialize Run Metadata",
+    "ok": true,
+    "detail": "Initialize Run Metadata"
+  },
+  {
+    "name": "connection_from_exists_Schedule Trigger",
+    "ok": true,
+    "detail": "Schedule Trigger"
+  },
+  {
+    "name": "connection_to_exists_Schedule Trigger_to_Initialize Run Metadata",
+    "ok": true,
+    "detail": "Initialize Run Metadata"
+  },
+  {
+    "name": "connection_from_exists_Initialize Run Metadata",
+    "ok": true,
+    "detail": "Initialize Run Metadata"
+  },
+  {
+    "name": "connection_to_exists_Initialize Run Metadata_to_Read Last Known Good",
+    "ok": true,
+    "detail": "Read Last Known Good"
+  },
+  {
+    "name": "connection_to_exists_Initialize Run Metadata_to_Fetch NIFC-01 Locations",
+    "ok": true,
+    "detail": "Fetch NIFC-01 Locations"
+  },
+  {
+    "name": "connection_to_exists_Initialize Run Metadata_to_Fetch NIFC-02 Perimeters",
+    "ok": true,
+    "detail": "Fetch NIFC-02 Perimeters"
+  },
+  {
+    "name": "connection_to_exists_Initialize Run Metadata_to_Fetch NWS-01 Alerts",
+    "ok": true,
+    "detail": "Fetch NWS-01 Alerts"
+  },
+  {
+    "name": "connection_to_exists_Initialize Run Metadata_to_Fetch NOAA-01 HMS Smoke",
+    "ok": true,
+    "detail": "Fetch NOAA-01 HMS Smoke"
+  },
+  {
+    "name": "connection_to_exists_Initialize Run Metadata_to_Fetch KC-01 Burn Bans",
+    "ok": true,
+    "detail": "Fetch KC-01 Burn Bans"
+  },
+  {
+    "name": "connection_from_exists_Read Last Known Good",
+    "ok": true,
+    "detail": "Read Last Known Good"
+  },
+  {
+    "name": "connection_to_exists_Read Last Known Good_to_Parse Last Known Good",
+    "ok": true,
+    "detail": "Parse Last Known Good"
+  },
+  {
+    "name": "connection_from_exists_Fetch NIFC-01 Locations",
+    "ok": true,
+    "detail": "Fetch NIFC-01 Locations"
+  },
+  {
+    "name": "connection_to_exists_Fetch NIFC-01 Locations_to_Land NIFC-01 Raw Payload",
+    "ok": true,
+    "detail": "Land NIFC-01 Raw Payload"
+  },
+  {
+    "name": "connection_from_exists_Land NIFC-01 Raw Payload",
+    "ok": true,
+    "detail": "Land NIFC-01 Raw Payload"
+  },
+  {
+    "name": "connection_to_exists_Land NIFC-01 Raw Payload_to_Write NIFC-01 Raw Landing",
+    "ok": true,
+    "detail": "Write NIFC-01 Raw Landing"
+  },
+  {
+    "name": "connection_from_exists_Write NIFC-01 Raw Landing",
+    "ok": true,
+    "detail": "Write NIFC-01 Raw Landing"
+  },
+  {
+    "name": "connection_to_exists_Write NIFC-01 Raw Landing_to_Normalize NIFC-01 Events",
+    "ok": true,
+    "detail": "Normalize NIFC-01 Events"
+  },
+  {
+    "name": "connection_from_exists_Normalize NIFC-01 Events",
+    "ok": true,
+    "detail": "Normalize NIFC-01 Events"
+  },
+  {
+    "name": "connection_to_exists_Normalize NIFC-01 Events_to_Merge Normalized Branches",
+    "ok": true,
+    "detail": "Merge Normalized Branches"
+  },
+  {
+    "name": "connection_from_exists_Fetch NIFC-02 Perimeters",
+    "ok": true,
+    "detail": "Fetch NIFC-02 Perimeters"
+  },
+  {
+    "name": "connection_to_exists_Fetch NIFC-02 Perimeters_to_Land NIFC-02 Raw Payload",
+    "ok": true,
+    "detail": "Land NIFC-02 Raw Payload"
+  },
+  {
+    "name": "connection_from_exists_Land NIFC-02 Raw Payload",
+    "ok": true,
+    "detail": "Land NIFC-02 Raw Payload"
+  },
+  {
+    "name": "connection_to_exists_Land NIFC-02 Raw Payload_to_Write NIFC-02 Raw Landing",
+    "ok": true,
+    "detail": "Write NIFC-02 Raw Landing"
+  },
+  {
+    "name": "connection_from_exists_Write NIFC-02 Raw Landing",
+    "ok": true,
+    "detail": "Write NIFC-02 Raw Landing"
+  },
+  {
+    "name": "connection_to_exists_Write NIFC-02 Raw Landing_to_Normalize NIFC-02 Events",
+    "ok": true,
+    "detail": "Normalize NIFC-02 Events"
+  },
+  {
+    "name": "connection_from_exists_Normalize NIFC-02 Events",
+    "ok": true,
+    "detail": "Normalize NIFC-02 Events"
+  },
+  {
+    "name": "connection_to_exists_Normalize NIFC-02 Events_to_Merge Normalized Branches",
+    "ok": true,
+    "detail": "Merge Normalized Branches"
+  },
+  {
+    "name": "connection_from_exists_Fetch NWS-01 Alerts",
+    "ok": true,
+    "detail": "Fetch NWS-01 Alerts"
+  },
+  {
+    "name": "connection_to_exists_Fetch NWS-01 Alerts_to_Land NWS-01 Raw Payload",
+    "ok": true,
+    "detail": "Land NWS-01 Raw Payload"
+  },
+  {
+    "name": "connection_from_exists_Land NWS-01 Raw Payload",
+    "ok": true,
+    "detail": "Land NWS-01 Raw Payload"
+  },
+  {
+    "name": "connection_to_exists_Land NWS-01 Raw Payload_to_Write NWS-01 Raw Landing",
+    "ok": true,
+    "detail": "Write NWS-01 Raw Landing"
+  },
+  {
+    "name": "connection_from_exists_Write NWS-01 Raw Landing",
+    "ok": true,
+    "detail": "Write NWS-01 Raw Landing"
+  },
+  {
+    "name": "connection_to_exists_Write NWS-01 Raw Landing_to_Normalize NWS-01 Events",
+    "ok": true,
+    "detail": "Normalize NWS-01 Events"
+  },
+  {
+    "name": "connection_from_exists_Normalize NWS-01 Events",
+    "ok": true,
+    "detail": "Normalize NWS-01 Events"
+  },
+  {
+    "name": "connection_to_exists_Normalize NWS-01 Events_to_Merge Normalized Branches",
+    "ok": true,
+    "detail": "Merge Normalized Branches"
+  },
+  {
+    "name": "connection_from_exists_Fetch NOAA-01 HMS Smoke",
+    "ok": true,
+    "detail": "Fetch NOAA-01 HMS Smoke"
+  },
+  {
+    "name": "connection_to_exists_Fetch NOAA-01 HMS Smoke_to_Land NOAA-01 Raw Payload",
+    "ok": true,
+    "detail": "Land NOAA-01 Raw Payload"
+  },
+  {
+    "name": "connection_from_exists_Land NOAA-01 Raw Payload",
+    "ok": true,
+    "detail": "Land NOAA-01 Raw Payload"
+  },
+  {
+    "name": "connection_to_exists_Land NOAA-01 Raw Payload_to_Write NOAA-01 Raw Landing",
+    "ok": true,
+    "detail": "Write NOAA-01 Raw Landing"
+  },
+  {
+    "name": "connection_from_exists_Write NOAA-01 Raw Landing",
+    "ok": true,
+    "detail": "Write NOAA-01 Raw Landing"
+  },
+  {
+    "name": "connection_to_exists_Write NOAA-01 Raw Landing_to_Normalize NOAA-01 Events",
+    "ok": true,
+    "detail": "Normalize NOAA-01 Events"
+  },
+  {
+    "name": "connection_from_exists_Normalize NOAA-01 Events",
+    "ok": true,
+    "detail": "Normalize NOAA-01 Events"
+  },
+  {
+    "name": "connection_to_exists_Normalize NOAA-01 Events_to_Merge Normalized Branches",
+    "ok": true,
+    "detail": "Merge Normalized Branches"
+  },
+  {
+    "name": "connection_from_exists_Fetch KC-01 Burn Bans",
+    "ok": true,
+    "detail": "Fetch KC-01 Burn Bans"
+  },
+  {
+    "name": "connection_to_exists_Fetch KC-01 Burn Bans_to_Land KC-01 Raw Payload",
+    "ok": true,
+    "detail": "Land KC-01 Raw Payload"
+  },
+  {
+    "name": "connection_from_exists_Land KC-01 Raw Payload",
+    "ok": true,
+    "detail": "Land KC-01 Raw Payload"
+  },
+  {
+    "name": "connection_to_exists_Land KC-01 Raw Payload_to_Write KC-01 Raw Landing",
+    "ok": true,
+    "detail": "Write KC-01 Raw Landing"
+  },
+  {
+    "name": "connection_from_exists_Write KC-01 Raw Landing",
+    "ok": true,
+    "detail": "Write KC-01 Raw Landing"
+  },
+  {
+    "name": "connection_to_exists_Write KC-01 Raw Landing_to_Normalize KC-01 Events",
+    "ok": true,
+    "detail": "Normalize KC-01 Events"
+  },
+  {
+    "name": "connection_from_exists_Normalize KC-01 Events",
+    "ok": true,
+    "detail": "Normalize KC-01 Events"
+  },
+  {
+    "name": "connection_to_exists_Normalize KC-01 Events_to_Merge Normalized Branches",
+    "ok": true,
+    "detail": "Merge Normalized Branches"
+  },
+  {
+    "name": "connection_from_exists_Merge Normalized Branches",
+    "ok": true,
+    "detail": "Merge Normalized Branches"
+  },
+  {
+    "name": "connection_to_exists_Merge Normalized Branches_to_Aggregate Normalized Branches",
+    "ok": true,
+    "detail": "Aggregate Normalized Branches"
+  },
+  {
+    "name": "connection_from_exists_Aggregate Normalized Branches",
+    "ok": true,
+    "detail": "Aggregate Normalized Branches"
+  },
+  {
+    "name": "connection_to_exists_Aggregate Normalized Branches_to_Deduplicate Events",
+    "ok": true,
+    "detail": "Deduplicate Events"
+  },
+  {
+    "name": "connection_from_exists_Deduplicate Events",
+    "ok": true,
+    "detail": "Deduplicate Events"
+  },
+  {
+    "name": "connection_to_exists_Deduplicate Events_to_Build Route Sections Rollups",
+    "ok": true,
+    "detail": "Build Route Sections Rollups"
+  },
+  {
+    "name": "connection_from_exists_Build Route Sections Rollups",
+    "ok": true,
+    "detail": "Build Route Sections Rollups"
+  },
+  {
+    "name": "connection_to_exists_Build Route Sections Rollups_to_Validate Candidate Envelope",
+    "ok": true,
+    "detail": "Validate Candidate Envelope"
+  },
+  {
+    "name": "connection_from_exists_Validate Candidate Envelope",
+    "ok": true,
+    "detail": "Validate Candidate Envelope"
+  },
+  {
+    "name": "connection_to_exists_Validate Candidate Envelope_to_Build Candidate Artifact",
+    "ok": true,
+    "detail": "Build Candidate Artifact"
+  },
+  {
+    "name": "connection_from_exists_Build Candidate Artifact",
+    "ok": true,
+    "detail": "Build Candidate Artifact"
+  },
+  {
+    "name": "connection_to_exists_Build Candidate Artifact_to_Write Candidate Artifact",
+    "ok": true,
+    "detail": "Write Candidate Artifact"
+  },
+  {
+    "name": "connection_from_exists_Write Candidate Artifact",
+    "ok": true,
+    "detail": "Write Candidate Artifact"
+  },
+  {
+    "name": "connection_to_exists_Write Candidate Artifact_to_Publish Gate Decision",
+    "ok": true,
+    "detail": "Publish Gate Decision"
+  },
+  {
+    "name": "connection_from_exists_Publish Gate Decision",
+    "ok": true,
+    "detail": "Publish Gate Decision"
+  },
+  {
+    "name": "connection_to_exists_Publish Gate Decision_to_Build Final Artifact Bundle",
+    "ok": true,
+    "detail": "Build Final Artifact Bundle"
+  },
+  {
+    "name": "connection_from_exists_Build Final Artifact Bundle",
+    "ok": true,
+    "detail": "Build Final Artifact Bundle"
+  },
+  {
+    "name": "connection_to_exists_Build Final Artifact Bundle_to_Write Final Artifacts",
+    "ok": true,
+    "detail": "Write Final Artifacts"
+  },
+  {
+    "name": "connection_from_exists_Write Final Artifacts",
+    "ok": true,
+    "detail": "Write Final Artifacts"
+  },
+  {
+    "name": "connection_to_exists_Write Final Artifacts_to_Final Status Report",
+    "ok": true,
+    "detail": "Final Status Report"
+  },
+  {
+    "name": "final_report_reachable",
+    "ok": true,
+    "detail": "Manual Trigger,Schedule Trigger,Initialize Run Metadata,Read Last Known Good,Fetch NIFC-01 Locations,Fetch NIFC-02 Perimeters,Fetch NWS-01 Alerts,Fetch NOAA-01 HMS Smoke,Fetch KC-01 Burn Bans,Parse Last Known Good,Land NIFC-01 Raw Payload,Write NIFC-01 Raw Landing,Normalize NIFC-01 Events,Merge Normalized Branches,Land NIFC-02 Raw Payload,Write NIFC-02 Raw Landing,Normalize NIFC-02 Events,Land NWS-01 Raw Payload,Write NWS-01 Raw Landing,Normalize NWS-01 Events,Land NOAA-01 Raw Payload,Write NOAA-01 Raw Landing,Normalize NOAA-01 Events,Land KC-01 Raw Payload,Write KC-01 Raw Landing,Normalize KC-01 Events,Aggregate Normalized Branches,Deduplicate Events,Build Route Sections Rollups,Validate Candidate Envelope,Build Candidate Artifact,Write Candidate Artifact,Publish Gate Decision,Build Final Artifact Bundle,Write Final Artifacts,Final Status Report"
+  },
+  {
+    "name": "embedded_secret_scan",
+    "ok": true,
+    "detail": null
+  }
+]

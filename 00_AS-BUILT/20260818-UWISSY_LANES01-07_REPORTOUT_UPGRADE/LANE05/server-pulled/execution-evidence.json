@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "connector_id": "05_FLOOD_CONDITIONS",
+  "run_id": "05_FLOOD_CONDITIONS-20260819T060417Z-001",
+  "workflow_name": "v02.UWI_LANE05",
+  "workflow_internal_id": "4RiNqOKD9BCZFH6P",
+  "execution_id": "pending_n8n_execution_id",
+  "connector_version": "v0002",
+  "started_at": "2026-08-19T06:04:17.348Z",
+  "finished_at": "2026-08-19T06:05:22.604Z",
+  "result": "success",
+  "artifacts": [
+    {
+      "path": "/files/uw-issy-connectors/published/05_FLOOD_CONDITIONS/05_FLOOD_CONDITIONS_published_20260819T060417Z.json",
+      "sha256": "hash_01df6806"
+    },
+    {
+      "path": "/files/uw-issy-connectors/published/05_FLOOD_CONDITIONS/current.json",
+      "sha256": "hash_01df6806"
+    },
+    {
+      "path": "/files/uw-issy-connectors/last_known_good/05_FLOOD_CONDITIONS/current.json",
+      "sha256": "hash_01df6806"
+    },
+    {
+      "path": "/files/uw-issy-connectors/last_known_good/05_FLOOD_CONDITIONS/archive/20260819T060417Z.json",
+      "sha256": "hash_01df6806"
+    }
+  ],
+  "promotion_scope": "candidate_and_published",
+  "candidate_generated": true,
+  "published_generated": true
+}

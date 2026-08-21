@@ -1,0 +1,25 @@
+{
+  "hasResult": true,
+  "nodeRuns": 55
+}
+{
+  "run_id": "05_FLOOD_CONDITIONS-20260819T060417Z-001",
+  "status": "DEGRADED",
+  "data_status": "degraded",
+  "candidate_written": true,
+  "published_written": true,
+  "quarantine_written": false,
+  "validation_log_written": true,
+  "status_written": true,
+  "handoff_written": true,
+  "execution_evidence_written": true,
+  "artifact_count_written": 9,
+  "event_count": 5,
+  "source_count": 10,
+  "failed_source_count": 4,
+  "using_last_known_good": false,
+  "gauge_count": 1,
+  "flood_event_count": 5,
+  "published_path": "/files/uw-issy-connectors/published/05_FLOOD_CONDITIONS/05_FLOOD_CONDITIONS_published_20260819T060417Z.json",
+  "timestamp": "2026-08-19T06:04:17.348Z"
+}

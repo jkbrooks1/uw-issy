@@ -1,0 +1,63 @@
+Received SIGTERM. Shutting down...
+Deregistered all crons for workflow
+Deregistered all crons for workflow
+Deregistered all crons for workflow
+Deregistered all crons for workflow
+Deregistered all crons for workflow
+Deregistered all crons for workflow
+Deregistered all crons for workflow
+Deregistered all crons for workflow
+Deregistered all crons for workflow
+Deregistered all crons for workflow
+Deregistered all crons for workflow
+Deregistered all crons for workflow
+Deregistered all crons for workflow
+Deregistered all crons for workflow
+Deregistered all crons for workflow
+Deregistered all crons for workflow
+Deregistered all crons for workflow
+Deregistered all crons for workflow
+[runnner:js] Received SIGTERM signal, shutting down...
+[runnner:js] Task runner stopped
+
+Stopping n8n...
+Initializing n8n process
+Error tracking disabled because this release is older than 6 weeks.
+n8n ready on ::, port 5678
+n8n Task Broker ready on 127.0.0.1, port 5679
+Failed to start Python task runner in internal mode. because Python 3 is missing from this system. Launching a Python runner in internal mode is intended only for debugging and is not recommended for production. Users are encouraged to deploy in external mode. See: https://docs.n8n.io/hosting/configuration/task-runners/#setting-up-external-mode
+
+There is a deprecation related to your environment variables. Please take the recommended actions to update your configuration:
+ - N8N_RUNNERS_ENABLED -> Remove this environment variable; it is no longer needed.
+
+[license SDK] Skipping renewal on init: license cert is not due for renewal
+Registered runner "JS Task Runner" (OfD-d56vjDto_51ug2OqX) 
+Instance registered
+Discovered 4 cluster checks
+Version: 2.22.6
+Building workflow dependency index...
+Start Active Workflows:
+Finished building workflow dependency index. Processed 1 draft workflows, 1 published workflows.
+Activated workflow "v02.UWI_LANE02" (ID: fA0ZjWH3Itl83aPC)
+Activated workflow "v02.UWI_LANE07" (ID: 08g3JNwQPVSxUl2H)
+Activated workflow "v0002.ALT_BOD-NTE_AirQualityTemperatureConnector" (ID: uzr6s5ckQi8BM61x)
+Activated workflow "v02.UWI_LANE04" (ID: w6xnelPQeRFZk8BG)
+Activated workflow "v0004.06_CanalStatusConnector" (ID: wxFTioh1h6PjToG1)
+Activated workflow "v03.UWI_LANE30" (ID: KhbGg5gBn7Rbne68)
+Activated workflow "v03.UWI_LANE01" (ID: RR7cLSV9oGngrJdA)
+Activated workflow "v02.UWI_LANE05" (ID: 4RiNqOKD9BCZFH6P)
+Activated workflow "v01.FRANCE_NEWS_YT_DIGEST" (ID: FRNEWSYTDIGESTv01)
+Activated workflow "v01.FRANCE_NEWS_YT_DIGEST_ERROR_HANDLER" (ID: FRNEWSERRHANDLERv01)
+Activated workflow "v0002.ALT_BOD-NTE_AirQualityTemperatureConnector" (ID: oGIspliDrKlssaNi)
+Activated workflow "v04.UWI_LANE20" (ID: gp8WlccGwLydNWG7)
+Activated workflow "v0.03.NBJ_YOUTUBE_TO_M4B_FAILURE_ALERT" (ID: n7DPZj0rHuqITocv)
+Activated workflow "v0.03.NBJ_YOUTUBE_TO_M4B" (ID: uHouqtViYE0AMduF)
+Activated workflow "v0002.CDM_AirQualityTemperatureConnector" (ID: kZ285gFxXk57zIeV)
+Activated workflow "v1.6 FLE TabPerDay Daily Review - Pushover" (ID: D60FM2UYyAJb0ymA)
+Activated workflow "v12. Flight Price Checker" (ID: 9a3potdAbL0bFO1g)
+Activated workflow "v02.UWI_LANE03" (ID: qlM2XIv2BbFSh3in)
+Activated workflow "v02.UWI_LANE06" (ID: poGV37VLUGIUxfGK)
+Activated workflow "v01.UWI_LANE08" (ID: uwIssy08RouteFacilities)
+
+Editor is now accessible via:
+https://n8n.biketourfrance.net

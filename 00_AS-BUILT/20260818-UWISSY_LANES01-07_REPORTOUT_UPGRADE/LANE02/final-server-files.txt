@@ -1,0 +1,6 @@
+/files/uw-issy-connectors/raw/02_WEATHER/NWS-01_landing_20260819T053755Z.json
+/files/uw-issy-connectors/raw/02_WEATHER/NWS-02_landing_20260819T053755Z.json
+/files/uw-issy-connectors/raw/02_WEATHER/NWS-03_landing_20260819T053755Z.json
+/files/uw-issy-connectors/raw/02_WEATHER/NWS-04_landing_20260819T053755Z.json
+/files/uw-issy-connectors/raw/02_WEATHER/NWS-05_landing_20260819T053755Z.json
+/files/uw-issy-connectors/raw/02_WEATHER/NWS-06_landing_20260819T053755Z.json

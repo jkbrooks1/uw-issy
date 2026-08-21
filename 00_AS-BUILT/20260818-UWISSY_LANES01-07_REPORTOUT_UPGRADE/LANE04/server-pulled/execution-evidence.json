@@ -1,0 +1,119 @@
+{
+  "run_id": "04_WILDFIRE-20260819T055323Z-001",
+  "connector_id": "04_WILDFIRE",
+  "lane": "04_WILDFIRE",
+  "workflow_name": "v02.UWI_LANE04",
+  "workflow_id": "w6xnelPQeRFZk8BG",
+  "generated_at": "2026-08-19T05:53:23.672Z",
+  "published_at": "2026-08-19T05:53:38.126Z",
+  "should_publish": true,
+  "status": "degraded",
+  "data_status": "degraded",
+  "source_health": [
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "04_WILDFIRE",
+      "source_id": "04_WILDFIRE:NIFC-01",
+      "source_name": "WFIGS Current Wildland Fire Locations",
+      "status": "failed",
+      "retrieved_at": "2026-08-19T05:53:23.672Z",
+      "last_retrieved_at": "2026-08-19T05:53:23.672Z",
+      "stale_after_minutes": 15,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T05:53:23.672Z",
+      "freshness_state": "unknown",
+      "warnings": [],
+      "errors": [
+        "Cannot perform query. Invalid query parameters."
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "04_WILDFIRE",
+      "source_id": "04_WILDFIRE:NIFC-02",
+      "source_name": "WFIGS Current Interagency Fire Perimeters",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T05:53:23.672Z",
+      "last_retrieved_at": "2026-08-19T05:53:23.672Z",
+      "stale_after_minutes": 15,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T05:53:23.672Z",
+      "freshness_state": "fresh",
+      "warnings": [
+        "Healthy WFIGS perimeters response; no route-relevant wildfire perimeters found."
+      ],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "04_WILDFIRE",
+      "source_id": "04_WILDFIRE:NWS-01",
+      "source_name": "NOAA / National Weather Service active alerts API",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T05:53:23.672Z",
+      "last_retrieved_at": "2026-08-19T05:53:23.672Z",
+      "stale_after_minutes": 15,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T05:53:23.672Z",
+      "freshness_state": "fresh",
+      "warnings": [
+        "Healthy NWS active-alerts response; no active route fire-weather alerts found."
+      ],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "04_WILDFIRE",
+      "source_id": "04_WILDFIRE:NOAA-01",
+      "source_name": "NOAA Hazard Mapping System smoke polygons",
+      "status": "failed",
+      "retrieved_at": "2026-08-19T05:53:23.672Z",
+      "last_retrieved_at": "2026-08-19T05:53:23.672Z",
+      "stale_after_minutes": 1440,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T05:53:23.672Z",
+      "freshness_state": "unknown",
+      "warnings": [],
+      "errors": [
+        "404 - \"<!DOCTYPE HTML PUBLIC \\\"-//IETF//DTD HTML 2.0//EN\\\">\\n<html><head>\\n<title>404 Not Found</title>\\n</head><body>\\n<h1>Not Found</h1>\\n<p>The requested URL was not found on this server.</p>\\n</body></html>\\n\""
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "04_WILDFIRE",
+      "source_id": "04_WILDFIRE:KC-01",
+      "source_name": "King County Fire Safety Burn Bans",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T05:53:23.672Z",
+      "last_retrieved_at": "2026-08-19T05:53:23.672Z",
+      "stale_after_minutes": 360,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T05:53:23.672Z",
+      "freshness_state": "fresh",
+      "warnings": [
+        "King County fire-safety page parsed; no active burn-ban status detected."
+      ],
+      "errors": []
+    }
+  ],
+  "validation_errors": [],
+  "validation_warnings": [],
+  "published_artifact_ref": "/files/uw-issy-connectors/published/04_WILDFIRE/04_WILDFIRE_published_20260819T055323Z.json",
+  "last_known_good_ref": "/files/uw-issy-connectors/last_known_good/04_WILDFIRE/current.json",
+  "artifact_paths": {
+    "published": "/files/uw-issy-connectors/published/04_WILDFIRE/04_WILDFIRE_published_20260819T055323Z.json",
+    "published_current": "/files/uw-issy-connectors/published/04_WILDFIRE/current.json",
+    "last_known_good_current": "/files/uw-issy-connectors/last_known_good/04_WILDFIRE/current.json",
+    "last_known_good_archive": "/files/uw-issy-connectors/last_known_good/04_WILDFIRE/archive/20260819T055323Z.json",
+    "quarantine": null,
+    "validation_log": "/files/uw-issy-connectors/logs/04_WILDFIRE/validation_log_20260819T055323Z.jsonl",
+    "status": "/files/uw-issy-connectors/health/04_WILDFIRE/status.json",
+    "handoff": "/files/uw-issy-connectors/handoff/04_WILDFIRE/04_WILDFIRE-20260819T055323Z-001.json",
+    "execution_evidence": "/files/uw-issy-connectors/health/04_WILDFIRE/execution_evidence_20260819T055323Z.json"
+  }
+}

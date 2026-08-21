@@ -1,0 +1,13 @@
+/files/uw-issy-connectors/candidate/06_TRAIL_INFRASTRUCTURE_STATUS/06_TRAIL_INFRASTRUCTURE_STATUS_candidate_20260819T060726Z.json
+/files/uw-issy-connectors/handoff/06_TRAIL_INFRASTRUCTURE_STATUS/06_TRAIL_INFRASTRUCTURE_STATUS_handoff_20260819T060726Z.json
+/files/uw-issy-connectors/logs/06_TRAIL_INFRASTRUCTURE_STATUS/validation_log_20260819T060726Z.jsonl
+/files/uw-issy-connectors/normalized/06_TRAIL_INFRASTRUCTURE_STATUS/06_TRAIL_INFRASTRUCTURE_STATUS_normalized_output_20260819T060726Z.json
+/files/uw-issy-connectors/published/06_TRAIL_INFRASTRUCTURE_STATUS/06_TRAIL_INFRASTRUCTURE_STATUS_published_20260819T060726Z.json
+/files/uw-issy-connectors/raw/06_TRAIL_INFRASTRUCTURE_STATUS/ISS-01_landing_20260819T060726Z.json
+/files/uw-issy-connectors/raw/06_TRAIL_INFRASTRUCTURE_STATUS/KC-01_landing_20260819T060726Z.json
+/files/uw-issy-connectors/raw/06_TRAIL_INFRASTRUCTURE_STATUS/KC-02_landing_20260819T060726Z.json
+/files/uw-issy-connectors/raw/06_TRAIL_INFRASTRUCTURE_STATUS/KC-03_landing_20260819T060726Z.json
+/files/uw-issy-connectors/raw/06_TRAIL_INFRASTRUCTURE_STATUS/KC-04_landing_20260819T060726Z.json
+/files/uw-issy-connectors/raw/06_TRAIL_INFRASTRUCTURE_STATUS/REDM-01_landing_20260819T060726Z.json
+/files/uw-issy-connectors/raw/06_TRAIL_INFRASTRUCTURE_STATUS/SAM-01_landing_20260819T060726Z.json
+/files/uw-issy-connectors/raw/06_TRAIL_INFRASTRUCTURE_STATUS/SAM-02_landing_20260819T060726Z.json

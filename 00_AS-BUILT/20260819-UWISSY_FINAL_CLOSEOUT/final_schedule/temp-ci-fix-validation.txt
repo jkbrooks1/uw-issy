@@ -1,0 +1,82 @@
+PASS: data/route/UnivWA-Issaquah.gpx — 1 track(s), 1 segment(s), 1470 point(s), bounds [47.55207, -122.30570] to [47.75889, -122.04414], plausible for UW-Issaquah
+PASS: wrote public/routes/UnivWA-Issaquah.geojson — LineString with 1470 point(s)
+PASS: public/routes/UnivWA-Issaquah.geojson — LineString with 1470 coordinate(s), bounds [47.55207, -122.30570] to [47.75889, -122.04414], plausible for UW-Issaquah
+PASS: wrote 4 public package files to public/data (release 20_STATUS_PUBLISHER-20260820T034129Z-001) — 1 of 20 candidate event(s) eligible for public display, 19 excluded, 0 duplicate(s) merged
+NOTE: 19 mapping gap(s) logged (buildspec 11.4):
+  - 03_AIR_QUALITY:PSCAA-02:burn-ban:20260820T030052Z: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 03_AIR_QUALITY:WASMOKE-01:8f69ba66: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 05_FLOOD_CONDITIONS:USGS-01:b62db084: no "geometry" field published by its lane — used real event.location.{latitude,longitude} as a Point instead (source-native, not invented)
+  - 05_FLOOD_CONDITIONS:USGS-02:632d4c3f: no "geometry" field published by its lane — used real event.location.{latitude,longitude} as a Point instead (source-native, not invented)
+  - 05_FLOOD_CONDITIONS:USGS-03:7d7b2df4: no "geometry" field published by its lane — used real event.location.{latitude,longitude} as a Point instead (source-native, not invented)
+  - 05_FLOOD_CONDITIONS:NWPS-01:e1e70ab0: no "geometry" field published by its lane — used real event.location.{latitude,longitude} as a Point instead (source-native, not invented)
+  - 05_FLOOD_CONDITIONS:NWPS-02:721210d7: no "geometry" field published by its lane — used real event.location.{latitude,longitude} as a Point instead (source-native, not invented)
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:656ace49: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:115a3c27: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:KC-03:69c3253a: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:d2c2a234: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02:3f489f7f: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c31a0f8a: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_29734473: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_bf9b0b4d: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_f2b6e839: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c29944a0: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_dc98040f: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_3a69f580: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+NOTE: 19 event(s) excluded from public display:
+  - 03_AIR_QUALITY:PSCAA-02:burn-ban:20260820T030052Z (03_AIR_QUALITY): no_route_impact
+  - 03_AIR_QUALITY:WASMOKE-01:8f69ba66 (03_AIR_QUALITY): no_route_impact
+  - 05_FLOOD_CONDITIONS:USGS-01:b62db084 (05_FLOOD_CONDITIONS): flood_no_active_category
+  - 05_FLOOD_CONDITIONS:USGS-02:632d4c3f (05_FLOOD_CONDITIONS): flood_no_active_category
+  - 05_FLOOD_CONDITIONS:USGS-03:7d7b2df4 (05_FLOOD_CONDITIONS): flood_no_active_category
+  - 05_FLOOD_CONDITIONS:NWPS-01:e1e70ab0 (05_FLOOD_CONDITIONS): flood_below_major
+  - 05_FLOOD_CONDITIONS:NWPS-02:721210d7 (05_FLOOD_CONDITIONS): flood_below_major
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:656ace49 (06_TRAIL_INFRASTRUCTURE_STATUS): off_route
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:115a3c27 (06_TRAIL_INFRASTRUCTURE_STATUS): off_route
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:KC-03:69c3253a (06_TRAIL_INFRASTRUCTURE_STATUS): off_route
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:d2c2a234 (06_TRAIL_INFRASTRUCTURE_STATUS): off_route
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02:3f489f7f (06_TRAIL_INFRASTRUCTURE_STATUS): off_route
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c31a0f8a (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_29734473 (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_bf9b0b4d (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_f2b6e839 (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c29944a0 (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_dc98040f (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_3a69f580 (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+PASS: public/data — all four public package files are valid, release 20_STATUS_PUBLISHER-20260820T034129Z-001
+
+> uw-issy-route-status@0.1.0 test
+> vitest run
+
+sh: vitest: command not found
+
+> uw-issy-route-status@0.1.0 typecheck
+> tsc --noEmit -p tsconfig.json
+
+sh: tsc: command not found
+
+> uw-issy-route-status@0.1.0 build
+> astro build
+
+sh: astro: command not found
+find: dist/_astro: No such file or directory
+find: dist/_astro: No such file or directory
+PASS: all required built assets present
+node:fs:1569
+  const result = binding.readdir(
+                         ^
+
+Error: ENOENT: no such file or directory, scandir 'dist'
+    at readdirSync (node:fs:1569:26)
+    at walk (file:///private/tmp/uwissy-ci-current-input-fix/scripts/check-public-output-for-secrets.mjs:25:23)
+    at run (file:///private/tmp/uwissy-ci-current-input-fix/scripts/check-public-output-for-secrets.mjs:42:17)
+    at file:///private/tmp/uwissy-ci-current-input-fix/scripts/check-public-output-for-secrets.mjs:65:3
+    at ModuleJob.run (node:internal/modules/esm/module_job:430:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:661:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'scandir',
+  path: 'dist'
+}
+
+Node.js v24.14.1

@@ -1,0 +1,70 @@
+{
+  "watchdog_status": "FAILED",
+  "checked_at": "2026-08-20T05:03:40.998Z",
+  "source_url": "https://uw-issy.biketourfrance.net/data/system-health.json",
+  "expected_cycle": "2026-08-19T13:00:00.000-07:00",
+  "observed_cycle": "2026-08-19T13:00:00.000-07:00",
+  "system_result": "FAILED",
+  "release_id": "20_STATUS_PUBLISHER-20260820T034129Z-001",
+  "schema_version": "1.0.0",
+  "assembly_state": "ok",
+  "publication_state": "published",
+  "failed_checks": [
+    "Lane 01_ROUTE_CONDITIONS not fresh/complete for current cycle (available=true, freshnessState=stale)",
+    "Lane 03_AIR_QUALITY not fresh/complete for current cycle (available=true, freshnessState=stale)",
+    "Lane 04_WILDFIRE not fresh/complete for current cycle (available=true, freshnessState=stale)",
+    "Lane 05_FLOOD_CONDITIONS not fresh/complete for current cycle (available=true, freshnessState=stale)",
+    "Lane 06_TRAIL_INFRASTRUCTURE_STATUS not fresh/complete for current cycle (available=true, freshnessState=stale)"
+  ],
+  "lane_summary": {
+    "01_ROUTE_CONDITIONS": {
+      "available": true,
+      "freshnessState": "stale",
+      "sourceState": "degraded",
+      "ok": false
+    },
+    "02_WEATHER": {
+      "available": true,
+      "freshnessState": "fresh",
+      "sourceState": "no_relevant_events",
+      "ok": true
+    },
+    "03_AIR_QUALITY": {
+      "available": true,
+      "freshnessState": "stale",
+      "sourceState": "degraded",
+      "ok": false
+    },
+    "04_WILDFIRE": {
+      "available": true,
+      "freshnessState": "stale",
+      "sourceState": "degraded",
+      "ok": false
+    },
+    "05_FLOOD_CONDITIONS": {
+      "available": true,
+      "freshnessState": "stale",
+      "sourceState": "degraded",
+      "ok": false
+    },
+    "06_TRAIL_INFRASTRUCTURE_STATUS": {
+      "available": true,
+      "freshnessState": "stale",
+      "sourceState": "degraded",
+      "ok": false
+    },
+    "07_GOVERNMENT_SAFETY_ALERTS": {
+      "available": true,
+      "freshnessState": "fresh",
+      "sourceState": "ok",
+      "ok": true
+    },
+    "08_ROUTE_FACILITIES": {
+      "available": true,
+      "freshnessState": "fresh",
+      "sourceState": "ok",
+      "ok": true
+    }
+  },
+  "note": "Watchdog checks system-health.json (the real published document) as the freshness/completion proxy. monitor-status.json referenced in the original task spec does not exist at the UWISSY public site as of 2026-08-20; required-lane list is the lane set present in the document, not an externally defined list."
+}

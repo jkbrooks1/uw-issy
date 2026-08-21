@@ -1,0 +1,2 @@
+-rwxr-xr-x    1 node     node          1629 Aug 20 05:38 /files/uw-issy-connectors/bin/publish-workflow20-release-input.sh
+565006f40664999f3118392b15630d6818354e2a6c0155748a0c21f47facb1be  /files/uw-issy-connectors/bin/publish-workflow20-release-input.sh

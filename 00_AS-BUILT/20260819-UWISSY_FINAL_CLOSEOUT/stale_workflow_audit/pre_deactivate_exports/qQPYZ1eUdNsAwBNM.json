@@ -1,0 +1,720 @@
+{
+  "updatedAt": "2026-08-01T04:22:56.792Z",
+  "createdAt": "2026-07-21T04:55:12.833Z",
+  "id": "qQPYZ1eUdNsAwBNM",
+  "name": "v0001.03_AirQualityConnector",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "manual",
+        "duplicateItem": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "connectorId",
+              "name": "connectorId",
+              "type": "string",
+              "value": "03_AIR_QUALITY"
+            },
+            {
+              "id": "connectorNumber",
+              "name": "connectorNumber",
+              "type": "string",
+              "value": "03"
+            },
+            {
+              "id": "connectorName",
+              "name": "connectorName",
+              "type": "string",
+              "value": "CDM Air Quality Connector"
+            },
+            {
+              "id": "workflowVersion",
+              "name": "workflowVersion",
+              "type": "string",
+              "value": "v0001"
+            },
+            {
+              "id": "timezone",
+              "name": "timezone",
+              "type": "string",
+              "value": "Europe/Paris"
+            },
+            {
+              "id": "generatedAt",
+              "name": "generatedAt",
+              "type": "string",
+              "value": "={{ $now.toUTC().toISO() }}"
+            },
+            {
+              "id": "aasqaCodesJson",
+              "name": "aasqaCodesJson",
+              "type": "string",
+              "value": "[\"75\",\"76\"]"
+            },
+            {
+              "id": "atmoBaseUrl",
+              "name": "atmoBaseUrl",
+              "type": "string",
+              "value": "https://admindata.atmo-france.org"
+            },
+            {
+              "id": "atmoLoginPath",
+              "name": "atmoLoginPath",
+              "type": "string",
+              "value": "/api/login"
+            },
+            {
+              "id": "atmoIndicesPath",
+              "name": "atmoIndicesPath",
+              "type": "string",
+              "value": "/api/v2/data/indices/atmo"
+            },
+            {
+              "id": "atmoEpisodesPath",
+              "name": "atmoEpisodesPath",
+              "type": "string",
+              "value": "/api/v2/data/episodes/3jours"
+            },
+            {
+              "id": "corridorKm",
+              "name": "corridorKm",
+              "type": "number",
+              "value": 10
+            },
+            {
+              "id": "staleAfterMinutes",
+              "name": "staleAfterMinutes",
+              "type": "number",
+              "value": 1560
+            },
+            {
+              "id": "departmentsJson",
+              "name": "departmentsJson",
+              "type": "string",
+              "value": "[{\"code\": \"33\", \"name\": \"Gironde\", \"rideDays\": [1]}, {\"code\": \"47\", \"name\": \"Lot-et-Garonne\", \"rideDays\": [1, 2, 3]}, {\"code\": \"82\", \"name\": \"Tarn-et-Garonne\", \"rideDays\": [3, 4]}, {\"code\": \"31\", \"name\": \"Haute-Garonne\", \"rideDays\": [4, 5]}, {\"code\": \"11\", \"name\": \"Aude\", \"rideDays\": [5, 6, 7, 8]}, {\"code\": \"34\", \"name\": \"H\\u00e9rault\", \"rideDays\": [8, 9]}]"
+            },
+            {
+              "id": "outputDirectory",
+              "name": "outputDirectory",
+              "type": "string",
+              "value": "/files/cdm-status-output"
+            },
+            {
+              "id": "sourceUrl",
+              "name": "sourceUrl",
+              "type": "string",
+              "value": "https://www.atmo-france.org/"
+            },
+            {
+              "id": "attributionText",
+              "name": "attributionText",
+              "type": "string",
+              "value": "Atmo France & regional AASQA (ODbL)"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-config",
+      "name": "Set Connector Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        280,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $input.all()[0].json;\nreturn [{\n  json: {\n    loginUrl: `${config.atmoBaseUrl}${config.atmoLoginPath}`,\n    generatedAt: config.generatedAt,\n  }\n}];"
+      },
+      "id": "build-atmo-auth-request",
+      "name": "Build Atmo Auth Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.loginUrl }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpCustomAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{}",
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "id": "atmo-login",
+      "name": "Atmo Login / Fetch Token",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        840,
+        140
+      ],
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 3000,
+      "credentials": {
+        "httpCustomAuth": {
+          "id": "8dO0gKT9aQzFXuSV",
+          "name": "ATMO_FRANCE_LOGIN"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const checkedAt = new Date().toISOString();\nconst config = $items('Set Connector Config')[0].json;\nconst inputItems = $input.all();\nif (!inputItems.length) {\n  return [{ json: { authOk: false, classification: 'CREDENTIALS_BLOCKED', httpStatus: 0, checkedAt, error: 'No response reached the Atmo login node' } }];\n}\nconst raw = inputItems[0].json || {};\nconst status = Number(raw.statusCode || 0);\nconst bodyText = String(raw.body || '');\n\nif (status === 401 || status === 403) {\n  return [{ json: { authOk: false, classification: 'CREDENTIALS_BLOCKED', httpStatus: status, checkedAt, error: 'Atmo login rejected the bound credential (401/403). Never logging the response body.' } }];\n}\nif (!status || status < 200 || status >= 300 || !bodyText) {\n  return [{ json: { authOk: false, classification: 'CONNECTOR_LOGIC_FAILED', httpStatus: status || 0, checkedAt, error: 'Atmo login failed or returned an empty body' } }];\n}\n\nlet parsed;\ntry {\n  parsed = JSON.parse(bodyText);\n} catch (err) {\n  return [{ json: { authOk: false, classification: 'CONNECTOR_LOGIC_FAILED', httpStatus: status, checkedAt, error: 'Atmo login response was not valid JSON: ' + err.message } }];\n}\n\nconst token = parsed && parsed.token;\nif (!token || typeof token !== 'string') {\n  return [{ json: { authOk: false, classification: 'CONNECTOR_LOGIC_FAILED', httpStatus: status, checkedAt, error: 'Atmo login succeeded but no token field was present in the response shape (expected response.token)' } }];\n}\n\n// The token is passed downstream via the item field for use in the next\n// HTTP nodes' headers only. It is never written into any output payload\n// and never logged/printed by this or any later node.\nreturn [{ json: { authOk: true, classification: 'ok', httpStatus: status, checkedAt, bearerToken: token } }];"
+      },
+      "id": "normalize-atmo-auth",
+      "name": "Normalize Atmo Auth Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-auth-ok",
+              "leftValue": "={{ $json.authOk }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "auth-gate",
+      "name": "Auth Succeeded Gate",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1400,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst auth = $input.all()[0].json;\nconst aasqaCodes = JSON.parse(config.aasqaCodesJson);\nconst items = [];\nfor (const aasqa of aasqaCodes) {\n  const indexParams = new URLSearchParams({\n    format: 'geojson',\n    date: config.generatedAt.slice(0, 10),\n    date_historique: config.generatedAt.slice(0, 10),\n    aasqa,\n  });\n  items.push({\n    json: {\n      requestKind: 'indices',\n      aasqa,\n      url: `${config.atmoBaseUrl}${config.atmoIndicesPath}?${indexParams.toString()}`,\n      bearerToken: auth.bearerToken,\n      generatedAt: config.generatedAt,\n    }\n  });\n  const episodeParams = new URLSearchParams({ format: 'geojson', aasqa });\n  items.push({\n    json: {\n      requestKind: 'episodes',\n      aasqa,\n      url: `${config.atmoBaseUrl}${config.atmoEpisodesPath}?${episodeParams.toString()}`,\n      bearerToken: auth.bearerToken,\n      generatedAt: config.generatedAt,\n    }\n  });\n}\nreturn items;"
+      },
+      "id": "build-atmo-data-requests",
+      "name": "Build Atmo Data Requests",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1680,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.bearerToken }}"
+            }
+          ]
+        },
+        "sendBody": false,
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "id": "fetch-atmo-data",
+      "name": "Fetch Atmo Data Feeds",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1960,
+        140
+      ],
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 3000
+    },
+    {
+      "parameters": {
+        "jsCode": "// ATMO index levels 1-6, preserving the exact repo-verified official palette\n// (scripts/lib/atmo-map-layer.mjs) and the severity/label mapping used by\n// scripts/fetch-atmo-france.mjs. Do not alter these values.\nconst levels = {\n  1: { severity: 'green', labelEn: 'Good', labelFr: 'Bon', color: '#50f0e6', explanation: null },\n  2: { severity: 'green', labelEn: 'Fair', labelFr: 'Moyen', color: '#50ccaa', explanation: null },\n  3: { severity: 'yellow', labelEn: 'Degraded', labelFr: 'D\\u00e9grad\\u00e9', color: '#f0e641', explanation: (zone) => `ATMO reports degraded (d\\u00e9grad\\u00e9) air quality near ${zone}; sensitive riders may notice effects and should moderate intense efforts.` },\n  4: { severity: 'orange', labelEn: 'Bad', labelFr: 'Mauvais', color: '#ff5050', explanation: (zone) => `ATMO reports bad (mauvais) air quality near ${zone}; pollution may affect all riders, so limit prolonged hard efforts today.` },\n  5: { severity: 'red', labelEn: 'Very bad', labelFr: 'Tr\\u00e8s mauvais', color: '#960032', explanation: (zone) => `ATMO reports very bad (tr\\u00e8s mauvais) air quality near ${zone}; health effects are likely, so avoid strenuous outdoor exertion.` },\n  6: { severity: 'red', labelEn: 'Extremely bad', labelFr: 'Extr\\u00eamement mauvais', color: '#7d2181', explanation: (zone) => `ATMO reports extremely bad (extr\\u00eamement mauvais) air quality near ${zone}; serious health risk, avoid outdoor exertion until conditions improve.` },\n};\n\nconst config = $items('Set Connector Config')[0].json;\nconst requestMeta = $items('Build Atmo Data Requests');\nconst inputItems = $input.all();\nconst checkedAt = new Date().toISOString();\nconst indexDate = config.generatedAt.slice(0, 10);\nconst corridorKm = Number(config.corridorKm);\n\nlet okResponses = 0;\nlet failedResponses = 0;\nconst indexRecords = [];\n\nfor (let i = 0; i < inputItems.length; i++) {\n  const meta = (requestMeta[i] && requestMeta[i].json) || {};\n  if (meta.requestKind !== 'indices') continue;\n  const raw = inputItems[i].json || {};\n  const status = Number(raw.statusCode || 0);\n  const bodyText = String(raw.body || '');\n  if (!status || status < 200 || status >= 300 || !bodyText) { failedResponses++; continue; }\n  let body;\n  try { body = JSON.parse(bodyText); } catch (err) { failedResponses++; continue; }\n  const features = Array.isArray(body?.features) ? body.features : [];\n  okResponses++;\n  for (const feature of features) {\n    const props = feature?.properties ?? {};\n    const longitude = Number(props.x_wgs84);\n    const latitude = Number(props.y_wgs84);\n    const codeQual = Number(props.code_qual);\n    if (!Number.isFinite(longitude) || !Number.isFinite(latitude) || !levels[codeQual]) continue;\n    indexRecords.push({\n      codeQual,\n      libQual: props.lib_qual || levels[codeQual].labelEn,\n      zone: props.lib_zone || props.code_zone || 'route corridor',\n      codeZone: props.code_zone ?? null,\n      aasqa: props.aasqa ?? meta.aasqa ?? null,\n      atmoSource: props.source ?? null,\n      dateEch: props.date_ech ?? indexDate,\n      dateMaj: props.date_maj ?? null,\n      longitude,\n      latitude,\n    });\n  }\n}\n\nfunction toObservation(record, rideDay, distanceFromRouteKm) {\n  const level = levels[record.codeQual];\n  const title = `${level.labelEn} air quality (${record.libQual}) near ${record.zone}.`;\n  const explanation = level.explanation ? level.explanation(record.zone) : null;\n  return {\n    json: {\n      recordKind: 'atmoIndex',\n      externalId: `atmo-france-rd${rideDay}-${record.dateEch}`,\n      sourceId: 'atmo-france',\n      category: 'atmo_index',\n      severity: level.severity,\n      status: 'confirmed',\n      title,\n      nearestPlace: record.zone,\n      rideDay,\n      routeSegment: `Ride day ${rideDay}`,\n      longitude: record.longitude,\n      latitude: record.latitude,\n      distanceFromRouteKm: Number(distanceFromRouteKm.toFixed(3)),\n      routeInfluenceConfirmed: true,\n      startTime: /^\\d{4}-\\d{2}-\\d{2}$/.test(String(record.dateEch)) ? `${record.dateEch}T12:00:00.000Z` : checkedAt,\n      expectedEndTime: null,\n      checkedAt,\n      sourceUrl: config.sourceUrl,\n      summary: `ATMO index ${record.codeQual} of 6 (${record.libQual}) for ${record.zone}, the worst reading within ${corridorKm} km of this ride day.`,\n      atmoIndex: record.codeQual,\n      atmoIndexLabelEn: level.labelEn,\n      atmoIndexLabelFr: level.labelFr,\n      atmoIndexColor: level.color,\n      ...(explanation ? { statusTitle: title, statusExplanation: explanation } : {}),\n      statusSource: { name: 'ATMO France', url: config.sourceUrl, official: true, checkedAt, sourceLanguage: 'fr', translationMethod: 'condensed_official_source' },\n      whyItMatters: 'The ATMO index is the official French air-quality scale; poor air affects breathing during sustained cycling effort.',\n      recommendedAction: level.severity === 'green' ? 'No air-quality action needed; the ATMO index is favourable for this ride day.' : 'Check the ATMO France map for the affected communes and moderate effort or adjust timing accordingly.',\n      raw: { aasqa: record.aasqa, codeZone: record.codeZone, codeQual: record.codeQual, dateEch: record.dateEch, dateMaj: record.dateMaj, atmoSource: record.atmoSource },\n    }\n  };\n}\n\n// Route-corridor matching (nearest ride-day route segment) is only\n// meaningful with public/cdm-ride-days.geojson geometry, which this Code\n// node does not have inline (see Output Contract for why route-geometry\n// intersection is out of scope for this pass). Records are emitted as\n// corridor zone candidates keyed by AASQA/zone rather than a specific ride\n// day, matching the 'do not invent geometries or route-zone intersections'\n// instruction; ride-day assignment stays with the existing Node.js\n// fetch-atmo-france.mjs pipeline until route geometry is wired into n8n.\nconst zoneRecords = indexRecords.map((record, idx) => toObservation(record, null, 0)[0].json).map((json, idx) => ({ json: { ...json, externalId: `atmo-france-zone-${json.raw.codeZone || idx}-${json.raw.dateEch}`, rideDay: null, routeSegment: null, distanceFromRouteKm: null } }));\n\nconst healthStatus = failedResponses > 0 && okResponses === 0 ? 'failed' : (failedResponses > 0 ? 'degraded' : 'ok');\nconst sourceHealth = {\n  json: {\n    recordKind: 'sourceHealth',\n    sourceId: 'atmo-france',\n    sourceName: 'Atmo France / Atmo Data',\n    status: healthStatus,\n    fetchedAt: checkedAt,\n    staleAfterMinutes: Number(config.staleAfterMinutes),\n    httpStatus: okResponses > 0 ? 200 : 0,\n    recordCount: zoneRecords.length,\n    errors: healthStatus === 'failed' ? ['All Atmo index requests failed or returned invalid data'] : [],\n    warnings: failedResponses > 0 && okResponses > 0 ? [`${failedResponses} of ${okResponses + failedResponses} Atmo index requests failed`] : [],\n  }\n};\n\nreturn [...zoneRecords, sourceHealth];"
+      },
+      "id": "normalize-atmo-index",
+      "name": "Normalize Atmo Index Records",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2240,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst departments = JSON.parse(config.departmentsJson);\nconst departmentByCode = new Map(departments.map((d) => [d.code, d]));\nconst requestMeta = $items('Build Atmo Data Requests');\nconst inputItems = $input.all();\nconst checkedAt = new Date().toISOString();\nconst indexDate = config.generatedAt.slice(0, 10);\n\nlet okResponses = 0;\nlet failedResponses = 0;\nconst episodeRecords = [];\n\nfor (let i = 0; i < inputItems.length; i++) {\n  const meta = (requestMeta[i] && requestMeta[i].json) || {};\n  if (meta.requestKind !== 'episodes') continue;\n  const raw = inputItems[i].json || {};\n  const status = Number(raw.statusCode || 0);\n  const bodyText = String(raw.body || '');\n  if (!status || status < 200 || status >= 300 || !bodyText) { failedResponses++; continue; }\n  let body;\n  try { body = JSON.parse(bodyText); } catch (err) { failedResponses++; continue; }\n  const features = Array.isArray(body?.features) ? body.features : [];\n  okResponses++;\n  for (const feature of features) {\n    const props = feature?.properties ?? {};\n    const etat = String(props.etat ?? '').toUpperCase();\n    if (!etat || etat.includes('PAS DE DEPASSEMENT')) continue;\n    const department = departmentByCode.get(String(props.code_zone ?? ''));\n    if (!department || !department.rideDays.length) continue;\n    const dateEch = String(props.date_ech ?? indexDate);\n    if (dateEch < indexDate) continue;\n    const isAlert = etat.includes('ALERTE');\n    const severity = isAlert ? 'red' : 'orange';\n    const stateEn = isAlert ? 'alert-level' : 'information-level';\n    const pollutant = props.lib_pol || 'pollution';\n    const dayWord = dateEch > indexDate ? 'tomorrow' : 'today';\n    for (const rideDay of department.rideDays) {\n      const title = `${isAlert ? 'Alert' : 'Information'} pollution episode (${pollutant}) in ${department.name} (${dayWord}).`;\n      episodeRecords.push({\n        json: {\n          recordKind: 'pollutionEpisode',\n          externalId: `atmo-france-episode-${props.code_zone}-${props.code_pol ?? pollutant}-${dateEch}-rd${rideDay}`,\n          sourceId: 'atmo-france',\n          category: 'pollution_episode',\n          severity,\n          status: dateEch > indexDate ? 'forecast' : 'confirmed',\n          title,\n          nearestPlace: department.name,\n          departmentCode: department.code,\n          departmentName: department.name,\n          rideDay,\n          routeSegment: `Ride day ${rideDay}`,\n          distanceFromRouteKm: null,\n          routeInfluenceConfirmed: true,\n          startTime: /^\\d{4}-\\d{2}-\\d{2}$/.test(dateEch) ? `${dateEch}T12:00:00.000Z` : checkedAt,\n          expectedEndTime: null,\n          checkedAt,\n          sourceUrl: config.sourceUrl,\n          summary: `ATMO France reports an active ${stateEn} pollution episode for ${pollutant} in ${department.name} (${dateEch}).`,\n          statusTitle: title,\n          statusExplanation: isAlert ? `ATMO France declares an alert-level ${pollutant} pollution episode in ${department.name}; prefecture measures may apply, avoid strenuous outdoor exertion.` : `ATMO France declares an information-level ${pollutant} pollution episode in ${department.name}; sensitive riders should reduce intense and prolonged efforts.`,\n          statusSource: { name: 'ATMO France', url: config.sourceUrl, official: true, checkedAt, sourceLanguage: 'fr', translationMethod: 'condensed_official_source' },\n          whyItMatters: 'An official pollution episode means measured or forecast exceedance of regulatory thresholds across this department.',\n          recommendedAction: 'Check ATMO France and prefecture advisories for the affected department before extended riding.',\n          raw: { aasqa: props.aasqa, codeZone: props.code_zone, etat: props.etat, pollutant: props.lib_pol, codePol: props.code_pol, dateEch, dateMaj: props.date_maj ?? null },\n        }\n      });\n    }\n  }\n}\n\nconst healthStatus = failedResponses > 0 && okResponses === 0 ? 'failed' : (failedResponses > 0 ? 'degraded' : 'ok');\nconst summaryRecord = {\n  json: {\n    recordKind: 'pollutionEpisodeSummary',\n    activeEpisodeCount: episodeRecords.length,\n    zeroActiveEpisodes: episodeRecords.length === 0,\n    checkedAt,\n  }\n};\nconst sourceHealth = {\n  json: {\n    recordKind: 'sourceHealth',\n    sourceId: 'atmo-france-episodes',\n    sourceName: 'Atmo France / Atmo Data (pollution episodes)',\n    status: healthStatus,\n    fetchedAt: checkedAt,\n    staleAfterMinutes: Number(config.staleAfterMinutes),\n    httpStatus: okResponses > 0 ? 200 : 0,\n    recordCount: episodeRecords.length,\n    errors: healthStatus === 'failed' ? ['All Atmo episode requests failed or returned invalid data'] : [],\n    warnings: failedResponses > 0 && okResponses > 0 ? [`${failedResponses} of ${okResponses + failedResponses} Atmo episode requests failed`] : [],\n  }\n};\n\nreturn [...episodeRecords, summaryRecord, sourceHealth];"
+      },
+      "id": "normalize-pollution-episodes",
+      "name": "Normalize Pollution Episode Records",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2240,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Corridor zone records are derived only from the Atmo index zone records\n// already normalized above (props.lib_zone / code_zone / aasqa), matching\n// the 'do not invent geometries or route-zone intersections' rule -- no\n// route-geometry file is embedded in this Code node. Each corridor zone\n// record is a compatibility-shaped candidate for public/data/atmo-air-quality-map.json.\nconst config = $items('Set Connector Config')[0].json;\nconst checkedAt = new Date().toISOString();\nconst indexZones = $input.all().map((i) => i.json || {}).filter((r) => r.recordKind === 'atmoIndex');\n\nconst zones = indexZones.map((r) => ({\n  json: {\n    recordKind: 'corridorZone',\n    id: r.externalId,\n    zoneName: r.nearestPlace,\n    longitude: r.longitude,\n    latitude: r.latitude,\n    codeQual: r.atmoIndex,\n    labelFr: r.atmoIndexLabelFr,\n    labelEn: r.atmoIndexLabelEn,\n    color: r.atmoIndexColor,\n    checkedAt: r.checkedAt,\n    sourceName: `Atmo France / ${r.raw?.atmoSource || r.raw?.aasqa || 'regional AASQA'}`,\n    sourceUrl: r.sourceUrl,\n  }\n}));\n\nreturn zones.length ? zones : [{ json: { recordKind: 'corridorZone', zeroZones: true, checkedAt } }];"
+      },
+      "id": "build-corridor-zones",
+      "name": "Build Corridor Zone Records",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2520,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "merge-air-quality",
+      "name": "Merge Air Quality Outputs",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        2800,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst allInputs = [];\nfor (const name of ['Normalize Atmo Index Records', 'Normalize Pollution Episode Records', 'Build Corridor Zone Records']) {\n  try {\n    allInputs.push(...$items(name).map((i) => i.json || {}));\n  } catch (err) {\n    // Node may not have produced items on a given branch; treated below.\n  }\n}\n\nfunction validIso(v) { return !v || !Number.isNaN(Date.parse(v)); }\nfunction looksLikeSecret(v) {\n  if (typeof v !== 'string') return false;\n  return /^[A-Za-z0-9_-]{24,}$/.test(v) && !/^https?:\\/\\//.test(v);\n}\nconst severityEnum = ['green', 'yellow', 'orange', 'red'];\nconst sourceHealthRequired = ['sourceId', 'sourceName', 'status', 'fetchedAt', 'staleAfterMinutes', 'httpStatus', 'recordCount', 'errors', 'warnings'];\nconst recordRequiredFields = ['externalId', 'sourceId', 'category', 'severity', 'status', 'title', 'checkedAt'];\n\nconst errors = [];\nconst warnings = [];\n\nif (!config.connectorId) errors.push('Missing connectorId in Set Connector Config');\nif (!config.connectorNumber) errors.push('Missing connectorNumber in Set Connector Config');\nif (!config.workflowVersion) errors.push('Missing workflowVersion in Set Connector Config');\nif (!validIso(config.generatedAt)) errors.push('Missing or invalid generatedAt in Set Connector Config');\nif (!config.outputDirectory || !config.outputDirectory.startsWith('/files/cdm-status-output')) {\n  errors.push('Forbidden or missing output directory: expected /files/cdm-status-output');\n}\nif (!config.attributionText) errors.push('Missing attribution text (ODbL requirement)');\n\nconst fullText = JSON.stringify(allInputs);\nif (/bearer\\s+[A-Za-z0-9_\\-.]{20,}/i.test(fullText)) errors.push('Possible bearer token leaked into merged output records');\nif (fullText.toLowerCase().includes('atmo_france_username') || fullText.toLowerCase().includes('atmo_france_password')) {\n  errors.push('Possible hardcoded credential name/value leaked into merged output records');\n}\n\nlet sawSourceHealth = false;\nfor (const r of allInputs) {\n  if (r.recordKind === 'sourceHealth') {\n    sawSourceHealth = true;\n    for (const field of sourceHealthRequired) {\n      if (r[field] === undefined || r[field] === null) errors.push(`sourceHealth ${r.sourceId || 'unknown'} missing ${field}`);\n    }\n    if (!validIso(r.fetchedAt)) errors.push(`sourceHealth ${r.sourceId} has invalid fetchedAt`);\n    if (!['ok', 'degraded', 'failed', 'stale', 'credentials_blocked'].includes(r.status)) errors.push(`sourceHealth ${r.sourceId} has invalid status enum: ${r.status}`);\n    continue;\n  }\n  if (r.recordKind === 'atmoIndex' || r.recordKind === 'pollutionEpisode') {\n    for (const field of recordRequiredFields) {\n      if (r[field] === undefined || r[field] === null || r[field] === '') errors.push(`${r.recordKind}/${r.externalId || 'unknown'}: missing required field ${field}`);\n    }\n    if (r.severity && !severityEnum.includes(r.severity)) errors.push(`${r.recordKind}/${r.externalId}: invalid severity enum ${r.severity}`);\n    if (!validIso(r.checkedAt) || !validIso(r.startTime)) errors.push(`${r.recordKind}/${r.externalId}: invalid ISO timestamp`);\n    if (['yellow', 'orange', 'red'].includes(r.severity) && (!r.statusSource || r.statusSource.official !== true)) {\n      errors.push(`${r.recordKind}/${r.externalId}: elevated severity requires statusSource.official === true`);\n    }\n    if (looksLikeSecret(r.externalId) || looksLikeSecret(r.sourceUrl)) errors.push(`${r.recordKind}/${r.externalId}: field resembles a hardcoded credential and was rejected`);\n    if (r.recordKind === 'atmoIndex' && (!Number.isInteger(r.atmoIndex) || r.atmoIndex < 1 || r.atmoIndex > 6)) {\n      errors.push(`${r.recordKind}/${r.externalId}: invalid ATMO index value ${r.atmoIndex}`);\n    }\n  }\n  if (r.recordKind === 'pollutionEpisodeSummary' && typeof r.activeEpisodeCount !== 'number') {\n    errors.push('pollutionEpisodeSummary missing activeEpisodeCount');\n  }\n}\nif (!sawSourceHealth) warnings.push('No sourceHealth record observed in merged input (upstream fetch may not have run)');\n\nreturn [{ json: { recordKind: 'validationResult', passed: errors.length === 0, errors, warnings } }, ...allInputs.map((r) => ({ json: r }))];"
+      },
+      "id": "validate-output",
+      "name": "Validate Air Quality Connector Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3080,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst items = $input.all().map((i) => i.json || {});\nconst validation = items.find((i) => i.recordKind === 'validationResult') || { passed: true, errors: [], warnings: [] };\nconst atmoIndex = items.filter((i) => i.recordKind === 'atmoIndex');\nconst pollutionEpisodes = items.filter((i) => i.recordKind === 'pollutionEpisode');\nconst episodeSummary = items.find((i) => i.recordKind === 'pollutionEpisodeSummary') || { activeEpisodeCount: pollutionEpisodes.length, zeroActiveEpisodes: pollutionEpisodes.length === 0 };\nconst zones = items.filter((i) => i.recordKind === 'corridorZone' && !i.zeroZones);\nconst sourceHealth = items.filter((i) => i.recordKind === 'sourceHealth');\n\nconst anyBlocked = sourceHealth.some((h) => h.status === 'credentials_blocked');\nconst anyFailed = sourceHealth.some((h) => h.status === 'failed');\nconst allFailed = sourceHealth.length > 0 && sourceHealth.every((h) => h.status === 'failed');\nconst status = anyBlocked ? 'credentials_blocked' : (!validation.passed ? 'failed' : allFailed ? 'failed' : anyFailed ? 'degraded' : 'ok');\n\nconst combined = {\n  connectorId: config.connectorId,\n  connectorNumber: config.connectorNumber,\n  connectorName: config.connectorName,\n  workflowName: 'v0001.03_AirQualityConnector',\n  workflowVersion: config.workflowVersion,\n  generatedAt: config.generatedAt,\n  timezone: config.timezone,\n  status,\n  sources: [\n    { sourceId: 'atmo-france', sourceName: 'Atmo France / Atmo Data', endpoint: config.atmoBaseUrl + config.atmoIndicesPath, category: 'air_quality' },\n    { sourceId: 'atmo-france-episodes', sourceName: 'Atmo France / Atmo Data (pollution episodes)', endpoint: config.atmoBaseUrl + config.atmoEpisodesPath, category: 'pollution_episode' },\n  ],\n  atmoIndex,\n  pollutionEpisodes,\n  pollutionEpisodeSummary: { activeEpisodeCount: episodeSummary.activeEpisodeCount, zeroActiveEpisodes: episodeSummary.zeroActiveEpisodes },\n  zones,\n  records: [...atmoIndex, ...pollutionEpisodes],\n  sourceHealth,\n  attribution: { required: true, license: 'ODbL', source: 'Atmo France / Atmo Data' },\n  validation: { passed: validation.passed, errors: validation.errors || [], warnings: validation.warnings || [] },\n  compatibility: {\n    targetMonitoringFeed: 'public/cdm-monitoring-status.json',\n    targetMapFeed: 'public/data/atmo-air-quality-map.json',\n    mode: 'compatibility_candidate',\n  },\n};\n\nfunction emit(path, payload, label) {\n  return { json: { targetPath: path, label, jsonText: JSON.stringify(payload, null, 2) + '\\n' } };\n}\n\nconst atmoIndexFeed = { generatedAt: config.generatedAt, source: 'atmo-france', observations: atmoIndex };\nconst episodesFeed = { generatedAt: config.generatedAt, source: 'atmo-france-episodes', activeEpisodeCount: episodeSummary.activeEpisodeCount, observations: pollutionEpisodes };\nconst zonesFeed = { generatedAt: config.generatedAt, corridorKm: Number(config.corridorKm), corridorZoneCount: zones.length, zones };\nconst healthFeed = { generatedAt: config.generatedAt, sources: sourceHealth };\nconst compatMonitoringFeed = { generatedAt: config.generatedAt, sourceStatus: sourceHealth, alerts: [...atmoIndex, ...pollutionEpisodes] };\nconst compatMapFeed = {\n  schemaVersion: 1,\n  generatedAt: config.generatedAt,\n  maxAgeHours: Math.round(Number(config.staleAfterMinutes) / 60),\n  source: 'Atmo France and regional AASQA',\n  license: 'ODbL',\n  attribution: config.attributionText,\n  palette: { '1': '#50f0e6', '2': '#50ccaa', '3': '#f0e641', '4': '#ff5050', '5': '#960032', '6': '#7d2181' },\n  markers: zones,\n};\n\nreturn [\n  emit(config.outputDirectory + '/air-quality-connector-output.json', combined, 'air-quality-connector-output'),\n  emit(config.outputDirectory + '/air-quality-atmo-index.normalized.json', atmoIndexFeed, 'air-quality-atmo-index.normalized'),\n  emit(config.outputDirectory + '/air-quality-pollution-episodes.normalized.json', episodesFeed, 'air-quality-pollution-episodes.normalized'),\n  emit(config.outputDirectory + '/air-quality-zones.normalized.json', zonesFeed, 'air-quality-zones.normalized'),\n  emit(config.outputDirectory + '/air-quality-source-health.json', healthFeed, 'air-quality-source-health'),\n  emit(config.outputDirectory + '/air-quality-monitoring-status.compat.json', compatMonitoringFeed, 'air-quality-monitoring-status.compat'),\n  emit(config.outputDirectory + '/atmo-air-quality-map.compat.json', compatMapFeed, 'atmo-air-quality-map.compat'),\n];"
+      },
+      "id": "build-payloads",
+      "name": "Build Air Quality Output Payloads",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3360,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = [];\nfor (const item of $input.all()) {\n  const buf = Buffer.from(item.json.jsonText, 'utf8');\n  const fileName = String(item.json.targetPath).split('/').pop();\n  const binary = await this.helpers.prepareBinaryData(buf, fileName, 'application/json');\n  output.push({ json: item.json, binary: { data: binary } });\n}\nreturn output;"
+      },
+      "id": "prepare-binary",
+      "name": "Prepare Binary Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3640,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.targetPath }}",
+        "dataPropertyName": "data",
+        "options": {}
+      },
+      "id": "write-files",
+      "name": "Write Air Quality Output Files",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        3920,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $json.targetPath }}",
+        "options": {}
+      },
+      "id": "read-back-files",
+      "name": "Read Back Air Quality Output Files",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        4200,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const LABELS = new Set(['air-quality-connector-output', 'air-quality-atmo-index.normalized', 'air-quality-pollution-episodes.normalized', 'air-quality-zones.normalized', 'air-quality-source-health', 'air-quality-monitoring-status.compat', 'atmo-air-quality-map.compat']);\nconst results = [];\nfor (const item of $input.all()) {\n  const targetPath = (item.json && item.json.targetPath) || 'unknown';\n  const fileName = String(targetPath).split('/').pop() || 'unknown';\n  const label = fileName.replace(/\\.json$/, '');\n  if (!item.binary || !item.binary.data) {\n    results.push({ json: { label, targetPath, validJson: false, bytes: 0, error: 'No binary data read back for ' + fileName } });\n    continue;\n  }\n  const text = Buffer.from(item.binary.data.data, 'base64').toString('utf8');\n  let parsed;\n  try {\n    parsed = JSON.parse(text);\n  } catch (err) {\n    results.push({ json: { label, targetPath, validJson: false, bytes: Buffer.byteLength(text, 'utf8'), error: 'Invalid JSON: ' + err.message } });\n    continue;\n  }\n  let shapeError = null;\n  if (label === 'air-quality-connector-output' && (!parsed.connectorId || !Array.isArray(parsed.sourceHealth) || !parsed.validation)) {\n    shapeError = 'air-quality-connector-output missing connectorId, sourceHealth[], or validation';\n  }\n  if (label === 'air-quality-source-health' && !Array.isArray(parsed.sources)) {\n    shapeError = 'air-quality-source-health missing sources[]';\n  }\n  if (!LABELS.has(label)) shapeError = shapeError || ('Unexpected output label: ' + label);\n  results.push({ json: { label, targetPath, validJson: !shapeError, bytes: Buffer.byteLength(text, 'utf8'), error: shapeError } });\n}\nreturn results;"
+      },
+      "id": "validate-written",
+      "name": "Validate Written Air Quality Files",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4480,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst validationResults = $input.all().map((i) => i.json || {});\nconst generatedAt = config.generatedAt || new Date().toISOString();\nconst completedAt = new Date().toISOString();\nconst failures = validationResults.filter((r) => r.validJson !== true || r.error);\nconst errors = failures.map((f) => ({ label: f.label, targetPath: f.targetPath, message: f.error || 'Output file did not pass validation' }));\n\nreturn [{\n  json: {\n    recordKind: 'runDiagnostics',\n    ok: errors.length === 0,\n    connectorId: config.connectorId,\n    workflowVersion: config.workflowVersion,\n    generatedAt,\n    completedAt,\n    validationStatus: errors.length === 0 ? 'passed' : 'failed',\n    writeStatus: validationResults.length > 0 ? 'attempted' : 'not_attempted',\n    infraBlocked: false,\n    outputFilenames: validationResults.map((r) => r.targetPath).filter(Boolean),\n    errors,\n    warnings: [],\n    note: 'If Atmo Login / Fetch Token fails with 401/403, classify as CREDENTIALS_BLOCKED. If Write Air Quality Output Files or Read Back Air Quality Output Files fail upstream with a file-access error rather than reaching this node, classify the run as INFRA_BLOCKED_AT_OUTPUT_WRITE, not FAILED.',\n  },\n}];"
+      },
+      "id": "build-diagnostics",
+      "name": "Build Run Diagnostics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4760,
+        140
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Connector Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Connector Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Connector Config": {
+      "main": [
+        [
+          {
+            "node": "Build Atmo Auth Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Atmo Auth Request": {
+      "main": [
+        [
+          {
+            "node": "Atmo Login / Fetch Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atmo Login / Fetch Token": {
+      "main": [
+        [
+          {
+            "node": "Normalize Atmo Auth Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Atmo Auth Result": {
+      "main": [
+        [
+          {
+            "node": "Auth Succeeded Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auth Succeeded Gate": {
+      "main": [
+        [
+          {
+            "node": "Build Atmo Data Requests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Atmo Data Requests": {
+      "main": [
+        [
+          {
+            "node": "Fetch Atmo Data Feeds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Atmo Data Feeds": {
+      "main": [
+        [
+          {
+            "node": "Normalize Atmo Index Records",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Normalize Pollution Episode Records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Atmo Index Records": {
+      "main": [
+        [
+          {
+            "node": "Build Corridor Zone Records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Corridor Zone Records": {
+      "main": [
+        [
+          {
+            "node": "Merge Air Quality Outputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Pollution Episode Records": {
+      "main": [
+        [
+          {
+            "node": "Merge Air Quality Outputs",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Air Quality Outputs": {
+      "main": [
+        [
+          {
+            "node": "Validate Air Quality Connector Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Air Quality Connector Output": {
+      "main": [
+        [
+          {
+            "node": "Build Air Quality Output Payloads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Air Quality Output Payloads": {
+      "main": [
+        [
+          {
+            "node": "Prepare Binary Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Binary Payload": {
+      "main": [
+        [
+          {
+            "node": "Write Air Quality Output Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Air Quality Output Files": {
+      "main": [
+        [
+          {
+            "node": "Read Back Air Quality Output Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Back Air Quality Output Files": {
+      "main": [
+        [
+          {
+            "node": "Validate Written Air Quality Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Written Air Quality Files": {
+      "main": [
+        [
+          {
+            "node": "Build Run Diagnostics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "timezone": "Europe/Paris",
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "6394c909-8775-487f-966b-579fee671b9e",
+  "activeVersionId": null,
+  "versionCounter": 1,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-07-21T04:55:12.833Z",
+      "createdAt": "2026-07-21T04:55:12.833Z",
+      "role": "workflow:owner",
+      "workflowId": "qQPYZ1eUdNsAwBNM",
+      "projectId": "Y0Ygmqe59jevHoeV",
+      "project": {
+        "updatedAt": "2026-07-10T05:38:45.677Z",
+        "createdAt": "2026-06-02T20:51:11.579Z",
+        "id": "Y0Ygmqe59jevHoeV",
+        "name": "John Brooks <john@biketourfrance.net>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "5dadc5f6-6bff-44cf-9566-6b82f3d768dc"
+      }
+    }
+  ],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

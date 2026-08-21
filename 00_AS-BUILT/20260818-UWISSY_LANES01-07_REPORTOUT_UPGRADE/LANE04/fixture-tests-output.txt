@@ -1,0 +1,9 @@
+PASS a: live fetch succeeded and LKG was unused
+PASS b: usable LKG served with original timestamp and current error
+PASS c: expired LKG rejected
+PASS d: malformed or missing LKG handled without throw
+PASS e: mixed source state degraded
+PASS f: all-LKG candidate classified correctly
+PASS g: all-failed candidate unchanged
+PASS h: live recovery overrode available LKG
+PASS summary: 8/8 scenarios passed

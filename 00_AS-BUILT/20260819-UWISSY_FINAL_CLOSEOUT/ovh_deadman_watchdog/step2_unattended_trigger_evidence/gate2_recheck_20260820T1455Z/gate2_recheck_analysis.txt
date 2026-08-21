@@ -1,0 +1,22 @@
+v03.UWI_LANE01   (RR7cLSV9oGngrJdA        ) cutoff=2026-08-20T10:00:00+00:00  verdict=PROVEN
+    id=3842 mode=trigger status=success startedAt=2026-08-20T10:00:00.096Z
+v02.UWI_LANE02   (fA0ZjWH3Itl83aPC        ) cutoff=2026-08-20T10:00:00+00:00  verdict=PROVEN
+    id=3838 mode=trigger status=success startedAt=2026-08-20T10:00:00.081Z
+v02.UWI_LANE03   (qlM2XIv2BbFSh3in        ) cutoff=2026-08-20T10:00:00+00:00  verdict=PROVEN
+    id=3844 mode=trigger status=success startedAt=2026-08-20T10:00:00.110Z
+v02.UWI_LANE04   (w6xnelPQeRFZk8BG        ) cutoff=2026-08-20T10:00:00+00:00  verdict=PROVEN
+    id=3841 mode=trigger status=success startedAt=2026-08-20T10:00:00.091Z
+v02.UWI_LANE05   (4RiNqOKD9BCZFH6P        ) cutoff=2026-08-20T10:00:00+00:00  verdict=PROVEN
+    id=3843 mode=trigger status=success startedAt=2026-08-20T10:00:00.104Z
+v02.UWI_LANE06   (poGV37VLUGIUxfGK        ) cutoff=2026-08-20T10:00:00+00:00  verdict=PROVEN
+    id=3845 mode=trigger status=success startedAt=2026-08-20T10:00:00.112Z
+v02.UWI_LANE07   (08g3JNwQPVSxUl2H        ) cutoff=2026-08-20T10:00:00+00:00  verdict=PROVEN
+    id=3840 mode=trigger status=success startedAt=2026-08-20T10:00:00.094Z
+v01.UWI_LANE08   (uwIssy08RouteFacilities ) cutoff=2026-08-20T10:00:00+00:00  verdict=PROVEN
+    id=3839 mode=trigger status=success startedAt=2026-08-20T10:00:00.085Z
+v04.UWI_LANE20   (gp8WlccGwLydNWG7        ) cutoff=2026-08-20T10:15:00+00:00  verdict=PROVEN
+    id=3847 mode=trigger status=success startedAt=2026-08-20T10:15:00.043Z
+v03.UWI_LANE30   (KhbGg5gBn7Rbne68        ) cutoff=2026-08-20T10:20:00+00:00  verdict=PROVEN
+    id=3848 mode=trigger status=success startedAt=2026-08-20T10:20:00.024Z
+
+ALL 10 PROVEN: True

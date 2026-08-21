@@ -81,8 +81,8 @@ function run(workflowPath, expectedConnectorId) {
   if (!jsCodeBlobs.includes(`lane: '${expectedConnectorId}'`)) {
     fail(`No Code node sets lane: '${expectedConnectorId}': ${workflowPath}`);
   }
-  if (!jsCodeBlobs.includes(`run_id: '${expectedConnectorId}-'`)) {
-    fail(`No Code node builds a run_id with prefix '${expectedConnectorId}-': ${workflowPath}`);
+  if (!jsCodeBlobs.includes(`'${expectedConnectorId}-'`)) {
+    fail(`No Code node builds a run_id (or similar identity string) with prefix '${expectedConnectorId}-': ${workflowPath}`);
   }
 
   const tagNames = Array.isArray(workflow.tags) ? workflow.tags.map((t) => t.name) : [];

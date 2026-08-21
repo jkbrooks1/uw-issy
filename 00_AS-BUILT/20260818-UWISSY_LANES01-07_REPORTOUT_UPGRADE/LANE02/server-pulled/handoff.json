@@ -1,0 +1,116 @@
+{
+  "run_id": "02_WEATHER-20260819T053755Z-001",
+  "connector_id": "02_WEATHER",
+  "lane": "02_WEATHER",
+  "generated_at": "2026-08-19T05:37:55.749Z",
+  "published_at": "2026-08-19T05:38:02.861Z",
+  "published_artifact": "/files/uw-issy-connectors/published/02_WEATHER/02_WEATHER_published_20260819T053755Z.json",
+  "status": "ok",
+  "ready_for_workflow_08": true,
+  "source_ids_used": [
+    "02_WEATHER:NWS-01",
+    "02_WEATHER:NWS-02",
+    "02_WEATHER:NWS-03",
+    "02_WEATHER:NWS-04",
+    "02_WEATHER:NWS-05",
+    "02_WEATHER:NWS-06"
+  ],
+  "route_sections": [
+    {
+      "section_id": "WP1",
+      "section_name": "UW / Seattle (Burke-Gilman start)",
+      "route_mile_start": 0,
+      "route_mile_end": 0,
+      "status": "high_risk",
+      "summary": "Current conditions indicate heat_high_risk.",
+      "point_ids": [
+        "WP1"
+      ],
+      "active_event_ids": []
+    },
+    {
+      "section_id": "WP2",
+      "section_name": "North Lake Washington / Kenmore–Lake Forest Park",
+      "route_mile_start": 6,
+      "route_mile_end": 6,
+      "status": "high_risk",
+      "summary": "Current conditions indicate heat_high_risk.",
+      "point_ids": [
+        "WP2"
+      ],
+      "active_event_ids": []
+    },
+    {
+      "section_id": "WP3",
+      "section_name": "Bothell",
+      "route_mile_start": 9,
+      "route_mile_end": 9,
+      "status": "high_risk",
+      "summary": "Current conditions indicate heat_high_risk.",
+      "point_ids": [
+        "WP3"
+      ],
+      "active_event_ids": []
+    },
+    {
+      "section_id": "WP4",
+      "section_name": "Woodinville",
+      "route_mile_start": 13,
+      "route_mile_end": 13,
+      "status": "high_risk",
+      "summary": "Current conditions indicate heat_high_risk.",
+      "point_ids": [
+        "WP4"
+      ],
+      "active_event_ids": []
+    },
+    {
+      "section_id": "WP5",
+      "section_name": "Redmond (Sammamish River Trail, Marymoor approach)",
+      "route_mile_start": 18,
+      "route_mile_end": 18,
+      "status": "high_risk",
+      "summary": "Current conditions indicate heat_high_risk.",
+      "point_ids": [
+        "WP5"
+      ],
+      "active_event_ids": []
+    },
+    {
+      "section_id": "WP6",
+      "section_name": "Marymoor Park / East Lake Sammamish Trail head",
+      "route_mile_start": 24,
+      "route_mile_end": 24,
+      "status": "high_risk",
+      "summary": "Current conditions indicate heat_high_risk.",
+      "point_ids": [
+        "WP6"
+      ],
+      "active_event_ids": []
+    },
+    {
+      "section_id": "WP7",
+      "section_name": "Sammamish (East Lake Sammamish Trail)",
+      "route_mile_start": 28,
+      "route_mile_end": 28,
+      "status": "high_risk",
+      "summary": "Current conditions indicate heat_high_risk.",
+      "point_ids": [
+        "WP7"
+      ],
+      "active_event_ids": []
+    },
+    {
+      "section_id": "WP8",
+      "section_name": "Issaquah approach/terminus",
+      "route_mile_start": 33.83,
+      "route_mile_end": 33.83,
+      "status": "high_risk",
+      "summary": "Current conditions indicate heat_high_risk.",
+      "point_ids": [
+        "WP8"
+      ],
+      "active_event_ids": []
+    }
+  ]
+}

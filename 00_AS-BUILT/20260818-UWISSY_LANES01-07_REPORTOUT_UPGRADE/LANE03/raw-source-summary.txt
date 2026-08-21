@@ -1,0 +1,8 @@
+/files/uw-issy-connectors/raw/03_AIR_QUALITY/landings/AIRNOW-01_landing_20260819T054427Z.json {"source_id":"03_AIR_QUALITY:AIRNOW-01","http_status":null,"error":null}
+/files/uw-issy-connectors/raw/03_AIR_QUALITY/landings/AIRNOW-02_landing_20260819T054427Z.json {"source_id":"03_AIR_QUALITY:AIRNOW-02","http_status":null,"error":null}
+/files/uw-issy-connectors/raw/03_AIR_QUALITY/landings/ECO-01_landing_20260819T054427Z.json {"source_id":"03_AIR_QUALITY:ECO-01","http_status":null,"error":null}
+/files/uw-issy-connectors/raw/03_AIR_QUALITY/landings/ECO-02_landing_20260819T054427Z.json {"source_id":"03_AIR_QUALITY:ECO-02","http_status":null,"error":null}
+/files/uw-issy-connectors/raw/03_AIR_QUALITY/landings/NWS-AQ-01_landing_20260819T054427Z.json {"source_id":"03_AIR_QUALITY:NWS-AQ-01","http_status":null,"error":null}
+/files/uw-issy-connectors/raw/03_AIR_QUALITY/landings/PSCAA-01_landing_20260819T054427Z.json {"source_id":"03_AIR_QUALITY:PSCAA-01","http_status":null,"error":null}
+/files/uw-issy-connectors/raw/03_AIR_QUALITY/landings/PSCAA-02_landing_20260819T054427Z.json {"source_id":"03_AIR_QUALITY:PSCAA-02","http_status":null,"error":null}
+/files/uw-issy-connectors/raw/03_AIR_QUALITY/landings/WASMOKE-01_landing_20260819T054427Z.json {"source_id":"03_AIR_QUALITY:WASMOKE-01","http_status":null,"error":null}

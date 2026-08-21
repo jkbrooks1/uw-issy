@@ -1,0 +1,11 @@
+id	name_before	name_after	active_before	active_after	node_count_before	node_count_after	connections_hash_same	nodes_hash_same	settings_hash_same	credentials_hash_same
+RR7cLSV9oGngrJdA	v0001.01_RouteConditionsConnector	v0001.01_RouteConditionsConnector	true	true	32	32	true	true	true	true
+fA0ZjWH3Itl83aPC	v0001.02_WeatherConnector	v0001.02_WeatherConnector	true	true	40	40	true	true	true	true
+qlM2XIv2BbFSh3in	v0001.03_AirQualityConnector	v0001.03_AirQualityConnector	true	true	48	48	true	true	true	true
+w6xnelPQeRFZk8BG	v0001.04_WildfireConnector	v0001.04_WildfireConnector	true	true	36	36	true	true	true	true
+4RiNqOKD9BCZFH6P	v0001.05_FloodConditionsConnector	v0001.05_FloodConditionsConnector	true	true	56	56	true	true	true	true
+poGV37VLUGIUxfGK	v0001.06_TrailInfrastructureStatusConnector	v0001.06_TrailInfrastructureStatusConnector	true	true	48	48	true	true	true	true
+08g3JNwQPVSxUl2H	v0001.07_GovernmentSafetyAlertsConnector	v0001.07_GovernmentSafetyAlertsConnector	true	true	48	48	true	true	true	true
+uwIssy08RouteFacilities	v0001.08_RouteFacilitiesConnector	v0001.08_RouteFacilitiesConnector	false	false	24	24	true	true	true	true
+gp8WlccGwLydNWG7	v0001.20_StatusPublisherConnector	v0001.20_StatusPublisherConnector	false	false	36	36	true	true	true	true
+KhbGg5gBn7Rbne68	v0001.30_AlertMonitorConnector	v0001.30_AlertMonitorConnector	false	false	41	41	true	true	true	true

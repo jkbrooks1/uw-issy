@@ -1,0 +1,5 @@
+{
+  "should_email_false": true,
+  "send_node_absent": true,
+  "status_success": true
+}

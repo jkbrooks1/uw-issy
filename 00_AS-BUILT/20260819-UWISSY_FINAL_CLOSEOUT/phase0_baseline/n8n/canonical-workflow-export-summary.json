@@ -1,0 +1,299 @@
+[
+  {
+    "id": "RR7cLSV9oGngrJdA",
+    "name": "v02.UWI_LANE01",
+    "active": true,
+    "node_count": 32,
+    "trigger_count": 2,
+    "triggers": [
+      {
+        "name": "Manual Trigger",
+        "type": "n8n-nodes-base.manualTrigger",
+        "parameters": {}
+      },
+      {
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes",
+                "minutesInterval": 30
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "credential_references": []
+  },
+  {
+    "id": "fA0ZjWH3Itl83aPC",
+    "name": "v02.UWI_LANE02",
+    "active": true,
+    "node_count": 40,
+    "trigger_count": 2,
+    "triggers": [
+      {
+        "name": "Manual Trigger",
+        "type": "n8n-nodes-base.manualTrigger",
+        "parameters": {}
+      },
+      {
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "hours",
+                "hoursInterval": 1
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "credential_references": []
+  },
+  {
+    "id": "qlM2XIv2BbFSh3in",
+    "name": "v02.UWI_LANE03",
+    "active": true,
+    "node_count": 48,
+    "trigger_count": 2,
+    "triggers": [
+      {
+        "name": "Manual Trigger",
+        "type": "n8n-nodes-base.manualTrigger",
+        "parameters": {}
+      },
+      {
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "hours",
+                "hoursInterval": 1
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "credential_references": []
+  },
+  {
+    "id": "w6xnelPQeRFZk8BG",
+    "name": "v02.UWI_LANE04",
+    "active": true,
+    "node_count": 36,
+    "trigger_count": 2,
+    "triggers": [
+      {
+        "name": "Manual Trigger",
+        "type": "n8n-nodes-base.manualTrigger",
+        "parameters": {}
+      },
+      {
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "days",
+                "daysInterval": 1
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "credential_references": []
+  },
+  {
+    "id": "4RiNqOKD9BCZFH6P",
+    "name": "v02.UWI_LANE05",
+    "active": true,
+    "node_count": 56,
+    "trigger_count": 2,
+    "triggers": [
+      {
+        "name": "Manual Trigger",
+        "type": "n8n-nodes-base.manualTrigger",
+        "parameters": {}
+      },
+      {
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "days",
+                "daysInterval": 1
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "credential_references": []
+  },
+  {
+    "id": "poGV37VLUGIUxfGK",
+    "name": "v02.UWI_LANE06",
+    "active": true,
+    "node_count": 48,
+    "trigger_count": 2,
+    "triggers": [
+      {
+        "name": "Manual Trigger",
+        "type": "n8n-nodes-base.manualTrigger",
+        "parameters": {}
+      },
+      {
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "days",
+                "daysInterval": 1
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "credential_references": []
+  },
+  {
+    "id": "08g3JNwQPVSxUl2H",
+    "name": "v02.UWI_LANE07",
+    "active": true,
+    "node_count": 48,
+    "trigger_count": 2,
+    "triggers": [
+      {
+        "name": "Manual Trigger",
+        "type": "n8n-nodes-base.manualTrigger",
+        "parameters": {}
+      },
+      {
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "days",
+                "daysInterval": 1
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "credential_references": []
+  },
+  {
+    "id": "uwIssy08RouteFacilities",
+    "name": "v01.UWI_LANE08",
+    "active": false,
+    "node_count": 24,
+    "trigger_count": 2,
+    "triggers": [
+      {
+        "name": "Manual Trigger",
+        "type": "n8n-nodes-base.manualTrigger",
+        "parameters": {}
+      },
+      {
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "hours",
+                "hoursInterval": 6
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "credential_references": []
+  },
+  {
+    "id": "gp8WlccGwLydNWG7",
+    "name": "v01.UWI_LANE20",
+    "active": false,
+    "node_count": 36,
+    "trigger_count": 2,
+    "triggers": [
+      {
+        "name": "Manual Trigger",
+        "type": "n8n-nodes-base.manualTrigger",
+        "parameters": {}
+      },
+      {
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes",
+                "minutesInterval": 15
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "credential_references": []
+  },
+  {
+    "id": "KhbGg5gBn7Rbne68",
+    "name": "v01.UWI_LANE30",
+    "active": false,
+    "node_count": 41,
+    "trigger_count": 2,
+    "triggers": [
+      {
+        "name": "Manual Trigger",
+        "type": "n8n-nodes-base.manualTrigger",
+        "parameters": {}
+      },
+      {
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes",
+                "minutesInterval": 15
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "credential_references": [
+      {
+        "node": "Send Alert Email",
+        "type": "gmailOAuth2",
+        "name": "GMAIL OAUTH LODGING PROP MON",
+        "id": "T6T70tcoS4L3bJVx"
+      }
+    ]
+  }
+]

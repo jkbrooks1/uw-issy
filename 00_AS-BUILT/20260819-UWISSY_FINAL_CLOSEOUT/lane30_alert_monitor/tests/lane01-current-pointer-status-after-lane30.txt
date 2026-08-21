@@ -1,0 +1,65 @@
+current_json
+{
+  "run_id": "01_ROUTE_CONDITIONS-20260820T030059Z-001",
+  "artifact": "/files/uw-issy-connectors/published/01_ROUTE_CONDITIONS/01_ROUTE_CONDITIONS_published_20260820T030059Z.json"
+}
+status
+{
+  "lane_id": "lane_01_route_conditions",
+  "run_id": "01_ROUTE_CONDITIONS-20260820T030059Z-001",
+  "last_fetch_at": "2026-08-20T03:00:59.060Z",
+  "last_success_at": "2026-08-20T03:05:28.952Z",
+  "status": "degraded",
+  "source_health": [
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "01_ROUTE_CONDITIONS",
+      "source_id": "01_ROUTE_CONDITIONS:KC-03",
+      "source_name": "King County Parks - East Lake Sammamish Trail (Leafline Trails Network) page",
+      "status": "ok",
+      "retrieved_at": "2026-08-20T03:00:59.060Z",
+      "stale_after_minutes": 1440,
+      "record_count": 1,
+      "http_status": null,
+      "last_observation_at": "2026-08-20T03:00:59.060Z",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "01_ROUTE_CONDITIONS",
+      "source_id": "01_ROUTE_CONDITIONS:REDM-01",
+      "source_name": "City of Redmond - Traffic/Alerts (ArcGIS REST FeatureServer)",
+      "status": "failed",
+      "retrieved_at": "2026-08-20T03:00:59.060Z",
+      "stale_after_minutes": 60,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-20T03:00:59.060Z",
+      "warnings": [
+        "No active closure banner detected"
+      ],
+      "errors": [
+        "connect ETIMEDOUT 204.152.61.60:443"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "01_ROUTE_CONDITIONS",
+      "source_id": "01_ROUTE_CONDITIONS:ISS-03",
+      "source_name": "City of Issaquah - Public Works Current Year Construction Projects (PWProjectsCurrentYearConstructionPublic, ArcGIS REST)",
+      "status": "failed",
+      "retrieved_at": "2026-08-20T03:00:59.060Z",
+      "stale_after_minutes": 60,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-20T03:00:59.060Z",
+      "warnings": [
+        "No active closure banner detected"
+      ],
+      "errors": [
+        "connect ETIMEDOUT 174.127.161.41:443"
+      ]
+    },
+    {
+      "schema_vers

@@ -1,0 +1,662 @@
+{
+  "updatedAt": "2026-08-01T04:21:33.638Z",
+  "createdAt": "2026-07-21T16:19:07.577Z",
+  "id": "D1Dsa02M3LAmzRfy",
+  "name": "v0001.05_FloodConditionsConnector",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "manual",
+        "duplicateItem": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "connectorId",
+              "name": "connectorId",
+              "type": "string",
+              "value": "05_FLOOD_CONDITIONS"
+            },
+            {
+              "id": "connectorNumber",
+              "name": "connectorNumber",
+              "type": "string",
+              "value": "05"
+            },
+            {
+              "id": "connectorName",
+              "name": "connectorName",
+              "type": "string",
+              "value": "CDM Flood Conditions Connector"
+            },
+            {
+              "id": "workflowName",
+              "name": "workflowName",
+              "type": "string",
+              "value": "v0001.05_FloodConditionsConnector"
+            },
+            {
+              "id": "workflowVersion",
+              "name": "workflowVersion",
+              "type": "string",
+              "value": "v0001"
+            },
+            {
+              "id": "timezone",
+              "name": "timezone",
+              "type": "string",
+              "value": "Europe/Paris"
+            },
+            {
+              "id": "generatedAt",
+              "name": "generatedAt",
+              "type": "string",
+              "value": "={{ $now.toUTC().toISO() }}"
+            },
+            {
+              "id": "outputDirectory",
+              "name": "outputDirectory",
+              "type": "string",
+              "value": "/files/cdm-status-output"
+            },
+            {
+              "id": "vigicruesRssUrl",
+              "name": "vigicruesRssUrl",
+              "type": "string",
+              "value": "https://www.vigicrues.gouv.fr/territoire/rss"
+            },
+            {
+              "id": "staleAfterMinutes",
+              "name": "staleAfterMinutes",
+              "type": "number",
+              "value": 720
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-config",
+      "name": "Set Connector Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        280,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Embedded verbatim from data/route-monitoring/vigicrues-station-mapping.json (all 9 route-relevant\n// stations; the source file's meta.source states these are \"unverified fallback coordinates where\n// live lookup is not available\" - preserved here as verified: false on every entry, faithfully.\nconst stations = [\n  {\n    \"stationCode\": \"O9720010\",\n    \"stationName\": \"Garonne à Bordeaux (Bastide)\",\n    \"river\": \"Garonne\",\n    \"lat\": 44.842,\n    \"lon\": -0.563,\n    \"departments\": [\n      \"33\"\n    ],\n    \"lookupUrl\": \"https://www.vigicrues.gouv.fr/\",\n    \"verified\": false,\n    \"distanceFromRouteKm\": 0.291,\n    \"nearestRouteKm\": 3.851,\n    \"nearestRouteMp\": 2.4,\n    \"rideDays\": [\n      \"RD01\"\n    ]\n  },\n  {\n    \"stationCode\": \"O9190010\",\n    \"stationName\": \"Garonne à La Réole\",\n    \"river\": \"Garonne\",\n    \"lat\": 44.582,\n    \"lon\": -0.039,\n    \"departments\": [\n      \"33\"\n    ],\n    \"lookupUrl\": \"https://www.vigicrues.gouv.fr/\",\n    \"verified\": false,\n    \"distanceFromRouteKm\": 0.114,\n    \"nearestRouteKm\": 75.246,\n    \"nearestRouteMp\": 46.8,\n    \"rideDays\": [\n      \"RD01\",\n      \"RD02\"\n    ]\n  },\n  {\n    \"stationCode\": \"O9000010\",\n    \"stationName\": \"Garonne à Marmande/Tonneins corridor\",\n    \"river\": \"Garonne\",\n    \"lat\": 44.389,\n    \"lon\": 0.311,\n    \"departments\": [\n      \"47\"\n    ],\n    \"lookupUrl\": \"https://www.vigicrues.gouv.fr/territoire/25\",\n    \"verified\": false,\n    \"distanceFromRouteKm\": 4.043,\n    \"nearestRouteKm\": 111.428,\n    \"nearestRouteMp\": 69.2,\n    \"rideDays\": [\n      \"RD02\"\n    ]\n  },\n  {\n    \"stationCode\": \"O9000020\",\n    \"stationName\": \"Garonne à Agen\",\n    \"river\": \"Garonne\",\n    \"lat\": 44.204,\n    \"lon\": 0.621,\n    \"departments\": [\n      \"47\"\n    ],\n    \"lookupUrl\": \"https://www.vigicrues.gouv.fr/territoire/25\",\n    \"verified\": false,\n    \"distanceFromRouteKm\": 0.568,\n    \"nearestRouteKm\": 154.548,\n    \"nearestRouteMp\": 96,\n    \"rideDays\": [\n      \"RD02\",\n      \"RD03\"\n    ]\n  },\n  {\n    \"stationCode\": \"O5900010\",\n    \"stationName\": \"Tarn à Moissac\",\n    \"river\": \"Tarn\",\n    \"lat\": 44.1047,\n    \"lon\": 1.085,\n    \"departments\": [\n      \"82\"\n    ],\n    \"lookupUrl\": \"https://www.vigicrues.gouv.fr/territoire/25\",\n    \"verified\": false,\n    \"distanceFromRouteKm\": 0.475,\n    \"nearestRouteKm\": 200.312,\n    \"nearestRouteMp\": 124.5,\n    \"rideDays\": [\n      \"RD03\",\n      \"RD04\"\n    ]\n  },\n  {\n    \"stationCode\": \"O2000010\",\n    \"stationName\": \"Garonne à Toulouse - Pont Neuf\",\n    \"river\": \"Garonne\",\n    \"lat\": 43.599,\n    \"lon\": 1.438,\n    \"departments\": [\n      \"31\"\n    ],\n    \"lookupUrl\": \"https://www.vigicrues.gouv.fr/territoire/25\",\n    \"verified\": false,\n    \"distanceFromRouteKm\": 0.814,\n    \"nearestRouteKm\": 275.316,\n    \"nearestRouteMp\": 171.1,\n    \"rideDays\": [\n      \"RD04\",\n      \"RD05\"\n    ]\n  },\n  {\n    \"stationCode\": \"Y1232010\",\n    \"stationName\": \"Aude à Carcassonne\",\n    \"river\": \"Aude\",\n    \"lat\": 43.213,\n    \"lon\": 2.351,\n    \"departments\": [\n      \"11\"\n    ],\n    \"lookupUrl\": \"https://www.vigicrues.gouv.fr/\",\n    \"verified\": false,\n    \"distanceFromRouteKm\": 0.35,\n    \"nearestRouteKm\": 383.499,\n    \"nearestRouteMp\": 238.3,\n    \"rideDays\": [\n      \"RD06\",\n      \"RD07\"\n    ]\n  },\n  {\n    \"stationCode\": \"Y2584010\",\n    \"stationName\": \"Orb à Béziers\",\n    \"river\": \"Orb\",\n    \"lat\": 43.343,\n    \"lon\": 3.214,\n    \"departments\": [\n      \"34\"\n    ],\n    \"lookupUrl\": \"https://www.vigicrues.gouv.fr/\",\n    \"verified\": false,\n    \"distanceFromRouteKm\": 0.763,\n    \"nearestRouteKm\": 503.892,\n    \"nearestRouteMp\": 313.1,\n    \"rideDays\": [\n      \"RD09\"\n    ]\n  },\n  {\n    \"stationCode\": \"Y2510020\",\n    \"stationName\": \"Hérault à Agde\",\n    \"river\": \"Hérault\",\n    \"lat\": 43.309,\n    \"lon\": 3.475,\n    \"departments\": [\n      \"34\"\n    ],\n    \"lookupUrl\": \"https://www.vigicrues.gouv.fr/\",\n    \"verified\": false,\n    \"distanceFromRouteKm\": 0.309,\n    \"nearestRouteKm\": 530.087,\n    \"nearestRouteMp\": 329.4,\n    \"rideDays\": [\n      \"RD09\"\n    ]\n  }\n];\nreturn [{ json: { stations, mappingMeta: { source: 'data/route-monitoring/vigicrues-station-mapping.json', generatedAt: '2026-07-17', note: 'unverified fallback coordinates where live lookup is not available' } } }];"
+      },
+      "id": "load-station-mapping",
+      "name": "Load / Embed Verified Station Mapping",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nreturn [{ json: { endpoint: config.vigicruesRssUrl, generatedAt: config.generatedAt } }];"
+      },
+      "id": "build-vigicrues-request",
+      "name": "Build Vigicrues Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        840,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.endpoint }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "text/xml,application/xml,text/plain,*/*"
+            }
+          ]
+        },
+        "sendBody": false,
+        "options": {
+          "timeout": 20000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "id": "fetch-vigicrues-rss",
+      "name": "Fetch Vigicrues RSS",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1120,
+        240
+      ],
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 3000
+    },
+    {
+      "parameters": {
+        "jsCode": "const checkedAt = new Date().toISOString();\nconst inputItems = $input.all();\nif (!inputItems.length) {\n  return [{ json: { recordKind: 'rssParseMeta', fetchOk: false, classification: 'SOURCE_API_BLOCKED', error: 'No response reached the fetch node', httpStatus: 0, itemCount: 0, checkedAt } }];\n}\nconst raw = inputItems[0].json || {};\nconst status = Number(raw.statusCode || 0);\nconst bodyText = String(raw.body !== undefined ? raw.body : (raw.data !== undefined ? raw.data : ''));\n\nif (!status || status < 200 || status >= 300 || !bodyText) {\n  return [{ json: { recordKind: 'rssParseMeta', fetchOk: false, classification: 'SOURCE_API_BLOCKED', httpStatus: status || 0, error: 'Vigicrues RSS request failed or returned an empty body.', itemCount: 0, checkedAt } }];\n}\n\nfunction decodeEntities(value) {\n  return String(value || '')\n    .replace(/<!\\[CDATA\\[([\\s\\S]*?)\\]\\]>/g, '$1')\n    .replace(/&lt;/g, '<')\n    .replace(/&gt;/g, '>')\n    .replace(/&amp;/g, '&')\n    .replace(/&quot;/g, '\"')\n    .replace(/&apos;/g, \"'\")\n    .replace(/&#(\\d+);/g, (_m, code) => String.fromCharCode(Number(code)))\n    .replace(/&#x([0-9a-f]+);/gi, (_m, code) => String.fromCharCode(parseInt(code, 16)));\n}\nfunction stripHtml(value) {\n  return decodeEntities(value)\n    .replace(/<script[\\s\\S]*?<\\/script>/gi, ' ')\n    .replace(/<style[\\s\\S]*?<\\/style>/gi, ' ')\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\nfunction firstTag(block, tag) {\n  const m = block.match(new RegExp('<' + tag + '(?:\\\\s[^>]*)?>([\\\\s\\\\S]*?)<\\\\/' + tag + '>', 'i'));\n  return m ? decodeEntities(m[1]).trim() : '';\n}\n\nconst items = [...bodyText.matchAll(/<item\\b[^>]*>([\\s\\S]*?)<\\/item>/gi)].map((m) => {\n  const block = m[1];\n  return {\n    title: stripHtml(firstTag(block, 'title')),\n    link: stripHtml(firstTag(block, 'link')),\n    description: stripHtml(firstTag(block, 'description')),\n    pubDate: stripHtml(firstTag(block, 'pubDate')),\n    guid: stripHtml(firstTag(block, 'guid')),\n  };\n});\n\nconst meta = { recordKind: 'rssParseMeta', fetchOk: true, httpStatus: status, itemCount: items.length, checkedAt };\nreturn [\n  { json: meta },\n  ...items.map((item) => ({ json: { recordKind: 'rssItem', ...item, checkedAt } })),\n];"
+      },
+      "id": "parse-vigicrues-rss-items",
+      "name": "Parse Vigicrues RSS Items",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1400,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const checkedAt = new Date().toISOString();\nconst config = $items('Set Connector Config')[0].json;\nconst mappingItems = $items('Load / Embed Verified Station Mapping');\nconst stations = (mappingItems[0] && mappingItems[0].json.stations) || [];\n\nconst allInputs = $input.all().map((i) => i.json || {});\nconst meta = allInputs.find((i) => i.recordKind === 'rssParseMeta') || { fetchOk: false, itemCount: 0, httpStatus: 0 };\nconst rssItems = allInputs.filter((i) => i.recordKind === 'rssItem');\n\nconst vigilanceLevels = new Set(['vert', 'jaune', 'orange', 'rouge']);\nconst labelFr = { vert: 'Vert', jaune: 'Jaune', orange: 'Orange', rouge: 'Rouge' };\nconst labelEn = { vert: 'Green', jaune: 'Yellow', orange: 'Orange', rouge: 'Red' };\nconst colorFor = { vert: 'green', jaune: 'yellow', orange: 'orange', rouge: 'red' };\n\nfunction normalize(value) {\n  return String(value || '')\n    .normalize('NFKD')\n    .replace(/[̀-ͯ]/g, '')\n    .toLowerCase()\n    .replace(/[^a-z0-9]+/g, ' ')\n    .trim();\n}\n\nfunction extractVigilanceLevel(text) {\n  const n = normalize(text);\n  if (/\bpas de vigilance particuliere\b/.test(n)) return null;\n  const explicit = n.match(/\bvigilances+(verte?|jaune|orange|rouge)\b/);\n  const loose = explicit || n.match(/\b(vert|verte|jaune|orange|rouge)\b/);\n  if (!loose) return null;\n  const level = loose[1] === 'verte' ? 'vert' : loose[1];\n  return vigilanceLevels.has(level) ? level : null;\n}\n\nconst preparedStations = stations.map((s) => ({\n  ...s,\n  normalizedName: normalize(s.stationName),\n  normalizedRiver: normalize(s.river),\n  normalizedCode: normalize(s.stationCode),\n}));\n\nfunction matchStation(item) {\n  const haystack = normalize([item.title, item.description, item.link, item.guid].filter(Boolean).join(' '));\n  const scored = preparedStations.map((station) => {\n    let score = 0;\n    const reasons = [];\n    if (station.stationCode && haystack.includes(normalize(station.stationCode))) { score += 100; reasons.push('station_code'); }\n    if (station.normalizedName && haystack.includes(station.normalizedName)) { score += 80; reasons.push('station_name'); }\n    const placeName = station.normalizedName.replace(new RegExp('^' + station.normalizedRiver + '\\s+a\\s+'), '');\n    if (placeName && placeName.length >= 4 && haystack.includes(placeName)) { score += 45; reasons.push('place_name'); }\n    const placeTokens = placeName.split(/\\s+/).filter((t) => t.length >= 5 && t !== 'corridor');\n    if (station.normalizedRiver && haystack.includes(station.normalizedRiver) && placeTokens.some((t) => haystack.includes(t))) { score += 25; reasons.push('river_place_token'); }\n    const deptMatch = (station.departments || []).some((d) => {\n      const padded = String(d).padStart(2, '0');\n      return new RegExp('\\b(' + d + '|' + padded + ')\\b').test(haystack);\n    });\n    if (station.normalizedRiver && haystack.includes(station.normalizedRiver) && deptMatch) { score += 35; reasons.push('river_department'); }\n    return { station, score, reasons };\n  }).filter((e) => e.score > 0);\n  scored.sort((a, b) => b.score - a.score);\n  return scored[0] || null;\n}\n\nfunction externalIdFor(station, level, item) {\n  const stable = item.guid || item.link || item.title || (station.stationCode + ':' + level);\n  const s = station.stationCode + ':' + level + ':' + stable;\n  let hash = 0;\n  for (let i = 0; i < s.length; i++) { hash = (Math.imul(31, hash) + s.charCodeAt(i)) | 0; }\n  return 'vigicrues-' + station.stationCode + '-' + level + '-' + (hash >>> 0).toString(16);\n}\n\nconst floodWarningRecords = [];\nconst ignoredItems = [];\nlet latestSourceUpdatedAt = null;\n\nfor (const item of rssItems) {\n  if (!Number.isNaN(Date.parse(item.pubDate || ''))) {\n    const normalizedPubDate = new Date(item.pubDate).toISOString();\n    if (!latestSourceUpdatedAt || normalizedPubDate > latestSourceUpdatedAt) latestSourceUpdatedAt = normalizedPubDate;\n  }\n}\n\nif (meta.fetchOk) {\n  for (const item of rssItems) {\n    const text = [item.title, item.description].filter(Boolean).join(' ');\n    const level = extractVigilanceLevel(text);\n    if (!level) { ignoredItems.push({ title: item.title, reason: 'no_vigilance_level' }); continue; }\n    if (level === 'vert') { ignoredItems.push({ title: item.title, reason: 'green_vigilance' }); continue; }\n\n    const match = matchStation(item);\n    if (!match) { ignoredItems.push({ title: item.title, vigilanceLevel: level, reason: 'no_mapped_station_match' }); continue; }\n\n    const station = match.station;\n    const confidence = match.score >= 80 ? 'high' : match.score >= 40 ? 'medium' : 'low';\n    const rideDays = Array.isArray(station.rideDays) ? station.rideDays : [];\n    const hasRideDays = rideDays.length > 0;\n    const reviewState = (confidence !== 'low' && hasRideDays) ? 'auto_publish_candidate' : 'manual_review_required';\n    const url = item.link || station.lookupUrl || 'https://www.vigicrues.gouv.fr/';\n    const updatedAt = Number.isNaN(Date.parse(item.pubDate)) ? checkedAt : new Date(item.pubDate).toISOString();\n\n    for (const rideDayId of (hasRideDays ? rideDays : [null])) {\n      const rdMatch = String(rideDayId || '').match(/^RD0?([1-9])$/);\n      const rideDay = rdMatch ? Number(rdMatch[1]) : null;\n      floodWarningRecords.push({\n        recordKind: 'officialFloodWarning',\n        externalId: externalIdFor(station, level, item) + (rideDayId ? ('-' + rideDayId) : ''),\n        sourceId: 'vigicrues',\n        sourceType: 'vigicrues',\n        category: 'official_flood_warning',\n        semanticStatus: 'river_flood_vigilance',\n        officialWarningLevel: level,\n        officialWarningColor: colorFor[level],\n        officialWarningLabelFr: labelFr[level],\n        officialWarningLabelEn: labelEn[level],\n        routeImpactStatus: 'not_indicated',\n        routeClosureConfirmed: false,\n        towpathClosureConfirmed: false,\n        publicAccessClosureConfirmed: false,\n        detourConfirmed: false,\n        status: 'warning',\n        title: 'Official flood warning in place (vigilance ' + level + ') - no route impact indicated',\n        nearestPlace: station.stationName,\n        stationCode: station.stationCode,\n        stationName: station.stationName,\n        river: station.river,\n        departmentCode: String((station.departments || [])[0] || ''),\n        departmentName: String((station.departments || [])[0] || ''),\n        rideDay,\n        rideDays,\n        distanceFromRouteKm: Number(station.distanceFromRouteKm),\n        nearestRouteKm: Number(station.nearestRouteKm),\n        nearestRouteMp: Number(station.nearestRouteMp),\n        stationMappingVerified: station.verified === true,\n        stationMatchConfidence: confidence,\n        reviewState,\n        routeInfluenceConfirmed: false,\n        routeSpecific: false,\n        departmentalGeneral: false,\n        routeCorridorRelevant: true,\n        relevanceScope: 'route_corridor_station_match',\n        startTime: updatedAt,\n        expectedEndTime: null,\n        checkedAt,\n        sourceUrl: url,\n        summary: 'Vigicrues reports ' + labelEn[level].toLowerCase() + ' flood vigilance for ' + station.river + ' near ' + station.stationName + '. Official flood warning in place - no route impact indicated.',\n        statusTitle: 'Official flood warning in place (vigilance ' + level + ') - no route impact indicated',\n        statusExplanation: 'Vigicrues reports official ' + labelEn[level].toLowerCase() + ' flood vigilance near ' + station.stationName + '; no official route or towpath closure is indicated at this time.',\n        statusSource: { name: 'Vigicrues', url, official: true, checkedAt, sourceLanguage: 'fr', translationMethod: 'condensed_official_source' },\n        whyItMatters: 'An official river flood vigilance is in effect near the route corridor; this does not by itself mean the route or towpath is closed.',\n        recommendedAction: 'Check Vigicrues and official local route notices before riding near the affected watercourse.',\n        suggestedDetour: null,\n        detourImpact: null,\n        raw: { title: item.title, description: item.description, matchReasons: match.reasons },\n      });\n    }\n  }\n}\n\nconst outMeta = {\n  recordKind: 'normalizeMeta',\n  fetchOk: meta.fetchOk,\n  httpStatus: meta.httpStatus || 0,\n  itemCount: meta.itemCount || 0,\n  floodWarningRecordCount: floodWarningRecords.length,\n  ignoredCount: ignoredItems.length,\n  latestSourceUpdatedAt,\n};\n\nreturn [\n  { json: outMeta },\n  ...floodWarningRecords.map((r) => ({ json: r })),\n  ...ignoredItems.map((i) => ({ json: { recordKind: 'ignoredItem', ...i } })),\n];"
+      },
+      "id": "extract-normalize-flood-warnings",
+      "name": "Extract And Normalize Flood Warning Records",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1680,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const checkedAt = new Date().toISOString();\nconst config = $items('Set Connector Config')[0].json;\nconst normalizeItems = $items('Extract And Normalize Flood Warning Records').map((i) => i.json);\nconst meta = normalizeItems.find((i) => i.recordKind === 'normalizeMeta') || { fetchOk: false, httpStatus: 0, itemCount: 0, floodWarningRecordCount: 0, ignoredCount: 0, latestSourceUpdatedAt: null };\nconst ignored = normalizeItems.filter((i) => i.recordKind === 'ignoredItem').map((i) => ({ title: i.title, reason: i.reason, vigilanceLevel: i.vigilanceLevel || null }));\n\nconst staleAfterMinutes = Number(config.staleAfterMinutes);\nconst sourceUpdatedAt = meta.latestSourceUpdatedAt || null;\nconst stale = Boolean(sourceUpdatedAt) && ((Date.parse(checkedAt) - Date.parse(sourceUpdatedAt)) > (staleAfterMinutes * 60 * 1000));\n\nlet status;\nconst errors = [];\nconst warnings = [];\nif (!meta.fetchOk) {\n  status = 'source_api_blocked';\n  errors.push('Vigicrues RSS request failed (httpStatus=' + (meta.httpStatus || 0) + ').');\n} else if (stale) {\n  status = 'stale';\n  warnings.push('Latest Vigicrues source update is older than the configured stale threshold of ' + staleAfterMinutes + ' minutes.');\n} else {\n  status = 'ok';\n}\n\nreturn [{\n  json: {\n    recordKind: 'sourceHealth',\n    sourceId: 'vigicrues',\n    sourceName: 'Vigicrues',\n    status,\n    fetchedAt: checkedAt,\n    sourceUpdatedAt,\n    stale,\n    staleAfterMinutes,\n    httpStatus: meta.httpStatus || 0,\n    itemCount: meta.itemCount || 0,\n    officialWarningCount: meta.floodWarningRecordCount || 0,\n    ignoredCount: meta.ignoredCount || 0,\n    recordCount: meta.floodWarningRecordCount || 0,\n    ignored,\n    errors,\n    warnings,\n  }\n}];"
+      },
+      "id": "build-source-health",
+      "name": "Build Source Health",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1960,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst floodWarnings = $items('Extract And Normalize Flood Warning Records').map((i) => i.json).filter((i) => i.recordKind === 'officialFloodWarning');\n\nconst events = [];\nconst reviewQueue = [];\nfor (const w of floodWarnings) {\n  const candidate = {\n    eventType: 'flood_hazard',\n    sourceType: 'vigicrues',\n    sourceId: 'vigicrues',\n    sourceName: 'Vigicrues',\n    officialWarningLevel: w.officialWarningLevel,\n    officialWarningColor: w.officialWarningColor,\n    routeImpactStatus: w.routeImpactStatus,\n    routeClosureConfirmed: false,\n    towpathClosureConfirmed: false,\n    reviewState: w.reviewState,\n    stationMappingVerified: w.stationMappingVerified,\n    matchConfidence: w.stationMatchConfidence,\n    title: 'Official flood warning in place - no route impact indicated: ' + w.stationName,\n    summary: w.summary + ' Route closure not confirmed.',\n    rideDay: w.rideDay,\n    rideDays: w.rideDays,\n    departmentCode: w.departmentCode,\n    checkedAt: w.checkedAt,\n    sourceUrl: w.sourceUrl,\n    externalId: w.externalId,\n  };\n  if (w.reviewState === 'auto_publish_candidate') events.push(candidate); else reviewQueue.push(candidate);\n}\n\nreturn [{ json: { recordKind: 'compatibilityCandidates', eventsCompat: events, reviewQueueCompat: reviewQueue, generatedAt: config.generatedAt } }];"
+      },
+      "id": "build-compat-candidates",
+      "name": "Build Compatibility Candidates",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1960,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "merge-normalize-health",
+      "name": "Merge Normalize And Health",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        2240,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "merge-compat",
+      "name": "Merge Compat",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        2520,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst normalizeInputs = $items('Extract And Normalize Flood Warning Records').map((i) => i.json || {});\nconst sourceHealthInputs = $items('Build Source Health').map((i) => i.json || {});\nconst compatibilityInputs = $items('Build Compatibility Candidates').map((i) => i.json || {});\nconst allInputs = [...normalizeInputs, ...sourceHealthInputs, ...compatibilityInputs];\n\nfunction validIso(v) { return !v || !Number.isNaN(Date.parse(v)); }\nfunction looksLikeSecret(v) { if (typeof v !== 'string') return false; return /^[A-Za-z0-9_-]{24,}$/.test(v) && !/^https?:\\/\\//.test(v); }\nconst forbiddenPathPattern = /(^|\\/)(tmp|data\\/public|home\\/node\\/\\.n8n)(\\/|$)/i;\n\nconst errors = [];\nconst warnings = [];\n\nif (!config.connectorId) errors.push('Missing connectorId in Set Connector Config');\nif (!config.connectorNumber) errors.push('Missing connectorNumber in Set Connector Config');\nif (!config.workflowName) errors.push('Missing workflowName in Set Connector Config');\nif (!config.workflowVersion) errors.push('Missing workflowVersion in Set Connector Config');\nif (!validIso(config.generatedAt)) errors.push('Missing or invalid generatedAt in Set Connector Config');\nif (!config.outputDirectory || !config.outputDirectory.startsWith('/files/cdm-status-output')) errors.push('Forbidden or missing output directory: expected /files/cdm-status-output');\nif (forbiddenPathPattern.test(config.outputDirectory || '')) errors.push('Output directory matches a forbidden path pattern');\n\nconst fullText = JSON.stringify(allInputs);\nif (/bearer\\s+[A-Za-z0-9_\\-.]{20,}/i.test(fullText)) errors.push('Possible bearer token leaked into merged output records');\nif (/apikey[\\\"\\']?\\s*[:=]\\s*[\\\"\\'][A-Za-z0-9_\\-]{16,}[\\\"\\']/i.test(fullText)) errors.push('Possible hardcoded API key value leaked into merged output records');\nif (/process\\.env/.test(fullText)) errors.push('process.env literal found in merged output records');\nif (/\\btowpath closure confirmed\\b|\\broute closure confirmed\\b|\\bdetour required\\b/i.test(fullText)) errors.push('Merged output appears to claim a confirmed route/towpath closure or detour without explicit official route-impact evidence');\nif (/\\bcanal (closed|closure)\\b/i.test(fullText) && !/no route impact indicated/i.test(fullText)) warnings.push('Canal-adjacent wording found without the mandatory no-route-impact caveat nearby; review manually');\n\nlet sawSourceHealth = false;\nfor (const r of allInputs) {\n  if (r.recordKind === 'sourceHealth') {\n    sawSourceHealth = true;\n    for (const field of ['sourceId', 'sourceName', 'status', 'fetchedAt', 'staleAfterMinutes', 'httpStatus', 'recordCount', 'errors', 'warnings']) {\n      if (r[field] === undefined || r[field] === null) errors.push('sourceHealth ' + (r.sourceId || 'unknown') + ' missing ' + field);\n    }\n    if (!validIso(r.fetchedAt)) errors.push('sourceHealth ' + r.sourceId + ' has invalid fetchedAt');\n    if (!['ok', 'degraded', 'failed', 'stale', 'source_api_blocked'].includes(r.status)) errors.push('sourceHealth ' + r.sourceId + ' has invalid status enum: ' + r.status);\n    continue;\n  }\n  if (r.recordKind === 'officialFloodWarning') {\n    for (const field of ['externalId', 'sourceId', 'category', 'officialWarningLevel', 'officialWarningColor', 'routeImpactStatus', 'title', 'checkedAt', 'statusExplanation', 'statusSource']) {\n      if (r[field] === undefined || r[field] === null || r[field] === '') errors.push('officialFloodWarning/' + (r.externalId || 'unknown') + ': missing required field ' + field);\n    }\n    if (!['rouge', 'orange', 'jaune', 'vert'].includes(r.officialWarningLevel)) errors.push('officialFloodWarning/' + r.externalId + ': invalid officialWarningLevel ' + r.officialWarningLevel);\n    if (!['red', 'orange', 'yellow', 'green'].includes(r.officialWarningColor)) errors.push('officialFloodWarning/' + r.externalId + ': invalid officialWarningColor ' + r.officialWarningColor);\n    if (!['not_indicated', 'reported', 'unknown'].includes(r.routeImpactStatus)) errors.push('officialFloodWarning/' + r.externalId + ': invalid routeImpactStatus ' + r.routeImpactStatus);\n    if (r.routeClosureConfirmed === true || r.towpathClosureConfirmed === true || r.publicAccessClosureConfirmed === true || r.detourConfirmed === true) {\n      errors.push('officialFloodWarning/' + r.externalId + ': a confirmed-impact flag is true without an explicit official route-impact source wired into this connector');\n    }\n    if (!validIso(r.checkedAt) || !validIso(r.startTime)) errors.push('officialFloodWarning/' + r.externalId + ': invalid ISO timestamp');\n    if (!r.statusSource || r.statusSource.official !== true) errors.push('officialFloodWarning/' + r.externalId + ': elevated record missing official statusSource');\n    if (r.statusExplanation) {\n      const wc = r.statusExplanation.trim().split(/\\s+/).length;\n      if (wc < 15 || wc > 20) warnings.push('officialFloodWarning/' + r.externalId + ': statusExplanation word count ' + wc + ' outside the target 15-20 word range');\n    }\n    if (r.stationMappingVerified !== false && r.stationMappingVerified !== true) errors.push('officialFloodWarning/' + r.externalId + ': stationMappingVerified must be a boolean, verified:false status must not be hidden');\n    if (looksLikeSecret(r.externalId) || looksLikeSecret(r.sourceUrl)) errors.push('officialFloodWarning/' + r.externalId + ': field resembles a hardcoded credential and was rejected');\n    continue;\n  }\n  if (r.recordKind === 'compatibilityCandidates') {\n    if (!Array.isArray(r.eventsCompat) || !Array.isArray(r.reviewQueueCompat)) errors.push('compatibilityCandidates missing eventsCompat[] or reviewQueueCompat[]');\n  }\n}\nif (!sawSourceHealth) errors.push('No sourceHealth record observed in merged input (upstream fetch may not have run)');\n\nreturn [{ json: { recordKind: 'validationResult', passed: errors.length === 0, errors, warnings } }, ...allInputs.map((r) => ({ json: r }))];"
+      },
+      "id": "validate-output",
+      "name": "Validate Flood Conditions Connector Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2800,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst items = $input.all().map((i) => i.json || {});\nconst validation = items.find((i) => i.recordKind === 'validationResult') || { passed: true, errors: [], warnings: [] };\nconst floodWarningRecords = items.filter((i) => i.recordKind === 'officialFloodWarning');\nconst sourceHealth = items.filter((i) => i.recordKind === 'sourceHealth');\nconst ignoredItems = items.filter((i) => i.recordKind === 'ignoredItem');\nconst compat = items.find((i) => i.recordKind === 'compatibilityCandidates') || { eventsCompat: [], reviewQueueCompat: [] };\n\nconst startedAt = sourceHealth[0]?.fetchedAt || config.generatedAt || new Date().toISOString();\nconst completedAt = new Date().toISOString();\nconst sourceUpdatedAt = sourceHealth.map((h) => h.sourceUpdatedAt).filter(Boolean).sort().slice(-1)[0] || null;\nconst stale = sourceHealth.some((h) => h.stale === true || h.status === 'stale');\nconst anyBlocked = sourceHealth.some((h) => h.status === 'source_api_blocked');\nconst topLevelWarnings = [...(validation.warnings || [])];\nconst topLevelErrors = [...(validation.errors || [])];\n\nconst manualReviewCount = floodWarningRecords.filter((w) => w.reviewState === 'manual_review_required').length;\nif (manualReviewCount > 0) {\n  topLevelWarnings.push(manualReviewCount + ' normalized flood warning record(s) require manual review before any route-specific operational claim.');\n}\nif (stale) {\n  topLevelWarnings.push('Source freshness exceeded the stale threshold; output is being labeled as stale last-known-good.');\n}\n\nlet status = 'SUCCESS';\nif (anyBlocked || !validation.passed) {\n  status = 'FAILED_NO_OUTPUT';\n} else if (stale) {\n  status = 'STALE_LAST_KNOWN_GOOD';\n} else if (topLevelWarnings.length > 0) {\n  status = 'SUCCESS_WITH_WARNINGS';\n}\n\nconst connectorPayload = {\n  connectorId: config.connectorId,\n  connectorNumber: config.connectorNumber,\n  connectorName: config.connectorName,\n  workflowName: config.workflowName,\n  workflowVersion: config.workflowVersion,\n  generatedAt: config.generatedAt,\n  timezone: config.timezone,\n  status: anyBlocked ? 'source_api_blocked' : (!validation.passed ? 'failed' : stale ? 'stale' : 'ok'),\n  sources: [{ sourceId: 'vigicrues', sourceName: 'Vigicrues', endpoint: config.vigicruesRssUrl, category: 'environment' }],\n  officialFloodWarnings: floodWarningRecords,\n  floodWarningRecords,\n  routeImpactRecords: [],\n  ignoredItems,\n  records: floodWarningRecords,\n  sourceHealth,\n  attribution: { required: true, source: 'Vigicrues', official: true },\n  officialWarningPolicy: { preserveOfficialLevels: true, preserveOfficialColors: true, doNotDowngradeOfficialFloodWarnings: true, separateRouteImpactFromOfficialWarning: true },\n  routeImpactPolicy: { routeClosureRequiresExplicitOfficialRouteImpactSource: true, towpathClosureRequiresExplicitOfficialRouteImpactSource: true, canalNavigationStatusIsNotRouteStatus: true, defaultRouteImpactStatus: 'not_indicated' },\n  routeRelevancePolicy: { routeSpecificRequiresExplicitRouteImpactEvidence: true, departmentalGeneralRequiresExplicitDepartmentWideSource: true, currentConnectorOutputDefaultScope: 'route_corridor_station_match' },\n  validation: { passed: validation.passed, errors: validation.errors || [], warnings: validation.warnings || [] },\n  compatibility: { targetEventsFeed: 'public/data/route-status-events.json', targetReviewQueueFeed: 'public/data/route-status-review-queue.json', targetSourceHealthFeed: 'public/data/route-status-source-health.json', mode: 'compatibility_candidate' },\n};\n\nconst envelope = {\n  schema_version: '1.0.0',\n  connector_id: config.connectorId,\n  connector_name: config.connectorName,\n  run_id: config.connectorId + ':' + config.generatedAt,\n  status,\n  started_at: startedAt,\n  completed_at: completedAt,\n  generated_at: completedAt,\n  source_updated_at: sourceUpdatedAt,\n  record_count: floodWarningRecords.length,\n  source_count: sourceHealth.length,\n  sources: [config.vigicruesRssUrl],\n  data: connectorPayload,\n  warnings: topLevelWarnings,\n  errors: topLevelErrors,\n  stale,\n  last_known_good: {\n    is_last_known_good: stale,\n    reason: stale\n      ? 'Latest source update exceeded the configured freshness threshold, so this validated output is labeled stale last-known-good.'\n      : 'Fresh candidate output generated for staged validation; final file is replaced only after validation passes and the staging file is atomically renamed.'\n  },\n  validation: {\n    schema_valid: validation.passed && !anyBlocked,\n  },\n};\n\nconst finalPath = config.outputDirectory + '/05_flood_conditions.json';\nconst stagingPath = config.outputDirectory + '/05_flood_conditions.staging.json';\nreturn [{\n  json: {\n    label: '05_flood_conditions',\n    targetPath: stagingPath,\n    finalPath,\n    stagingPath,\n    jsonText: JSON.stringify(envelope, null, 2) + '\\n',\n  }\n}];"
+      },
+      "id": "build-payloads",
+      "name": "Build Flood Conditions Output Payloads",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3080,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = [];\nfor (const item of $input.all()) {\n  const buf = Buffer.from(item.json.jsonText, 'utf8');\n  const fileName = String(item.json.targetPath).split('/').pop();\n  const binary = await this.helpers.prepareBinaryData(buf, fileName, 'application/json');\n  output.push({ json: item.json, binary: { data: binary } });\n}\nreturn output;"
+      },
+      "id": "prepare-binary",
+      "name": "Prepare Binary Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3360,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.targetPath }}",
+        "dataPropertyName": "data",
+        "options": {}
+      },
+      "id": "write-files",
+      "name": "Write Flood Conditions Output Files",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        3640,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $json.targetPath }}",
+        "options": {}
+      },
+      "id": "read-back-files",
+      "name": "Read Back Flood Conditions Output Files",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        3920,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const REQUIRED_FIELDS = [\n  'schema_version',\n  'connector_id',\n  'connector_name',\n  'run_id',\n  'status',\n  'started_at',\n  'completed_at',\n  'generated_at',\n  'source_updated_at',\n  'record_count',\n  'source_count',\n  'sources',\n  'data',\n  'warnings',\n  'errors',\n  'stale',\n  'last_known_good',\n  'validation',\n];\nconst ALLOWED_STATUS = new Set(['SUCCESS', 'SUCCESS_WITH_WARNINGS', 'STALE_LAST_KNOWN_GOOD', 'FAILED_NO_OUTPUT']);\nconst items = $input.all();\nconst payloadMetadata = $items('Build Flood Conditions Output Payloads').map((i) => i.json || {});\nconst results = [];\nfor (let i = 0; i < items.length; i++) {\n  const item = items[i];\n  const meta = payloadMetadata[i] || payloadMetadata[0] || {};\n  const targetPath = meta.targetPath || item.json?.targetPath || item.json?.fileName || 'unknown';\n  const finalPath = meta.finalPath || item.json?.finalPath || null;\n  const stagingPath = meta.stagingPath || item.json?.stagingPath || targetPath;\n  if (!item.binary || !item.binary.data) {\n    results.push({ json: { label: '05_flood_conditions', targetPath, finalPath, stagingPath, validJson: false, schemaValid: false, error: 'No binary data read back for ' + targetPath } });\n    continue;\n  }\n  const buf = await this.helpers.getBinaryDataBuffer(i, 'data');\n  const text = buf.toString('utf8');\n  let parsed;\n  try {\n    parsed = JSON.parse(text);\n  } catch (err) {\n    results.push({ json: { label: '05_flood_conditions', targetPath, finalPath, stagingPath, validJson: false, schemaValid: false, error: 'Invalid JSON: ' + err.message } });\n    continue;\n  }\n\n  const missing = REQUIRED_FIELDS.filter((field) => !(field in parsed));\n  const schemaErrors = [];\n  if (missing.length) schemaErrors.push('Missing top-level fields: ' + missing.join(', '));\n  if (parsed.schema_version !== '1.0.0') schemaErrors.push('schema_version must equal 1.0.0');\n  if (!ALLOWED_STATUS.has(parsed.status)) schemaErrors.push('status must be one of the contract enums');\n  if (!Array.isArray(parsed.sources)) schemaErrors.push('sources must be an array');\n  if (!Array.isArray(parsed.warnings)) schemaErrors.push('warnings must be an array');\n  if (!Array.isArray(parsed.errors)) schemaErrors.push('errors must be an array');\n  if (typeof parsed.stale !== 'boolean') schemaErrors.push('stale must be a boolean');\n  if (!parsed.last_known_good || typeof parsed.last_known_good.is_last_known_good !== 'boolean' || typeof parsed.last_known_good.reason !== 'string') schemaErrors.push('last_known_good must include boolean is_last_known_good and string reason');\n  if (!parsed.validation || parsed.validation.schema_valid !== true) schemaErrors.push('validation.schema_valid must be true before final rename');\n  if (!parsed.data || parsed.data.connectorId !== parsed.connector_id) schemaErrors.push('data.connectorId must match connector_id');\n  if (!String(stagingPath).endsWith('/05_flood_conditions.staging.json')) schemaErrors.push('staging path is incorrect: ' + stagingPath);\n  if (!String(finalPath).endsWith('/05_flood_conditions.json')) schemaErrors.push('final path is incorrect: ' + finalPath);\n\n  results.push({\n    json: {\n      label: '05_flood_conditions',\n      targetPath,\n      finalPath,\n      stagingPath,\n      validJson: true,\n      schemaValid: schemaErrors.length === 0,\n      recordCount: parsed.record_count,\n      sourceCount: parsed.source_count,\n      status: parsed.status,\n      error: schemaErrors.length ? schemaErrors.join('; ') : null,\n    }\n  });\n}\nreturn results;"
+      },
+      "id": "validate-written",
+      "name": "Validate Written Flood Conditions Files",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4200,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst promotionItems = $input.all().map((i) => i.json || {});\nconst generatedAt = config.generatedAt || new Date().toISOString();\nconst completedAt = new Date().toISOString();\nconst promotion = promotionItems[0] || {};\n\nconst normalizeItems = $items('Extract And Normalize Flood Warning Records').map((i) => i.json);\nconst floodWarnings = normalizeItems.filter((i) => i.recordKind === 'officialFloodWarning');\nconst ignoredCount = normalizeItems.filter((i) => i.recordKind === 'ignoredItem').length;\nconst healthItems = $items('Build Source Health').map((i) => i.json);\nconst sourceApiBlocked = healthItems.some((h) => h.status === 'source_api_blocked');\nconst sourceStale = healthItems.some((h) => h.stale === true || h.status === 'stale');\n\nreturn [{\n  json: {\n    recordKind: 'runDiagnostics',\n    ok: true,\n    connectorId: config.connectorId,\n    workflowName: config.workflowName,\n    workflowVersion: config.workflowVersion,\n    generatedAt,\n    completedAt,\n    validationStatus: 'passed',\n    sourceStatus: sourceApiBlocked ? 'source_api_blocked' : sourceStale ? 'stale' : 'ok',\n    writeStatus: 'promoted',\n    infraBlocked: false,\n    fileAccessRegression: false,\n    sourceApiBlocked,\n    outputFilenames: [promotion.finalPath].filter(Boolean),\n    warningCount: floodWarnings.length,\n    ignoredCount,\n    routeImpactConfirmedCount: floodWarnings.filter((w) => w.routeImpactStatus === 'reported').length,\n    manualReviewCount: floodWarnings.filter((w) => w.reviewState === 'manual_review_required').length,\n    autoPublishCandidateCount: floodWarnings.filter((w) => w.reviewState === 'auto_publish_candidate').length,\n    errors: [],\n    warnings: sourceStale ? ['Source freshness exceeded threshold; payload still validated and was marked stale.'] : [],\n    nextAction: 'Workflow output validated and atomically promoted to the production path.',\n    folderMoveRequired: false,\n  },\n}];"
+      },
+      "id": "build-diagnostics",
+      "name": "Build Run Diagnostics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4480,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const results = $input.all().map((i) => i.json || {});\nconst failures = results.filter((r) => r.validJson !== true || r.schemaValid !== true || r.error);\nif (failures.length) {\n  throw new Error('Staged output validation failed: ' + failures.map((f) => f.error || f.targetPath || 'unknown').join(' | '));\n}\nconst result = results[0] || {};\nif (!result.stagingPath || !result.finalPath) {\n  throw new Error('Missing stagingPath or finalPath for atomic rename');\n}\nreturn [{ json: {\n  ...result,\n  command: 'mv \"' + result.stagingPath + '\" \"' + result.finalPath + '\"'\n} }];"
+      },
+      "id": "finalize-output",
+      "name": "Finalize Flood Conditions Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4480,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "command": "={{ $json.command }}"
+      },
+      "id": "atomic-promote-output",
+      "name": "Atomically Promote Flood Output",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        4760,
+        340
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Connector Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Connector Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Connector Config": {
+      "main": [
+        [
+          {
+            "node": "Load / Embed Verified Station Mapping",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load / Embed Verified Station Mapping": {
+      "main": [
+        [
+          {
+            "node": "Build Vigicrues Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Vigicrues Request": {
+      "main": [
+        [
+          {
+            "node": "Fetch Vigicrues RSS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Vigicrues RSS": {
+      "main": [
+        [
+          {
+            "node": "Parse Vigicrues RSS Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Vigicrues RSS Items": {
+      "main": [
+        [
+          {
+            "node": "Extract And Normalize Flood Warning Records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract And Normalize Flood Warning Records": {
+      "main": [
+        [
+          {
+            "node": "Build Source Health",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Build Compatibility Candidates",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge Normalize And Health",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Source Health": {
+      "main": [
+        [
+          {
+            "node": "Merge Normalize And Health",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Normalize And Health": {
+      "main": [
+        [
+          {
+            "node": "Merge Compat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Compatibility Candidates": {
+      "main": [
+        [
+          {
+            "node": "Merge Compat",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Compat": {
+      "main": [
+        [
+          {
+            "node": "Validate Flood Conditions Connector Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Flood Conditions Connector Output": {
+      "main": [
+        [
+          {
+            "node": "Build Flood Conditions Output Payloads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Flood Conditions Output Payloads": {
+      "main": [
+        [
+          {
+            "node": "Prepare Binary Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Binary Payload": {
+      "main": [
+        [
+          {
+            "node": "Write Flood Conditions Output Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Flood Conditions Output Files": {
+      "main": [
+        [
+          {
+            "node": "Read Back Flood Conditions Output Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Back Flood Conditions Output Files": {
+      "main": [
+        [
+          {
+            "node": "Validate Written Flood Conditions Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Written Flood Conditions Files": {
+      "main": [
+        [
+          {
+            "node": "Finalize Flood Conditions Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Finalize Flood Conditions Output": {
+      "main": [
+        [
+          {
+            "node": "Atomically Promote Flood Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atomically Promote Flood Output": {
+      "main": [
+        [
+          {
+            "node": "Build Run Diagnostics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "timezone": "Europe/Paris",
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": [
+        0
+      ]
+    }
+  },
+  "meta": null,
+  "pinData": null,
+  "versionId": "35c4b7e1-4536-4a9f-af36-500c7c91a63e",
+  "activeVersionId": "35c4b7e1-4536-4a9f-af36-500c7c91a63e",
+  "versionCounter": 4,
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-07-21T16:19:07.577Z",
+      "createdAt": "2026-07-21T16:19:07.577Z",
+      "role": "workflow:owner",
+      "workflowId": "D1Dsa02M3LAmzRfy",
+      "projectId": "Y0Ygmqe59jevHoeV",
+      "project": {
+        "updatedAt": "2026-07-10T05:38:45.677Z",
+        "createdAt": "2026-06-02T20:51:11.579Z",
+        "id": "Y0Ygmqe59jevHoeV",
+        "name": "John Brooks <john@biketourfrance.net>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "5dadc5f6-6bff-44cf-9566-6b82f3d768dc"
+      }
+    }
+  ],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

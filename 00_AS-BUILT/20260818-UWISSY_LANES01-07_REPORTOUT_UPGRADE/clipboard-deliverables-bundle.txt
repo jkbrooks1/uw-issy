@@ -1,0 +1,625 @@
+===== CLIPBOARD HANDOFF =====
+PASS
+UWISSY Lanes 01-07 upgraded to v02 with final report-out and live-qualified.
+
+Lane status:
+- Lane 01: PASS; v01 -> v02; workflow RR7cLSV9oGngrJdA; final execution 3669; report-out DEGRADED; JSON 00_WORKFLOWS/v02.UWI_LANE01.json
+- Lane 02: PASS; v01 -> v02; workflow fA0ZjWH3Itl83aPC; final execution 3673; report-out PASSED; JSON 00_WORKFLOWS/v02.UWI_LANE02.json
+- Lane 03: PASS; v01 -> v02; workflow qlM2XIv2BbFSh3in; final execution 3675; report-out DEGRADED; JSON 00_WORKFLOWS/v02.UWI_LANE03.json
+- Lane 04: PASS; v01 -> v02; workflow w6xnelPQeRFZk8BG; final execution 3678; report-out DEGRADED; JSON 00_WORKFLOWS/v02.UWI_LANE04.json
+- Lane 05: PASS; v01 -> v02; workflow 4RiNqOKD9BCZFH6P; final execution 3686; report-out DEGRADED; JSON 00_WORKFLOWS/v02.UWI_LANE05.json
+- Lane 06: PASS; v01 -> v02; workflow poGV37VLUGIUxfGK; final execution 3688; report-out DEGRADED; JSON 00_WORKFLOWS/v02.UWI_LANE06.json
+- Lane 07: PASS; v01 -> v02; workflow 08g3JNwQPVSxUl2H; final execution 3690; report-out PASSED; JSON 00_WORKFLOWS/v02.UWI_LANE07.json
+
+Lane 08 read-only: v01.UWI_LANE08 / uwIssy08RouteFacilities; active=false; in UWISSY; report-out node present=true.
+Project evidence path: /Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE
+Proof ZIP path: /Users/jkbrookspersonal/Downloads/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE_proof.zip
+Safe to begin Lane 20 work: YES
+
+===== FINAL PASS SUMMARY =====
+{
+  "overall": "PASS",
+  "lanes": {
+    "01": {
+      "lane": "01",
+      "status": "PASS",
+      "old_version": "v01",
+      "new_version": "v02",
+      "workflow_id": "RR7cLSV9oGngrJdA",
+      "baseline_execution_id": null,
+      "final_execution_id": 3669,
+      "old_sha256": null,
+      "new_sha256": "23ace7289e2875927941deebc113861affd02d6f2b8ba3aa78dc7fb98a5276de",
+      "report_out": {
+        "run_id": "01_ROUTE_CONDITIONS-20260819T052056Z-001",
+        "status": "DEGRADED",
+        "data_status": "degraded",
+        "candidate_written": true,
+        "published_written": true,
+        "quarantine_written": false,
+        "validation_log_written": true,
+        "status_written": true,
+        "handoff_written": true,
+        "execution_evidence_written": true,
+        "artifact_count_written": 8,
+        "event_count": 1,
+        "route_event_count": 1,
+        "source_count": 4,
+        "failed_source_count": 3,
+        "using_last_known_good": false,
+        "published_path": "/files/uw-issy-connectors/published/01_ROUTE_CONDITIONS/01_ROUTE_CONDITIONS_published_20260819T052056Z.json",
+        "timestamp": "2026-08-19T05:21:58.174Z"
+      },
+      "canonical_json": "00_WORKFLOWS/v02.UWI_LANE01.json",
+      "evidence_path": "00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE01",
+      "project": "UWISSY",
+      "active": true,
+      "node_count": 32
+    },
+    "02": {
+      "lane": "02",
+      "status": "PASS",
+      "old_version": "v01",
+      "new_version": "v02",
+      "workflow_id": "fA0ZjWH3Itl83aPC",
+      "baseline_execution_id": 3670,
+      "final_execution_id": 3673,
+      "old_sha256": "30241f28fd5dc216cb5ee3ccaa2c8624f83e52dfdb25cd7be90360908fe6445c",
+      "new_sha256": "bfd437cc942afdd46bc0df08da9e606ece2243aea3c8e6b8ebe77dc905b2a809",
+      "report_out": {
+        "run_id": "02_WEATHER-20260819T053755Z-001",
+        "status": "PASSED",
+        "data_status": "no_relevant_events",
+        "candidate_written": true,
+        "published_written": true,
+        "quarantine_written": false,
+        "validation_log_written": true,
+        "status_written": true,
+        "handoff_written": true,
+        "execution_evidence_written": true,
+        "artifact_count_written": 8,
+        "event_count": 0,
+        "source_count": 6,
+        "failed_source_count": 0,
+        "using_last_known_good": false,
+        "forecast_count": 0,
+        "observation_count": 32,
+        "weather_alert_count": 0,
+        "published_path": "/files/uw-issy-connectors/published/02_WEATHER/02_WEATHER_published_20260819T053755Z.json",
+        "timestamp": "2026-08-19T05:37:55.749Z"
+      },
+      "canonical_json": "00_WORKFLOWS/v02.UWI_LANE02.json",
+      "evidence_path": "00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE02",
+      "project": "UWISSY",
+      "active": true,
+      "node_count": 40
+    },
+    "03": {
+      "lane": "03",
+      "status": "PASS",
+      "old_version": "v01",
+      "new_version": "v02",
+      "workflow_id": "qlM2XIv2BbFSh3in",
+      "baseline_execution_id": 3674,
+      "final_execution_id": 3675,
+      "old_sha256": "5a42bd30f5ee28415fbf75559dbe190d6af4d424b9e483c5d7bf79087b2a4aba",
+      "new_sha256": "7ec56ed362288f63874248c9a69125aad7077d50a762993705d1af77328f1211",
+      "report_out": {
+        "run_id": "03_AIR_QUALITY-20260819T054427Z-001",
+        "status": "DEGRADED",
+        "data_status": "degraded",
+        "candidate_written": true,
+        "published_written": true,
+        "quarantine_written": false,
+        "validation_log_written": true,
+        "status_written": true,
+        "handoff_written": true,
+        "execution_evidence_written": true,
+        "artifact_count_written": 8,
+        "event_count": 2,
+        "source_count": 8,
+        "failed_source_count": 4,
+        "using_last_known_good": false,
+        "air_quality_event_count": 2,
+        "observation_count": 0,
+        "published_path": "/files/uw-issy-connectors/published/03_AIR_QUALITY/03_AIR_QUALITY_published_20260819T054427Z.json",
+        "timestamp": "2026-08-19T05:44:27.151Z"
+      },
+      "canonical_json": "00_WORKFLOWS/v02.UWI_LANE03.json",
+      "evidence_path": "00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE03",
+      "project": "UWISSY",
+      "active": true,
+      "node_count": 48
+    },
+    "04": {
+      "lane": "04",
+      "status": "PASS",
+      "old_version": "v01",
+      "new_version": "v02",
+      "workflow_id": "w6xnelPQeRFZk8BG",
+      "baseline_execution_id": 3677,
+      "final_execution_id": 3678,
+      "old_sha256": "8700d03f7cc9ed022b5aea063e70a7da4761397916e427ac0f4d5b923ff9a857",
+      "new_sha256": "85d814b40157b375446e17af2226e69817ba2dd709a585491d4d54d360e30ccb",
+      "report_out": {
+        "run_id": "04_WILDFIRE-20260819T055323Z-001",
+        "status": "DEGRADED",
+        "data_status": "degraded",
+        "candidate_written": true,
+        "published_written": true,
+        "quarantine_written": false,
+        "validation_log_written": true,
+        "status_written": true,
+        "handoff_written": true,
+        "execution_evidence_written": true,
+        "artifact_count_written": 8,
+        "event_count": 0,
+        "source_count": 5,
+        "failed_source_count": 2,
+        "using_last_known_good": false,
+        "wildfire_event_count": 0,
+        "smoke_event_count": 0,
+        "observation_count": 0,
+        "published_path": "/files/uw-issy-connectors/published/04_WILDFIRE/04_WILDFIRE_published_20260819T055323Z.json",
+        "timestamp": "2026-08-19T05:53:23.672Z"
+      },
+      "canonical_json": "00_WORKFLOWS/v02.UWI_LANE04.json",
+      "evidence_path": "00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE04",
+      "project": "UWISSY",
+      "active": true,
+      "node_count": 36
+    },
+    "05": {
+      "lane": "05",
+      "status": "PASS",
+      "old_version": "v01",
+      "new_version": "v02",
+      "workflow_id": "4RiNqOKD9BCZFH6P",
+      "baseline_execution_id": 3682,
+      "final_execution_id": 3686,
+      "old_sha256": "97e50fe3f399d58b6927591d968827103709a4edfaf6a7c5173f9f0cd4c6e478",
+      "new_sha256": "1e63939485d4c1c0181d6a3aab80268fa0192e05f5b9e53d1ad83a3037a81647",
+      "report_out": {
+        "run_id": "05_FLOOD_CONDITIONS-20260819T060417Z-001",
+        "status": "DEGRADED",
+        "data_status": "degraded",
+        "candidate_written": true,
+        "published_written": true,
+        "quarantine_written": false,
+        "validation_log_written": true,
+        "status_written": true,
+        "handoff_written": true,
+        "execution_evidence_written": true,
+        "artifact_count_written": 9,
+        "event_count": 5,
+        "source_count": 10,
+        "failed_source_count": 4,
+        "using_last_known_good": false,
+        "gauge_count": 1,
+        "flood_event_count": 5,
+        "published_path": "/files/uw-issy-connectors/published/05_FLOOD_CONDITIONS/05_FLOOD_CONDITIONS_published_20260819T060417Z.json",
+        "timestamp": "2026-08-19T06:04:17.348Z"
+      },
+      "canonical_json": "00_WORKFLOWS/v02.UWI_LANE05.json",
+      "evidence_path": "00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE05",
+      "project": "UWISSY",
+      "active": true,
+      "node_count": 56
+    },
+    "06": {
+      "lane": "06",
+      "status": "PASS",
+      "old_version": "v01",
+      "new_version": "v02",
+      "workflow_id": "poGV37VLUGIUxfGK",
+      "baseline_execution_id": 3687,
+      "final_execution_id": 3688,
+      "old_sha256": "89adbaa48a6769f59f6dd1e43b87c40a391473698357568acf9eff30c332eec4",
+      "new_sha256": "3e5e1cfd0129769202fd71e21863205bf218c92e76851b3098353e15703c018d",
+      "report_out": {
+        "run_id": "06_TRAIL_INFRASTRUCTURE_STATUS-20260819T061817Z-001",
+        "status": "DEGRADED",
+        "data_status": "degraded",
+        "candidate_written": true,
+        "published_written": true,
+        "quarantine_written": false,
+        "validation_log_written": true,
+        "status_written": true,
+        "handoff_written": true,
+        "execution_evidence_written": true,
+        "artifact_count_written": 7,
+        "event_count": 5,
+        "source_count": 8,
+        "failed_source_count": 2,
+        "using_last_known_good": false,
+        "infrastructure_event_count": 5,
+        "published_path": "/files/uw-issy-connectors/published/06_TRAIL_INFRASTRUCTURE_STATUS/06_TRAIL_INFRASTRUCTURE_STATUS_published_20260819T061817Z.json",
+        "timestamp": "2026-08-19T06:18:17.442Z"
+      },
+      "canonical_json": "00_WORKFLOWS/v02.UWI_LANE06.json",
+      "evidence_path": "00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE06",
+      "project": "UWISSY",
+      "active": true,
+      "node_count": 48
+    },
+    "07": {
+      "lane": "07",
+      "status": "PASS",
+      "old_version": "v01",
+      "new_version": "v02",
+      "workflow_id": "08g3JNwQPVSxUl2H",
+      "baseline_execution_id": 3689,
+      "final_execution_id": 3690,
+      "old_sha256": "dcf90308e0535a5404bc7d4952e38e64ca88687dd412dd0a519f6e11521643bc",
+      "new_sha256": "8ee9649dde59e7e1b6fc9a373ca67de49c9fdc45c75b68f39130c6b2448060fa",
+      "report_out": {
+        "run_id": "07_GOVERNMENT_SAFETY_ALERTS-20260819T062655Z-001",
+        "status": "PASSED",
+        "data_status": "ok",
+        "candidate_written": true,
+        "published_written": true,
+        "quarantine_written": false,
+        "validation_log_written": true,
+        "status_written": true,
+        "handoff_written": true,
+        "execution_evidence_written": true,
+        "artifact_count_written": 9,
+        "event_count": 7,
+        "source_count": 8,
+        "failed_source_count": 0,
+        "using_last_known_good": false,
+        "government_alert_count": 7,
+        "observation_count": 96,
+        "published_path": "/files/uw-issy-connectors/published/07_GOVERNMENT_SAFETY_ALERTS/07_GOVERNMENT_SAFETY_ALERTS_published_20260819T062655Z.json",
+        "timestamp": "2026-08-19T06:26:55.293Z"
+      },
+      "canonical_json": "00_WORKFLOWS/v02.UWI_LANE07.json",
+      "evidence_path": "00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE07",
+      "project": "UWISSY",
+      "active": true,
+      "node_count": 48
+    }
+  },
+  "lane08_readonly": {
+    "id": "uwIssy08RouteFacilities",
+    "name": "v01.UWI_LANE08",
+    "active": false,
+    "node_count": 24,
+    "has_final_status_report": true,
+    "final_status_report_type": "n8n-nodes-base.code"
+  },
+  "project_evidence_path": "/Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE",
+  "proof_zip": "/Users/jkbrookspersonal/Downloads/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE_proof.zip",
+  "safe_to_begin_lane20_work": true
+}
+
+===== FINAL UWISSY INVENTORY =====
+id	name	active	folder_name	node_count	versionCounter
+uwIssy08RouteFacilities	v01.UWI_LANE08	f	UWISSY	24	1
+gp8WlccGwLydNWG7	v01.UWI_LANE20	f	UWISSY	36	5
+KhbGg5gBn7Rbne68	v01.UWI_LANE30	f	UWISSY	41	2
+RR7cLSV9oGngrJdA	v02.UWI_LANE01	t	UWISSY	32	19
+fA0ZjWH3Itl83aPC	v02.UWI_LANE02	t	UWISSY	40	8
+qlM2XIv2BbFSh3in	v02.UWI_LANE03	t	UWISSY	48	5
+w6xnelPQeRFZk8BG	v02.UWI_LANE04	t	UWISSY	36	4
+4RiNqOKD9BCZFH6P	v02.UWI_LANE05	t	UWISSY	56	6
+poGV37VLUGIUxfGK	v02.UWI_LANE06	t	UWISSY	48	5
+08g3JNwQPVSxUl2H	v02.UWI_LANE07	t	UWISSY	48	5
+(10 rows)
+
+===== LANE SUMMARIES =====
+
+----- LANE 01 -----
+{
+  "lane": "01",
+  "status": "PASS",
+  "old_version": "v01",
+  "new_version": "v02",
+  "workflow_id": "RR7cLSV9oGngrJdA",
+  "baseline_execution_id": null,
+  "final_execution_id": 3669,
+  "old_sha256": null,
+  "new_sha256": "23ace7289e2875927941deebc113861affd02d6f2b8ba3aa78dc7fb98a5276de",
+  "report_out": {
+    "run_id": "01_ROUTE_CONDITIONS-20260819T052056Z-001",
+    "status": "DEGRADED",
+    "data_status": "degraded",
+    "candidate_written": true,
+    "published_written": true,
+    "quarantine_written": false,
+    "validation_log_written": true,
+    "status_written": true,
+    "handoff_written": true,
+    "execution_evidence_written": true,
+    "artifact_count_written": 8,
+    "event_count": 1,
+    "route_event_count": 1,
+    "source_count": 4,
+    "failed_source_count": 3,
+    "using_last_known_good": false,
+    "published_path": "/files/uw-issy-connectors/published/01_ROUTE_CONDITIONS/01_ROUTE_CONDITIONS_published_20260819T052056Z.json",
+    "timestamp": "2026-08-19T05:21:58.174Z"
+  },
+  "canonical_json": "00_WORKFLOWS/v02.UWI_LANE01.json",
+  "evidence_path": "00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE01",
+  "project": "UWISSY",
+  "active": true,
+  "node_count": 32
+}
+
+----- LANE 02 -----
+{
+  "lane": "02",
+  "status": "PASS",
+  "old_version": "v01",
+  "new_version": "v02",
+  "workflow_id": "fA0ZjWH3Itl83aPC",
+  "baseline_execution_id": 3670,
+  "final_execution_id": 3673,
+  "old_sha256": "30241f28fd5dc216cb5ee3ccaa2c8624f83e52dfdb25cd7be90360908fe6445c",
+  "new_sha256": "bfd437cc942afdd46bc0df08da9e606ece2243aea3c8e6b8ebe77dc905b2a809",
+  "report_out": {
+    "run_id": "02_WEATHER-20260819T053755Z-001",
+    "status": "PASSED",
+    "data_status": "no_relevant_events",
+    "candidate_written": true,
+    "published_written": true,
+    "quarantine_written": false,
+    "validation_log_written": true,
+    "status_written": true,
+    "handoff_written": true,
+    "execution_evidence_written": true,
+    "artifact_count_written": 8,
+    "event_count": 0,
+    "source_count": 6,
+    "failed_source_count": 0,
+    "using_last_known_good": false,
+    "forecast_count": 0,
+    "observation_count": 32,
+    "weather_alert_count": 0,
+    "published_path": "/files/uw-issy-connectors/published/02_WEATHER/02_WEATHER_published_20260819T053755Z.json",
+    "timestamp": "2026-08-19T05:37:55.749Z"
+  },
+  "canonical_json": "00_WORKFLOWS/v02.UWI_LANE02.json",
+  "evidence_path": "00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE02",
+  "project": "UWISSY",
+  "active": true,
+  "node_count": 40
+}
+
+----- LANE 03 -----
+{
+  "lane": "03",
+  "status": "PASS",
+  "old_version": "v01",
+  "new_version": "v02",
+  "workflow_id": "qlM2XIv2BbFSh3in",
+  "baseline_execution_id": 3674,
+  "final_execution_id": 3675,
+  "old_sha256": "5a42bd30f5ee28415fbf75559dbe190d6af4d424b9e483c5d7bf79087b2a4aba",
+  "new_sha256": "7ec56ed362288f63874248c9a69125aad7077d50a762993705d1af77328f1211",
+  "report_out": {
+    "run_id": "03_AIR_QUALITY-20260819T054427Z-001",
+    "status": "DEGRADED",
+    "data_status": "degraded",
+    "candidate_written": true,
+    "published_written": true,
+    "quarantine_written": false,
+    "validation_log_written": true,
+    "status_written": true,
+    "handoff_written": true,
+    "execution_evidence_written": true,
+    "artifact_count_written": 8,
+    "event_count": 2,
+    "source_count": 8,
+    "failed_source_count": 4,
+    "using_last_known_good": false,
+    "air_quality_event_count": 2,
+    "observation_count": 0,
+    "published_path": "/files/uw-issy-connectors/published/03_AIR_QUALITY/03_AIR_QUALITY_published_20260819T054427Z.json",
+    "timestamp": "2026-08-19T05:44:27.151Z"
+  },
+  "canonical_json": "00_WORKFLOWS/v02.UWI_LANE03.json",
+  "evidence_path": "00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE03",
+  "project": "UWISSY",
+  "active": true,
+  "node_count": 48
+}
+
+----- LANE 04 -----
+{
+  "lane": "04",
+  "status": "PASS",
+  "old_version": "v01",
+  "new_version": "v02",
+  "workflow_id": "w6xnelPQeRFZk8BG",
+  "baseline_execution_id": 3677,
+  "final_execution_id": 3678,
+  "old_sha256": "8700d03f7cc9ed022b5aea063e70a7da4761397916e427ac0f4d5b923ff9a857",
+  "new_sha256": "85d814b40157b375446e17af2226e69817ba2dd709a585491d4d54d360e30ccb",
+  "report_out": {
+    "run_id": "04_WILDFIRE-20260819T055323Z-001",
+    "status": "DEGRADED",
+    "data_status": "degraded",
+    "candidate_written": true,
+    "published_written": true,
+    "quarantine_written": false,
+    "validation_log_written": true,
+    "status_written": true,
+    "handoff_written": true,
+    "execution_evidence_written": true,
+    "artifact_count_written": 8,
+    "event_count": 0,
+    "source_count": 5,
+    "failed_source_count": 2,
+    "using_last_known_good": false,
+    "wildfire_event_count": 0,
+    "smoke_event_count": 0,
+    "observation_count": 0,
+    "published_path": "/files/uw-issy-connectors/published/04_WILDFIRE/04_WILDFIRE_published_20260819T055323Z.json",
+    "timestamp": "2026-08-19T05:53:23.672Z"
+  },
+  "canonical_json": "00_WORKFLOWS/v02.UWI_LANE04.json",
+  "evidence_path": "00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE04",
+  "project": "UWISSY",
+  "active": true,
+  "node_count": 36
+}
+
+----- LANE 05 -----
+{
+  "lane": "05",
+  "status": "PASS",
+  "old_version": "v01",
+  "new_version": "v02",
+  "workflow_id": "4RiNqOKD9BCZFH6P",
+  "baseline_execution_id": 3682,
+  "final_execution_id": 3686,
+  "old_sha256": "97e50fe3f399d58b6927591d968827103709a4edfaf6a7c5173f9f0cd4c6e478",
+  "new_sha256": "1e63939485d4c1c0181d6a3aab80268fa0192e05f5b9e53d1ad83a3037a81647",
+  "report_out": {
+    "run_id": "05_FLOOD_CONDITIONS-20260819T060417Z-001",
+    "status": "DEGRADED",
+    "data_status": "degraded",
+    "candidate_written": true,
+    "published_written": true,
+    "quarantine_written": false,
+    "validation_log_written": true,
+    "status_written": true,
+    "handoff_written": true,
+    "execution_evidence_written": true,
+    "artifact_count_written": 9,
+    "event_count": 5,
+    "source_count": 10,
+    "failed_source_count": 4,
+    "using_last_known_good": false,
+    "gauge_count": 1,
+    "flood_event_count": 5,
+    "published_path": "/files/uw-issy-connectors/published/05_FLOOD_CONDITIONS/05_FLOOD_CONDITIONS_published_20260819T060417Z.json",
+    "timestamp": "2026-08-19T06:04:17.348Z"
+  },
+  "canonical_json": "00_WORKFLOWS/v02.UWI_LANE05.json",
+  "evidence_path": "00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE05",
+  "project": "UWISSY",
+  "active": true,
+  "node_count": 56
+}
+
+----- LANE 06 -----
+{
+  "lane": "06",
+  "status": "PASS",
+  "old_version": "v01",
+  "new_version": "v02",
+  "workflow_id": "poGV37VLUGIUxfGK",
+  "baseline_execution_id": 3687,
+  "final_execution_id": 3688,
+  "old_sha256": "89adbaa48a6769f59f6dd1e43b87c40a391473698357568acf9eff30c332eec4",
+  "new_sha256": "3e5e1cfd0129769202fd71e21863205bf218c92e76851b3098353e15703c018d",
+  "report_out": {
+    "run_id": "06_TRAIL_INFRASTRUCTURE_STATUS-20260819T061817Z-001",
+    "status": "DEGRADED",
+    "data_status": "degraded",
+    "candidate_written": true,
+    "published_written": true,
+    "quarantine_written": false,
+    "validation_log_written": true,
+    "status_written": true,
+    "handoff_written": true,
+    "execution_evidence_written": true,
+    "artifact_count_written": 7,
+    "event_count": 5,
+    "source_count": 8,
+    "failed_source_count": 2,
+    "using_last_known_good": false,
+    "infrastructure_event_count": 5,
+    "published_path": "/files/uw-issy-connectors/published/06_TRAIL_INFRASTRUCTURE_STATUS/06_TRAIL_INFRASTRUCTURE_STATUS_published_20260819T061817Z.json",
+    "timestamp": "2026-08-19T06:18:17.442Z"
+  },
+  "canonical_json": "00_WORKFLOWS/v02.UWI_LANE06.json",
+  "evidence_path": "00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE06",
+  "project": "UWISSY",
+  "active": true,
+  "node_count": 48
+}
+
+----- LANE 07 -----
+{
+  "lane": "07",
+  "status": "PASS",
+  "old_version": "v01",
+  "new_version": "v02",
+  "workflow_id": "08g3JNwQPVSxUl2H",
+  "baseline_execution_id": 3689,
+  "final_execution_id": 3690,
+  "old_sha256": "dcf90308e0535a5404bc7d4952e38e64ca88687dd412dd0a519f6e11521643bc",
+  "new_sha256": "8ee9649dde59e7e1b6fc9a373ca67de49c9fdc45c75b68f39130c6b2448060fa",
+  "report_out": {
+    "run_id": "07_GOVERNMENT_SAFETY_ALERTS-20260819T062655Z-001",
+    "status": "PASSED",
+    "data_status": "ok",
+    "candidate_written": true,
+    "published_written": true,
+    "quarantine_written": false,
+    "validation_log_written": true,
+    "status_written": true,
+    "handoff_written": true,
+    "execution_evidence_written": true,
+    "artifact_count_written": 9,
+    "event_count": 7,
+    "source_count": 8,
+    "failed_source_count": 0,
+    "using_last_known_good": false,
+    "government_alert_count": 7,
+    "observation_count": 96,
+    "published_path": "/files/uw-issy-connectors/published/07_GOVERNMENT_SAFETY_ALERTS/07_GOVERNMENT_SAFETY_ALERTS_published_20260819T062655Z.json",
+    "timestamp": "2026-08-19T06:26:55.293Z"
+  },
+  "canonical_json": "00_WORKFLOWS/v02.UWI_LANE07.json",
+  "evidence_path": "00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE07",
+  "project": "UWISSY",
+  "active": true,
+  "node_count": 48
+}
+
+===== LANE 08 READ-ONLY CHECK =====
+{
+  "id": "uwIssy08RouteFacilities",
+  "name": "v01.UWI_LANE08",
+  "active": false,
+  "node_count": 24,
+  "has_final_status_report": true,
+  "final_status_report_type": "n8n-nodes-base.code"
+}
+
+===== FINAL GIT STATUS =====
+## main...origin/main [ahead 1]
+ M 00_BUILD_LOG.md
+ M 00_PROJECT_BUILDLOG.md
+ M scripts/validate-n8n-workflow.mjs
+?? 00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/
+?? 00_AS-BUILT/20260818-UWISSY_N8N_WORKFLOW_PROJECT_MOVE/
+?? 00_AS-BUILT/20260818-UWISSY_WORKFLOW_RENAME/
+?? 00_CONNECTORS/08_ROUTE_FACILITIES/
+?? 00_WORKFLOWS/v0001.08_ROUTE_FACILITIESConnector.n8n.workflow.json
+?? 00_WORKFLOWS/v01.UWI_LANE01.json
+?? 00_WORKFLOWS/v01.UWI_LANE02.json
+?? 00_WORKFLOWS/v01.UWI_LANE03.json
+?? 00_WORKFLOWS/v01.UWI_LANE04.json
+?? 00_WORKFLOWS/v01.UWI_LANE05.json
+?? 00_WORKFLOWS/v01.UWI_LANE06.json
+?? 00_WORKFLOWS/v01.UWI_LANE07.json
+?? 00_WORKFLOWS/v01.UWI_LANE08.json
+?? 00_WORKFLOWS/v01.UWI_LANE20.json
+?? 00_WORKFLOWS/v01.UWI_LANE30.json
+?? 00_WORKFLOWS/v02.UWI_LANE01.json
+?? 00_WORKFLOWS/v02.UWI_LANE02.json
+?? 00_WORKFLOWS/v02.UWI_LANE03.json
+?? 00_WORKFLOWS/v02.UWI_LANE04.json
+?? 00_WORKFLOWS/v02.UWI_LANE05.json
+?? 00_WORKFLOWS/v02.UWI_LANE06.json
+?? 00_WORKFLOWS/v02.UWI_LANE07.json
+?? scripts/compute-facility-route-distances.py
+
+===== PROOF ZIP =====
+/Users/jkbrookspersonal/Downloads/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE_proof.zip

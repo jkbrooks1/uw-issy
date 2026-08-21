@@ -1,0 +1,44 @@
+{
+  "run_id": "01_ROUTE_CONDITIONS-20260820T025022Z-001",
+  "connector_version": "v0003",
+  "data_status": "degraded",
+  "event_count": 1,
+  "event_id": "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01",
+  "identity_basis": "composite_key",
+  "source_event_key": "KC-03|trail_closure|east_lake_sammamish_trail|louis_thompson_rd_ne_to_ne_inglewood_hill_rd|2026-06-01",
+  "content_hash": "hash_8b942faf",
+  "stable_id_pass": true,
+  "content_hash_preserved": true,
+  "source_health": [
+    {
+      "source_id": "01_ROUTE_CONDITIONS:KC-03",
+      "status": "ok",
+      "http_status": null,
+      "errors": []
+    },
+    {
+      "source_id": "01_ROUTE_CONDITIONS:REDM-01",
+      "status": "failed",
+      "http_status": null,
+      "errors": [
+        "timeout of 30000ms exceeded"
+      ]
+    },
+    {
+      "source_id": "01_ROUTE_CONDITIONS:ISS-03",
+      "status": "failed",
+      "http_status": null,
+      "errors": [
+        "timeout of 30000ms exceeded"
+      ]
+    },
+    {
+      "source_id": "01_ROUTE_CONDITIONS:ISS-01",
+      "status": "failed",
+      "http_status": null,
+      "errors": [
+        "403 - \"<!DOCTYPE html><html lang=\\\"en-US\\\"><head><title>Just a moment...</title><meta http-equiv=\\\"Content-Type\\\" content=\\\"text/html; charset=UTF-8\\\"><meta http-equiv=\\\"X-UA-Compatible\\\" content=\\\"IE=Edge\\\"><meta name=\\\"robots\\\" content=\\\"noindex,nofollow\\\"><meta name=\\\"viewport\\\" content=\\\"width=device-width,initial-scale=1\\\"><meta http-equiv=\\\"content-security-policy\\\" content=\\\"default-src &#39;none&#39;; script-src &#39;nonce-A85tBC60E4fDOEef2U6PPY&#39; &#39;unsafe-eval&#39; https://challenges.cloudflare.com; script-src-attr &#39;none&#39;; style-src &#39;unsafe-inline&#39;; img-src &#39;self&#39; https://challenges.cloudflare.com; connect-src &#39;self&#39; https://challenges.cloudflare.com; frame-src &#39;self&#39; https://challenges.cloudflare.com blob:; child-src &#39;self&#39; https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri &#39;self&#39;\\\"><style>*{box-sizing:border-box;margin:0;padding:0}html{line-height:1.15;-webkit-text-size-adjust:100%;color:#313131;font-family:system-ui,-apple-system,BlinkMacSystemFont,\\\"Segoe UI\\\",Roboto,\\\"Helvetica Neue\\\",Arial,\\\"Noto Sans\\\",sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\",\\\"Segoe UI Symbol\\\",\\\"Noto Color Emoji\\\"}body{display:flex;flex-direction:column;height:100vh;min-height:100vh}.main-content{margin:8rem auto;padding-left:1.5rem;max-width:60rem}@media (width <= 720px){.main-content{margin-top:4rem}}#challenge-error-text{background-image:url(\\\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgZmlsbD0ibm9uZSI+PHBhdGggZmlsbD0iI0IyMEYwMyIgZD0iTTE2IDNhMTMgMTMgMCAxIDAgMTMgMTNBMTMuMDE1IDEzLjAxNSAwIDAgMCAxNiAzbTAgMjRhMTEgMTEgMCAxIDEgMTEtMTEgMTEuMDEgMTEuMDEgMCAwIDEtMTEgMTEiLz48cGF0aCBmaWxsPSIjQjIwRjAzIiBkPSJNMTcuMDM4IDE4LjYxNUgxNC44N0wxNC41NjMgOS41aDIuNzgzem0tMS4wODQgMS40MjdxLjY2IDAgMS4wNTcuMzg4LjQwNy4zODkuNDA3Ljk5NCAwIC41OTYtLjQwNy45ODQtLjM5Ny4zOS0xLjA1Ny4zODktLjY1IDAtMS4wNTYtLjM4OS0uMzk4LS4zODktLjM5OC0uOTg0IDAtLjU5Ny4zOTgtLjk4NS40MDYtLjM5NyAxLjA1Ni0uMzk3Ii8+PC9zdmc+\\\");background-repeat:no-repeat;background-size:contain;padding-left:34px}</style><meta http-equiv=\\\"refresh\\\" content=\\\"360\\\"></head><body><div class=\\\"main-wrapper\\\" role=\\\"main\\\"><div class=\\\"main-content\\\"><noscript><div class=\\\"h2\\\"><span id=\\\"challenge-error-text\\\">Enable JavaScript and cookies to continue</span></div></noscript></div></div><script nonce=\\\"A85tBC60E4fDOEef2U6PPY\\\">(function(){window._cf_chl_opt = {cFPWv: 'g',cH: '4lyxi4J7BWioRDoQKZfsZSyadzQjV0MJn51Gpy_Z.yw-1787194283-1.2.1.1-MtHOe1Y2iGA_DrpBPW3VZLM6qdT2CeUhh.0K_cVbutJqtAz7dcDVYy.taVfLSzfQ',cITimeS: '1787194283',cN: 'A85tBC60E4fDOEef2U6PPY',cRay: 'a2de189139e30cd3',cTplB: '0',cTplC:0,cTplO:0,cTplV:5,cType: 'managed',cUPMDTk:\\\"/CivicAlerts.aspx?CID=20\\\\u0026__cf_chl_tk=LmZdHWMbQTawIR9LoL44j3SArCYLnlI8MFAZmC8aHb0-1787194283-1.0.1.1-178FCYMcdFMPq738RjLzuUcM8.Jy_C8DzIQMSK_KsjY\\\",cvId: '3',cZone: 'www.issaquahwa.gov',fa:\\\"/CivicAlerts.aspx?CID=20\\\\u0026__cf_chl_f_tk=LmZdHWMbQTawIR9LoL44j3SArCYLnlI8MFAZmC8aHb0-1787194283-1.0.1.1-178FCYMcdFMPq738RjLzuUcM8.Jy_C8DzIQMSK_KsjY\\\",md: 'A4ZumQYEDyGenJ2h.elDJe46cfBQGkkUWCCXGUeKLns-1787194283-1.2.1.1-soH7e9o5dCBJpTjbk.JBc77N9p7lRN4uDLt4gTXsUQzHkQ94NSqfwfyffRpfm8UpcUmPA3PzIJAd9qQ.tAhxtmjrJv2reb97JpoU1d16GEOzMKd5ctiwQwNwp.7XG2j7DdV3wnuAlkYadffTcoSG56T_7KTGlGbhqVrcvJ3CqhUiNE.8YS1IYrahrR4.lNqX7HVw54PHJ9XXQsGFZAsIFQy.tXxZ8CnTztP9WbEfMS6eybN8siBCOTAlfVZblHLpVr7VmldzUfksO4i0VjaMsWjzY4rbpjB6067ZoZLs2Na.fgFQQamBos1LPFXK1cN7Ml4bwlQIEmiLzZgZValZTA6WvnN9sby7UpnfimY5o4sxGnrVbMLRTiYV4bOcG8cTDBgE5CeRcnNBadU4zUGyyqY9KGWJpWjSiuf.yctOu8gkkOXYLpynEL_.56NHf.LrEvaWJErOQlXEknsuf8MfAu_xVk1nkzW4ZDbLA4B_BpqDcxpVWkERi1sIdvd3Iy0Hv1FVETu6h8KRkBFZhdtAFRvaby43EceR0X.jhUg1KqBB4KS9EwP2vz633JKrNgP5amKInk9KRPIDU8dzFNnYkbh6zdIHqedS1tfa3s8AvOaz_wlR1DBb71nPFImtEepWRNgl1SRyP31EjMpbEvMvMb_VL1XSKkC.rVPmHHRUrsgkmoQgN.TkwJC.fna31.mYJRBfiogDqjldNX5_sSJnNtXuQXGR.F95URRs0F8wO6JXE936mxcvIxW1VLyrRJfgVb_veaMeVvqb8bNpjW4ATW8587xUlCMDKPZVxXCBenVHDi6sI5w1qLoiteEzNy19M30dQGZDhy2BPWYTaDs5fnP3U3aSFi.ZPhpji7DAvRZu1oAkCWhMju7opWUSBIkhGFPoizr3o.MSIM5mds5965pesgtikOCf9iYnjMUxyHfykDUcsV3gTmYA_hgo6ssj0CczAy_pJzRdcYW7Eec3HMRUF86pPO4x3LFNjURCz5WTqvONrGVW_zKrRjs36z4bIKfXK2i85TRJ7Ianh3Xa00hqxEM50er5nmeDnc4KWggW2J0XFPfdCBfTWR70yGUd',mdrd: 'Gu733Iyc_klKA25fbo2A_.Ywrf8WU9cahnN5fAHh9zE-1787194283-1.2.1.1-1fcZ8qtmWKQCHaG6NagBdIq5IbYjQlAUTwq6gxQH8V9qtz8orn.ZZbFOhA4BnWnBL9Axd2iWhMu7tlATnjm2IY3gFM.pztKQxh4l6Oy35Dm3N7KAoOCjWoELGJxHVcdl2KAf7qeXEBGhR7_CZ_RWNoeXTsSo9HnvKLQ8sTTC8Q63ppno4_rY2LX_cxDXvueMhRtrCuXmb6Updl56OgujROTmScIroCOHp4r4E3CvLtS.xgOLO6A3UawdCaAXdVL95.ZNd8eLk2V68KVM_We9pOKLZyvZ8h7nAYBhExhQZXE',};var a = document.createElement('script');a.nonce = 'A85tBC60E4fDOEef2U6PPY';a.src = '/cdn-cgi/challenge-platform/h/g/orchestrate/chl_page/v1?ray=a2de189139e30cd3';window._cf_chl_opt.cOgUHash = location.hash === '' && location.href.indexOf('#') !== -1 ? '#' : location.hash;window._cf_chl_opt.cOgUQuery = location.search === '' && location.href.slice(0, location.href.length - window._cf_chl_opt.cOgUHash.length).indexOf('?') !== -1 ? '?' : location.search;if (window.history && window.history.replaceState) {var ogU = location.pathname + window._cf_chl_opt.cOgUQuery + window._cf_chl_opt.cOgUHash;history.replaceState(null, null,\\\"/CivicAlerts.aspx?CID=20\\\\u0026__cf_chl_rt_tk=LmZdHWMbQTawIR9LoL44j3SArCYLnlI8MFAZmC8aHb0-1787194283-1.0.1.1-178FCYMcdFMPq738RjLzuUcM8.Jy_C8DzIQMSK_KsjY\\\"+ window._cf_chl_opt.cOgUHash);a.onload = function() {history.replaceState(null, null, ogU);}}document.getElementsByTagName('head')[0].appendChild(a);}());</script></body></html>\""
+      ]
+    }
+  ]
+}

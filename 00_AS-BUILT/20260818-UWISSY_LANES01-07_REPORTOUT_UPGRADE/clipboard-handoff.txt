@@ -1,0 +1,16 @@
+PASS
+UWISSY Lanes 01-07 upgraded to v02 with final report-out and live-qualified.
+
+Lane status:
+- Lane 01: PASS; v01 -> v02; workflow RR7cLSV9oGngrJdA; final execution 3669; report-out DEGRADED; JSON 00_WORKFLOWS/v02.UWI_LANE01.json
+- Lane 02: PASS; v01 -> v02; workflow fA0ZjWH3Itl83aPC; final execution 3673; report-out PASSED; JSON 00_WORKFLOWS/v02.UWI_LANE02.json
+- Lane 03: PASS; v01 -> v02; workflow qlM2XIv2BbFSh3in; final execution 3675; report-out DEGRADED; JSON 00_WORKFLOWS/v02.UWI_LANE03.json
+- Lane 04: PASS; v01 -> v02; workflow w6xnelPQeRFZk8BG; final execution 3678; report-out DEGRADED; JSON 00_WORKFLOWS/v02.UWI_LANE04.json
+- Lane 05: PASS; v01 -> v02; workflow 4RiNqOKD9BCZFH6P; final execution 3686; report-out DEGRADED; JSON 00_WORKFLOWS/v02.UWI_LANE05.json
+- Lane 06: PASS; v01 -> v02; workflow poGV37VLUGIUxfGK; final execution 3688; report-out DEGRADED; JSON 00_WORKFLOWS/v02.UWI_LANE06.json
+- Lane 07: PASS; v01 -> v02; workflow 08g3JNwQPVSxUl2H; final execution 3690; report-out PASSED; JSON 00_WORKFLOWS/v02.UWI_LANE07.json
+
+Lane 08 read-only: v01.UWI_LANE08 / uwIssy08RouteFacilities; active=false; in UWISSY; report-out node present=true.
+Project evidence path: /Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE
+Proof ZIP path: /Users/jkbrookspersonal/Downloads/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE_proof.zip
+Safe to begin Lane 20 work: YES

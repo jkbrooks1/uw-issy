@@ -1,0 +1,14 @@
+/files/uw-issy-connectors/candidate/07_GOVERNMENT_SAFETY_ALERTS/07_GOVERNMENT_SAFETY_ALERTS_candidate_20260819T062231Z.json
+/files/uw-issy-connectors/handoff/07_GOVERNMENT_SAFETY_ALERTS/07_GOVERNMENT_SAFETY_ALERTS-20260819T062231Z-001.json
+/files/uw-issy-connectors/last_known_good/07_GOVERNMENT_SAFETY_ALERTS/archive/20260819T062231Z.json
+/files/uw-issy-connectors/logs/07_GOVERNMENT_SAFETY_ALERTS/validation_log_20260819T062231Z.jsonl
+/files/uw-issy-connectors/normalized/07_GOVERNMENT_SAFETY_ALERTS/07_GOVERNMENT_SAFETY_ALERTS_normalized_20260819T062231Z.json
+/files/uw-issy-connectors/published/07_GOVERNMENT_SAFETY_ALERTS/07_GOVERNMENT_SAFETY_ALERTS_published_20260819T062231Z.json
+/files/uw-issy-connectors/raw/07_GOVERNMENT_SAFETY_ALERTS/landings/DOH-02_landing_20260819T062231Z.json
+/files/uw-issy-connectors/raw/07_GOVERNMENT_SAFETY_ALERTS/landings/KCMETRO-01_landing_20260819T062231Z.json
+/files/uw-issy-connectors/raw/07_GOVERNMENT_SAFETY_ALERTS/landings/NWS-01_landing_20260819T062231Z.json
+/files/uw-issy-connectors/raw/07_GOVERNMENT_SAFETY_ALERTS/landings/SEA-01_landing_20260819T062231Z.json
+/files/uw-issy-connectors/raw/07_GOVERNMENT_SAFETY_ALERTS/landings/SEAFD-01_landing_20260819T062231Z.json
+/files/uw-issy-connectors/raw/07_GOVERNMENT_SAFETY_ALERTS/landings/SEAPD-01_landing_20260819T062231Z.json
+/files/uw-issy-connectors/raw/07_GOVERNMENT_SAFETY_ALERTS/landings/ST-01_landing_20260819T062231Z.json
+/files/uw-issy-connectors/raw/07_GOVERNMENT_SAFETY_ALERTS/landings/UW-01_landing_20260819T062231Z.json

@@ -1,0 +1,90 @@
+{
+  "run_id": "01_ROUTE_CONDITIONS-20260819T052056Z-001",
+  "connector_id": "01_ROUTE_CONDITIONS",
+  "lane": "01_ROUTE_CONDITIONS",
+  "generated_at": "2026-08-19T05:20:56.397Z",
+  "published_at": "2026-08-19T05:21:58.114Z",
+  "published_artifact": "/files/uw-issy-connectors/published/01_ROUTE_CONDITIONS/01_ROUTE_CONDITIONS_published_20260819T052056Z.json",
+  "status": "degraded",
+  "ready_for_workflow_08": true,
+  "source_ids_used": [
+    "01_ROUTE_CONDITIONS:KC-03",
+    "01_ROUTE_CONDITIONS:REDM-01",
+    "01_ROUTE_CONDITIONS:ISS-03",
+    "01_ROUTE_CONDITIONS:ISS-01"
+  ],
+  "route_sections": [
+    {
+      "route_section_id": "01_uw_u_district",
+      "route_section_name": "UW / U-District",
+      "status": "no_current_events",
+      "event_ids": [],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    },
+    {
+      "route_section_id": "02_burke_gilman_seattle",
+      "route_section_name": "Burke-Gilman - Seattle",
+      "status": "no_current_events",
+      "event_ids": [],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    },
+    {
+      "route_section_id": "03_burke_gilman_north_lake_wa_kenmore",
+      "route_section_name": "Burke-Gilman - north Lake WA/Kenmore",
+      "status": "no_current_events",
+      "event_ids": [],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    },
+    {
+      "route_section_id": "04_burke_gilman_connector_bothell",
+      "route_section_name": "Burke-Gilman/connector - Bothell",
+      "status": "no_current_events",
+      "event_ids": [],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    },
+    {
+      "route_section_id": "05_sammamish_river_trail_bothell_woodinville",
+      "route_section_name": "Sammamish River Trail - Bothell/Woodinville",
+      "status": "no_current_events",
+      "event_ids": [],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    },
+    {
+      "route_section_id": "06_sammamish_river_trail_redmond",
+      "route_section_name": "Sammamish River Trail - Redmond",
+      "status": "no_current_events",
+      "event_ids": [],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    },
+    {
+      "route_section_id": "07_marymoor_park",
+      "route_section_name": "Marymoor Park",
+      "status": "no_current_events",
+      "event_ids": [],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    },
+    {
+      "route_section_id": "08_east_lake_sammamish_trail_redmond",
+      "route_section_name": "East Lake Sammamish Trail - Redmond",
+      "status": "no_current_events",
+      "event_ids": [],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    },
+    {
+      "route_section_id": "09_east_lake_sammamish_trail_sammamish",
+      "route_section_name": "East Lake Sammamish Trail - Sammamish",
+      "status": "active_closure",
+      "event_ids": [
+        "01_ROUTE_CONDITIONS:KC-03:hash_47441766"
+      ],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    },
+    {
+      "route_section_id": "10_issaquah_approach_terminus",
+      "route_section_name": "Issaquah approach / terminus",
+      "status": "no_current_events",
+      "event_ids": [],
+      "updated_at": "2026-08-19T05:20:56.397Z"
+    }
+  ]
+}

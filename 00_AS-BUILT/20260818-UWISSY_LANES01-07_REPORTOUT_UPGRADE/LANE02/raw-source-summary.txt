@@ -1,0 +1,6 @@
+/files/uw-issy-connectors/raw/02_WEATHER/NWS-01_landing_20260819T053755Z.json {"source_id":"02_WEATHER:NWS-01","ok_count":8,"error_count":0}
+/files/uw-issy-connectors/raw/02_WEATHER/NWS-02_landing_20260819T053755Z.json {"source_id":"02_WEATHER:NWS-02","ok_count":8,"error_count":0}
+/files/uw-issy-connectors/raw/02_WEATHER/NWS-03_landing_20260819T053755Z.json {"source_id":"02_WEATHER:NWS-03","ok_count":8,"error_count":0}
+/files/uw-issy-connectors/raw/02_WEATHER/NWS-04_landing_20260819T053755Z.json {"source_id":"02_WEATHER:NWS-04","ok_count":8,"error_count":0}
+/files/uw-issy-connectors/raw/02_WEATHER/NWS-05_landing_20260819T053755Z.json {"source_id":"02_WEATHER:NWS-05","ok_count":12,"error_count":0}
+/files/uw-issy-connectors/raw/02_WEATHER/NWS-06_landing_20260819T053755Z.json {"source_id":"02_WEATHER:NWS-06","ok_count":5,"error_count":0}

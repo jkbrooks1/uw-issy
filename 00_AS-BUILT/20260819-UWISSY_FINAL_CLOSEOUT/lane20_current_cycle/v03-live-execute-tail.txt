@@ -1,0 +1,180 @@
+                      "file_path": "/files/uw-issy-connectors/alerts/lane20_missed_run_alert_state.json",
+                      "fileName": "/files/uw-issy-connectors/alerts/lane20_missed_run_alert_state.json"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    },
+                    "binary": {
+                      "data": {
+                        "mimeType": "application/json",
+                        "fileType": "json",
+                        "fileExtension": "json",
+                        "data": "filesystem-v2",
+                        "fileName": "lane20_missed_run_alert_state.json",
+                        "id": "filesystem-v2:workflows/gp8WlccGwLydNWG7/executions/3823/binary_data/a78f0451-4f31-45b7-8f3a-6c74b0324dec",
+                        "fileSize": "815 B",
+                        "bytes": 815
+                      }
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Ops Email Gate": [
+          {
+            "startTime": 1787194881827,
+            "executionIndex": 45,
+            "source": [
+              {
+                "previousNode": "Write Ops Alert State",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            ],
+            "hints": [],
+            "executionTime": 3,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "output_root": "/files/uw-issy-connectors",
+                      "should_email": true,
+                      "alert_key": "2026-08-19T20:00:00.000Z|04_WILDFIRE,05_FLOOD_CONDITIONS,06_TRAIL_INFRASTRUCTURE_STATUS,07_GOVERNMENT_SAFETY_ALERTS,08_ROUTE_FACILITIES",
+                      "subject": "UW-Issy Monitor Failure — source lane missed scheduled run",
+                      "message": "UW-Issy source-lane missed-run alert\n\nExpected cycle: 13:00\nTimezone: America/Los_Angeles\nExpected source run time UTC: 2026-08-19T20:00:00.000Z\nLane 20 run ID: 20_STATUS_PUBLISHER-20260820T030121Z-001\nLane 20 generated at: 2026-08-20T03:01:21.287Z\nn8n workflow: v03.UWI_LANE20 / gp8WlccGwLydNWG7 / folder UWISSY\nPublic site: https://uw-issy.biketourfrance.net\n\nAffected lanes:\n- 04_WILDFIRE (Wildfire): STALE_FROM_OLDER_CYCLE; latest run 04_WILDFIRE-20260819T070009.094Z-001; latest report/execution at 2026-08-19T07:00:09.094Z\n- 05_FLOOD_CONDITIONS (Flood Conditions): STALE_FROM_OLDER_CYCLE; latest run 05_FLOOD_CONDITIONS-20260819T070012Z-001; latest report/execution at 2026-08-19T07:00:12.083Z\n- 06_TRAIL_INFRASTRUCTURE_STATUS (Trail Infrastructure Status): STALE_FROM_OLDER_CYCLE; latest run 06_TRAIL_INFRASTRUCTURE_STATUS-20260819T070052Z-001; latest report/execution at 2026-08-19T07:00:52.173Z\n- 07_GOVERNMENT_SAFETY_ALERTS (Government Safety Alerts): STALE_FROM_OLDER_CYCLE; latest run 07_GOVERNMENT_SAFETY_ALERTS-20260819T070006Z-001; latest report/execution at 2026-08-19T07:00:06.055Z\n- 08_ROUTE_FACILITIES (Route Facilities): STALE_FROM_OLDER_CYCLE; latest run 08_ROUTE_FACILITIES-20260819T041454Z-001; latest report/execution at 2026-08-19T04:14:54.952Z\n\nCurrent LKG/detail state is in Lane 20 status JSON under lanes.<lane>.lkg_used and lane_cycle_completeness.",
+                      "updated_ops_alert_state": {
+                        "alerted_cycle_keys": [
+                          "2026-08-19T20:00:00.000Z|04_WILDFIRE,05_FLOOD_CONDITIONS,06_TRAIL_INFRASTRUCTURE_STATUS,07_GOVERNMENT_SAFETY_ALERTS,08_ROUTE_FACILITIES"
+                        ],
+                        "updated_at": "2026-08-20T03:01:21.287Z",
+                        "last_evaluated_cycle": {
+                          "expected_cycle": "13:00",
+                          "timezone": "America/Los_Angeles",
+                          "expected_start_local": "2026-08-19T13:00:00",
+                          "expected_start_utc": "2026-08-19T20:00:00.000Z",
+                          "lane20_generated_at": "2026-08-20T03:01:21.287Z"
+                        },
+                        "last_missed_lanes": [
+                          "04_WILDFIRE",
+                          "05_FLOOD_CONDITIONS",
+                          "06_TRAIL_INFRASTRUCTURE_STATUS",
+                          "07_GOVERNMENT_SAFETY_ALERTS",
+                          "08_ROUTE_FACILITIES"
+                        ],
+                        "last_alert_key": "2026-08-19T20:00:00.000Z|04_WILDFIRE,05_FLOOD_CONDITIONS,06_TRAIL_INFRASTRUCTURE_STATUS,07_GOVERNMENT_SAFETY_ALERTS,08_ROUTE_FACILITIES"
+                      },
+                      "file_path": "/files/uw-issy-connectors/alerts/lane20_missed_run_alert_state.json",
+                      "fileName": "/files/uw-issy-connectors/alerts/lane20_missed_run_alert_state.json"
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Build Ops Missed-Run Email": [
+          {
+            "startTime": 1787194881830,
+            "executionIndex": 46,
+            "source": [
+              {
+                "previousNode": "Ops Email Gate",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            ],
+            "hints": [],
+            "executionTime": 4,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "subject": "UW-Issy Monitor Failure — source lane missed scheduled run",
+                      "message": "UW-Issy source-lane missed-run alert\n\nExpected cycle: 13:00\nTimezone: America/Los_Angeles\nExpected source run time UTC: 2026-08-19T20:00:00.000Z\nLane 20 run ID: 20_STATUS_PUBLISHER-20260820T030121Z-001\nLane 20 generated at: 2026-08-20T03:01:21.287Z\nn8n workflow: v03.UWI_LANE20 / gp8WlccGwLydNWG7 / folder UWISSY\nPublic site: https://uw-issy.biketourfrance.net\n\nAffected lanes:\n- 04_WILDFIRE (Wildfire): STALE_FROM_OLDER_CYCLE; latest run 04_WILDFIRE-20260819T070009.094Z-001; latest report/execution at 2026-08-19T07:00:09.094Z\n- 05_FLOOD_CONDITIONS (Flood Conditions): STALE_FROM_OLDER_CYCLE; latest run 05_FLOOD_CONDITIONS-20260819T070012Z-001; latest report/execution at 2026-08-19T07:00:12.083Z\n- 06_TRAIL_INFRASTRUCTURE_STATUS (Trail Infrastructure Status): STALE_FROM_OLDER_CYCLE; latest run 06_TRAIL_INFRASTRUCTURE_STATUS-20260819T070052Z-001; latest report/execution at 2026-08-19T07:00:52.173Z\n- 07_GOVERNMENT_SAFETY_ALERTS (Government Safety Alerts): STALE_FROM_OLDER_CYCLE; latest run 07_GOVERNMENT_SAFETY_ALERTS-20260819T070006Z-001; latest report/execution at 2026-08-19T07:00:06.055Z\n- 08_ROUTE_FACILITIES (Route Facilities): STALE_FROM_OLDER_CYCLE; latest run 08_ROUTE_FACILITIES-20260819T041454Z-001; latest report/execution at 2026-08-19T04:14:54.952Z\n\nCurrent LKG/detail state is in Lane 20 status JSON under lanes.<lane>.lkg_used and lane_cycle_completeness."
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ],
+        "Send Ops Missed-Run Email": [
+          {
+            "startTime": 1787194881834,
+            "executionIndex": 47,
+            "source": [
+              {
+                "previousNode": "Build Ops Missed-Run Email",
+                "previousNodeOutput": 0,
+                "previousNodeRun": 0
+              }
+            ],
+            "hints": [],
+            "executionTime": 725,
+            "executionStatus": "success",
+            "data": {
+              "main": [
+                [
+                  {
+                    "json": {
+                      "id": "1a01d1db9f57aea7",
+                      "threadId": "1a01d1db9f57aea7",
+                      "labelIds": [
+                        "UNREAD",
+                        "SENT",
+                        "INBOX"
+                      ]
+                    },
+                    "pairedItem": {
+                      "item": 0
+                    }
+                  }
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      "lastNodeExecuted": "Send Ops Missed-Run Email"
+    },
+    "executionData": {
+      "contextData": {},
+      "nodeExecutionStack": [],
+      "metadata": {},
+      "waitingExecution": {},
+      "waitingExecutionSource": {},
+      "runtimeData": {
+        "version": 1,
+        "establishedAt": 1787194880431,
+        "source": "cli",
+        "redaction": {
+          "version": 1,
+          "policy": "none"
+        },
+        "triggerNode": {
+          "name": "Manual Trigger",
+          "type": "n8n-nodes-base.manualTrigger"
+        }
+      }
+    },
+    "resumeToken": "acae74865cf35b57cc2a2314727c442c58f10334ac5555d6f5bc0191356fbc55"
+  },
+  "mode": "cli",
+  "startedAt": "2026-08-20T03:01:20.423Z",
+  "stoppedAt": "2026-08-20T03:01:22.559Z",
+  "storedAt": "db",
+  "status": "success",
+  "finished": true
+}

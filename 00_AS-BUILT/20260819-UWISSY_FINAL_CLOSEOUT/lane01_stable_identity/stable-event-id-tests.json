@@ -1,0 +1,30 @@
+{
+  "workflowPath": "00_WORKFLOWS/v03.UWI_LANE01.json",
+  "workflowName": "v03.UWI_LANE01",
+  "tests": [
+    {
+      "id": "A",
+      "name": "unchanged event",
+      "result": "PASS",
+      "event_id": "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01"
+    },
+    {
+      "id": "B",
+      "name": "same event changed page text/hash",
+      "result": "PASS",
+      "event_id": "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01"
+    },
+    {
+      "id": "C",
+      "name": "same event changed verification time",
+      "result": "PASS",
+      "event_id": "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01"
+    },
+    {
+      "id": "D",
+      "name": "distinct real-world event fixture",
+      "result": "PASS",
+      "event_id": "01_ROUTE_CONDITIONS:REDM-01:dd82df7d"
+    }
+  ]
+}

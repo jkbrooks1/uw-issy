@@ -1,0 +1,203 @@
+{
+  "name": "UWISSY DEADMAN Watchdog - system-health.json Freshness Check",
+  "nodes": [
+    {
+      "id": "trigger-schedule",
+      "name": "Schedule Trigger (04:15 / 14:15 PT)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "15 4,14 * * *"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "http-fetch-system-health",
+      "name": "Fetch System Health JSON",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        260,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "url": "https://uw-issy.biketourfrance.net/data/system-health.json",
+        "method": "GET",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 15000
+        }
+      }
+    },
+    {
+      "id": "code-evaluate-watchdog",
+      "name": "Evaluate Watchdog",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        520,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const SOURCE_URL = \"https://uw-issy.biketourfrance.net/data/system-health.json\";\nconst CYCLE_HOURS = [3, 13];\nconst ZONE = \"America/Los_Angeles\";\nconst EXPECTED_SCHEMA_VERSION = \"1.0.0\";\n\nconst item = $input.first();\nconst failedChecks = [];\nlet httpOk = true;\nlet body = null;\n\nif (item.json && item.json.error) {\n  httpOk = false;\n  failedChecks.push(\"HTTP request failed: \" + String(item.json.error));\n} else {\n  body = item.json;\n}\n\nconst nowLA = DateTime.now().setZone(ZONE);\n\nfunction lastCycleBoundary(dtLA) {\n  const candidates = [];\n  for (const dayOffset of [0, -1]) {\n    const day = dtLA.plus({ days: dayOffset }).startOf(\"day\");\n    for (const h of CYCLE_HOURS) {\n      candidates.push(day.set({ hour: h, minute: 0, second: 0, millisecond: 0 }));\n    }\n  }\n  const past = candidates.filter((c) => c <= dtLA).sort((a, b) => b.toMillis() - a.toMillis());\n  return past.length ? past[0] : null;\n}\n\nconst expectedCycle = lastCycleBoundary(nowLA);\n\nlet observedCycle = null;\nlet schemaVersion = null;\nlet releaseId = null;\nlet assembledAtLA = null;\nlet assemblyState = null;\nlet publicationState = null;\nlet failedLaneIds = [];\nlet lanes = [];\nconst laneSummary = {};\n\nif (httpOk) {\n  if (!body || typeof body !== \"object\") {\n    failedChecks.push(\"Response body is not valid JSON\");\n  } else {\n    schemaVersion = body.schemaVersion;\n    releaseId = body.releaseId;\n    assemblyState = body.assemblyState;\n    publicationState = body.publicationState;\n    failedLaneIds = Array.isArray(body.failedLaneIds) ? body.failedLaneIds : [];\n    lanes = Array.isArray(body.lanes) ? body.lanes : [];\n\n    if (!schemaVersion) {\n      failedChecks.push(\"Missing schema_version field (schemaVersion)\");\n    } else if (schemaVersion !== EXPECTED_SCHEMA_VERSION) {\n      failedChecks.push(\"Unexpected schema_version: \" + schemaVersion + \" (expected \" + EXPECTED_SCHEMA_VERSION + \")\");\n    }\n\n    if (!body.assembledAt) {\n      failedChecks.push(\"Missing assembledAt timestamp\");\n    } else {\n      const parsed = DateTime.fromISO(body.assembledAt, { setZone: true });\n      if (!parsed.isValid) {\n        failedChecks.push(\"Invalid assembledAt timestamp: \" + body.assembledAt);\n      } else {\n        assembledAtLA = parsed.setZone(ZONE);\n        observedCycle = lastCycleBoundary(assembledAtLA);\n        if (!expectedCycle || !observedCycle || observedCycle.toMillis() !== expectedCycle.toMillis()) {\n          failedChecks.push(\n            \"Release is stale for the current expected cycle (observed cycle \" +\n              (observedCycle ? observedCycle.toISO() : \"unknown\") +\n              \", expected \" +\n              (expectedCycle ? expectedCycle.toISO() : \"unknown\") +\n              \")\"\n          );\n        }\n        if (assembledAtLA > nowLA) {\n          failedChecks.push(\"assembledAt is in the future relative to watchdog check time\");\n        }\n      }\n    }\n\n    if (assemblyState !== \"ok\") {\n      failedChecks.push(\"assemblyState is not ok: \" + String(assemblyState));\n    }\n    if (publicationState !== \"published\") {\n      failedChecks.push(\"publicationState is not published: \" + String(publicationState));\n    }\n    if (failedLaneIds.length > 0) {\n      failedChecks.push(\"failedLaneIds reported by source: \" + failedLaneIds.join(\", \"));\n    }\n    if (lanes.length === 0) {\n      failedChecks.push(\"No lanes present in document\");\n    }\n\n    for (const lane of lanes) {\n      const laneId = lane.laneId || \"UNKNOWN_LANE\";\n      const ok = lane.available === true && lane.freshnessState === \"fresh\" && !failedLaneIds.includes(laneId);\n      laneSummary[laneId] = {\n        available: lane.available === true,\n        freshnessState: lane.freshnessState || null,\n        sourceState: lane.sourceState || null,\n        ok: ok\n      };\n      if (!ok) {\n        failedChecks.push(\n          \"Lane \" + laneId + \" not fresh/complete for current cycle (available=\" + lane.available + \", freshnessState=\" + lane.freshnessState + \")\"\n        );\n      }\n    }\n  }\n}\n\nconst watchdogStatus = failedChecks.length === 0 ? \"PASSED\" : \"FAILED\";\n\nconst result = {\n  watchdog_status: watchdogStatus,\n  checked_at: DateTime.now().toUTC().toISO(),\n  source_url: SOURCE_URL,\n  expected_cycle: expectedCycle ? expectedCycle.toISO() : null,\n  observed_cycle: observedCycle ? observedCycle.toISO() : null,\n  system_result: watchdogStatus === \"PASSED\" ? \"PASSED\" : \"FAILED\",\n  release_id: releaseId,\n  schema_version: schemaVersion,\n  assembly_state: assemblyState,\n  publication_state: publicationState,\n  failed_checks: failedChecks,\n  lane_summary: laneSummary,\n  note:\n    \"Watchdog checks system-health.json (the real published document) as the freshness/completion proxy. monitor-status.json referenced in the original task spec does not exist at the UWISSY public site as of 2026-08-20; required-lane list is the lane set present in the document, not an externally defined list.\"\n};\n\nreturn [{ json: result }];\n"
+      }
+    },
+    {
+      "id": "if-watchdog-passed",
+      "name": "Watchdog Passed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        780,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-passed",
+              "leftValue": "={{ $json.watchdog_status }}",
+              "rightValue": "PASSED",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "set-heartbeat-ok",
+      "name": "Heartbeat OK",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1040,
+        -120
+      ],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "id": "heartbeat-status",
+              "name": "heartbeat_status",
+              "type": "string",
+              "value": "OK - production chain verified fresh for expected cycle"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "set-alert-failed",
+      "name": "ALERT - Watchdog Failed",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1040,
+        120
+      ],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "id": "alert-status",
+              "name": "alert_status",
+              "type": "string",
+              "value": "UNSENT_NO_DESTINATION_CONFIGURED"
+            },
+            {
+              "id": "alert-note",
+              "name": "alert_note",
+              "type": "string",
+              "value": "No notification credential (email/Slack/webhook) is configured on this OVH n8n instance for this workflow. This node produces a labeled, machine-readable failure record only. Configure an alert destination and add a send step here to enable outbound alerting."
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger (04:15 / 14:15 PT)": {
+      "main": [
+        [
+          {
+            "node": "Fetch System Health JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch System Health JSON": {
+      "main": [
+        [
+          {
+            "node": "Evaluate Watchdog",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluate Watchdog": {
+      "main": [
+        [
+          {
+            "node": "Watchdog Passed?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Watchdog Passed?": {
+      "main": [
+        [
+          {
+            "node": "Heartbeat OK",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "ALERT - Watchdog Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Los_Angeles"
+  }
+}

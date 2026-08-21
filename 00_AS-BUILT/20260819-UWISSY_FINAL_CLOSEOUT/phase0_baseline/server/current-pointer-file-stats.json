@@ -1,0 +1,137 @@
+[
+  {
+    "path": "/files/uw-issy-connectors/alerts/last_alerted_state.json",
+    "size": 4476,
+    "mtime": "2026-08-03T18:30:18.167Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/candidate/02_WEATHER/current.json",
+    "size": 19075,
+    "mtime": "2026-08-20T02:00:54.700Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/health/01_ROUTE_CONDITIONS/status.json",
+    "size": 8580,
+    "mtime": "2026-08-20T02:35:30.840Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/health/02_WEATHER/status.json",
+    "size": 1327,
+    "mtime": "2026-08-20T02:00:54.748Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/health/03_AIR_QUALITY/status.json",
+    "size": 8004,
+    "mtime": "2026-08-20T02:01:00.324Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/health/04_WILDFIRE/status.json",
+    "size": 4247,
+    "mtime": "2026-08-19T07:00:23.748Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/health/05_FLOOD_CONDITIONS/status.json",
+    "size": 12644,
+    "mtime": "2026-08-19T07:02:34.106Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/health/06_TRAIL_INFRASTRUCTURE_STATUS/status.json",
+    "size": 5897,
+    "mtime": "2026-08-19T07:05:26.063Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/health/07_GOVERNMENT_SAFETY_ALERTS/status.json",
+    "size": 5304,
+    "mtime": "2026-08-19T07:00:13.539Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/health/08_ROUTE_FACILITIES/status.json",
+    "size": 1692,
+    "mtime": "2026-08-19T04:14:56.937Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/last_known_good/01_ROUTE_CONDITIONS/current.json",
+    "size": 14308,
+    "mtime": "2026-08-20T02:35:30.837Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/last_known_good/02_WEATHER/current.json",
+    "size": 19095,
+    "mtime": "2026-08-20T02:00:54.744Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/last_known_good/03_AIR_QUALITY/current.json",
+    "size": 14272,
+    "mtime": "2026-08-20T02:01:00.319Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/last_known_good/04_WILDFIRE/current.json",
+    "size": 8332,
+    "mtime": "2026-08-19T07:00:23.746Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/last_known_good/05_FLOOD_CONDITIONS/current.json",
+    "size": 32122,
+    "mtime": "2026-08-19T07:02:34.104Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/last_known_good/06_TRAIL_INFRASTRUCTURE_STATUS/current.json",
+    "size": 23838,
+    "mtime": "2026-08-19T07:05:26.061Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/last_known_good/07_GOVERNMENT_SAFETY_ALERTS/current.json",
+    "size": 93030,
+    "mtime": "2026-08-19T07:00:13.534Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/last_known_good/08_ROUTE_FACILITIES/current.json",
+    "size": 41040,
+    "mtime": "2026-08-19T04:14:56.934Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/public/status.json",
+    "size": 16777,
+    "mtime": "2026-08-03T18:30:33.176Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/published/01_ROUTE_CONDITIONS/current.json",
+    "size": 183,
+    "mtime": "2026-08-20T02:35:30.836Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/published/02_WEATHER/current.json",
+    "size": 156,
+    "mtime": "2026-08-20T02:00:54.743Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/published/03_AIR_QUALITY/current.json",
+    "size": 168,
+    "mtime": "2026-08-20T02:01:00.317Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/published/04_WILDFIRE/current.json",
+    "size": 167,
+    "mtime": "2026-08-19T07:00:23.745Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/published/05_FLOOD_CONDITIONS/current.json",
+    "size": 183,
+    "mtime": "2026-08-19T07:02:34.103Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/published/06_TRAIL_INFRASTRUCTURE_STATUS/current.json",
+    "size": 23838,
+    "mtime": "2026-08-19T07:05:26.061Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/published/07_GOVERNMENT_SAFETY_ALERTS/current.json",
+    "size": 207,
+    "mtime": "2026-08-19T07:00:13.533Z"
+  },
+  {
+    "path": "/files/uw-issy-connectors/published/08_ROUTE_FACILITIES/current.json",
+    "size": 183,
+    "mtime": "2026-08-19T04:14:56.934Z"
+  }
+]

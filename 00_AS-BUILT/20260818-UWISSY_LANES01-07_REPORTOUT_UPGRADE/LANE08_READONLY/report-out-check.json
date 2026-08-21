@@ -1,0 +1,8 @@
+{
+  "id": "uwIssy08RouteFacilities",
+  "name": "v01.UWI_LANE08",
+  "active": false,
+  "node_count": 24,
+  "has_final_status_report": true,
+  "final_status_report_type": "n8n-nodes-base.code"
+}

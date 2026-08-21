@@ -1,0 +1,26 @@
+{
+  "hasResult": true,
+  "nodeRuns": 35
+}
+{
+  "run_id": "04_WILDFIRE-20260819T055323Z-001",
+  "status": "DEGRADED",
+  "data_status": "degraded",
+  "candidate_written": true,
+  "published_written": true,
+  "quarantine_written": false,
+  "validation_log_written": true,
+  "status_written": true,
+  "handoff_written": true,
+  "execution_evidence_written": true,
+  "artifact_count_written": 8,
+  "event_count": 0,
+  "source_count": 5,
+  "failed_source_count": 2,
+  "using_last_known_good": false,
+  "wildfire_event_count": 0,
+  "smoke_event_count": 0,
+  "observation_count": 0,
+  "published_path": "/files/uw-issy-connectors/published/04_WILDFIRE/04_WILDFIRE_published_20260819T055323Z.json",
+  "timestamp": "2026-08-19T05:53:23.672Z"
+}

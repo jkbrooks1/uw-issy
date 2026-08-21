@@ -1,0 +1,78 @@
+{
+  "run_id": "03_AIR_QUALITY-20260819T054427Z-001",
+  "connector_id": "03_AIR_QUALITY",
+  "lane": "03_AIR_QUALITY",
+  "generated_at": "2026-08-19T05:44:27.151Z",
+  "published_at": "2026-08-19T05:44:38.060Z",
+  "published_artifact": "/files/uw-issy-connectors/published/03_AIR_QUALITY/03_AIR_QUALITY_published_20260819T054427Z.json",
+  "status": "degraded",
+  "ready_for_workflow_08": true,
+  "source_ids_used": [
+    "03_AIR_QUALITY:ECO-01",
+    "03_AIR_QUALITY:ECO-02",
+    "03_AIR_QUALITY:PSCAA-02",
+    "03_AIR_QUALITY:AIRNOW-02",
+    "03_AIR_QUALITY:WASMOKE-01",
+    "03_AIR_QUALITY:NWS-AQ-01",
+    "03_AIR_QUALITY:PSCAA-01",
+    "03_AIR_QUALITY:AIRNOW-01"
+  ],
+  "route_sections": [
+    {
+      "route_section_id": "aqp1_seattle",
+      "route_section_name": "UW / Burke-Gilman west-north Seattle",
+      "status": "unknown",
+      "severity": "unknown",
+      "aqi_value": null,
+      "aqi_category": null,
+      "primary_monitor_source_id": null,
+      "primary_monitor_record_id": null,
+      "wildfire_smoke_related": false,
+      "formal_alert_active": false,
+      "forecast_category_worst": null,
+      "updated_at": "2026-08-19T05:44:27.151Z"
+    },
+    {
+      "route_section_id": "aqp2_lake_forest_park",
+      "route_section_name": "Lake Forest Park / Kenmore / Bothell handoff",
+      "status": "unknown",
+      "severity": "unknown",
+      "aqi_value": null,
+      "aqi_category": null,
+      "primary_monitor_source_id": null,
+      "primary_monitor_record_id": null,
+      "wildfire_smoke_related": false,
+      "formal_alert_active": false,
+      "forecast_category_worst": null,
+      "updated_at": "2026-08-19T05:44:27.151Z"
+    },
+    {
+      "route_section_id": "aqp3_bellevue",
+      "route_section_name": "Woodinville / Redmond / Marymoor / north Sammamish",
+      "status": "forecast",
+      "severity": "unhealthy",
+      "aqi_value": null,
+      "aqi_category": null,
+      "primary_monitor_source_id": null,
+      "primary_monitor_record_id": null,
+      "wildfire_smoke_related": true,
+      "formal_alert_active": false,
+      "forecast_category_worst": "Contextual smoke report",
+      "updated_at": "2026-08-19T05:44:27.151Z"
+    },
+    {
+      "route_section_id": "aqp4_issaquah",
+      "route_section_name": "South Sammamish / Issaquah",
+      "status": "forecast",
+      "severity": "unhealthy",
+      "aqi_value": null,
+      "aqi_category": null,
+      "primary_monitor_source_id": null,
+      "primary_monitor_record_id": null,
+      "wildfire_smoke_related": true,
+      "formal_alert_active": false,
+      "forecast_category_worst": "Contextual smoke report",
+      "updated_at": "2026-08-19T05:44:27.151Z"
+    }
+  ]
+}

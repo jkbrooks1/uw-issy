@@ -1,0 +1,6 @@
+{"source_id":"01_ROUTE_CONDITIONS:KC-03","run_id":"01_ROUTE_CONDITIONS-20260819T052056Z-001","stage":"source_normalize","check":"source_health","result":"pass","message":"ok / 1 record(s)","timestamp":"2026-08-19T05:20:56.397Z"}
+{"source_id":"01_ROUTE_CONDITIONS:REDM-01","run_id":"01_ROUTE_CONDITIONS-20260819T052056Z-001","stage":"source_normalize","check":"source_health","result":"fail","message":"failed / 0 record(s)","timestamp":"2026-08-19T05:20:56.397Z"}
+{"source_id":"01_ROUTE_CONDITIONS:ISS-03","run_id":"01_ROUTE_CONDITIONS-20260819T052056Z-001","stage":"source_normalize","check":"source_health","result":"fail","message":"failed / 0 record(s)","timestamp":"2026-08-19T05:20:56.397Z"}
+{"source_id":"01_ROUTE_CONDITIONS:ISS-01","run_id":"01_ROUTE_CONDITIONS-20260819T052056Z-001","stage":"source_normalize","check":"source_health","result":"fail","message":"failed / 0 record(s)","timestamp":"2026-08-19T05:20:56.397Z"}
+{"source_id":"CONNECTOR","run_id":"01_ROUTE_CONDITIONS-20260819T052056Z-001","stage":"validation","check":"candidate_schema","result":"pass","message":"Candidate passed validation.","timestamp":"2026-08-19T05:20:56.397Z"}
+{"source_id":"CONNECTOR","run_id":"01_ROUTE_CONDITIONS-20260819T052056Z-001","stage":"publish_gate","check":"promotion","result":"pass","message":"Candidate promoted to published.","timestamp":"2026-08-19T05:21:58.114Z"}

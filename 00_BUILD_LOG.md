@@ -438,3 +438,277 @@ Connector 01 has been built, imported, live-executed, debugged from real executi
 - Workflow result: success
 - Deploy URL: https://26ab0728.uw-issy.pages.dev
 - Run: https://github.com/jkbrooks1/uw-issy/actions/runs/30832339424
+
+## 2026-08-03 (Ringer orchestrator) — Reconciliation round: independent validation of concurrent work, no repo changes made
+
+**Scope:** the whole-job Ringer dashboard build in this session hit a hard, deliberate global deny rule (`npm install`, `rm`, `mv`, `docker` all denied for every Claude Code process on this machine, including headless workers — deny rules override every bypass/permission-mode flag by design) partway through its first foundation round, which failed cleanly without writing any file to this repo. While diagnosing that, discovered a second, separate, concurrently running Claude Code Ringer-orchestrator session (a different prompt: "UW-ISSY ROUTE MONITOR — RECOVERY, IMPORT, LIVE QUALIFICATION, AND CLOSEOUT") had, in parallel, already built, tested, and deployed the same dashboard this session was tasked with. Per project-owner instruction, treated that as expected concurrent authorized work, did not revert/discard/reset anything, and independently re-validated the current shared repo state instead of trusting commit messages or CI's own PASS claim.
+
+**Confirmed no active Ringer process and no orphaned files from this session's failed round**: no `ringer.py run` process running (only the dashboard `hud` server and the two orchestrator sessions); the failed foundation task's own state file shows `status: finished`, `verdict: FAIL`; `git status` shows nothing untracked or modified attributable to it — its `npm install`/`rm` attempts were denied before any file was written.
+
+**Independently re-ran the real pipeline against the current repo, not just read CI's claim:**
+- `node scripts/validate-route-source.mjs data/route/UnivWA-Issaquah.gpx` — PASS (1470 points, real bounds).
+- Re-ran `convert-route-gpx-to-geojson.mjs` into a scratch dir and diffed against the tracked `public/routes/UnivWA-Issaquah.geojson` — byte-identical, confirming the conversion is genuinely deterministic.
+- `validate-route-geojson.mjs` on the tracked file — PASS.
+- Re-ran `build-public-package-snapshot.mjs` against the same real evidence file this session originally pulled and checked in (`data/connectors/evidence/workflow08-status-snapshot-20260802T162329Z.json`) into a scratch dir and diffed against tracked `public/data/*` — all four files byte-identical. The rebuilt package's own log output shows a real, documented noise-reduction/route-relevance policy (11 of 12 candidate events correctly excluded with a named reason each, e.g. `flood_below_major`, `no_route_impact`; nothing invented — matches buildspec 11.4's "log the gap, don't guess" rule).
+- `validate-public-package.mjs` on tracked `public/data` — PASS.
+- `npm test` — 95/95 tests pass across 6 files (route pipeline, public-package build/validate, noise-reduction policy, presentation eligibility, dashboard layout).
+- `npm run typecheck` — clean.
+- `npm run build` (astro) — succeeds; all CI-required built assets present (`dist/index.html`, route GeoJSON, all four data files, hashed `RouteMap` JS/CSS bundles).
+- `scripts/check-public-output-for-secrets.mjs dist` — PASS, no secret-like content.
+- Confirmed with `gh run list`: latest push (commit `4973fac`) has a real green Actions run (30832339424, 38s). Confirmed the actual production site independently, not just the Actions log: `https://uw-issy.pages.dev/` and all 5 public asset URLs (route GeoJSON + 4 data files) return real HTTP 200, and the live `release-manifest.json`'s `releaseId` matches the evidence snapshot's real `run_id`.
+- Spot-checked `SiteHeader.astro` against buildspec section 14: logo/email/main-site only, correct accessible names, plain anchor tags (works without JS) — compliant.
+
+**Real gaps found, not fixed (narrow-change instruction — leaving these for the owning session or a future scoped round):**
+- `release-manifest.json`'s `sourceGitCommit`, `buildState`, `deployState`, `productionProofState` are all `null`/`"unknown"` in the live file, and `laneRunIds` are all `null` — buildspec section 9.4 calls for these when available; the CI workflow doesn't currently patch them in post-build/post-deploy.
+- No dedicated accessibility test exists yet (only `tests/ui/dashboard-layout.test.ts`) — buildspec section 26/35.4's WCAG AA, keyboard-flow, focus, 44px-target, and 200%-zoom requirements are unverified by any automated check. A green CI run does not cover this.
+- Responsive testing across the five required breakpoints (1280/1024/768/390/320) and the six required real browsers (section 27/35.5) is likewise unverified by CI.
+
+**Result:** the concurrent session's work is real, independently re-provable end to end (route pipeline, public package, tests, typecheck, build, live production), and consistent with the buildspec everywhere checked. No repo file was changed, committed, or pushed by this session during this reconciliation round. `071f506` (current local `HEAD`) is 1 commit ahead of `origin/main`, not yet pushed, and touches only connector/workflow docs (not the dashboard) — left untouched as in-progress work belonging to the other session. `00_PROJECT_BUILDLOG.md` was left unmodified for the same reason (shown as currently modified in the working tree, presumably by that session).
+
+**Next safe step:** none required from this session right now. If asked to continue, the smallest safe next contribution would be the two named gaps above (release-manifest provenance fields, and an accessibility test pass) rather than re-attempting the original from-scratch plan.
+
+## 2026-08-04 00:13–00:23 UTC (Ringer orchestrator) — Lane 08 "Route Facilities" live qualification: PASS
+
+**Scope:** requested Lane-08-only validation round, per explicit instruction not to touch the dashboard, accessibility/responsive/browser tests, release-manifest provenance, or git (no commit/push/merge/reset/clean). All uncommitted Lane 08 and build-log work from the prior (now-closed) session was preserved throughout.
+
+**Files read:** `00_CONNECTORS/00_SHARED_AUTONOMOUS_CONNECTOR_BUILD_STANDARD.md` (the actually-binding v1 standard — confirmed the parallel `00_DOCS/00_SHARED_AUTONOMOUS_CONNECTOR_BUILD_STANDARD_v2.md` is a deliberately non-replacing draft from a separate session, not what lanes 01–07 were built against, so v1 was used as ground truth); `00_CONNECTORS/08_ROUTE_FACILITIES/08_ROUTE_FACILITIES_v1.json` in full, node by node; `00_CONNECTORS/08_ROUTE_FACILITIES/scripts/generate_route_facilities_workflow.py` (the JSON's source of truth); `scripts/validate-n8n-workflow.mjs`; `00_WORKFLOWS/v0001.05_FLOOD_CONDITIONSConnector.n8n.workflow.json` (used as a proven-lane comparison baseline); relevant `00_PROJECT_BUILDLOG.md` entries on Lane 08 research/authorization and on lanes 01/05's own historical live-execution bugs (directory-precreation, Task Broker port collision, LKG binary-storage-mode parsing).
+
+**1. Authorization/scope check — confirmed, no defect:** Lane 08 is explicitly reserved and correctly scoped in the binding standard §2.3 ("`08` reserved for `08_ROUTE_FACILITIES`", `lane_08_route_facilities` in the required tag vocabulary). Workflow name (`v0001.08_RouteFacilitiesConnector`), exported filename, `no_direct_deploy`/`connector`/`uw_issy`/`lane_08_route_facilities` tags, `active: false`, and the `08_ROUTE_FACILITIES:<local_id>` source namespacing all match the standard exactly.
+
+**2. Backup before any change:** `00_CONNECTORS/08_ROUTE_FACILITIES/08_ROUTE_FACILITIES_v1.json` copied to `/Users/jkbrookspersonal/00_SCRIPTS/20260804T001335Z_backup_08_ROUTE_FACILITIES_v1.json` (sha256 `ee96c308...` — verified identical to the pre-change working file) before any inspection that could lead to a change.
+
+**3. Static checks run (not treated as sufficient alone):** `node scripts/validate-n8n-workflow.mjs 00_CONNECTORS/08_ROUTE_FACILITIES/08_ROUTE_FACILITIES_v1.json 08_ROUTE_FACILITIES` — PASS both before and after the fix below. Both JSON copies (`00_CONNECTORS/...` and `00_WORKFLOWS/...`) confirmed byte-identical to each other throughout.
+
+**4. Node-by-node logic review (24 nodes), focused on the requested risk list:**
+- **Fetch failures mislabeled as valid/empty:** not found — `source_health.status = liveFailed ? 'failed' : (features.length ? 'ok' : 'empty_but_valid')` in both Normalize nodes correctly distinguishes failure from genuine empty, matches standard §9.2 exactly.
+- **Partial-source failure handling:** correct — `Build Candidate Artifact`'s `data_status` chain (`failed_validation` → `failed_fetch` (all sources failed) → `no_relevant_events` → `degraded` (any failed/LKG) → `ok`) is properly prioritized.
+- **Stale data handling / LKG fallback:** initially looked broken — `Parse Last Known Good` has an empty outgoing connection array in the node graph — but confirmed this is **not a defect**: it still executes (reachable via `Read Last Known Good`, which correctly has `alwaysOutputData: true`, avoiding the exact historical zero-item bug documented for lanes 01–07), and both Normalize nodes correctly pull its output via `$('Parse Last Known Good')` name-reference rather than a direct graph edge — the same pattern already used for `Initialize Run Metadata`. Verified live (see §7 below): per-facility LKG fallback is real and correctly labeled.
+- **Output path consistency:** verified every `output_root`/`outputRoot`-prefixed path in the generator script against the standard's §3.1 runtime layout — all consistent. **Real gap found and fixed at the infrastructure level (not a Lane 08 code defect):** the lane's output directory tree (`raw/08_ROUTE_FACILITIES/landings`, `normalized/`, `candidate/`, `published/`, `last_known_good/08_ROUTE_FACILITIES/archive`, `health/`, `logs/`, `handoff/`, `manifests/`) had never been created on the Hetzner host — identical to the documented lane-01 first-run issue (n8n's native file-write node does not create parent directories). Created via `docker exec n8n mkdir -p ...` for all 9 paths actually referenced by the workflow; confirmed present with `find`.
+- **Event normalization:** correct and deliberate — facilities are always written to `observations[]`, never `events[]`, per an explicit in-code rule ("Facilities are never emitted as events[] ... per the hard project rule that restroom/facility status must never be represented as a route-alert class").
+- **Duplicate events — real defect found and fixed:** `Deduplicate Observations`'s `dedup_valid` field was hardcoded `true` regardless of whether `duplicateObservations` was actually non-empty. Fixed at the source of truth (`generate_route_facilities_workflow.py:550`, the code the JSON is generated from) to `dedup_valid: duplicateObservations.length === 0`; regenerated both JSON copies; diffed against the pre-fix backup and confirmed **exactly one line changed**, everything else byte-identical; both copies re-confirmed identical to each other; structural validator re-run and still PASS.
+- **Malformed/missing coordinates:** `Validate Candidate Envelope` explicitly type-checks `details.coordinates.{latitude,longitude}` as numbers and rejects otherwise — correct.
+- **False healthy status:** not found in static review; independently proven false via a live-code failure-injection harness (§9 below).
+- **File-write ordering / atomic publish:** `Build Final Artifact Bundle`'s write order (published → published-pointer → LKG-current → LKG-archive → status → status-archive → validation-log → execution-evidence → handoff) matches the standard §10's required sequence. Publication is only ever written when `Publish Gate Decision.should_publish` is true (gated on schema validation, not a literal write-temp-then-rename) — this is the same "atomicity" pattern already established and accepted for the proven lanes (verified against lane 01's own documented description), not a new/weaker pattern introduced by Lane 08.
+
+**Findings documented but deliberately not changed this round (judgment calls / system-wide pre-existing patterns, out of this round's narrow scope):**
+- `Publish Gate Decision` does not itself gate on `allFailed` (total source failure) the way standard §9.3's literal wording implies ("must fail publication... instead"); in practice this lane still publishes a correctly-labeled `data_status: 'failed_fetch'` envelope carrying genuine per-facility LKG data rather than silently reusing the old `published/current.json` unchanged. Not clearly wrong (never mislabels state), but a real design question worth the project owner's own review rather than a unilateral change.
+- `http_status` is `null` in every source-health record even on a fully successful fetch (156 and 47 real records returned) — root cause: the two `httpRequest` nodes don't set the `fullResponse` option, so n8n returns the bare parsed body with no `.statusCode`. Confirmed this exact pattern (empty `options: {}`) also exists in the already-proven `v0001.05_FLOOD_CONDITIONSConnector.n8n.workflow.json` — a pre-existing, system-wide characteristic, not a Lane-08-specific regression, so left unchanged per the "fix only Lane 08 defects" scope.
+- `execution_id`/`workflow_internal_id` are hardcoded `"pending_n8n_execution_id"`/`"pending_n8n_id"` placeholders, never populated from n8n's own `$execution.id`/`$workflow.id`. Confirmed the identical placeholder pattern exists in lane 05's proven workflow too — same call: pre-existing, not fixed here.
+- No standalone `connector-manifest.json` is written by this or any other lane's workflow (only the small `manifest_ref` object inside the envelope); consistent with all proven lanes, not a new gap.
+
+**5. Import into live n8n:** confirmed via fresh `n8n list:workflow` that no workflow with this id (`uwIssy08RouteFacilities`) or a matching name existed yet, so import was safe as a new workflow, not an overwrite. Copied via `scp` to the Hetzner host then `docker cp` into the `n8n` container, then `docker exec n8n n8n import:workflow --input=/tmp/08_ROUTE_FACILITIES_v1.json` — "Successfully imported 1 workflow." Verified via a fresh `n8n export:workflow --id=uwIssy08RouteFacilities` read back from the live API (not the CLI's own claim): `active: false`, 24 nodes, correct name.
+
+**6. Live execution via n8n CLI:**
+- First attempt failed, exit 1: `n8n Task Broker's port 5679 is already in use` — the same known, previously-documented collision with the main server's own task broker in the shared container. Worked around exactly as before with `docker exec -e N8N_RUNNERS_BROKER_PORT=5680`, no persistent container/compose config touched.
+- Second attempt failed, exit 1, with a real stack trace: `NodeApiError: The file or directory does not exist` at `ReadWriteFile/actions/write.operation.ts`, on `Write SEA-01 Raw Landing` writing to `/files/uw-issy-connectors/raw/08_ROUTE_FACILITIES/landings/...` — root-caused and fixed per §4 above (directory tree never created).
+- Third attempt: **exit 0.** `run_id: 08_ROUTE_FACILITIES-20260804T002302Z-001`, `startedAt: 2026-08-04T00:23:01.892Z`, `stoppedAt: 2026-08-04T00:23:04.408Z`, `status: "success"`, `finished: true`, `lastNodeExecuted: "Final Status Report"`. Final Status Report's own payload: `status: "PASSED"`, `published_written: true`, `quarantine_written: false`, `artifact_count_written: 9`, `publish_tier_count: 17`, `exception_review_tier_count: 3`.
+- **Execution ID limitation (disclosed, not new):** the CLI's `--rawOutput` JSON exposes no numeric execution id in its top-level fields for this run, matching the same previously-disclosed limitation recorded for the `30_ALERT_MONITOR` proof run; a direct Postgres query was deliberately not performed to avoid further credential handling, consistent with that same prior decision.
+- **Inactive-state proof, both sides of the run:** `active: false` confirmed via live API/CLI export immediately after import (pre-execution) and again immediately after the successful execution (post-execution). No schedule, trigger, or webhook was ever activated.
+
+**7. Host-side file readback (12 files, all read directly from the container, not inferred from the execution's own self-report):**
+`raw/08_ROUTE_FACILITIES/landings/{SEA-01,KC-01}_landing_20260804T002302Z.json`, `normalized/.../08_ROUTE_FACILITIES_normalized_output_20260804T002302Z.json`, `candidate/.../08_ROUTE_FACILITIES_candidate_20260804T002302Z.json`, `published/.../{current.json, 08_ROUTE_FACILITIES_published_20260804T002302Z.json}`, `last_known_good/.../{current.json, archive/20260804T002302Z.json}`, `health/.../{status.json, status_20260804T002302Z.json, execution_evidence_20260804T002302Z.json}`, `logs/.../validation_log_20260804T002302Z.jsonl`, `handoff/.../08_ROUTE_FACILITIES_handoff_20260804T002302Z.json` — all present, all real content, all cross-referencing the same `run_id` and the same content hash (`hash_6be8adea`) across published/published-pointer/LKG-current/LKG-archive, confirming a consistent single-release write.
+
+**8. Data inspected, not just presence:** real live results — SEA-01 (Seattle Parks GIS FeatureServer) returned 156 real records, all 15 configured SEA-01 facilities matched within 120m (zero warnings); KC-01 (King County GIS) returned 47 real records, 10 of 15 configured KC-01 facilities matched (5 unmatched, including the structurally-expected Sixty Acres Park fallback-coordinate case, correctly fell back to `status_unknown` since no prior LKG existed yet on this first-ever run — not silently reported as open). `data_status: "ok"`, `freshness.overall_state: "fresh"`, `connector_health.used_last_known_good: false` (accurately reflects this run's real all-live-or-status_unknown outcome). 20 observations total (17 publish-tier + 3 exception-review-tier, matching `Final Status Report`'s own counts exactly). Zero `events[]`, by design. `route_sections` rollup correctly reflects per-section facility presence and tier.
+
+**9. Fetch-failure handling proven, no live external system touched:** built a local harness (`node`) that extracts the *actual deployed* `Normalize SEA-01 Facility Matches` code straight out of the live-imported workflow JSON (not a reimplementation) and runs it under a mocked `$()`/`$input` context with a simulated live fetch failure. Three cases run: (1) fetch fails, no LKG yet → `source_health.status: "failed"`, observation falls back to `"status_unknown"`, `used_last_known_good: false`; (2) fetch fails, valid LKG exists → `source_health.status: "failed"` (never disguised as healthy), observation correctly serves the cached `"open"` status with `used_last_known_good: true`; (3) control case, live fetch succeeds → `source_health.status: "ok"`, real live status served. All three assertions passed: **a fetch error can never be published as a false healthy or `empty_but_valid` state**, and the failure path doesn't over-trigger on genuine success.
+
+**10. Fix-and-reverify loop:** one real Lane 08 defect found (`dedup_valid` hardcoded true) → fixed at the generator source → both JSON copies regenerated and confirmed byte-identical to each other and minimally diffed against the backup → structural validator re-run, PASS → proceeded to live import/execution, which also passed. No second defect was found after the fix, so the loop closed after one round.
+
+**Commands run (chronological):** `cp` (backup) · `node scripts/validate-n8n-workflow.mjs` (x2) · edit to `generate_route_facilities_workflow.py` · `python3 00_CONNECTORS/08_ROUTE_FACILITIES/scripts/generate_route_facilities_workflow.py` · `diff` (backup vs regenerated, and canonical-copy cross-check) · `ssh hetzner "docker exec n8n n8n list:workflow"` (x2) · `scp` + `ssh ... docker cp` · `ssh ... docker exec n8n n8n import:workflow` · `ssh ... docker exec n8n n8n export:workflow` (x2, pre/post) · `ssh ... docker exec n8n n8n execute --id=uwIssy08RouteFacilities --rawOutput` (x3, 2 real failures diagnosed and fixed, 1 real success) · `ssh ... mkdir -p` (x9 directories) · `ssh ... find`/`cat` (host-side readback of all 12 files) · local `node` harness (3-case failure-injection proof).
+
+**n8n workflow ID:** `uwIssy08RouteFacilities`. **Run ID:** `08_ROUTE_FACILITIES-20260804T002302Z-001`. **Execution ID:** not exposed by the CLI's rawOutput for this run (disclosed limitation, not unique to this round).
+
+**Defects found and fixed:** 1 (`dedup_valid` hardcoded true → now reflects real dedup outcome), narrowly scoped to the one affected node, generator-sourced, re-verified.
+
+**Remaining blockers:** none for live qualification itself. Three documented, non-blocking findings carried forward for a future round or the project owner's own decision (§4 above): `Publish Gate Decision`'s `allFailed` handling, `http_status` always null, `execution_id`/`workflow_internal_id` placeholders — all three are pre-existing system-wide patterns shared with already-proven lanes, not new Lane 08 regressions, and none caused this round's live execution to misreport health, hide a failure, or publish false data.
+
+**Exact git status at close:**
+```
+ M 00_BUILD_LOG.md
+ M 00_PROJECT_BUILDLOG.md
+ M scripts/validate-n8n-workflow.mjs
+?? 00_CONNECTORS/08_ROUTE_FACILITIES/
+?? 00_WORKFLOWS/v0001.08_ROUTE_FACILITIESConnector.n8n.workflow.json
+?? scripts/compute-facility-route-distances.py
+```
+No commit, push, merge, reset, or working-tree clean was performed. All pre-existing uncommitted work (including the other session's `00_PROJECT_BUILDLOG.md` edits and `validate-n8n-workflow.mjs` change) is untouched and preserved exactly as found, plus this round's own regenerated `08_ROUTE_FACILITIES_v1.json`/`v0001.08_ROUTE_FACILITIESConnector.n8n.workflow.json` (one-line fix) and this build-log entry.
+
+**Outcome: `PASS — Lane 08 live-qualified`**
+
+## 2026-08-18 20:58:47 PDT — ChatGPT status-review export
+
+- Action: Generated read-only UW-Issy Lane 01–08 / connector / release / proof review pack and copied it to clipboard.
+- Repo root: `/Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor`
+- Build log used: `/Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/00_BUILD_LOG.md`
+- Git HEAD: `071f506`
+- No source files, workflow files, commits, pushes, deployments, or live services were changed by this command.
+
+## 2026-08-18 21:41 PDT / 2026-08-19 04:41 UTC — UWISSY n8n workflow folder move
+
+- Scope: existing UW-Issy Route Monitor n8n workflows only. No workflow logic, credentials, schedules, tags, executions, site deployment, Cloudflare state, commits, or pushes were changed.
+- n8n instance: `https://n8n.biketourfrance.net`, accessed through SSH alias `hetzner`; n8n container `n8n`; database container `n8n-db`; n8n version `2.22.6`.
+- Target folder: existing n8n folder `UWISSY`, folder id `LaS9Q6sil9yCDzrV`, under project id `Y0Ygmqe59jevHoeV` (`John Brooks <john@biketourfrance.net>`), parent folder `Route_Status_Seven_Connectors`.
+- Supported-method check: n8n CLI in this instance has no workflow project/folder reassignment command. Schema verified before update: project membership is in `shared_workflow."projectId"` and folder membership is in `workflow_entity."parentFolderId"`. All ten proven current workflows were already in the same project; only folder assignment needed changing.
+- Database backup before direct DB update: full host-side `pg_dump -Fc` backup created on Hetzner at `/tmp/20260819T043720Z_before_uwissy_folder_move_n8n.dump`, size 431M, SHA-256 `45d3203761f6a89186b919bd07bec9f9a3390b1df3f4a047b2f1eb4d56c20fdd`.
+- Update applied: one transaction updated `workflow_entity."parentFolderId" = 'LaS9Q6sil9yCDzrV'` for exactly 10 proven current workflow IDs.
+- Moved and verified in `UWISSY`: `RR7cLSV9oGngrJdA` (`v0001.01_RouteConditionsConnector`, active, 32 nodes), `fA0ZjWH3Itl83aPC` (`v0001.02_WeatherConnector`, active, 40 nodes), `qlM2XIv2BbFSh3in` (`v0001.03_AirQualityConnector`, active, 48 nodes), `w6xnelPQeRFZk8BG` (`v0001.04_WildfireConnector`, active, 36 nodes), `4RiNqOKD9BCZFH6P` (`v0001.05_FloodConditionsConnector`, active, 56 nodes), `poGV37VLUGIUxfGK` (`v0001.06_TrailInfrastructureStatusConnector`, active, 48 nodes), `08g3JNwQPVSxUl2H` (`v0001.07_GovernmentSafetyAlertsConnector`, active, 48 nodes), `uwIssy08RouteFacilities` (`v0001.08_RouteFacilitiesConnector`, inactive, 24 nodes), `gp8WlccGwLydNWG7` (`v0001.20_StatusPublisherConnector`, inactive, 36 nodes), `KhbGg5gBn7Rbne68` (`v0001.30_AlertMonitorConnector`, inactive, 41 nodes).
+- Verification: before/after live exports validated as JSON for all 10 workflows; export comparison proved unchanged workflow names, active states, node counts, node hashes, connection hashes, settings hashes, and credential-reference hashes. Final `UWISSY` folder query returned exactly the 10 proven current workflows above.
+- Classification: no expected current workflow missing; no ambiguous workflow identity. Duplicates/staging copies remain outside `UWISSY` and were deliberately left untouched: lane 01 (`pelOd6E0sdu5mygf`, `BkZnr8GXZN44QOOP`, `1f898nUrd8fdQNbb`), lane 02 (`CvzPNlnWXrzZfYGP`), lane 03 (`qQPYZ1eUdNsAwBNM`, `qWAlsffIyfEF8OL0`, `D2jq6dJuKQmmRVUp`, `i4QexQX1yXfqjRC1`, `6mtvJsEiGNOFEngG`, `zx4ksMf1gbiw2PY7`, `B3K3UPZWDuRgdHQo`, `hCjyk3wSTSTC7N1Q`, `wi3x7NfHxpFYHBKx`, `r3boxdxGt60mx9sr`), lane 04 (`263acPaILiJmPW9m`), lane 05 (`D1Dsa02M3LAmzRfy`), lane 07 (`0h9XYSxumCdZFYwh`).
+- Proof folder: `00_AS-BUILT/20260818-UWISSY_N8N_WORKFLOW_PROJECT_MOVE/`.
+- Proof ZIP: `/Users/jkbrookspersonal/Downloads/20260818-UWISSY_N8N_WORKFLOW_PROJECT_MOVE_proof.zip`.
+- Final git status: `main...origin/main [ahead 1]`; modified pre-existing files include `00_BUILD_LOG.md`, `00_PROJECT_BUILDLOG.md`, `scripts/validate-n8n-workflow.mjs`; untracked evidence folder `00_AS-BUILT/20260818-UWISSY_N8N_WORKFLOW_PROJECT_MOVE/`; pre-existing untracked Lane 08 files remain (`00_CONNECTORS/08_ROUTE_FACILITIES/`, `00_WORKFLOWS/v0001.08_ROUTE_FACILITIESConnector.n8n.workflow.json`, `scripts/compute-facility-route-distances.py`).
+- Outcome: `PARTIAL — UW-Issy workflow organization incomplete.` Reason: every proven current UW-Issy workflow found in n8n was moved and verified in `UWISSY`, but duplicate/staging copies still exist outside `UWISSY` and were left in place per instruction.
+
+## 2026-08-18 21:56 PDT / 2026-08-19 04:56 UTC — UWISSY workflow rename to `vXX.UWI_LANEXX`
+
+- Scope: naming only, limited to the 10 proven current workflows already inside live n8n folder `UWISSY`. No workflow logic, ids, credentials, schedules, active states, tags, project/folder assignment, execution data, imports, deletes, commits, pushes, or deployments were changed.
+- n8n target folder: `UWISSY` (`LaS9Q6sil9yCDzrV`) on `https://n8n.biketourfrance.net`.
+- Before inventory proved exactly one current workflow per lane inside `UWISSY`: lane 01 `RR7cLSV9oGngrJdA`, lane 02 `fA0ZjWH3Itl83aPC`, lane 03 `qlM2XIv2BbFSh3in`, lane 04 `w6xnelPQeRFZk8BG`, lane 05 `4RiNqOKD9BCZFH6P`, lane 06 `poGV37VLUGIUxfGK`, lane 07 `08g3JNwQPVSxUl2H`, lane 08 `uwIssy08RouteFacilities`, lane 20 `gp8WlccGwLydNWG7`, lane 30 `KhbGg5gBn7Rbne68`. All were version `01` by live/local naming evidence (`v0001.*`), so no version needed preserving above `01`.
+- Backup before rename: exported all 10 live workflows and saved cleaned JSON backups under `00_AS-BUILT/20260818-UWISSY_WORKFLOW_RENAME/proof/pre_exports_clean/`. Pre-rename SHA-256 values:
+  - lane 01 `RR7cLSV9oGngrJdA` `v0001.01_RouteConditionsConnector` -> target `v01.UWI_LANE01`: `8f8aad90174aeede60b667f229cba8e39983c276c9a6ecb23be9053c82340d89`
+  - lane 02 `fA0ZjWH3Itl83aPC` `v0001.02_WeatherConnector` -> target `v01.UWI_LANE02`: `f347f9143ff1ab9f7e48c07dee8a2fd803457fd80fff09511d0b4ad02ff21596`
+  - lane 03 `qlM2XIv2BbFSh3in` `v0001.03_AirQualityConnector` -> target `v01.UWI_LANE03`: `fadc8d2cf029d58a59e14bf011a9afd81ef3f2c2aa153e662a3f98cb7d00013f`
+  - lane 04 `w6xnelPQeRFZk8BG` `v0001.04_WildfireConnector` -> target `v01.UWI_LANE04`: `53caa9223d9d455d1f6add0fef29cd97047d4fb0b9ffa2080167e36bf46947d6`
+  - lane 05 `4RiNqOKD9BCZFH6P` `v0001.05_FloodConditionsConnector` -> target `v01.UWI_LANE05`: `942dabdcf198a0c9f1955b3f4d9976a5a7e51fe59a39369fec2c3d004869b200`
+  - lane 06 `poGV37VLUGIUxfGK` `v0001.06_TrailInfrastructureStatusConnector` -> target `v01.UWI_LANE06`: `8c69dfb19e6546cfaa33f5d787bb4e67209156e63c046c46969150af661cffc6`
+  - lane 07 `08g3JNwQPVSxUl2H` `v0001.07_GovernmentSafetyAlertsConnector` -> target `v01.UWI_LANE07`: `1b24dad1dac2e6f78173a3d2bdaa3c7f552b40427624e7e45cf8bb3bae413201`
+  - lane 08 `uwIssy08RouteFacilities` `v0001.08_RouteFacilitiesConnector` -> target `v01.UWI_LANE08`: `b1e7bf1fac374437fcfd13e120d91d60066be5948b0989e63e7b4b00e0ca3414`
+  - lane 20 `gp8WlccGwLydNWG7` `v0001.20_StatusPublisherConnector` -> target `v01.UWI_LANE20`: `42deaebb1bb12942ae587b5fcd0258c3c82247d36c165d3cd5ae9dd28b86ad25`
+  - lane 30 `KhbGg5gBn7Rbne68` `v0001.30_AlertMonitorConnector` -> target `v01.UWI_LANE30`: `47efd59246145f9ab7579f6cd38d2ea1b2ecf75d9352ca6aa0c4dbfef466a14b`
+- Supported rename method check: `n8n update:workflow` on this release can only toggle `active`; it cannot rename workflows. The live rename therefore used one SQL transaction updating only `workflow_entity.name` for the 10 workflows in `UWISSY`.
+- Live rename map applied in place:
+  - `RR7cLSV9oGngrJdA`: `v0001.01_RouteConditionsConnector` -> `v01.UWI_LANE01`
+  - `fA0ZjWH3Itl83aPC`: `v0001.02_WeatherConnector` -> `v01.UWI_LANE02`
+  - `qlM2XIv2BbFSh3in`: `v0001.03_AirQualityConnector` -> `v01.UWI_LANE03`
+  - `w6xnelPQeRFZk8BG`: `v0001.04_WildfireConnector` -> `v01.UWI_LANE04`
+  - `4RiNqOKD9BCZFH6P`: `v0001.05_FloodConditionsConnector` -> `v01.UWI_LANE05`
+  - `poGV37VLUGIUxfGK`: `v0001.06_TrailInfrastructureStatusConnector` -> `v01.UWI_LANE06`
+  - `08g3JNwQPVSxUl2H`: `v0001.07_GovernmentSafetyAlertsConnector` -> `v01.UWI_LANE07`
+  - `uwIssy08RouteFacilities`: `v0001.08_RouteFacilitiesConnector` -> `v01.UWI_LANE08`
+  - `gp8WlccGwLydNWG7`: `v0001.20_StatusPublisherConnector` -> `v01.UWI_LANE20`
+  - `KhbGg5gBn7Rbne68`: `v0001.30_AlertMonitorConnector` -> `v01.UWI_LANE30`
+- Verification after rename: fresh live query of `UWISSY` returned the same 10 ids, correct new names, unchanged active states, unchanged node counts, and unchanged folder membership. Pre/post export comparison with the workflow `name` normalized out passed for all 10 workflows: logic, nodes, connections, settings, credential references, shared project metadata, and `versionCounter` were unchanged.
+- Local naming alignment: created new canonical current files under `00_WORKFLOWS/` named `v01.UWI_LANE01.json`, `v01.UWI_LANE02.json`, `v01.UWI_LANE03.json`, `v01.UWI_LANE04.json`, `v01.UWI_LANE05.json`, `v01.UWI_LANE06.json`, `v01.UWI_LANE07.json`, `v01.UWI_LANE08.json`, `v01.UWI_LANE20.json`, and `v01.UWI_LANE30.json`. Historical descriptive filenames were preserved. Each new file's internal workflow name matches the filename stem exactly.
+- Proof folder: `00_AS-BUILT/20260818-UWISSY_WORKFLOW_RENAME/`.
+- Proof ZIP: `/Users/jkbrookspersonal/Downloads/20260818-UWISSY_WORKFLOW_RENAME_proof.zip`.
+- Final git status after this task: `main...origin/main [ahead 1]`; modified files include `00_BUILD_LOG.md`, `00_PROJECT_BUILDLOG.md`, `scripts/validate-n8n-workflow.mjs`; untracked folders/files include `00_AS-BUILT/20260818-UWISSY_N8N_WORKFLOW_PROJECT_MOVE/`, `00_AS-BUILT/20260818-UWISSY_WORKFLOW_RENAME/`, `00_CONNECTORS/08_ROUTE_FACILITIES/`, `00_WORKFLOWS/v0001.08_ROUTE_FACILITIESConnector.n8n.workflow.json`, `00_WORKFLOWS/v01.UWI_LANE01.json` through `v01.UWI_LANE30.json`, and `scripts/compute-facility-route-distances.py`.
+- Outcome: `PASS — all current UWISSY workflows now use the vXX.UWI_LANEXX naming standard.`
+
+## 2026-08-19 05:22 UTC — Lane 01 report-out upgrade to `v02.UWI_LANE01`
+
+- Lane: 01 Route Conditions.
+- Workflow id: `RR7cLSV9oGngrJdA`.
+- n8n folder: `UWISSY`.
+- Old version/name: `v01.UWI_LANE01`.
+- New version/name: `v02.UWI_LANE01`.
+- Active state: preserved as `true`.
+- Baseline v01 execution: started `2026-08-19T05:12:31Z`; stalled after KC-03 and REDM-01 raw landings; one-off CLI process killed after inspection. Source diagnostics showed Issaquah ArcGIS timed out with a 20 second bounded container fetch, and Issaquah CivicAlerts returned Cloudflare 403. Root issue for v01 baseline: unbounded native HTTP Request nodes.
+- v01 backup: `00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE01/prechange-v01-live-export.json`, SHA-256 `f81275bc8b4086b0bf35f484e48e1cdf77e3549b62777935654522315053a416`.
+- v02 local canonical JSON: `00_WORKFLOWS/v02.UWI_LANE01.json`.
+- v02 live export: `00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE01/postchange-v02-live-export.json`, SHA-256 `76996be439115daf6df0b04f8dfde37b01cfe9dfc2336e55a9afdd51d1912c8e`.
+- Changes: added 30000 ms source HTTP timeouts; bumped connector version/manifest to `v0002`; renamed workflow; added execution-evidence output; replaced report-out with `PASSED`/`DEGRADED`/`FAILED` truth logic.
+- Static checks: JSON parse PASS; custom graph/report/timeout/name/active-state checks PASS; structural validator PASS against a temporary inactive copy; Lane 01 LKG fixture tests PASS 8/8 via CommonJS stdin.
+- Live update method: direct DB update of the existing workflow row plus a matching `workflow_history` row for the new `versionId`; workflow id and `UWISSY` folder preserved.
+- Final v02 execution: run id `01_ROUTE_CONDITIONS-20260819T052056Z-001`; n8n status `success`; report-out status `DEGRADED`.
+- Report-out JSON: saved to `LANE01/final-report-out.json`; `published_written=true`, `quarantine_written=false`, `execution_evidence_written=true`, `artifact_count_written=8`, `event_count=1`, `source_count=4`, `failed_source_count=3`, `using_last_known_good=false`.
+- Output proof: published pointer resolved to `/files/uw-issy-connectors/published/01_ROUTE_CONDITIONS/01_ROUTE_CONDITIONS_published_20260819T052056Z.json`; published artifact, candidate artifact, normalized output, health/status, validation log, handoff, last-known-good, and execution evidence were pulled and parsed.
+- Fault/failure truth result: final restored run itself proved failure truth. REDM-01 and ISS-03 timed out at 30000 ms, ISS-01 returned 403, and the report-out correctly returned `DEGRADED` rather than false `PASSED` or `empty_but_valid`.
+- Lane outcome: `PASS — v02.UWI_LANE01 live-qualified` with truthful degraded report-out.
+## 2026-08-18 22:39 PDT — UWISSY Lane 02 v02 report-out upgrade live-qualified
+
+- Scope: Lane 02 only; workflow `fA0ZjWH3Itl83aPC` updated in place in n8n folder `UWISSY` from `v01.UWI_LANE02` to `v02.UWI_LANE02`; active state preserved (`true`), schedule configuration not intentionally changed, workflow id preserved, node count preserved at 40.
+- Baseline: v01 live run completed successfully (`baseline_start_utc=2026-08-19T05:25:19Z`, `baseline_finish_utc=2026-08-19T05:25:36Z`, CLI exit 0) and wrote weather artifacts for run stamp `20260819T052526Z`.
+- Pre-change live export: `00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE02/prechange-v01-live-export.json`; SHA-256 `30241f28fd5dc216cb5ee3ccaa2c8624f83e52dfdb25cd7be90360908fe6445c`.
+- v02 changes: workflow name/version metadata updated to `v02.UWI_LANE02` / connector `v0002`; six NWS helper HTTP fetches bounded with 30s timeouts; final report-out expanded to PASSED/DEGRADED/FAILED truth contract; execution-evidence artifact added; real pre-existing aggregation defect fixed so all six normalized NWS branches publish; source-health ids normalized to full `02_WEATHER:NWS-XX` ids so LKG lookup can work against real published/LKG files.
+- Static checks: JSON parse PASS; custom graph/report/timeout/source-id/aggregate/name/active checks PASS; n8n structural validator PASS against a temporary inactive copy; Lane 02 LKG fixture scenarios PASS 8/8 against `00_WORKFLOWS/v02.UWI_LANE02.json` with the actual `Fetch NWS-06 Active Alerts` node mapping.
+- Live update proof: DB update committed with versionId `b2ca5060-a499-4ca1-aad5-0460bd58d832`, versionCounter `8`, parent folder `LaS9Q6sil9yCDzrV`; post-update export matches local v02 logic-bearing fields.
+- Final live run: execution id `3673`; `final_start_utc=2026-08-19T05:37:48Z`, `final_finish_utc=2026-08-19T05:38:05Z`, CLI exit 0, n8n status success.
+- Report-out JSON: `status=PASSED`, `data_status=no_relevant_events`, `candidate_written=true`, `published_written=true`, `quarantine_written=false`, `execution_evidence_written=true`, `artifact_count_written=8`, `event_count=0`, `source_count=6`, `failed_source_count=0`, `using_last_known_good=false`, `observation_count=32`, `weather_alert_count=0`.
+- Server proof: pulled published/current pointer, published artifact, candidate, normalized output, health/status, execution evidence, validation log, handoff, LKG current, and six raw NWS landings for run `02_WEATHER-20260819T053755Z-001`; `file-proof-summary.json` reports `proof_pass=true` with all counts matching report-out.
+- New local canonical JSON: `00_WORKFLOWS/v02.UWI_LANE02.json`; SHA-256 `bfd437cc942afdd46bc0df08da9e606ece2243aea3c8e6b8ebe77dc905b2a809`.
+- Result: PASS — `v02.UWI_LANE02` live-qualified. Proceeding to Lane 03 per task sequence.
+## 2026-08-18 22:46 PDT — UWISSY Lane 03 v02 report-out upgrade live-qualified
+
+- Scope: Lane 03 only; workflow `qlM2XIv2BbFSh3in` updated in place in n8n folder `UWISSY` from `v01.UWI_LANE03` to `v02.UWI_LANE03`; workflow id preserved, active state preserved (`true`), node count preserved at 48.
+- Baseline: v01 live run completed successfully (`baseline_start_utc=2026-08-19T05:40:39Z`, `baseline_finish_utc=2026-08-19T05:40:56Z`, CLI exit 0) and wrote eight raw source landings for run `03_AIR_QUALITY-20260819T054047Z-001`; baseline published artifact was already truthful `data_status=degraded` with 8 source-health entries and 4 failed sources.
+- Pre-change live export: `00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE03/prechange-v01-live-export.json`; SHA-256 `5a42bd30f5ee28415fbf75559dbe190d6af4d424b9e483c5d7bf79087b2a4aba`.
+- v02 changes: workflow name/version metadata updated to `v02.UWI_LANE03` / connector `v0002`; eight native HTTP Request source fetches bounded with 30s timeouts; manifest id updated to `03_AIR_QUALITY-v0002`; final report-out expanded to PASSED/DEGRADED/FAILED truth contract; execution-evidence artifact added; validation-failure quarantine artifact support added.
+- Static checks: JSON parse PASS; custom graph/report/timeout/name/active-state checks PASS after manifest correction; n8n structural validator PASS against a temporary inactive copy; Lane 03 fixture scenarios PASS 8/8.
+- Live update proof: DB update committed with versionId `9c78d9e0-3622-4f7c-9c83-12e67abc6392`, versionCounter `5`, parent folder `LaS9Q6sil9yCDzrV`; post-update export matches local v02 logic-bearing fields.
+- Final live run: execution id `3675`; `final_start_utc=2026-08-19T05:44:20Z`, `final_finish_utc=2026-08-19T05:44:39Z`, CLI exit 0, n8n status success.
+- Report-out JSON: `status=DEGRADED`, `data_status=degraded`, `candidate_written=true`, `published_written=true`, `quarantine_written=false`, `execution_evidence_written=true`, `artifact_count_written=8`, `event_count=2`, `source_count=8`, `failed_source_count=4`, `using_last_known_good=false`, `air_quality_event_count=2`, `observation_count=0`.
+- Server proof: pulled published/current pointer, published artifact, candidate, normalized output, health/status, execution evidence, validation log, handoff, LKG current, and eight raw source landings for run `03_AIR_QUALITY-20260819T054427Z-001`; `file-proof-summary.json` reports `proof_pass=true` with all counts matching report-out.
+- New local canonical JSON: `00_WORKFLOWS/v02.UWI_LANE03.json`; SHA-256 `7ec56ed362288f63874248c9a69125aad7077d50a762993705d1af77328f1211`.
+- Result: PASS — `v02.UWI_LANE03` live-qualified. Proceeding to Lane 04 per task sequence.
+## 2026-08-18 22:56 PDT — UWISSY Lane 04 v02 report-out upgrade live-qualified
+
+- Scope: Lane 04 only; workflow `w6xnelPQeRFZk8BG` updated in place in n8n folder `UWISSY` from `v01.UWI_LANE04` to `v02.UWI_LANE04`; workflow id preserved, active state preserved (`true`), node count preserved at 36.
+- Baseline: v01 live run completed successfully (`baseline_start_utc=2026-08-19T05:46:50Z`, `baseline_finish_utc=2026-08-19T05:47:12Z`, CLI exit 0). Baseline wrote five raw source landings and a degraded published artifact, but exposed a timestamp-format defect where run stamps retained milliseconds (example `20260819T054657.294Z`).
+- Pre-change live export: `00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE04/prechange-v01-live-export.json`; SHA-256 `8700d03f7cc9ed022b5aea063e70a7da4761397916e427ac0f4d5b923ff9a857`.
+- v02 changes: workflow name/version metadata updated to `v02.UWI_LANE04` / connector `v0002`; five native HTTP Request source fetches bounded with 30s timeouts; manifest id updated to `04_WILDFIRE-v0002`; timestamp regex fixed so run stamps no longer include milliseconds; final report-out expanded to PASSED/DEGRADED/FAILED truth contract; execution-evidence artifact added.
+- Static checks: JSON parse PASS; custom graph/report/timeout/timestamp/name/active checks PASS after timestamp correction; n8n structural validator PASS against a temporary inactive copy; Lane 04 fixture scenarios PASS 8/8.
+- Live update proof: final DB update committed with versionId `b93b194d-41aa-48cf-8f5b-01c13f9c9473`, versionCounter `4`, parent folder `LaS9Q6sil9yCDzrV`; post-update export matches local v02 logic-bearing fields.
+- Final live run: execution id `3678`; `final_start_utc=2026-08-19T05:53:17Z`, `final_finish_utc=2026-08-19T05:53:39Z`, CLI exit 0, n8n status success.
+- Report-out JSON: `status=DEGRADED`, `data_status=degraded`, `candidate_written=true`, `published_written=true`, `quarantine_written=false`, `execution_evidence_written=true`, `artifact_count_written=8`, `event_count=0`, `source_count=5`, `failed_source_count=2`, `using_last_known_good=false`, `wildfire_event_count=0`, `smoke_event_count=0`, `observation_count=0`.
+- Server proof: pulled published/current pointer, published artifact, candidate, normalized output, health/status, execution evidence, validation log, handoff, and LKG current for run `04_WILDFIRE-20260819T055323Z-001`; `file-proof-summary.json` reports `proof_pass=true`, validation log parses as real JSONL, and run stamp is clean.
+- New local canonical JSON: `00_WORKFLOWS/v02.UWI_LANE04.json`; SHA-256 `85d814b40157b375446e17af2226e69817ba2dd709a585491d4d54d360e30ccb`.
+- Result: PASS — `v02.UWI_LANE04` live-qualified. Proceeding to Lane 05 per task sequence.
+## 2026-08-18 23:07 PDT — UWISSY Lane 05 v02 report-out upgrade live-qualified
+
+- Scope: Lane 05 only; workflow `4RiNqOKD9BCZFH6P` updated in place in n8n folder `UWISSY` from `v01.UWI_LANE05` to `v02.UWI_LANE05`; workflow id preserved, active state preserved (`true`), node count preserved at 56.
+- Baseline: v01 live run completed successfully (`baseline_start_utc=2026-08-19T05:55:33Z`, `baseline_finish_utc=2026-08-19T05:58:00Z`, CLI exit 0) and wrote ten raw source landings for run `05_FLOOD_CONDITIONS-20260819T055540Z-001`; baseline artifact was degraded with 10 source-health entries, 4 failed sources, 5 events, and 1 observation.
+- Pre-change live export: `00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE05/prechange-v01-live-export.json`; SHA-256 `97e50fe3f399d58b6927591d968827103709a4edfaf6a7c5173f9f0cd4c6e478`.
+- v02 changes: workflow name/version metadata updated to `v02.UWI_LANE05` / connector `v0002`; ten native HTTP Request source fetches bounded with 30s timeouts; final report-out expanded to PASSED/DEGRADED/FAILED truth contract; manifest and execution-evidence workflow metadata corrected to v02 / workflow id `4RiNqOKD9BCZFH6P`.
+- Static checks: JSON parse PASS; custom graph/report/timeout/name/active checks PASS; n8n structural validator PASS against a temporary inactive copy; Lane 05 fixture scenarios PASS 8/8.
+- Live update proof: final DB update committed with versionId `b975c971-f73b-4c02-808e-6acaae76140a`, versionCounter `6`, parent folder `LaS9Q6sil9yCDzrV`.
+- Final live run: execution id `3686`; `final_start_utc=2026-08-19T06:04:10Z`, `final_finish_utc=2026-08-19T06:05:24Z`, CLI exit 0, n8n status success.
+- Report-out JSON: `status=DEGRADED`, `data_status=degraded`, `candidate_written=true`, `published_written=true`, `quarantine_written=false`, `execution_evidence_written=true`, `artifact_count_written=9`, `event_count=5`, `source_count=10`, `failed_source_count=4`, `using_last_known_good=false`, `gauge_count=1`, `flood_event_count=5`.
+- Server proof: pulled published/current pointer, published artifact, candidate, normalized output, health/status, execution evidence, validation log, handoff, and LKG current for run `05_FLOOD_CONDITIONS-20260819T060417Z-001`; `file-proof-summary.json` reports `proof_pass=true`, including corrected execution-evidence workflow metadata.
+- New local canonical JSON: `00_WORKFLOWS/v02.UWI_LANE05.json`; SHA-256 `1e63939485d4c1c0181d6a3aab80268fa0192e05f5b9e53d1ad83a3037a81647`.
+- Result: PASS — `v02.UWI_LANE05` live-qualified. Proceeding to Lane 06 per task sequence.
+## 2026-08-18 23:20 PDT — UWISSY Lane 06 v02 report-out upgrade live-qualified
+
+- Scope: Lane 06 only, live n8n workflow `poGV37VLUGIUxfGK` in project `UWISSY`.
+- Baseline: ran existing `v01.UWI_LANE06` as execution `3687`; execution succeeded and published run `06_TRAIL_INFRASTRUCTURE_STATUS-20260819T060726Z-001` with degraded source state.
+- Backup: exported untouched v01 live workflow to `00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE06/prechange-v01-live-export.json`; SHA-256 `89adbaa48a6769f59f6dd1e43b87c40a391473698357568acf9eff30c332eec4`.
+- Change: created canonical `00_WORKFLOWS/v02.UWI_LANE06.json`; preserved workflow id, active state, schedule settings, credentials, nodes, and project assignment; added 30s source fetch timeouts, v0002 metadata, execution evidence, and truthful final report-out.
+- Static proof: JSON parse passed; project validator passed; custom graph/name/timeout/report-out checks passed; fixture/fault suite passed 8/8 scenarios including all-failed and mixed degraded source behavior.
+- Live update: updated existing workflow in place; post-update proof shows id `poGV37VLUGIUxfGK`, name `v02.UWI_LANE06`, active `true`, folder `UWISSY`, 48 nodes, version counter `5`.
+- Live v02 run: execution `3688`, run id `06_TRAIL_INFRASTRUCTURE_STATUS-20260819T061817Z-001`, status `DEGRADED`, data_status `degraded`, candidate/published/status/handoff/evidence written, quarantine not written, 7 final bundle artifacts, 5 events, 8 sources, 2 failed sources, LKG not used.
+- Output proof: pulled and parsed candidate, normalized, published artifact, published current, last-known-good current, validation log, health status, handoff, and execution evidence under `00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE06/final-pulled/`; report-out matched filesystem evidence.
+- New SHA-256: canonical v02 JSON `3e5e1cfd0129769202fd71e21863205bf218c92e76851b3098353e15703c018d`; post-update live export `ff80d38d9ac8612832d8f4def0a332b371239133129f910609e4e07247873dc4`.
+- Result: PASS — `v02.UWI_LANE06` live-qualified.
+## 2026-08-18 23:28 PDT — UWISSY Lane 07 v02 report-out upgrade live-qualified
+
+- Scope: Lane 07 only, live n8n workflow `08g3JNwQPVSxUl2H` in project `UWISSY`.
+- Baseline: ran existing `v01.UWI_LANE07` as execution `3689`; execution succeeded and published run `07_GOVERNMENT_SAFETY_ALERTS-20260819T062231Z-001`.
+- Baseline output state: `data_status=ok`, 8 sources, 0 failed sources, 7 events, 96 observations.
+- Backup: exported untouched v01 live workflow to `00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE07/prechange-v01-live-export.json`; SHA-256 `dcf90308e0535a5404bc7d4952e38e64ca88687dd412dd0a519f6e11521643bc`.
+- Change: created canonical `00_WORKFLOWS/v02.UWI_LANE07.json`; preserved workflow id, active state, schedule settings, credentials, nodes, and project assignment; bumped v0002 metadata, corrected timestamp fallback, added execution evidence, and replaced shallow final report-out with source/event/observation-aware report-out.
+- Static proof: JSON parse passed; project validator passed; custom graph/name/timeout/report-out checks passed; embedded secret scan passed; fixture/fault suite passed 8/8 scenarios including all-failed and mixed degraded source behavior.
+- Live update: updated existing workflow in place; post-update proof shows id `08g3JNwQPVSxUl2H`, name `v02.UWI_LANE07`, active `true`, folder `UWISSY`, 48 nodes, version counter `5`.
+- Live v02 run: execution `3690`, run id `07_GOVERNMENT_SAFETY_ALERTS-20260819T062655Z-001`, status `PASSED`, data_status `ok`, candidate/published/status/handoff/evidence written, quarantine not written, 9 final bundle artifacts, 7 events, 96 observations, 8 sources, 0 failed sources, LKG not used.
+- Output proof: pulled and parsed candidate, normalized, published artifact, published current pointer, last-known-good current/stable/archive, validation log, health status, handoff, and execution evidence under `00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/LANE07/final-pulled/`; report-out matched filesystem evidence and pointer target.
+- New SHA-256: canonical v02 JSON `8ee9649dde59e7e1b6fc9a373ca67de49c9fdc45c75b68f39130c6b2448060fa`; post-update live export `44a50a65c6e330cf42749b4b4ce5ca55f35493c8a52ea229344db88d548354f6`.
+- Result: PASS — `v02.UWI_LANE07` live-qualified.
+## 2026-08-18 23:31 PDT — UWISSY Lanes 01-07 v02 report-out upgrade complete
+
+- Result: PASS — Lanes 01 through 07 are upgraded to `v02.UWI_LANEXX`, remain in n8n project `UWISSY`, preserve their existing workflow ids, and are live-qualified.
+- Live final inventory: `v02.UWI_LANE01` `RR7cLSV9oGngrJdA` active true 32 nodes; `v02.UWI_LANE02` `fA0ZjWH3Itl83aPC` active true 40 nodes; `v02.UWI_LANE03` `qlM2XIv2BbFSh3in` active true 48 nodes; `v02.UWI_LANE04` `w6xnelPQeRFZk8BG` active true 36 nodes; `v02.UWI_LANE05` `4RiNqOKD9BCZFH6P` active true 56 nodes; `v02.UWI_LANE06` `poGV37VLUGIUxfGK` active true 48 nodes; `v02.UWI_LANE07` `08g3JNwQPVSxUl2H` active true 48 nodes.
+- Final report-out statuses: Lane 01 `DEGRADED`; Lane 02 `PASSED`; Lane 03 `DEGRADED`; Lane 04 `DEGRADED`; Lane 05 `DEGRADED`; Lane 06 `DEGRADED`; Lane 07 `PASSED`.
+- Canonical local JSON files created: `00_WORKFLOWS/v02.UWI_LANE01.json` through `00_WORKFLOWS/v02.UWI_LANE07.json`; v01 files preserved.
+- Lane 08 read-only check: `uwIssy08RouteFacilities`, `v01.UWI_LANE08`, inactive, 24 nodes, remains in `UWISSY`, final report-out node present; no Lane 08 modification made.
+- Lanes 20 and 30 were not modified.
+- Evidence root: `00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/`.
+- Final inventory proof: `00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/final-uwissy-inventory.tsv`.
+- Final pass summary: `00_AS-BUILT/20260818-UWISSY_LANES01-07_REPORTOUT_UPGRADE/final-pass-summary.json`.
+- Safe to begin Lane 20 work: yes, based on all seven lane PASS results and Lane 08 read-only proof.
+
+## 2026-08-20 07:55 PDT — Gate 2 real unattended canonical schedule proof recorded
+
+- Read-only execution-history recheck was run after the `10:00`/`10:15`/`10:20Z` live cron window.
+- Gate 2 is now PROVEN: all ten canonical UWISSY workflows fired unattended as `mode=trigger`, `status=success`, on the current live cron.
+- Recorded executions: Lane 01 `3842`; Lane 02 `3838`; Lane 03 `3844`; Lane 04 `3841`; Lane 05 `3843`; Lane 06 `3845`; Lane 07 `3840`; Lane 08 `3839`; Lane 20 `3847`; Lane 30 `3848`.
+- Lane 08's prior zero-trigger gap is closed by execution `3839`.
+- Closeout record updated at `00_DOCS/2026-08-20_UWISSY_FINAL_CLOSEOUT_NOT_CLOSED.md`.
+- Project remains NOT CLOSED because Gate 1 still requires an alert destination decision/configuration and an authorized unattended watchdog run.

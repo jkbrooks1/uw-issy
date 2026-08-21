@@ -1,0 +1,18 @@
+{
+  "same": true,
+  "status": "DEGRADED",
+  "run_id": "20_STATUS_PUBLISHER-20260820T025755Z-001",
+  "expected_cycle": "13:00",
+  "timezone": "America/Los_Angeles",
+  "lane_count": 8,
+  "missed_run_count": 5,
+  "missed_lanes": [
+    "04_WILDFIRE",
+    "05_FLOOD_CONDITIONS",
+    "06_TRAIL_INFRASTRUCTURE_STATUS",
+    "07_GOVERNMENT_SAFETY_ALERTS",
+    "08_ROUTE_FACILITIES"
+  ],
+  "has_lane08": true,
+  "release_input_path": "/files/uw-issy-connectors/public/workflow20-status-latest.json"
+}

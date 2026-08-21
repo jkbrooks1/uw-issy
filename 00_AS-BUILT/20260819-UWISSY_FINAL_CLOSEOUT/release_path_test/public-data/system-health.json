@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0.0",
+  "releaseId": "20_STATUS_PUBLISHER-20260820T030156Z-001",
+  "assembledAt": "2026-08-20T03:01:56.162Z",
+  "lanes": [
+    {
+      "laneId": "01_ROUTE_CONDITIONS",
+      "laneLabel": "Route Conditions",
+      "available": true,
+      "sourceState": "degraded",
+      "publicText": "Partial data",
+      "freshnessState": "stale",
+      "usingLastKnownGood": false,
+      "eventCount": 1
+    },
+    {
+      "laneId": "02_WEATHER",
+      "laneLabel": "Weather",
+      "available": true,
+      "sourceState": "no_relevant_events",
+      "publicText": "No route-related events",
+      "freshnessState": "fresh",
+      "usingLastKnownGood": false,
+      "eventCount": 0
+    },
+    {
+      "laneId": "03_AIR_QUALITY",
+      "laneLabel": "Air Quality",
+      "available": true,
+      "sourceState": "degraded",
+      "publicText": "Partial data",
+      "freshnessState": "stale",
+      "usingLastKnownGood": false,
+      "eventCount": 2
+    },
+    {
+      "laneId": "04_WILDFIRE",
+      "laneLabel": "Wildfire",
+      "available": true,
+      "sourceState": "degraded",
+      "publicText": "Partial data",
+      "freshnessState": "stale",
+      "usingLastKnownGood": false,
+      "eventCount": 0
+    },
+    {
+      "laneId": "05_FLOOD_CONDITIONS",
+      "laneLabel": "Flood Conditions",
+      "available": true,
+      "sourceState": "degraded",
+      "publicText": "Partial data",
+      "freshnessState": "stale",
+      "usingLastKnownGood": false,
+      "eventCount": 5
+    },
+    {
+      "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "laneLabel": "Trail Infrastructure Status",
+      "available": true,
+      "sourceState": "degraded",
+      "publicText": "Partial data",
+      "freshnessState": "stale",
+      "usingLastKnownGood": false,
+      "eventCount": 5
+    },
+    {
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "laneLabel": "Government Safety Alerts",
+      "available": true,
+      "sourceState": "ok",
+      "publicText": "Current",
+      "freshnessState": "fresh",
+      "usingLastKnownGood": false,
+      "eventCount": 7
+    },
+    {
+      "laneId": "08_ROUTE_FACILITIES",
+      "laneLabel": "Route Facilities",
+      "available": true,
+      "sourceState": "ok",
+      "publicText": "Current",
+      "freshnessState": "fresh",
+      "usingLastKnownGood": false,
+      "eventCount": 0
+    }
+  ],
+  "failedLaneIds": [],
+  "degradedLaneIds": [
+    "01_ROUTE_CONDITIONS",
+    "03_AIR_QUALITY",
+    "04_WILDFIRE",
+    "05_FLOOD_CONDITIONS",
+    "06_TRAIL_INFRASTRUCTURE_STATUS"
+  ],
+  "assemblyState": "ok",
+  "publicationState": "published"
+}

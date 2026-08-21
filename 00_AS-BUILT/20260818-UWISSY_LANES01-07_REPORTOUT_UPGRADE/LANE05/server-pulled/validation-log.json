@@ -1,0 +1,12 @@
+{"source_id":"05_FLOOD_CONDITIONS:USGS-01","check_name":"source_health","pass_fail":"pass","message":"ok / 1 record(s)","timestamp":"2026-08-19T06:04:17.348Z"}
+{"source_id":"05_FLOOD_CONDITIONS:USGS-02","check_name":"source_health","pass_fail":"pass","message":"ok / 1 record(s)","timestamp":"2026-08-19T06:04:17.348Z"}
+{"source_id":"05_FLOOD_CONDITIONS:USGS-03","check_name":"source_health","pass_fail":"pass","message":"ok / 2 record(s)","timestamp":"2026-08-19T06:04:17.348Z"}
+{"source_id":"05_FLOOD_CONDITIONS:NWPS-01","check_name":"source_health","pass_fail":"pass","message":"ok / 1 record(s)","timestamp":"2026-08-19T06:04:17.348Z"}
+{"source_id":"05_FLOOD_CONDITIONS:NWPS-02","check_name":"source_health","pass_fail":"pass","message":"ok / 1 record(s)","timestamp":"2026-08-19T06:04:17.348Z"}
+{"source_id":"05_FLOOD_CONDITIONS:NWS-01","check_name":"source_health","pass_fail":"pass","message":"empty_but_valid / 0 record(s)","timestamp":"2026-08-19T06:04:17.348Z"}
+{"source_id":"05_FLOOD_CONDITIONS:ISS-01","check_name":"source_health","pass_fail":"fail","message":"failed / 0 record(s)","timestamp":"2026-08-19T06:04:17.348Z"}
+{"source_id":"05_FLOOD_CONDITIONS:REDM-01","check_name":"source_health","pass_fail":"fail","message":"failed / 0 record(s)","timestamp":"2026-08-19T06:04:17.348Z"}
+{"source_id":"05_FLOOD_CONDITIONS:KC-ROAD-01","check_name":"source_health","pass_fail":"fail","message":"failed / 0 record(s)","timestamp":"2026-08-19T06:04:17.348Z"}
+{"source_id":"05_FLOOD_CONDITIONS:WSDOT-01","check_name":"source_health","pass_fail":"fail","message":"failed / 0 record(s)","timestamp":"2026-08-19T06:04:17.348Z"}
+{"source_id":"CONNECTOR","check_name":"candidate_schema","pass_fail":"pass","message":"Candidate passed validation.","timestamp":"2026-08-19T06:04:17.348Z"}
+{"source_id":"CONNECTOR","check_name":"publish_gate","pass_fail":"pass","message":"Candidate promoted to published.","timestamp":"2026-08-19T06:05:22.604Z"}

@@ -1,0 +1,118 @@
+{
+  "run_id": "06_TRAIL_INFRASTRUCTURE_STATUS-20260819T061817Z-001",
+  "connector_id": "06_TRAIL_INFRASTRUCTURE_STATUS",
+  "lane": "06_TRAIL_INFRASTRUCTURE_STATUS",
+  "generated_at": "2026-08-19T06:18:17.442Z",
+  "published_at": "2026-08-19T06:19:23.862Z",
+  "published_artifact": "/files/uw-issy-connectors/published/06_TRAIL_INFRASTRUCTURE_STATUS/06_TRAIL_INFRASTRUCTURE_STATUS_published_20260819T061817Z.json",
+  "status": "degraded",
+  "data_status": "degraded",
+  "ready_for_workflow_08": true,
+  "source_ids_used": [
+    "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01",
+    "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02",
+    "06_TRAIL_INFRASTRUCTURE_STATUS:KC-03",
+    "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01",
+    "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02",
+    "06_TRAIL_INFRASTRUCTURE_STATUS:ISS-01",
+    "06_TRAIL_INFRASTRUCTURE_STATUS:REDM-01",
+    "06_TRAIL_INFRASTRUCTURE_STATUS:KC-04"
+  ],
+  "route_sections": [
+    {
+      "section_id": "10",
+      "section_name": "Issaquah approach / terminus",
+      "impact_level": "confirmed",
+      "summary": "Confirmed lane-06 infrastructure impact.",
+      "event_ids": [
+        "06_TRAIL_INFRASTRUCTURE_STATUS:KC-03:65bcac37",
+        "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:d2c2a234",
+        "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02:3f489f7f"
+      ]
+    },
+    {
+      "section_id": "01",
+      "section_name": "UW / U-District",
+      "impact_level": "none",
+      "summary": "No confirmed route-impacting events detected.",
+      "event_ids": []
+    },
+    {
+      "section_id": "02",
+      "section_name": "Burke-Gilman - Seattle",
+      "impact_level": "none",
+      "summary": "No confirmed route-impacting events detected.",
+      "event_ids": []
+    },
+    {
+      "section_id": "03",
+      "section_name": "Burke-Gilman - north Lake Washington / Kenmore",
+      "impact_level": "confirmed",
+      "summary": "Confirmed lane-06 infrastructure impact.",
+      "event_ids": [
+        "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:74aa4692"
+      ]
+    },
+    {
+      "section_id": "04",
+      "section_name": "Burke-Gilman / connector - Bothell",
+      "impact_level": "confirmed",
+      "summary": "Confirmed lane-06 infrastructure impact.",
+      "event_ids": [
+        "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:74aa4692"
+      ]
+    },
+    {
+      "section_id": "05",
+      "section_name": "Sammamish River Trail - Bothell / Woodinville",
+      "impact_level": "confirmed",
+      "summary": "Confirmed lane-06 infrastructure impact.",
+      "event_ids": [
+        "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:8dcfaeab"
+      ]
+    },
+    {
+      "section_id": "06",
+      "section_name": "Sammamish River Trail - Redmond",
+      "impact_level": "confirmed",
+      "summary": "Confirmed lane-06 infrastructure impact.",
+      "event_ids": [
+        "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:8dcfaeab"
+      ]
+    },
+    {
+      "section_id": "07",
+      "section_name": "Marymoor Park / Marymoor Connector",
+      "impact_level": "confirmed",
+      "summary": "Confirmed lane-06 infrastructure impact.",
+      "event_ids": [
+        "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:8dcfaeab"
+      ]
+    },
+    {
+      "section_id": "08",
+      "section_name": "East Lake Sammamish Trail - Redmond",
+      "impact_level": "none",
+      "summary": "No confirmed route-impacting events detected.",
+      "event_ids": []
+    },
+    {
+      "section_id": "09",
+      "section_name": "East Lake Sammamish Trail - Sammamish",
+      "impact_level": "confirmed",
+      "summary": "Confirmed lane-06 infrastructure impact.",
+      "event_ids": [
+        "06_TRAIL_INFRASTRUCTURE_STATUS:KC-03:65bcac37",
+        "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:d2c2a234",
+        "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02:3f489f7f"
+      ]
+    }
+  ],
+  "connector_health": {
+    "status": "degraded",
+    "branches_total": 8,
+    "branches_succeeded": 6,
+    "branches_failed": 2,
+    "used_last_known_good": false
+  }
+}

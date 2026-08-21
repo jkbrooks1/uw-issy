@@ -1,0 +1,13 @@
+From github.com:jkbrooks1/uw-issy
+ * branch            main       -> FETCH_HEAD
+Your branch is up to date with 'origin/main'.
+Already on 'main'
+HEAD is now at 8ea3cbc Record CI build/production proof for 4973facdb5a320b319eaf329ad1d864103ac3433
+Removing data/connectors/evidence/workflow20-status-latest.json
+data/connectors/evidence/workflow20-status-latest.json
+[main 183f849] Update UWISSY Lane 20 release input
+ 1 file changed, 1664 insertions(+)
+ create mode 100644 data/connectors/evidence/workflow20-status-latest.json
+To github.com:jkbrooks1/uw-issy.git
+   8ea3cbc..183f849  main -> main
+183f84965e960eba97aadc6057a035a3c9995457

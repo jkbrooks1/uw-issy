@@ -1,0 +1,27 @@
+{
+  "execution": {
+    "mode": "cli",
+    "status": "success",
+    "startedAt": "2026-08-20T03:18:03.706Z",
+    "stoppedAt": "2026-08-20T03:19:06.328Z",
+    "finished": true
+  },
+  "pointer": {
+    "run_id": "01_ROUTE_CONDITIONS-20260820T031804Z-001",
+    "artifact": "/files/uw-issy-connectors/published/01_ROUTE_CONDITIONS/01_ROUTE_CONDITIONS_published_20260820T031804Z.json"
+  },
+  "connector_version": "v0003",
+  "run_id": "01_ROUTE_CONDITIONS-20260820T031804Z-001",
+  "event_ids": [
+    "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01"
+  ],
+  "identity_basis": [
+    "composite_key"
+  ],
+  "source_event_keys": [
+    "KC-03|trail_closure|east_lake_sammamish_trail|louis_thompson_rd_ne_to_ne_inglewood_hill_rd|2026-06-01"
+  ],
+  "content_hashes": [
+    "hash_ea70bbdf"
+  ]
+}

@@ -1,0 +1,804 @@
+{
+  "updatedAt": "2026-07-21T16:51:22.558Z",
+  "createdAt": "2026-07-21T16:46:58.028Z",
+  "id": "wm4M6lHgcbBYlIJh",
+  "name": "v0001.06_CanalStatusConnector",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "manual",
+        "duplicateItem": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "connectorId",
+              "name": "connectorId",
+              "type": "string",
+              "value": "06_CANAL_STATUS"
+            },
+            {
+              "id": "connectorNumber",
+              "name": "connectorNumber",
+              "type": "string",
+              "value": "06"
+            },
+            {
+              "id": "connectorName",
+              "name": "connectorName",
+              "type": "string",
+              "value": "CDM Canal Status Connector"
+            },
+            {
+              "id": "workflowName",
+              "name": "workflowName",
+              "type": "string",
+              "value": "v0001.06_CanalStatusConnector"
+            },
+            {
+              "id": "workflowVersion",
+              "name": "workflowVersion",
+              "type": "string",
+              "value": "v0001"
+            },
+            {
+              "id": "timezone",
+              "name": "timezone",
+              "type": "string",
+              "value": "Europe/Paris"
+            },
+            {
+              "id": "generatedAt",
+              "name": "generatedAt",
+              "type": "string",
+              "value": "={{ $now.toUTC().toISO() }}"
+            },
+            {
+              "id": "outputDirectory",
+              "name": "outputDirectory",
+              "type": "string",
+              "value": "/files/cdm-status-output"
+            },
+            {
+              "id": "staleAfterMinutes",
+              "name": "staleAfterMinutes",
+              "type": "number",
+              "value": 720
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-config",
+      "name": "Set Connector Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        280,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Embedded verbatim from data/route-monitoring/route-geography-crosswalk.json (all 9 CDM route-day\n// segments). Each segment already carries its own rideDay/kmStart/kmEnd/departments/canalReach, so\n// route-day mapping for VNF notices can be derived directly from segment overlap without needing the\n// full public/cdm-ride-days.geojson geometry file (mapIntervalToRds equivalent).\nconst segments = [{\"segmentId\":\"RD01\",\"rideDay\":1,\"date\":\"2026-09-12\",\"startTown\":\"Bordeaux\",\"endTown\":\"La Réole\",\"kmStart\":0,\"kmEnd\":74.694,\"mpStart\":0,\"mpEnd\":46.4,\"departments\":[\"33\"],\"boundingBox\":{\"west\":-0.57727,\"south\":44.5831,\"east\":-0.03343,\"north\":44.84017},\"alternateSpellings\":[\"Bordeaux Saint-Jean\",\"Bordèu\",\"La Reole\",\"La Réole\"],\"canalReach\":\"Garonne riverside and Piste Roger Lapébie approach to the Canal de Garonne\",\"keyPlaces\":[\"Pont de Pierre\",\"Latresne\",\"Créon\",\"Sauveterre-de-Guyenne\",\"La Réole\"],\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/piste-cyclable-roger-lapebie-bordeaux-creon\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/bordeaux-creon\"},{\"segmentId\":\"RD02\",\"rideDay\":2,\"date\":\"2026-09-13\",\"startTown\":\"La Réole\",\"endTown\":\"Agen\",\"kmStart\":74.694,\"kmEnd\":154.548,\"mpStart\":46.4,\"mpEnd\":96,\"departments\":[\"33\",\"47\"],\"boundingBox\":{\"west\":-0.04149,\"south\":44.20351,\"east\":0.61595,\"north\":44.5841},\"alternateSpellings\":[\"La Reole\",\"Marmande\",\"Aiguillon\",\"Agen\"],\"canalReach\":\"Canal latéral à la Garonne\",\"keyPlaces\":[\"Fontet\",\"Meilhan-sur-Garonne\",\"Marmande\",\"Le Mas-d’Agenais\",\"Agen canal bridge\"],\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-de-garonne-a-velo-la-reole-marmande\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/la-reole-marmande\"},{\"segmentId\":\"RD03\",\"rideDay\":3,\"date\":\"2026-09-14\",\"startTown\":\"Agen\",\"endTown\":\"Moissac\",\"kmStart\":154.548,\"kmEnd\":200.152,\"mpStart\":96,\"mpEnd\":124.4,\"departments\":[\"47\",\"82\"],\"boundingBox\":{\"west\":0.61128,\"south\":44.08342,\"east\":1.08648,\"north\":44.21064},\"alternateSpellings\":[\"Agen\",\"Valence d Agen\",\"Valence-d’Agen\",\"Moissac\"],\"canalReach\":\"Canal latéral à la Garonne\",\"keyPlaces\":[\"Pont-canal d’Agen\",\"Lamagistère\",\"Valence d’Agen\",\"Pont-canal du Cacor\",\"Moissac\"],\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-de-garonne-a-velo-agen-valence-d-agen\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/agen-valence-d-agen\"},{\"segmentId\":\"RD04\",\"rideDay\":4,\"date\":\"2026-09-15\",\"startTown\":\"Moissac\",\"endTown\":\"Toulouse\",\"kmStart\":200.152,\"kmEnd\":274.273,\"mpStart\":124.4,\"mpEnd\":170.4,\"departments\":[\"82\",\"31\"],\"boundingBox\":{\"west\":1.08614,\"south\":43.58717,\"east\":1.46041,\"north\":44.10055},\"alternateSpellings\":[\"Moissac\",\"Castelsarrasin\",\"Montech\",\"Toulouse\"],\"canalReach\":\"Canal latéral à la Garonne to Toulouse\",\"keyPlaces\":[\"Pont-canal du Cacor\",\"Castelsarrasin\",\"Montech\",\"Grisolles\",\"Ponts-Jumeaux\"],\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-de-garonne-a-velo-castelnau-d-estretefonds-toulouse\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/castelnau-d-estretefonds-toulouse\"},{\"segmentId\":\"RD05\",\"rideDay\":5,\"date\":\"2026-09-17\",\"startTown\":\"Toulouse\",\"endTown\":\"Castelnaudary\",\"kmStart\":274.273,\"kmEnd\":339.357,\"mpStart\":170.4,\"mpEnd\":210.9,\"departments\":[\"31\",\"11\"],\"boundingBox\":{\"west\":1.44571,\"south\":43.31267,\"east\":1.95696,\"north\":43.61002},\"alternateSpellings\":[\"Toulouse\",\"Montgiscard\",\"Seuil de Naurouze\",\"Castelnaudary\"],\"canalReach\":\"Canal du Midi - Toulouse to Lauragais and Seuil de Naurouze\",\"keyPlaces\":[\"Canal du Midi Toulouse\",\"Montgiscard\",\"Gardouch\",\"Seuil de Naurouze\",\"Castelnaudary Grand Bassin\"],\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-seuil-de-naurouze-castelnaudary\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/seuil-de-naurouze-castelnaudary\"},{\"segmentId\":\"RD06\",\"rideDay\":6,\"date\":\"2026-09-18\",\"startTown\":\"Castelnaudary\",\"endTown\":\"Carcassonne\",\"kmStart\":339.357,\"kmEnd\":384.517,\"mpStart\":210.9,\"mpEnd\":238.9,\"departments\":[\"11\"],\"boundingBox\":{\"west\":1.9507,\"south\":43.20974,\"east\":2.361,\"north\":43.32091},\"alternateSpellings\":[\"Castelnaudary\",\"Bram\",\"Carcassonne\"],\"canalReach\":\"Canal du Midi - Lauragais and Carcassonne approach\",\"keyPlaces\":[\"Ecluse Saint-Roch\",\"Bram\",\"Villesèquelande\",\"Carcassonne port\"],\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-bram-carcassonne\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/bram-carcassonne\"},{\"segmentId\":\"RD07\",\"rideDay\":7,\"date\":\"2026-09-19\",\"startTown\":\"Carcassonne\",\"endTown\":\"Tourouzelle\",\"kmStart\":384.517,\"kmEnd\":439.119,\"mpStart\":238.9,\"mpEnd\":272.9,\"departments\":[\"11\"],\"boundingBox\":{\"west\":2.35185,\"south\":43.19374,\"east\":2.76545,\"north\":43.27003},\"alternateSpellings\":[\"Carcassonne\",\"Trèbes\",\"Trebes\",\"Marseillette\",\"Tourouzelle\"],\"canalReach\":\"Canal du Midi - Carcassonne, Trèbes, and Minervois\",\"keyPlaces\":[\"Carcassonne\",\"Trèbes\",\"Marseillette\",\"La Redorte\",\"Argens-Minervois\"],\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-bram-carcassonne\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/bram-carcassonne\"},{\"segmentId\":\"RD08\",\"rideDay\":8,\"date\":\"2026-09-20\",\"startTown\":\"Tourouzelle\",\"endTown\":\"Capestang\",\"kmStart\":439.119,\"kmEnd\":483.287,\"mpStart\":272.9,\"mpEnd\":300.3,\"departments\":[\"11\",\"34\"],\"boundingBox\":{\"west\":2.72218,\"south\":43.23919,\"east\":3.04372,\"north\":43.3319},\"alternateSpellings\":[\"Tourouzelle\",\"Homps\",\"Le Somail\",\"Capestang\"],\"canalReach\":\"Canal du Midi - Minervois to Capestang\",\"keyPlaces\":[\"Homps\",\"Lac de Jouarres\",\"Le Somail\",\"Poilhes\",\"Capestang\"],\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-le-somail-capestang\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/le-somail-capestang\"},{\"segmentId\":\"RD09\",\"rideDay\":9,\"date\":\"2026-09-21\",\"startTown\":\"Capestang\",\"endTown\":\"Sète\",\"kmStart\":483.287,\"kmEnd\":554.954,\"mpStart\":300.3,\"mpEnd\":344.8,\"departments\":[\"34\"],\"boundingBox\":{\"west\":3.04324,\"south\":43.28619,\"east\":3.69798,\"north\":43.41032},\"alternateSpellings\":[\"Capestang\",\"Béziers\",\"Beziers\",\"Agde\",\"Sete\",\"Sète\"],\"canalReach\":\"Canal du Midi, Orb/Hérault works, and Étang de Thau approach\",\"keyPlaces\":[\"Tunnel de Malpas\",\"Neuf écluses de Fonseranes\",\"Béziers\",\"Agde écluse ronde\",\"Marseillan plage\",\"Sète\"],\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-agde-sete\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/agde-sete\"}];\nreturn [{ json: { segments, contextGeneratedAt: new Date().toISOString(), contextSource: 'data/route-monitoring/route-geography-crosswalk.json' } }];"
+      },
+      "id": "load-context",
+      "name": "Load / Embed Canal Route Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst startUrls = [\n  'https://www.vnf.fr/vnf/avis-a-la-batellerie/',\n  'https://www.vnf.fr/vnf/publicationss/avis-a-la-batellerie-n1-2025-vnf-sud-ouest/',\n  'https://www.vnf.fr/vnf/services/avis-a-la-batellerie-n1-des-voies-du-sud-ouest/',\n  'https://www.vnf.fr/vnf/wp-json/wp/v2/search?search=avis%20batellerie%20sud-ouest&per_page=20',\n];\nconst sourcePageUrl = 'https://www.vnf.fr/vnf/publicationss/avis-a-la-batellerie-n1-2025-vnf-sud-ouest/';\nconst targetYear = '2026';\nreturn [{ json: { startUrls, sourcePageUrl, targetYear, generatedAt: config.generatedAt } }];"
+      },
+      "id": "build-request-config",
+      "name": "Build VNF Request Config",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        840,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Faithful adaptation of scripts/route-monitoring/fetch-vnf.mjs's discoverLiveDocuments(). Runs\n// entirely inside one Code node (runOnceForAllItems) using this.helpers.httpRequest because the\n// real VNF discovery flow spans 4 listing/search URLs plus follow-up URLs resolved from a WordPress\n// search JSON response - a shape n8n's single-endpoint HTTP Request node cannot express directly.\nconst requestConfig = $items('Build VNF Request Config')[0].json;\nconst { startUrls, targetYear } = requestConfig;\nconst checkedAt = new Date().toISOString();\nconst errors = [];\nlet pagesFetched = 0;\n\nfunction decodeEntities(value) {\n  return String(value || '')\n    .replace(/&#(\\d+);/g, (_, code) => String.fromCharCode(Number(code)))\n    .replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCharCode(parseInt(code, 16)))\n    .replace(/&nbsp;/g, ' ')\n    .replace(/&amp;/g, '&')\n    .replace(/&quot;/g, '\"')\n    .replace(/&#039;/g, \"'\")\n    .replace(/&rsquo;|&#8217;/g, \"'\")\n    .replace(/&eacute;/g, 'é')\n    .replace(/&egrave;/g, 'è')\n    .replace(/&agrave;/g, 'à')\n    .replace(/&ecirc;/g, 'ê')\n    .replace(/&ccedil;/g, 'ç');\n}\nfunction htmlToText(html) {\n  return decodeEntities(html)\n    .replace(/<script[\\s\\S]*?<\\/script>/gi, ' ')\n    .replace(/<style[\\s\\S]*?<\\/style>/gi, ' ')\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\nfunction extractLinks(html, baseUrl) {\n  const links = [];\n  for (const match of html.matchAll(/(?:href|src)=[\"']([^\"']+)[\"']/gi)) {\n    try {\n      links.push(new URL(decodeEntities(match[1]), baseUrl).href);\n    } catch (err) {\n      // Ignore malformed page fragments.\n    }\n  }\n  return links;\n}\nfunction extractUrlsFromSearchJson(text) {\n  try {\n    const rows = JSON.parse(text);\n    return Array.isArray(rows)\n      ? rows\n        .filter((row) => String(row.title || '').toLowerCase().includes(targetYear) || String(row.url || '').includes('n1-2025-vnf-sud-ouest'))\n        .map((row) => row.url)\n        .filter(Boolean)\n      : [];\n  } catch (err) {\n    return [];\n  }\n}\n\nasync function fetchText(url) {\n  const response = await this.helpers.httpRequest({\n    method: 'GET',\n    url,\n    timeout: 25000,\n    returnFullResponse: true,\n    headers: {\n      'User-Agent': 'BikeTourFrance-CDM-RouteMonitor/0.1 (+https://biketourfrance.net; route status research)',\n      Accept: 'text/html,application/xhtml+xml,application/xml,text/plain,application/json;q=0.9,*/*;q=0.8',\n    },\n  });\n  return { url: response.url || url, text: typeof response.body === 'string' ? response.body : JSON.stringify(response.body) };\n}\n\nconst pages = new Map();\nfor (const url of startUrls) {\n  try {\n    const fetched = await fetchText.call(this, url);\n    pages.set(fetched.url, fetched.text);\n    pagesFetched += 1;\n    if (url.includes('/wp-json/')) {\n      for (const resultUrl of extractUrlsFromSearchJson(fetched.text)) {\n        if (/avis-a-la-batellerie/i.test(resultUrl) && !pages.has(resultUrl)) {\n          try {\n            const resultPage = await fetchText.call(this, resultUrl);\n            pages.set(resultPage.url, resultPage.text);\n            pagesFetched += 1;\n          } catch (err) {\n            errors.push('fetch ' + resultUrl + ': ' + err.message);\n          }\n        }\n      }\n    }\n  } catch (err) {\n    errors.push('fetch ' + url + ': ' + err.message);\n  }\n}\n\nconst documents = new Map();\nfor (const [pageUrl, html] of pages) {\n  const pageText = htmlToText(html);\n  const targetYearPage = pageText.includes(targetYear) || pageUrl.includes('n1-2025-vnf-sud-ouest');\n  for (const link of extractLinks(html, pageUrl)) {\n    if (\n      /\\.pdf(?:$|\\?)/i.test(link)\n      && /AvisBat|Avis|Batellerie|Sud-ouest|Sud-Ouest/i.test(link)\n      && (link.includes(targetYear) || targetYearPage)\n    ) {\n      documents.set(link, { pdfUrl: link, sourceUrl: pageUrl });\n    }\n  }\n}\n\nconst fetchMeta = {\n  recordKind: 'fetchMeta',\n  fetchOk: pagesFetched > 0,\n  pagesFetched,\n  pdfCandidateCount: documents.size,\n  errors,\n  checkedAt,\n};\n\nreturn [\n  { json: fetchMeta },\n  ...[...documents.values()].map((doc) => ({ json: { recordKind: 'pdfCandidate', ...doc, checkedAt } })),\n];"
+      },
+      "id": "fetch-index",
+      "name": "Fetch VNF Source Index / Notices",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.recordKind }}",
+              "rightValue": "pdfCandidate",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "filter-pdf-candidates",
+      "name": "Filter PDF Candidates",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        1400,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.pdfUrl }}",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/pdf,*/*;q=0.8"
+            }
+          ]
+        },
+        "sendBody": false,
+        "options": {
+          "timeout": 45000,
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "fetch-documents",
+      "name": "Fetch VNF Documents If Required",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1680,
+        60
+      ],
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "data",
+        "options": {}
+      },
+      "id": "extract-pdf-text",
+      "name": "Extract PDF Text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1960,
+        60
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Faithful adaptation of scripts/route-monitoring/fetch-vnf.mjs's parseNoticesFromText /\n// parseChomageNotices / parseAvisBlocks. Runs after n8n-nodes-base.extractFromFile (pdf operation)\n// has already turned each fetched PDF into plain text - the extractFromFile node is used instead of\n// a hand-rolled Code-node PDF parser because the live VNF PDFs use compressed (FlateDecode) content\n// streams; a pure-regex parser with no zlib/pdf-parse access (n8n's Code sandbox disallows\n// require('zlib') the same way it disallows require('fs')/require('crypto')) returns 0 characters on\n// the real document (confirmed empirically during source-shape probing), so PDF decompression must be\n// done by n8n's native, non-sandboxed Extract From File node.\nconst extractedItems = $input.all();\nconst candidateItems = $items('Filter PDF Candidates'); // aligned 1:1 by index with the PDF-fetch branch\nconst effectRegex = /(arr[êe]t de navigation|navigation interrompue|ch[oô]mage|fermeture|restriction|alternat|travaux|chantier|interdit|d[eé]viation)/i;\nconst corridorRegex = /(canal du midi|canal lat[ée]ral [àa] la garonne|canal de garonne|moissac|agen|castelsarrasin|montech|toulouse|castelnaudary|carcassonne|tr[èe]bes|homps|capestang|b[ée]ziers|agde|s[èe]te)/i;\n\nfunction normalize(value) {\n  return String(value || '')\n    .normalize('NFKD')\n    .replace(/[\\u0300-\\u036f]/g, '')\n    .toLowerCase();\n}\nfunction simpleHash(value) {\n  let hash = 0;\n  const s = String(value || '');\n  for (let i = 0; i < s.length; i += 1) hash = (Math.imul(31, hash) + s.charCodeAt(i)) | 0;\n  return (hash >>> 0).toString(16).padStart(8, '0');\n}\nfunction cleanNoticeText(text) {\n  return String(text || '')\n    .replace(/\\f/g, '\\n')\n    .replace(/[ \\t]+\\n/g, '\\n')\n    .replace(/\\n{3,}/g, '\\n\\n')\n    .replace(/[ \\t]{2,}/g, ' ')\n    .trim();\n}\nfunction parseFrenchDate(value) {\n  const months = { janvier: '01', fevrier: '02', 'février': '02', mars: '03', avril: '04', mai: '05', juin: '06', juillet: '07', aout: '08', 'août': '08', septembre: '09', octobre: '10', novembre: '11', decembre: '12', 'décembre': '12' };\n  const match = String(value || '').toLowerCase().match(/(\\d{1,2})\\s+([a-zéû]+)\\s+(20\\d{2})/i);\n  if (!match) return null;\n  const month = months[match[2]];\n  if (!month) return null;\n  return match[3] + '-' + month + '-' + String(Number(match[1])).padStart(2, '0');\n}\nfunction dateRangeFromText(text) {\n  const dates = [...String(text || '').matchAll(/(\\d{1,2}\\s+(?:janvier|f[ée]vrier|mars|avril|mai|juin|juillet|ao[ûu]t|septembre|octobre|novembre|d[ée]cembre)\\s+20\\d{2})/gi)]\n    .map((m) => parseFrenchDate(m[1]))\n    .filter(Boolean);\n  return { startedAt: dates[0] || null, endedAt: dates[1] || null };\n}\nfunction extractWaterway(text) {\n  const match = String(text || '').match(/(Canal (?:lat[ée]ral [àa] la Garonne|de Garonne|du Midi|de Montech [àa] Montauban|de Brienne|de Jonction|de la Robine)|Fleuve Garonne|Rivi[èe]re Ba[ïi]se)/i);\n  return match ? match[1] : 'VNF Sud-Ouest';\n}\nfunction extractEffect(text) {\n  const lower = String(text || '').toLowerCase();\n  if (/chemin de halage|acc[èe]s public|cycliste|piste cyclable|voie verte|pi[ée]ton|passerelle/.test(lower)) return \"Restriction d'accès au chemin de halage ou au public\";\n  if (/ch[oô]mage|arr[êe]t de navigation|navigation interrompue/.test(lower)) return 'Arrêt de navigation';\n  if (/alternat/.test(lower)) return 'Alternat de navigation';\n  if (/restriction/.test(lower)) return 'Restriction de navigation';\n  if (/travaux|chantier/.test(lower)) return 'Travaux';\n  return 'Avis à la batellerie';\n}\nfunction parseChomageNotices(text) {\n  if (!/p[ée]riodes? pour les travaux de ch[oô]mage/i.test(text)) return [];\n  const noticeText = text.replace(/\\f/g, '\\n');\n  const midiMatch = noticeText.match(/Canal du Midi[\\s\\S]{0,900}?ch[oô]mage[\\s\\S]{0,600}?Navigation interrompue/i);\n  const garonneMatch = noticeText.match(/Canal lat[ée]ral [àa] la Garonne[\\s\\S]{0,900}?ch[oô]mage[\\s\\S]{0,600}?Navigation interrompue/i);\n  const notices = [];\n  if (midiMatch) {\n    const dates = dateRangeFromText(midiMatch[0]);\n    notices.push({ noticeNumber: 'chomage-midi-' + simpleHash(midiMatch[0]).slice(0, 6), waterway: 'Canal du Midi', title: 'VNF Sud-Ouest: chômage du Canal du Midi', effect: 'Arrêt de navigation pendant la période de chômage', startedAt: dates.startedAt, endedAt: dates.endedAt, evidenceText: midiMatch[0] });\n  }\n  if (garonneMatch) {\n    const dates = dateRangeFromText(garonneMatch[0]);\n    notices.push({ noticeNumber: 'chomage-garonne-' + simpleHash(garonneMatch[0]).slice(0, 6), waterway: 'Canal latéral à la Garonne', title: 'VNF Sud-Ouest: chômage du Canal latéral à la Garonne', effect: 'Arrêt de navigation pendant la période de chômage', startedAt: dates.startedAt, endedAt: dates.endedAt, evidenceText: garonneMatch[0] });\n  }\n  return notices;\n}\nfunction parseAvisBlocks(text) {\n  const normalized = cleanNoticeText(text);\n  const starts = [...normalized.matchAll(/AVIS\\s+[ÀA]\\s+LA\\s+BATELLERIE\\s+N[°º]\\s*[^\\n]*/gi)].map((m) => m.index);\n  if (!starts.length) return [];\n  const blocks = [];\n  for (let i = 0; i < starts.length; i += 1) {\n    const start = starts[i];\n    const end = starts[i + 1] !== undefined ? starts[i + 1] : normalized.length;\n    const block = normalized.slice(start, end).trim();\n    if (effectRegex.test(block) && corridorRegex.test(block)) blocks.push(block);\n  }\n  return blocks.map((block) => {\n    const lines = block.split(/\\n+/).map((l) => l.trim()).filter(Boolean);\n    const firstLine = lines[0] || 'Avis à la batellerie VNF';\n    const number = (firstLine.match(/N[°º]\\s*([^\\s]+)/i) || [])[1] || simpleHash(block).slice(0, 8);\n    const waterway = extractWaterway(block);\n    const dates = dateRangeFromText(block);\n    return { noticeNumber: number, waterway, title: lines[1] ? (firstLine + ': ' + lines[1]) : firstLine, effect: extractEffect(block), startedAt: dates.startedAt, endedAt: dates.endedAt, evidenceText: block };\n  });\n}\nfunction parseNoticesFromText(text) {\n  const chomage = parseChomageNotices(text);\n  const blocks = parseAvisBlocks(text);\n  const all = [...chomage, ...blocks];\n  const seen = new Set();\n  return all.filter((notice) => {\n    const key = normalize(notice.noticeNumber + ' ' + notice.title + ' ' + notice.evidenceText.slice(0, 120));\n    if (seen.has(key)) return false;\n    seen.add(key);\n    return true;\n  });\n}\n\nconst parsedNotices = [];\nconst docErrors = [];\nlet documentsProcessed = 0;\n\nfor (let i = 0; i < extractedItems.length; i += 1) {\n  const item = extractedItems[i];\n  const meta = (candidateItems[i] && candidateItems[i].json) || {};\n  if (item.json && item.json.error) {\n    docErrors.push('document ' + (meta.pdfUrl || 'unknown') + ': ' + item.json.error);\n    continue;\n  }\n  const text = (item.json && (item.json.text || item.json.data)) || '';\n  if (!text || String(text).trim().length < 50) {\n    docErrors.push('document ' + (meta.pdfUrl || 'unknown') + ': extraction produced no usable text (extractFromFile returned ' + String(text).length + ' chars)');\n    continue;\n  }\n  documentsProcessed += 1;\n  const notices = parseNoticesFromText(String(text));\n  for (const notice of notices) {\n    if (!corridorRegex.test(notice.waterway + ' ' + notice.title + ' ' + notice.evidenceText)) continue;\n    parsedNotices.push({\n      recordKind: 'parsedNotice',\n      noticeNumber: notice.noticeNumber,\n      waterway: notice.waterway,\n      title: notice.title.slice(0, 180),\n      effect: notice.effect,\n      startedAt: notice.startedAt,\n      endedAt: notice.endedAt,\n      evidenceText: cleanNoticeText(notice.evidenceText).slice(0, 1200),\n      evidenceUrl: meta.pdfUrl || 'unknown',\n      sourceUrl: meta.sourceUrl || 'unknown',\n      extractionMethod: 'extractFromFile_pdf',\n    });\n  }\n}\n\nconst seenGlobal = new Set();\nconst dedupedNotices = parsedNotices.filter((n) => {\n  const key = normalize(n.evidenceUrl + ' ' + n.title + ' ' + n.evidenceText.slice(0, 100));\n  if (seenGlobal.has(key)) return false;\n  seenGlobal.add(key);\n  return true;\n});\n\nconst parseMeta = {\n  recordKind: 'parseMeta',\n  documentsSeen: extractedItems.length,\n  documentsProcessed,\n  documentErrors: docErrors,\n  noticeCount: dedupedNotices.length,\n  checkedAt: new Date().toISOString(),\n};\n\nreturn [{ json: parseMeta }, ...dedupedNotices.map((n) => ({ json: n }))];"
+      },
+      "id": "parse-notices",
+      "name": "Parse VNF Notices",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2240,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "merge-fetchmeta-notices",
+      "name": "Merge Fetch Meta And Parsed Notices",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        2520,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Classifies each parsedNotice into an official VNF notice-type category. Never classifies any\n// category as a route/bike closure - official canal/waterway status stays official canal/waterway\n// status (per the CDM canal/flood/route-impact separation rule).\nconst items = $input.all().map((i) => i.json || {});\nfunction classify(notice) {\n  const text = (notice.title + ' ' + notice.effect + ' ' + notice.evidenceText).toLowerCase();\n  if (/p[ée]riodes? pour les travaux de ch[oô]mage|ch[oô]mage/.test(text)) return { officialNoticeType: 'chomage_calendar', officialCanalStatus: 'scheduled_maintenance_closure' };\n  if (/[ée]cluse/.test(text) && /ferm/.test(text)) return { officialNoticeType: 'lock_closure', officialCanalStatus: 'lock_closed' };\n  if (/arr[êe]t de navigation|navigation interrompue/.test(text)) return { officialNoticeType: 'waterway_closure', officialCanalStatus: 'navigation_stopped' };\n  if (/restriction|alternat/.test(text)) return { officialNoticeType: 'navigation_restriction', officialCanalStatus: 'navigation_restricted' };\n  if (/travaux|chantier/.test(text)) return { officialNoticeType: 'canal_maintenance', officialCanalStatus: 'maintenance_in_progress' };\n  if (notice.recordKind === 'parsedNotice') return { officialNoticeType: 'informational_notice', officialCanalStatus: 'notice_published' };\n  return null;\n}\nreturn items.map((item) => {\n  if (item.recordKind !== 'parsedNotice') return { json: item };\n  const c = classify(item) || { officialNoticeType: 'unknown_notice_type', officialCanalStatus: 'unspecified' };\n  return { json: { ...item, ...c } };\n});"
+      },
+      "id": "classify-status",
+      "name": "Classify Official Canal Status",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2800,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Detects EXPLICIT official route/towpath/public-access impact per the strict CDM domain-boundary\n// rule: canal/navigation status alone (open/closed/restricted/maintenance/chômage) is never route\n// status. routeImpactStatus only becomes \"reported\" when the evidence text contains BOTH a\n// towpath/cycling-infrastructure term AND an explicit closure/impact verb applied to it - a\n// deliberately stricter combined check than the repo's single-term vnfCyclistText() gate (which only\n// requires a towpath/cycling mention and is used for auto_publish ELIGIBILITY, not for asserting\n// confirmed route impact). Mere mention of \"halage\" or \"piste cyclable\" in a boat-navigation notice\n// is NOT sufficient on its own to set routeImpactStatus=\"reported\".\nconst items = $input.all().map((i) => i.json || {});\nconst towpathTerm = /(chemin de halage|voie verte|piste cyclable|itin[ée]raire v[ée]lo|route cyclable|acc[èe]s public)/i;\nconst closureVerb = /(ferm[ée]e?s?|interdit|interrompu|coup[ée]e?s?|barr[ée]e?s?)/i;\nconst explicitPhrases = [\n  /chemin de halage ferm/i,\n  /voie verte ferm/i,\n  /piste cyclable ferm/i,\n  /itin[ée]raire v[ée]lo ferm/i,\n  /acc[èe]s public interdit/i,\n  /d[ée]viation cyclable/i,\n  /fermeture du chemin/i,\n  /interruption de l.?itin[ée]raire/i,\n  /route cyclable impact[ée]e/i,\n];\nfunction detect(evidenceText) {\n  const text = String(evidenceText || '');\n  const explicit = explicitPhrases.some((re) => re.test(text));\n  const combined = towpathTerm.test(text) && closureVerb.test(text);\n  const cyclistMentioned = /(chemin de halage|halage|voie verte|piste cyclable|cyclable|cycliste|v[ée]lo|acc[èe]s public|pi[ée]ton|passerelle)/i.test(text);\n  const hasExplicitImpact = explicit || combined;\n  return {\n    routeImpactStatus: hasExplicitImpact ? 'reported' : 'not_indicated',\n    routeClosureConfirmed: false,\n    towpathClosureConfirmed: hasExplicitImpact && /chemin de halage|halage/i.test(text),\n    publicAccessClosureConfirmed: hasExplicitImpact && /acc[èe]s public/i.test(text),\n    detourConfirmed: hasExplicitImpact && /d[ée]viation/i.test(text),\n    hasCyclistTowpathMention: cyclistMentioned,\n  };\n}\nreturn items.map((item) => {\n  if (item.recordKind !== 'parsedNotice') return { json: item };\n  return { json: { ...item, ...detect(item.evidenceText) } };\n});"
+      },
+      "id": "detect-impact",
+      "name": "Detect Explicit Route / Towpath / Public-Access Impact",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3080,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Adapted from scripts/route-monitoring/fetch-vnf.mjs's mapLocation()/canalInterval(), using the\n// segment list embedded in \"Load / Embed Canal Route Context\" (real repo data - never invented).\n// Because each crosswalk segment already carries its own rideDay, route-day mapping is derived\n// directly from matched-segment overlap instead of needing the full route geometry file.\nconst contextItems = $items('Load / Embed Canal Route Context');\nconst segments = (contextItems[0] && contextItems[0].json.segments) || [];\nconst items = $input.all().map((i) => i.json || {});\nconst kmToMiFactor = 0.621371;\n\nfunction normalize(value) {\n  return String(value || '').normalize('NFKD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase().replace(/[’']/g, ' ').replace(/[^a-z0-9]+/g, ' ').trim();\n}\nfunction canalInterval(text) {\n  const n = normalize(text);\n  if (/(canal de garonne|canal lateral a la garonne)/.test(n)) {\n    return { label: 'Canal latéral à la Garonne', matched: segments.filter((s) => /canal lateral a la garonne/.test(normalize(s.canalReach))) };\n  }\n  if (/canal du midi/.test(n)) {\n    return { label: 'Canal du Midi', matched: segments.filter((s) => normalize(s.canalReach).includes('canal du midi')) };\n  }\n  return null;\n}\nfunction mapLocation(text) {\n  const normalized = normalize(text);\n  const terms = [];\n  for (const segment of segments) {\n    const names = [segment.segmentId, segment.startTown, segment.endTown, ...(segment.keyPlaces || []), ...(segment.alternateSpellings || [])];\n    for (const name of names) if (name) terms.push({ term: normalize(name), label: name, segment });\n  }\n  terms.sort((a, b) => b.term.length - a.term.length);\n  for (const entry of terms) {\n    if (entry.term.length >= 4 && normalized.includes(entry.term)) return locationFromSegments([entry.segment], entry.label);\n  }\n  const broad = canalInterval(text);\n  if (broad && broad.matched.length) return locationFromSegments(broad.matched, broad.label);\n  return { routeRelation: 'unknown_location', confidence: 'unknown', locationText: 'VNF Sud-Ouest waterway, exact CDM route relation unmapped', department: 'unknown', rdStart: null, rdEnd: null, tourDayIds: [] };\n}\nfunction locationFromSegments(matched, label) {\n  const sorted = [...matched].sort((a, b) => a.kmStart - b.kmStart);\n  const kmStart = sorted[0].kmStart;\n  const kmEnd = sorted[sorted.length - 1].kmEnd;\n  const rideDays = [...new Set(sorted.map((s) => s.rideDay))].sort((a, b) => a - b);\n  const tourDayIds = rideDays.map((d) => 'RD0' + d);\n  const departments = [...new Set(sorted.flatMap((s) => s.departments || []))];\n  return {\n    routeRelation: 'on_route',\n    confidence: sorted.length > 1 ? 'medium' : 'high',\n    locationText: label,\n    department: departments.join('/') || 'unknown',\n    routeKmStart: Number(kmStart.toFixed(3)),\n    routeKmEnd: Number(kmEnd.toFixed(3)),\n    routeMpStart: Number((kmStart * kmToMiFactor).toFixed(1)),\n    routeMpEnd: Number((kmEnd * kmToMiFactor).toFixed(1)),\n    rdStart: rideDays[0] || null,\n    rdEnd: rideDays[rideDays.length - 1] || null,\n    tourDayIds,\n  };\n}\n\nreturn items.map((item) => {\n  if (item.recordKind !== 'parsedNotice') return { json: item };\n  const location = mapLocation(item.waterway + '\\n' + item.title + '\\n' + item.evidenceText);\n  const mappingConfidence = location.confidence === 'unknown' ? 'unknown' : location.confidence;\n  let reviewState;\n  if (mappingConfidence === 'unknown' || location.routeRelation === 'unknown_location') {\n    reviewState = 'manual_review_required';\n  } else if (item.routeImpactStatus === 'reported' && location.rdStart) {\n    reviewState = 'auto_publish_candidate';\n  } else if (item.routeImpactStatus === 'not_indicated') {\n    reviewState = 'informational';\n  } else {\n    reviewState = 'manual_review_required';\n  }\n  return { json: { ...item, ...location, mappingConfidence, reviewState } };\n});"
+      },
+      "id": "match-corridor",
+      "name": "Match Notices to CDM Corridor / Ride Days",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3360,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Produces the NORMALIZED OFFICIAL CANAL NOTICE RECORD contract per the connector output contract.\n// Official canal status/type is preserved verbatim from classification; route-impact fields default\n// to not_indicated/false and are only elevated when Detect Explicit Route/Towpath Impact found\n// explicit evidence. Required no-route-impact wording is applied per notice type.\nconst items = $input.all().map((i) => i.json || {});\nconst checkedAt = new Date().toISOString();\nconst sourceName = 'Voies Navigables de France (VNF) Sud-Ouest';\n\nconst noticeTypeLabelFr = {\n  navigation_restriction: 'Restriction de navigation',\n  canal_maintenance: 'Travaux d’entretien du canal',\n  chomage_calendar: 'Calendrier de chômage (arrêt programmé de navigation)',\n  lock_closure: 'Fermeture d’écluse',\n  waterway_closure: 'Fermeture de la voie d’eau',\n  informational_notice: 'Avis à la batellerie informatif',\n  unknown_notice_type: 'Avis VNF non classé',\n};\nconst noticeTypeLabelEn = {\n  navigation_restriction: 'Navigation restriction',\n  canal_maintenance: 'Canal maintenance works',\n  chomage_calendar: 'Scheduled navigation shutdown calendar (chômage)',\n  lock_closure: 'Lock closure',\n  waterway_closure: 'Waterway closure',\n  informational_notice: 'Informational notice to boaters',\n  unknown_notice_type: 'Unclassified VNF notice',\n};\nfunction noImpactWording(noticeType) {\n  if (noticeType === 'navigation_restriction') return 'Official VNF navigation restriction in place - no towpath impact indicated.';\n  if (noticeType === 'canal_maintenance' || noticeType === 'chomage_calendar') return 'Official VNF canal maintenance notice in place - no route impact indicated.';\n  return 'Official canal notice in place - no route impact indicated.';\n}\n\nconst normalized = items.map((item) => {\n  if (item.recordKind !== 'parsedNotice') return item;\n  const isImpactReported = item.routeImpactStatus === 'reported';\n  const statusExplanation = isImpactReported\n    ? ('VNF evidence explicitly reports towpath, public-access, or cyclist impact for this notice on ' + item.waterway + '; confirm before riding.').split(/\\s+/).slice(0, 20).join(' ')\n    : (noImpactWording(item.officialNoticeType) + ' Verify locally before riding this canal segment.').split(/\\s+/).slice(0, 20).join(' ');\n  return {\n    recordKind: 'officialCanalNotice',\n    externalId: 'vnf-' + (item.evidenceUrl ? item.evidenceUrl.split('/').pop() : 'unknown') + '-' + (item.noticeNumber || 'n'),\n    sourceId: 'vnf',\n    sourceType: 'vnf',\n    category: 'official_canal_notice',\n    semanticStatus: 'canal_status_near_route',\n    officialCanalStatus: item.officialCanalStatus || 'unspecified',\n    officialNoticeType: item.officialNoticeType || 'unknown_notice_type',\n    officialNoticeLabelFr: noticeTypeLabelFr[item.officialNoticeType] || noticeTypeLabelFr.unknown_notice_type,\n    officialNoticeLabelEn: noticeTypeLabelEn[item.officialNoticeType] || noticeTypeLabelEn.unknown_notice_type,\n    routeImpactStatus: item.routeImpactStatus || 'not_indicated',\n    routeClosureConfirmed: Boolean(item.routeClosureConfirmed),\n    towpathClosureConfirmed: Boolean(item.towpathClosureConfirmed),\n    publicAccessClosureConfirmed: Boolean(item.publicAccessClosureConfirmed),\n    detourConfirmed: Boolean(item.detourConfirmed),\n    status: 'notice',\n    title: item.title,\n    nearestPlace: item.locationText || 'VNF Sud-Ouest waterway',\n    canalName: item.waterway,\n    waterwaySection: item.waterway,\n    departmentCode: item.department || 'unknown',\n    departmentName: item.department || 'unknown',\n    rideDay: null,\n    rideDays: item.tourDayIds || [],\n    distanceFromRouteKm: null,\n    nearestRouteKm: item.routeKmStart != null ? item.routeKmStart : null,\n    nearestRouteMp: item.routeMpStart != null ? item.routeMpStart : null,\n    mappingConfidence: item.mappingConfidence || 'unknown',\n    reviewState: item.reviewState || 'manual_review_required',\n    routeInfluenceConfirmed: false,\n    startTime: item.startedAt || checkedAt,\n    expectedEndTime: item.endedAt || null,\n    publicationDate: item.startedAt || null,\n    checkedAt,\n    sourceUrl: item.sourceUrl || 'https://www.vnf.fr/vnf/avis-a-la-batellerie/',\n    documentUrl: item.evidenceUrl || null,\n    summary: item.effect + ' - ' + item.waterway + '. ' + noImpactWording(item.officialNoticeType),\n    statusTitle: item.title,\n    statusExplanation,\n    statusSource: { name: sourceName, url: item.sourceUrl || item.evidenceUrl || 'https://www.vnf.fr/vnf/avis-a-la-batellerie/', official: true, checkedAt, sourceLanguage: 'fr', translationMethod: 'condensed_official_source' },\n    whyItMatters: isImpactReported ? 'An official VNF notice explicitly reports towpath or public-access impact near the route corridor.' : 'An official VNF canal/waterway notice is in effect near the route corridor; this is a boat-navigation fact, not a confirmed cyclist route impact.',\n    recommendedAction: 'Check VNF and official route notices before relying on canal-adjacent access near the affected section.',\n    suggestedDetour: null,\n    detourImpact: null,\n    rdStart: item.rdStart || null,\n    rdEnd: item.rdEnd || null,\n    tourDayIds: item.tourDayIds || [],\n    raw: { noticeNumber: item.noticeNumber, waterway: item.waterway, effect: item.effect, evidenceText: item.evidenceText, extractionMethod: item.extractionMethod, hasCyclistTowpathMention: Boolean(item.hasCyclistTowpathMention) },\n  };\n});\n\nreturn normalized.map((r) => ({ json: r }));"
+      },
+      "id": "normalize-records",
+      "name": "Normalize Canal Status Records",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3640,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst fetchMetaItems = $items('Merge Fetch Meta And Parsed Notices').map((i) => i.json).filter((i) => i.recordKind === 'fetchMeta');\nconst parseMetaItems = $items('Merge Fetch Meta And Parsed Notices').map((i) => i.json).filter((i) => i.recordKind === 'parseMeta');\nconst fetchMeta = fetchMetaItems[0] || { fetchOk: false, pagesFetched: 0, pdfCandidateCount: 0, errors: ['No fetchMeta record observed'] };\nconst parseMeta = parseMetaItems[0] || { documentsSeen: 0, documentsProcessed: 0, documentErrors: [], noticeCount: 0 };\nconst normalizedNotices = $input.all().map((i) => i.json || {}).filter((i) => i.recordKind === 'officialCanalNotice');\n\nconst navigationRestrictionCount = normalizedNotices.filter((n) => n.officialNoticeType === 'navigation_restriction').length;\nconst maintenanceChomageCount = normalizedNotices.filter((n) => ['canal_maintenance', 'chomage_calendar'].includes(n.officialNoticeType)).length;\nconst officialCanalNoticeCount = normalizedNotices.length;\n\nlet status = 'ok';\nconst errors = [...(fetchMeta.errors || []), ...(parseMeta.documentErrors || [])];\nconst warnings = [];\nif (!fetchMeta.fetchOk) {\n  status = 'source_api_blocked';\n} else if (fetchMeta.pdfCandidateCount > 0 && parseMeta.documentsProcessed === 0) {\n  status = 'degraded';\n  warnings.push('PDF documents were discovered but none produced usable extracted text.');\n} else if (errors.length) {\n  status = 'degraded';\n}\n\nreturn [{\n  json: {\n    recordKind: 'sourceHealth',\n    sourceId: 'vnf',\n    sourceName: 'Voies Navigables de France (VNF) Sud-Ouest',\n    status,\n    fetchedAt: new Date().toISOString(),\n    staleAfterMinutes: Number(config.staleAfterMinutes),\n    httpStatus: fetchMeta.fetchOk ? 200 : 0,\n    itemCount: fetchMeta.pdfCandidateCount || 0,\n    documentCount: parseMeta.documentsSeen || 0,\n    officialCanalNoticeCount,\n    navigationRestrictionCount,\n    maintenanceChomageCount,\n    ignoredCount: (parseMeta.documentErrors || []).length,\n    recordCount: officialCanalNoticeCount,\n    ignored: (parseMeta.documentErrors || []).map((e) => ({ reason: e })),\n    errors,\n    warnings,\n  },\n}];"
+      },
+      "id": "build-source-health",
+      "name": "Build Source Health",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3920,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst notices = $input.all().map((i) => i.json || {}).filter((i) => i.recordKind === 'officialCanalNotice');\n\nconst events = [];\nconst reviewQueue = [];\nfor (const n of notices) {\n  const candidate = {\n    eventType: 'canal_status',\n    sourceType: 'vnf',\n    sourceId: 'vnf',\n    sourceName: 'Voies Navigables de France (VNF) Sud-Ouest',\n    officialCanalStatus: n.officialCanalStatus,\n    officialNoticeType: n.officialNoticeType,\n    routeImpactStatus: n.routeImpactStatus,\n    routeClosureConfirmed: n.routeClosureConfirmed,\n    towpathClosureConfirmed: n.towpathClosureConfirmed,\n    publicAccessClosureConfirmed: n.publicAccessClosureConfirmed,\n    detourConfirmed: n.detourConfirmed,\n    reviewState: n.reviewState,\n    matchConfidence: n.mappingConfidence,\n    title: n.title,\n    summary: n.summary,\n    rideDays: n.rideDays,\n    departmentCode: n.departmentCode,\n    checkedAt: n.checkedAt,\n    sourceUrl: n.sourceUrl,\n    externalId: n.externalId,\n  };\n  if (n.reviewState === 'auto_publish_candidate') events.push(candidate); else reviewQueue.push(candidate);\n}\n\nreturn [{ json: { recordKind: 'compatibilityCandidates', eventsCompat: events, reviewQueueCompat: reviewQueue, generatedAt: config.generatedAt } }];"
+      },
+      "id": "build-compat",
+      "name": "Build Compatibility Candidates",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3920,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "merge-normalize-health",
+      "name": "Merge Normalize And Health",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        4200,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "merge-compat",
+      "name": "Merge Compat",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        4480,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst allInputs = $input.all().map((i) => i.json || {});\n\nfunction validIso(v) { return !v || !Number.isNaN(Date.parse(v)); }\nconst forbiddenPathPattern = /(^|\\/)(tmp|data\\/public|home\\/node\\/\\.n8n)(\\/|$)/i;\n\nconst errors = [];\nconst warnings = [];\n\nif (!config.connectorId) errors.push('Missing connectorId in Set Connector Config');\nif (!config.connectorNumber) errors.push('Missing connectorNumber in Set Connector Config');\nif (!config.workflowName) errors.push('Missing workflowName in Set Connector Config');\nif (!config.workflowVersion) errors.push('Missing workflowVersion in Set Connector Config');\nif (!validIso(config.generatedAt)) errors.push('Missing or invalid generatedAt in Set Connector Config');\nif (!config.outputDirectory || !config.outputDirectory.startsWith('/files/cdm-status-output')) errors.push('Forbidden or missing output directory: expected /files/cdm-status-output');\nif (forbiddenPathPattern.test(config.outputDirectory || '')) errors.push('Output directory matches a forbidden path pattern');\n\nconst fullText = JSON.stringify(allInputs);\nif (/bearer\\s+[A-Za-z0-9_\\-.]{20,}/i.test(fullText)) errors.push('Possible bearer token leaked into merged output records');\nif (/apikey[\\\"']?\\s*[:=]\\s*[\\\"'][A-Za-z0-9_\\-]{16,}[\\\"']/i.test(fullText)) errors.push('Possible hardcoded API key value leaked into merged output records');\nif (/process\\.env/.test(fullText)) errors.push('process.env literal found in merged output records');\nif (/\\btowpath closure confirmed\\b|\\broute closure confirmed\\b|\\bpublic access closure confirmed\\b|\\bdetour required\\b/i.test(fullText)) warnings.push('Merged output contains closure/detour phrasing; verify it is only present where explicit route-impact evidence exists');\n\nlet sawSourceHealth = false;\nlet sawAnyNotice = false;\nfor (const r of allInputs) {\n  if (r.recordKind === 'sourceHealth') {\n    sawSourceHealth = true;\n    for (const field of ['sourceId', 'sourceName', 'status', 'fetchedAt', 'staleAfterMinutes', 'recordCount', 'errors', 'warnings']) {\n      if (r[field] === undefined || r[field] === null) errors.push('sourceHealth ' + (r.sourceId || 'unknown') + ' missing ' + field);\n    }\n    if (!validIso(r.fetchedAt)) errors.push('sourceHealth ' + r.sourceId + ' has invalid fetchedAt');\n    if (!['ok', 'degraded', 'failed', 'stale', 'source_api_blocked', 'source_shape_changed'].includes(r.status)) errors.push('sourceHealth ' + r.sourceId + ' has invalid status enum: ' + r.status);\n    continue;\n  }\n  if (r.recordKind === 'officialCanalNotice') {\n    sawAnyNotice = true;\n    for (const field of ['externalId', 'sourceId', 'category', 'officialCanalStatus', 'officialNoticeType', 'routeImpactStatus', 'title', 'checkedAt', 'statusExplanation', 'statusSource']) {\n      if (r[field] === undefined || r[field] === null || r[field] === '') errors.push('officialCanalNotice/' + (r.externalId || 'unknown') + ': missing required field ' + field);\n    }\n    if (!['not_indicated', 'reported', 'unknown'].includes(r.routeImpactStatus)) errors.push('officialCanalNotice/' + r.externalId + ': invalid routeImpactStatus ' + r.routeImpactStatus);\n    if (r.routeImpactStatus !== 'reported' && (r.routeClosureConfirmed === true || r.towpathClosureConfirmed === true || r.publicAccessClosureConfirmed === true || r.detourConfirmed === true)) {\n      errors.push('officialCanalNotice/' + r.externalId + ': a confirmed-impact flag is true while routeImpactStatus is not \"reported\" - navigation/canal status must not be inferred as route impact');\n    }\n    if (!validIso(r.checkedAt) || !validIso(r.startTime)) errors.push('officialCanalNotice/' + r.externalId + ': invalid ISO timestamp');\n    if (!r.statusSource || r.statusSource.official !== true) errors.push('officialCanalNotice/' + r.externalId + ': elevated record missing official statusSource');\n    if (r.reviewState === 'auto_publish_candidate' && r.mappingConfidence === 'unknown') errors.push('officialCanalNotice/' + r.externalId + ': auto_publish_candidate with unknown/weak mapping confidence is not allowed');\n    if (/canal (closed|closure)/i.test(r.title || '') && !/no route impact indicated|no towpath impact indicated/i.test(r.summary || '')) warnings.push('officialCanalNotice/' + r.externalId + ': canal-closure wording without the mandatory no-route-impact caveat nearby');\n    continue;\n  }\n  if (r.recordKind === 'compatibilityCandidates') {\n    if (!Array.isArray(r.eventsCompat) || !Array.isArray(r.reviewQueueCompat)) errors.push('compatibilityCandidates missing eventsCompat[] or reviewQueueCompat[]');\n  }\n}\nif (!sawSourceHealth) errors.push('No sourceHealth record observed in merged input (upstream fetch may not have run)');\n\nreturn [{ json: { recordKind: 'validationResult', passed: errors.length === 0, errors, warnings, noticesSeen: sawAnyNotice } }, ...allInputs.map((r) => ({ json: r }))];"
+      },
+      "id": "validate-output",
+      "name": "Validate Canal Status Connector Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4760,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst items = $input.all().map((i) => i.json || {});\nconst validation = items.find((i) => i.recordKind === 'validationResult') || { passed: true, errors: [], warnings: [] };\nconst notices = items.filter((i) => i.recordKind === 'officialCanalNotice');\nconst sourceHealth = items.filter((i) => i.recordKind === 'sourceHealth');\nconst compat = items.find((i) => i.recordKind === 'compatibilityCandidates') || { eventsCompat: [], reviewQueueCompat: [] };\nconst ignoredItems = sourceHealth.flatMap((h) => (h.ignored || []).map((x) => ({ sourceId: h.sourceId, ...x })));\n\nconst navigationRestrictionRecords = notices.filter((n) => n.officialNoticeType === 'navigation_restriction');\nconst maintenanceChomageRecords = notices.filter((n) => ['canal_maintenance', 'chomage_calendar'].includes(n.officialNoticeType));\nconst routeImpactRecords = notices.filter((n) => n.routeImpactStatus === 'reported');\n\nconst anyBlocked = sourceHealth.some((h) => h.status === 'source_api_blocked');\nconst anyShapeChanged = sourceHealth.some((h) => h.status === 'source_shape_changed');\nconst anyDegraded = sourceHealth.some((h) => h.status === 'degraded' || h.status === 'failed');\nconst status = anyBlocked ? 'source_api_blocked' : anyShapeChanged ? 'source_shape_changed' : (!validation.passed ? 'failed' : anyDegraded ? 'degraded' : 'ok');\n\nconst combined = {\n  connectorId: config.connectorId,\n  connectorNumber: config.connectorNumber,\n  connectorName: config.connectorName,\n  workflowName: config.workflowName,\n  workflowVersion: config.workflowVersion,\n  generatedAt: config.generatedAt,\n  timezone: config.timezone,\n  status,\n  sources: [{ sourceId: 'vnf', sourceName: 'Voies Navigables de France (VNF) Sud-Ouest', endpoint: 'https://www.vnf.fr/vnf/avis-a-la-batellerie/', category: 'closure' }],\n  officialCanalNotices: notices,\n  canalStatusRecords: notices,\n  navigationRestrictionRecords,\n  maintenanceChomageRecords,\n  routeImpactRecords,\n  ignoredItems,\n  records: notices,\n  sourceHealth,\n  attribution: { required: true, source: 'Voies Navigables de France', official: true },\n  officialCanalStatusPolicy: { preserveOfficialStatus: true, preserveOfficialNoticeType: true, separateRouteImpactFromOfficialCanalStatus: true },\n  routeImpactPolicy: { routeClosureRequiresExplicitOfficialRouteImpactSource: true, towpathClosureRequiresExplicitOfficialRouteImpactSource: true, publicAccessClosureRequiresExplicitOfficialRouteImpactSource: true, detourRequiresExplicitOfficialRouteImpactSource: true, canalNavigationStatusIsNotRouteStatus: true, defaultRouteImpactStatus: 'not_indicated' },\n  validation: { passed: validation.passed, errors: validation.errors || [], warnings: validation.warnings || [] },\n  compatibility: { targetEventsFeed: 'public/data/route-status-events.json', targetReviewQueueFeed: 'public/data/route-status-review-queue.json', targetSourceHealthFeed: 'public/data/route-status-source-health.json', mode: 'compatibility_candidate' },\n};\n\nfunction emit(path, payload, label) { return { json: { targetPath: path, label, jsonText: JSON.stringify(payload, null, 2) + '\\n' } }; }\n\nconst noticesFeed = { generatedAt: config.generatedAt, source: 'vnf', notices };\nconst ignoredFeed = { generatedAt: config.generatedAt, ignoredItems };\nconst healthFeed = { generatedAt: config.generatedAt, sources: sourceHealth };\nconst eventsCompatFeed = { generatedAt: config.generatedAt, mode: 'compatibility_candidate', events: compat.eventsCompat || [] };\nconst reviewQueueCompatFeed = { generatedAt: config.generatedAt, mode: 'compatibility_candidate', reviewQueue: compat.reviewQueueCompat || [] };\nconst sourceHealthCompatFeed = { generatedAt: config.generatedAt, mode: 'compatibility_candidate', sources: sourceHealth };\n\nreturn [\n  emit(config.outputDirectory + '/canal-status-connector-output.json', combined, 'canal-status-connector-output'),\n  emit(config.outputDirectory + '/canal-vnf-notices.normalized.json', noticesFeed, 'canal-vnf-notices.normalized'),\n  emit(config.outputDirectory + '/canal-vnf-ignored-items.json', ignoredFeed, 'canal-vnf-ignored-items'),\n  emit(config.outputDirectory + '/canal-source-health.json', healthFeed, 'canal-source-health'),\n  emit(config.outputDirectory + '/canal-route-status-events.compat.json', eventsCompatFeed, 'canal-route-status-events.compat'),\n  emit(config.outputDirectory + '/canal-route-status-review-queue.compat.json', reviewQueueCompatFeed, 'canal-route-status-review-queue.compat'),\n  emit(config.outputDirectory + '/canal-route-status-source-health.compat.json', sourceHealthCompatFeed, 'canal-route-status-source-health.compat'),\n];"
+      },
+      "id": "build-payloads",
+      "name": "Build Canal Status Output Payloads",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5040,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = [];\nfor (const item of $input.all()) {\n  const buf = Buffer.from(item.json.jsonText, 'utf8');\n  const fileName = String(item.json.targetPath).split('/').pop();\n  const binary = await this.helpers.prepareBinaryData(buf, fileName, 'application/json');\n  output.push({ json: item.json, binary: { data: binary } });\n}\nreturn output;"
+      },
+      "id": "prepare-binary",
+      "name": "Prepare Binary Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5320,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.targetPath }}",
+        "dataPropertyName": "data",
+        "options": {}
+      },
+      "id": "write-files",
+      "name": "Write Canal Status Output Files",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        5600,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $json.targetPath }}",
+        "options": {}
+      },
+      "id": "read-back-files",
+      "name": "Read Back Canal Status Output Files",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        5880,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const LABELS = new Set(['canal-status-connector-output', 'canal-vnf-notices.normalized', 'canal-vnf-ignored-items', 'canal-source-health', 'canal-route-status-events.compat', 'canal-route-status-review-queue.compat', 'canal-route-status-source-health.compat']);\nconst results = [];\nconst items = $input.all();\nfor (let i = 0; i < items.length; i += 1) {\n  const item = items[i];\n  const fileName = (item.json && item.json.fileName) || 'unknown';\n  const targetPath = fileName;\n  const label = fileName.replace(/\\.json$/, '');\n  if (!item.binary || !item.binary.data) {\n    results.push({ json: { label, targetPath, validJson: false, bytes: 0, error: 'No binary data read back for ' + fileName } });\n    continue;\n  }\n  const buf = await this.helpers.getBinaryDataBuffer(i, 'data');\n  const text = buf.toString('utf8');\n  let parsed;\n  try {\n    parsed = JSON.parse(text);\n  } catch (err) {\n    results.push({ json: { label, targetPath, validJson: false, bytes: Buffer.byteLength(text, 'utf8'), error: 'Invalid JSON: ' + err.message } });\n    continue;\n  }\n  let shapeError = null;\n  if (label === 'canal-status-connector-output' && (!parsed.connectorId || !Array.isArray(parsed.sourceHealth) || !parsed.validation)) {\n    shapeError = 'canal-status-connector-output missing connectorId, sourceHealth[], or validation';\n  }\n  if (label === 'canal-source-health' && !Array.isArray(parsed.sources)) {\n    shapeError = 'canal-source-health missing sources[]';\n  }\n  if (!LABELS.has(label)) shapeError = shapeError || ('Unexpected output label: ' + label);\n  results.push({ json: { label, targetPath, validJson: !shapeError, bytes: Buffer.byteLength(text, 'utf8'), error: shapeError } });\n}\nreturn results;"
+      },
+      "id": "validate-written",
+      "name": "Validate Written Canal Status Files",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6160,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst validationResults = $input.all().map((i) => i.json || {});\nconst generatedAt = config.generatedAt || new Date().toISOString();\nconst completedAt = new Date().toISOString();\nconst failures = validationResults.filter((r) => r.validJson !== true || r.error);\nconst errors = failures.map((f) => ({ label: f.label, targetPath: f.targetPath, message: f.error || 'Output file did not pass validation' }));\n\nconst normalizeItems = $items('Normalize Canal Status Records').map((i) => i.json);\nconst officialCanalNoticeCount = normalizeItems.length;\nconst navigationRestrictionCount = normalizeItems.filter((n) => n.officialNoticeType === 'navigation_restriction').length;\nconst maintenanceChomageCount = normalizeItems.filter((n) => ['canal_maintenance', 'chomage_calendar'].includes(n.officialNoticeType)).length;\nconst routeImpactConfirmedCount = normalizeItems.filter((n) => n.routeImpactStatus === 'reported').length;\nconst manualReviewCount = normalizeItems.filter((n) => n.reviewState === 'manual_review_required').length;\nconst autoPublishCandidateCount = normalizeItems.filter((n) => n.reviewState === 'auto_publish_candidate').length;\n\nconst healthItems = $items('Build Source Health').map((i) => i.json);\nconst sourceApiBlocked = healthItems.some((h) => h.status === 'source_api_blocked');\nconst sourceShapeChanged = healthItems.some((h) => h.status === 'source_shape_changed');\nconst fetchMetaItems = $items('Fetch VNF Source Index / Notices').map((i) => i.json).filter((i) => i.recordKind === 'fetchMeta');\nconst parseMetaItems = $items('Parse VNF Notices').map((i) => i.json).filter((i) => i.recordKind === 'parseMeta');\nconst ignoredCount = (parseMetaItems[0] && (parseMetaItems[0].documentErrors || []).length) || 0;\n\nreturn [{\n  json: {\n    recordKind: 'runDiagnostics',\n    ok: errors.length === 0,\n    connectorId: config.connectorId,\n    workflowName: config.workflowName,\n    workflowVersion: config.workflowVersion,\n    generatedAt,\n    completedAt,\n    validationStatus: errors.length === 0 ? 'passed' : 'failed',\n    sourceStatus: sourceApiBlocked ? 'source_api_blocked' : sourceShapeChanged ? 'source_shape_changed' : 'ok',\n    writeStatus: validationResults.length > 0 ? 'attempted' : 'not_attempted',\n    infraBlocked: false,\n    fileAccessRegression: false,\n    sourceApiBlocked,\n    sourceShapeChanged,\n    outputFilenames: validationResults.map((r) => r.targetPath).filter(Boolean),\n    officialCanalNoticeCount,\n    navigationRestrictionCount,\n    maintenanceChomageCount,\n    ignoredCount,\n    routeImpactConfirmedCount,\n    manualReviewCount,\n    autoPublishCandidateCount,\n    errors,\n    warnings: [],\n    nextAction: errors.length === 0 ? 'Owner to move workflow into CDM_Status_Seven_Connectors folder' : 'Debug failing node before folder move',\n    folderMoveRequired: true,\n  },\n}];"
+      },
+      "id": "build-diagnostics",
+      "name": "Build Run Diagnostics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6440,
+        260
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Connector Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Connector Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Connector Config": {
+      "main": [
+        [
+          {
+            "node": "Load / Embed Canal Route Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load / Embed Canal Route Context": {
+      "main": [
+        [
+          {
+            "node": "Build VNF Request Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build VNF Request Config": {
+      "main": [
+        [
+          {
+            "node": "Fetch VNF Source Index / Notices",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch VNF Source Index / Notices": {
+      "main": [
+        [
+          {
+            "node": "Filter PDF Candidates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter PDF Candidates": {
+      "main": [
+        [
+          {
+            "node": "Fetch VNF Documents If Required",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge Fetch Meta And Parsed Notices",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fetch VNF Documents If Required": {
+      "main": [
+        [
+          {
+            "node": "Extract PDF Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract PDF Text": {
+      "main": [
+        [
+          {
+            "node": "Parse VNF Notices",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse VNF Notices": {
+      "main": [
+        [
+          {
+            "node": "Merge Fetch Meta And Parsed Notices",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Fetch Meta And Parsed Notices": {
+      "main": [
+        [
+          {
+            "node": "Classify Official Canal Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify Official Canal Status": {
+      "main": [
+        [
+          {
+            "node": "Detect Explicit Route / Towpath / Public-Access Impact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detect Explicit Route / Towpath / Public-Access Impact": {
+      "main": [
+        [
+          {
+            "node": "Match Notices to CDM Corridor / Ride Days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Match Notices to CDM Corridor / Ride Days": {
+      "main": [
+        [
+          {
+            "node": "Normalize Canal Status Records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Canal Status Records": {
+      "main": [
+        [
+          {
+            "node": "Build Source Health",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Build Compatibility Candidates",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge Normalize And Health",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Source Health": {
+      "main": [
+        [
+          {
+            "node": "Merge Normalize And Health",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Normalize And Health": {
+      "main": [
+        [
+          {
+            "node": "Merge Compat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Compatibility Candidates": {
+      "main": [
+        [
+          {
+            "node": "Merge Compat",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Compat": {
+      "main": [
+        [
+          {
+            "node": "Validate Canal Status Connector Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Canal Status Connector Output": {
+      "main": [
+        [
+          {
+            "node": "Build Canal Status Output Payloads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Canal Status Output Payloads": {
+      "main": [
+        [
+          {
+            "node": "Prepare Binary Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Binary Payload": {
+      "main": [
+        [
+          {
+            "node": "Write Canal Status Output Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Canal Status Output Files": {
+      "main": [
+        [
+          {
+            "node": "Read Back Canal Status Output Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Back Canal Status Output Files": {
+      "main": [
+        [
+          {
+            "node": "Validate Written Canal Status Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Written Canal Status Files": {
+      "main": [
+        [
+          {
+            "node": "Build Run Diagnostics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "timezone": "Europe/Paris",
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": null,
+  "pinData": null,
+  "versionId": "21ed9326-df67-41a1-8623-ff99c0c7daa6",
+  "activeVersionId": null,
+  "versionCounter": 5,
+  "triggerCount": 2,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-07-21T16:46:58.028Z",
+      "createdAt": "2026-07-21T16:46:58.028Z",
+      "role": "workflow:owner",
+      "workflowId": "wm4M6lHgcbBYlIJh",
+      "projectId": "Y0Ygmqe59jevHoeV",
+      "project": {
+        "updatedAt": "2026-07-10T05:38:45.677Z",
+        "createdAt": "2026-06-02T20:51:11.579Z",
+        "id": "Y0Ygmqe59jevHoeV",
+        "name": "John Brooks <john@biketourfrance.net>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "5dadc5f6-6bff-44cf-9566-6b82f3d768dc"
+      }
+    }
+  ],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

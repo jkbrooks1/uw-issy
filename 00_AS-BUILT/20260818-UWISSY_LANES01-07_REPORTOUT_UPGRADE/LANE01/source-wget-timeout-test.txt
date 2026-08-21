@@ -1,0 +1,11 @@
+URL=https://apps.issaquahwa.gov/server/rest/services/General_Mapservices/PWProjectsCurrentYearConstructionPublic/MapServer/0/query?where=1=1%26outFields=*%26returnGeometry=true%26f=json
+Connecting to apps.issaquahwa.gov (174.127.161.41:443)
+wget: download timed out
+Command exited with non-zero status 1
+elapsed=20.03
+URL=https://www.issaquahwa.gov/CivicAlerts.aspx?CID=20
+Connecting to www.issaquahwa.gov (172.64.146.52:443)
+  HTTP/1.1 403 Forbidden
+wget: server returned error: HTTP/1.1 403 Forbidden
+Command exited with non-zero status 1
+elapsed=0.22

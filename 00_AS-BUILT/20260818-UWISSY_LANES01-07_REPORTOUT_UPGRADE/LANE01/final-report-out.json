@@ -1,0 +1,20 @@
+{
+  "run_id": "01_ROUTE_CONDITIONS-20260819T052056Z-001",
+  "status": "DEGRADED",
+  "data_status": "degraded",
+  "candidate_written": true,
+  "published_written": true,
+  "quarantine_written": false,
+  "validation_log_written": true,
+  "status_written": true,
+  "handoff_written": true,
+  "execution_evidence_written": true,
+  "artifact_count_written": 8,
+  "event_count": 1,
+  "route_event_count": 1,
+  "source_count": 4,
+  "failed_source_count": 3,
+  "using_last_known_good": false,
+  "published_path": "/files/uw-issy-connectors/published/01_ROUTE_CONDITIONS/01_ROUTE_CONDITIONS_published_20260819T052056Z.json",
+  "timestamp": "2026-08-19T05:21:58.174Z"
+}

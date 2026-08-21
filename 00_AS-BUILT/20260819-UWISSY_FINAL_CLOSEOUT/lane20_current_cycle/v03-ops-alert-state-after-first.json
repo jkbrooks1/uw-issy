@@ -1,0 +1,21 @@
+{
+  "alerted_cycle_keys": [
+    "2026-08-19T20:00:00.000Z|04_WILDFIRE,05_FLOOD_CONDITIONS,06_TRAIL_INFRASTRUCTURE_STATUS,07_GOVERNMENT_SAFETY_ALERTS,08_ROUTE_FACILITIES"
+  ],
+  "updated_at": "2026-08-20T03:01:21.287Z",
+  "last_evaluated_cycle": {
+    "expected_cycle": "13:00",
+    "timezone": "America/Los_Angeles",
+    "expected_start_local": "2026-08-19T13:00:00",
+    "expected_start_utc": "2026-08-19T20:00:00.000Z",
+    "lane20_generated_at": "2026-08-20T03:01:21.287Z"
+  },
+  "last_missed_lanes": [
+    "04_WILDFIRE",
+    "05_FLOOD_CONDITIONS",
+    "06_TRAIL_INFRASTRUCTURE_STATUS",
+    "07_GOVERNMENT_SAFETY_ALERTS",
+    "08_ROUTE_FACILITIES"
+  ],
+  "last_alert_key": "2026-08-19T20:00:00.000Z|04_WILDFIRE,05_FLOOD_CONDITIONS,06_TRAIL_INFRASTRUCTURE_STATUS,07_GOVERNMENT_SAFETY_ALERTS,08_ROUTE_FACILITIES"
+}

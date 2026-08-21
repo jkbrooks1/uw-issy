@@ -1,0 +1,361 @@
+{
+  "schema_version": "1.0.0",
+  "connector_id": "03_AIR_QUALITY",
+  "connector_name": "UW-Issaquah Air Quality Connector",
+  "connector_version": "v0002",
+  "lane": "03_AIR_QUALITY",
+  "run_id": "03_AIR_QUALITY-20260819T054427Z-001",
+  "generated_at": "2026-08-19T05:44:27.151Z",
+  "published_at": "2026-08-19T05:44:38.060Z",
+  "data_status": "degraded",
+  "freshness": {
+    "overall_state": "stale",
+    "computed_at": "2026-08-19T05:44:38.060Z",
+    "oldest_relevant_source_age_minutes": 0,
+    "stale_source_ids": []
+  },
+  "manifest_ref": {
+    "manifest_id": "03_AIR_QUALITY-v0002",
+    "schema_version": "1.0.0"
+  },
+  "source_health": [
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "03_AIR_QUALITY",
+      "source_id": "03_AIR_QUALITY:ECO-01",
+      "source_name": "Washington State Department of Ecology Air Quality Monitoring Hourly Results",
+      "status": "failed",
+      "retrieved_at": "2026-08-19T05:44:27.151Z",
+      "stale_after_minutes": 90,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": null,
+      "warnings": [],
+      "errors": [
+        "404 - \"<!DOCTYPE html PUBLIC \\\"-//W3C//DTD XHTML 1.0 Strict//EN\\\" \\\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\\\">\\r\\n<html xmlns=\\\"http://www.w3.org/1999/xhtml\\\">\\r\\n<head>\\r\\n<meta http-equiv=\\\"Content-Type\\\" content=\\\"text/html; charset=iso-8859-1\\\"/>\\r\\n<title>404 - File or directory not found.</title>\\r\\n<style type=\\\"text/css\\\">\\r\\n<!--\\r\\nbody{margin:0;font-size:.7em;font-family:Verdana, Arial, Helvetica, sans-serif;background:#EEEEEE;}\\r\\nfieldset{padding:0 15px 10px 15px;} \\r\\nh1{font-size:2.4em;margin:0;color:#FFF;}\\r\\nh2{font-size:1.7em;margin:0;color:#CC0000;} \\r\\nh3{font-size:1.2em;margin:10px 0 0 0;color:#000000;} \\r\\n#header{width:96%;margin:0 0 0 0;padding:6px 2% 6px 2%;font-family:\\\"trebuchet MS\\\", Verdana, sans-serif;color:#FFF;\\r\\nbackground-color:#555555;}\\r\\n#content{margin:0 0 0 2%;position:relative;}\\r\\n.content-container{background:#FFF;width:96%;margin-top:8px;padding:10px;position:relative;}\\r\\n-->\\r\\n</style>\\r\\n</head>\\r\\n<body>\\r\\n<div id=\\\"header\\\"><h1>Server Error</h1></div>\\r\\n<div id=\\\"content\\\">\\r\\n <div class=\\\"content-container\\\"><fieldset>\\r\\n  <h2>404 - File or directory not found.</h2>\\r\\n  <h3>The resource you are looking for might have been removed, had its name changed, or is temporarily unavailable.</h3>\\r\\n </fieldset></div>\\r\\n</div>\\r\\n</body>\\r\\n</html>\\r\\n\""
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "03_AIR_QUALITY",
+      "source_id": "03_AIR_QUALITY:ECO-02",
+      "source_name": "Washington State Department of Ecology Smoke Forecast",
+      "status": "failed",
+      "retrieved_at": "2026-08-19T05:44:27.151Z",
+      "stale_after_minutes": 720,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": null,
+      "warnings": [],
+      "errors": [
+        "getaddrinfo EAI_AGAIN gis.ecology.wa.gov"
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "03_AIR_QUALITY",
+      "source_id": "03_AIR_QUALITY:PSCAA-02",
+      "source_name": "Puget Sound Clean Air Agency Air Quality Burn Ban Status",
+      "status": "failed",
+      "retrieved_at": "2026-08-19T05:44:27.151Z",
+      "stale_after_minutes": 1440,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": null,
+      "warnings": [
+        "Burn-ban status could not be parsed confidently."
+      ],
+      "errors": [
+        "404 - \"\""
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "03_AIR_QUALITY",
+      "source_id": "03_AIR_QUALITY:AIRNOW-02",
+      "source_name": "AirNow public file products",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T05:44:27.151Z",
+      "stale_after_minutes": 90,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": null,
+      "warnings": [
+        "AirNow reporting area matched contextual area names only; no primary route classification performed."
+      ],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "03_AIR_QUALITY",
+      "source_id": "03_AIR_QUALITY:WASMOKE-01",
+      "source_name": "Washington Smoke Blog RSS",
+      "status": "ok",
+      "retrieved_at": "2026-08-19T05:44:27.151Z",
+      "stale_after_minutes": 720,
+      "record_count": 1,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T05:44:27.151Z",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "03_AIR_QUALITY",
+      "source_id": "03_AIR_QUALITY:NWS-AQ-01",
+      "source_name": "NWS Air Quality Alert feed",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T05:44:27.151Z",
+      "stale_after_minutes": 15,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": null,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "03_AIR_QUALITY",
+      "source_id": "03_AIR_QUALITY:PSCAA-01",
+      "source_name": "Puget Sound Clean Air Agency NetworkMap session source",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T05:44:27.151Z",
+      "stale_after_minutes": 90,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": null,
+      "warnings": [
+        "PSCAA station page was reachable but no canonical station snapshot was extracted in this build."
+      ],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "03_AIR_QUALITY",
+      "source_id": "03_AIR_QUALITY:AIRNOW-01",
+      "source_name": "AirNow API observations",
+      "status": "failed",
+      "retrieved_at": "2026-08-19T05:44:27.151Z",
+      "stale_after_minutes": 90,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": null,
+      "warnings": [],
+      "errors": [
+        "access to env vars denied"
+      ]
+    }
+  ],
+  "connector_health": {
+    "schema_version": "1.0.0",
+    "connector_id": "03_AIR_QUALITY",
+    "status": "degraded",
+    "failed_stage": null,
+    "warning_count": 6,
+    "error_count": 8,
+    "used_last_known_good": false,
+    "candidate_written": true,
+    "published_written": true
+  },
+  "events": [
+    {
+      "event_id": "03_AIR_QUALITY:PSCAA-02:burn-ban:20260819T054427Z",
+      "event_type": "burn_ban",
+      "title": "PSCAA burn ban status",
+      "status": "current",
+      "severity": "unknown",
+      "category_label": "Unknown",
+      "effective_at": null,
+      "expires_at": null,
+      "route_relevant": true,
+      "wildfire_smoke_related": false,
+      "areas": [
+        "King County"
+      ],
+      "source_id": "03_AIR_QUALITY:PSCAA-02",
+      "source_record_id": "king-county-burn-ban",
+      "geometry_type": "text_only",
+      "manual_review_required": true,
+      "route_sections": [
+        "aqp4_issaquah"
+      ]
+    },
+    {
+      "event_id": "03_AIR_QUALITY:WASMOKE-01:d515944c",
+      "event_type": "smoke_forecast",
+      "title": "Washington Smoke Blog context for Seattle",
+      "status": "forecast",
+      "severity": "unhealthy",
+      "category_label": "Contextual smoke report",
+      "effective_at": "2026-08-19T05:44:27.151Z",
+      "expires_at": null,
+      "route_relevant": true,
+      "wildfire_smoke_related": true,
+      "areas": [
+        "Seattle"
+      ],
+      "source_id": "03_AIR_QUALITY:WASMOKE-01",
+      "source_record_id": "1ab60ec6",
+      "geometry_type": "text_only",
+      "manual_review_required": false,
+      "route_sections": [
+        "aqp3_bellevue",
+        "aqp4_issaquah"
+      ]
+    }
+  ],
+  "observations": [],
+  "route_sections": [
+    {
+      "route_section_id": "aqp1_seattle",
+      "route_section_name": "UW / Burke-Gilman west-north Seattle",
+      "status": "unknown",
+      "severity": "unknown",
+      "aqi_value": null,
+      "aqi_category": null,
+      "primary_monitor_source_id": null,
+      "primary_monitor_record_id": null,
+      "wildfire_smoke_related": false,
+      "formal_alert_active": false,
+      "forecast_category_worst": null,
+      "updated_at": "2026-08-19T05:44:27.151Z"
+    },
+    {
+      "route_section_id": "aqp2_lake_forest_park",
+      "route_section_name": "Lake Forest Park / Kenmore / Bothell handoff",
+      "status": "unknown",
+      "severity": "unknown",
+      "aqi_value": null,
+      "aqi_category": null,
+      "primary_monitor_source_id": null,
+      "primary_monitor_record_id": null,
+      "wildfire_smoke_related": false,
+      "formal_alert_active": false,
+      "forecast_category_worst": null,
+      "updated_at": "2026-08-19T05:44:27.151Z"
+    },
+    {
+      "route_section_id": "aqp3_bellevue",
+      "route_section_name": "Woodinville / Redmond / Marymoor / north Sammamish",
+      "status": "forecast",
+      "severity": "unhealthy",
+      "aqi_value": null,
+      "aqi_category": null,
+      "primary_monitor_source_id": null,
+      "primary_monitor_record_id": null,
+      "wildfire_smoke_related": true,
+      "formal_alert_active": false,
+      "forecast_category_worst": "Contextual smoke report",
+      "updated_at": "2026-08-19T05:44:27.151Z"
+    },
+    {
+      "route_section_id": "aqp4_issaquah",
+      "route_section_name": "South Sammamish / Issaquah",
+      "status": "forecast",
+      "severity": "unhealthy",
+      "aqi_value": null,
+      "aqi_category": null,
+      "primary_monitor_source_id": null,
+      "primary_monitor_record_id": null,
+      "wildfire_smoke_related": true,
+      "formal_alert_active": false,
+      "forecast_category_worst": "Contextual smoke report",
+      "updated_at": "2026-08-19T05:44:27.151Z"
+    }
+  ],
+  "provenance": {
+    "source_ids_used": [
+      "03_AIR_QUALITY:ECO-01",
+      "03_AIR_QUALITY:ECO-02",
+      "03_AIR_QUALITY:PSCAA-02",
+      "03_AIR_QUALITY:AIRNOW-02",
+      "03_AIR_QUALITY:WASMOKE-01",
+      "03_AIR_QUALITY:NWS-AQ-01",
+      "03_AIR_QUALITY:PSCAA-01",
+      "03_AIR_QUALITY:AIRNOW-01"
+    ],
+    "sources": [
+      {
+        "source_id": "03_AIR_QUALITY:ECO-01",
+        "source_name": "Washington State Department of Ecology Air Quality Monitoring Hourly Results",
+        "retrieved_at": "2026-08-19T05:44:27.151Z",
+        "source_timestamp": null,
+        "status": "failed",
+        "stale": false
+      },
+      {
+        "source_id": "03_AIR_QUALITY:ECO-02",
+        "source_name": "Washington State Department of Ecology Smoke Forecast",
+        "retrieved_at": "2026-08-19T05:44:27.151Z",
+        "source_timestamp": null,
+        "status": "failed",
+        "stale": false
+      },
+      {
+        "source_id": "03_AIR_QUALITY:PSCAA-02",
+        "source_name": "Puget Sound Clean Air Agency Air Quality Burn Ban Status",
+        "retrieved_at": "2026-08-19T05:44:27.151Z",
+        "source_timestamp": null,
+        "status": "failed",
+        "stale": false
+      },
+      {
+        "source_id": "03_AIR_QUALITY:AIRNOW-02",
+        "source_name": "AirNow public file products",
+        "retrieved_at": "2026-08-19T05:44:27.151Z",
+        "source_timestamp": null,
+        "status": "empty_but_valid",
+        "stale": false
+      },
+      {
+        "source_id": "03_AIR_QUALITY:WASMOKE-01",
+        "source_name": "Washington Smoke Blog RSS",
+        "retrieved_at": "2026-08-19T05:44:27.151Z",
+        "source_timestamp": "2026-08-19T05:44:27.151Z",
+        "status": "ok",
+        "stale": false
+      },
+      {
+        "source_id": "03_AIR_QUALITY:NWS-AQ-01",
+        "source_name": "NWS Air Quality Alert feed",
+        "retrieved_at": "2026-08-19T05:44:27.151Z",
+        "source_timestamp": null,
+        "status": "empty_but_valid",
+        "stale": false
+      },
+      {
+        "source_id": "03_AIR_QUALITY:PSCAA-01",
+        "source_name": "Puget Sound Clean Air Agency NetworkMap session source",
+        "retrieved_at": "2026-08-19T05:44:27.151Z",
+        "source_timestamp": null,
+        "status": "empty_but_valid",
+        "stale": false
+      },
+      {
+        "source_id": "03_AIR_QUALITY:AIRNOW-01",
+        "source_name": "AirNow API observations",
+        "retrieved_at": "2026-08-19T05:44:27.151Z",
+        "source_timestamp": null,
+        "status": "failed",
+        "stale": false
+      }
+    ]
+  },
+  "validation_state": {
+    "candidate_validation_passed": true,
+    "published_from_candidate": true,
+    "validator_version": "1.0.0"
+  },
+  "metadata": {
+    "lane_summary": {
+      "current_category": "Unknown",
+      "current_aqi_max": null,
+      "dominant_pollutant": null,
+      "wildfire_smoke_related": true,
+      "forecast_category_worst": "Contextual smoke report",
+      "burn_ban_status": "unknown",
+      "formal_alert_active": false,
+      "message": "Air quality data is currently unavailable or insufficient for a confident corridor summary."
+    }
+  }
+}

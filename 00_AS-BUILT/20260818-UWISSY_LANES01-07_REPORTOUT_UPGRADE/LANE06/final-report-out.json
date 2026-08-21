@@ -1,0 +1,20 @@
+{
+  "run_id": "06_TRAIL_INFRASTRUCTURE_STATUS-20260819T061817Z-001",
+  "status": "DEGRADED",
+  "data_status": "degraded",
+  "candidate_written": true,
+  "published_written": true,
+  "quarantine_written": false,
+  "validation_log_written": true,
+  "status_written": true,
+  "handoff_written": true,
+  "execution_evidence_written": true,
+  "artifact_count_written": 7,
+  "event_count": 5,
+  "source_count": 8,
+  "failed_source_count": 2,
+  "using_last_known_good": false,
+  "infrastructure_event_count": 5,
+  "published_path": "/files/uw-issy-connectors/published/06_TRAIL_INFRASTRUCTURE_STATUS/06_TRAIL_INFRASTRUCTURE_STATUS_published_20260819T061817Z.json",
+  "timestamp": "2026-08-19T06:18:17.442Z"
+}

@@ -1,0 +1,32 @@
+{
+  "report_status": "PASSED",
+  "report_run_id": "02_WEATHER-20260819T053755Z-001",
+  "pointer_resolves": true,
+  "published_exists": true,
+  "candidate_current_matches": true,
+  "normalized_matches": true,
+  "status_matches": true,
+  "evidence_matches": true,
+  "handoff_matches": true,
+  "lkg_matches": true,
+  "validation_lines": 8,
+  "raw_landing_count": 6,
+  "source_count_report": 6,
+  "source_health_count": 6,
+  "source_ids": [
+    "02_WEATHER:NWS-01",
+    "02_WEATHER:NWS-02",
+    "02_WEATHER:NWS-03",
+    "02_WEATHER:NWS-04",
+    "02_WEATHER:NWS-05",
+    "02_WEATHER:NWS-06"
+  ],
+  "event_count_report": 0,
+  "event_count_published": 0,
+  "observation_count_report": 32,
+  "observation_count_published": 32,
+  "artifact_count_report": 8,
+  "execution_evidence_written": true,
+  "quarantine_absent": true,
+  "proof_pass": true
+}

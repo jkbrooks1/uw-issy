@@ -1,0 +1,149 @@
+{
+  "run_id": "07_GOVERNMENT_SAFETY_ALERTS-20260819T062655Z-001",
+  "connector_id": "07_GOVERNMENT_SAFETY_ALERTS",
+  "lane": "07_GOVERNMENT_SAFETY_ALERTS",
+  "connector_version": "v0002",
+  "generated_at": "2026-08-19T06:26:55.293Z",
+  "published_at": "2026-08-19T06:26:58.934Z",
+  "published_artifact": "/files/uw-issy-connectors/published/07_GOVERNMENT_SAFETY_ALERTS/current.json",
+  "status": "ok",
+  "ready_for_workflow_08": true,
+  "source_ids_used": [
+    "07_GOVERNMENT_SAFETY_ALERTS:NWS-01",
+    "07_GOVERNMENT_SAFETY_ALERTS:SEA-01",
+    "07_GOVERNMENT_SAFETY_ALERTS:UW-01",
+    "07_GOVERNMENT_SAFETY_ALERTS:SEAFD-01",
+    "07_GOVERNMENT_SAFETY_ALERTS:SEAPD-01",
+    "07_GOVERNMENT_SAFETY_ALERTS:DOH-02",
+    "07_GOVERNMENT_SAFETY_ALERTS:ST-01",
+    "07_GOVERNMENT_SAFETY_ALERTS:KCMETRO-01"
+  ],
+  "route_sections": [
+    {
+      "route_section_id": "WP1_UW",
+      "route_section_name": "University of Washington / U-District",
+      "status": "impacted",
+      "event_ids": [
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c31a0f8a",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c29944a0",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_dc98040f"
+      ],
+      "observation_ids": [
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:obs:hash_f9552616",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:obs:hash_74f02a31"
+      ],
+      "updated_at": "2026-08-19T06:26:55.293Z"
+    },
+    {
+      "route_section_id": "WP2_KENMORE_LFP",
+      "route_section_name": "Kenmore / Lake Forest Park",
+      "status": "impacted",
+      "event_ids": [
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c31a0f8a",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c29944a0",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_dc98040f"
+      ],
+      "observation_ids": [
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:obs:hash_f9552616",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:obs:hash_74f02a31"
+      ],
+      "updated_at": "2026-08-19T06:26:55.293Z"
+    },
+    {
+      "route_section_id": "WP3_BOTHELL",
+      "route_section_name": "Bothell",
+      "status": "impacted",
+      "event_ids": [
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c31a0f8a",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c29944a0",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_dc98040f"
+      ],
+      "observation_ids": [
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:obs:hash_f9552616",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:obs:hash_74f02a31"
+      ],
+      "updated_at": "2026-08-19T06:26:55.293Z"
+    },
+    {
+      "route_section_id": "WP4_WOODINVILLE",
+      "route_section_name": "Woodinville",
+      "status": "impacted",
+      "event_ids": [
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c31a0f8a",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c29944a0",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_dc98040f"
+      ],
+      "observation_ids": [
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:obs:hash_f9552616",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:obs:hash_74f02a31"
+      ],
+      "updated_at": "2026-08-19T06:26:55.293Z"
+    },
+    {
+      "route_section_id": "WP5_REDMOND",
+      "route_section_name": "Redmond",
+      "status": "impacted",
+      "event_ids": [
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c31a0f8a",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c29944a0",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_dc98040f"
+      ],
+      "observation_ids": [
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:obs:hash_f9552616",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:obs:hash_74f02a31"
+      ],
+      "updated_at": "2026-08-19T06:26:55.293Z"
+    },
+    {
+      "route_section_id": "WP6_MARYMOOR_ELST",
+      "route_section_name": "Marymoor Park / East Lake Sammamish Trail",
+      "status": "impacted",
+      "event_ids": [
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c31a0f8a",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c29944a0",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_dc98040f"
+      ],
+      "observation_ids": [
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:obs:hash_f9552616",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:obs:hash_74f02a31"
+      ],
+      "updated_at": "2026-08-19T06:26:55.293Z"
+    },
+    {
+      "route_section_id": "WP7_SAMMAMISH",
+      "route_section_name": "Sammamish",
+      "status": "impacted",
+      "event_ids": [
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c31a0f8a",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c29944a0",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_dc98040f"
+      ],
+      "observation_ids": [
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:obs:hash_f9552616",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:obs:hash_74f02a31"
+      ],
+      "updated_at": "2026-08-19T06:26:55.293Z"
+    },
+    {
+      "route_section_id": "WP8_ISSAQUAH",
+      "route_section_name": "Issaquah",
+      "status": "impacted",
+      "event_ids": [
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c31a0f8a",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c29944a0",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_dc98040f"
+      ],
+      "observation_ids": [
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:obs:hash_f9552616",
+        "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:obs:hash_74f02a31"
+      ],
+      "updated_at": "2026-08-19T06:26:55.293Z"
+    }
+  ],
+  "candidate_ref": "07_GOVERNMENT_SAFETY_ALERTS-20260819T062655Z-001",
+  "metadata": {
+    "used_last_known_good": false,
+    "validation_errors": [],
+    "validation_warnings": []
+  }
+}

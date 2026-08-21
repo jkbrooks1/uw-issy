@@ -1,0 +1,10 @@
+{
+  "status": "NOT_CLOSED",
+  "blockers": [
+    "External dead-man watchdog account/monitor/heartbeat URL is not configured and requires third-party account access.",
+    "Real unattended scheduled cycle under final schedules has not yet occurred; next source cycle is 2026-08-20 03:00 America/Los_Angeles."
+  ],
+  "latest_github_actions_run": "32329370769",
+  "latest_actions_head": "d073315b30f45353c76e616f3cb897437156e1e3",
+  "production_release_id": "20_STATUS_PUBLISHER-20260820T034129Z-001"
+}

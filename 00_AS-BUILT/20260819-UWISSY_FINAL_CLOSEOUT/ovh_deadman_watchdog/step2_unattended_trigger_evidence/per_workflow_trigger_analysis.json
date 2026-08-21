@@ -1,0 +1,283 @@
+{
+  "v03.UWI_LANE01": {
+    "id": "RR7cLSV9oGngrJdA",
+    "schedule_updatedAt": "2026-08-20T03:25:07.307Z",
+    "total_executions_in_window": 50,
+    "modes_seen": [
+      "cli",
+      "trigger"
+    ],
+    "trigger_mode_execution_count": 46,
+    "most_recent_trigger_execution": {
+      "id": "3830",
+      "finished": true,
+      "mode": "trigger",
+      "retryOf": null,
+      "retrySuccessId": null,
+      "status": "success",
+      "startedAt": "2026-08-20T03:30:59.021Z",
+      "stoppedAt": "2026-08-20T03:32:00.611Z",
+      "workflowId": "RR7cLSV9oGngrJdA",
+      "waitTill": null
+    },
+    "trigger_executions_after_schedule_updatedAt": [
+      {
+        "id": "3830",
+        "finished": true,
+        "mode": "trigger",
+        "retryOf": null,
+        "retrySuccessId": null,
+        "status": "success",
+        "startedAt": "2026-08-20T03:30:59.021Z",
+        "stoppedAt": "2026-08-20T03:32:00.611Z",
+        "workflowId": "RR7cLSV9oGngrJdA",
+        "waitTill": null
+      }
+    ],
+    "expected_new_cron_fire_times_utc_today": [
+      "10:00",
+      "20:00"
+    ],
+    "now_utc": "2026-08-20T06:23:54+00:00"
+  },
+  "v02.UWI_LANE02": {
+    "id": "fA0ZjWH3Itl83aPC",
+    "schedule_updatedAt": "2026-08-20T03:25:17.267Z",
+    "total_executions_in_window": 50,
+    "modes_seen": [
+      "cli",
+      "trigger"
+    ],
+    "trigger_mode_execution_count": 47,
+    "most_recent_trigger_execution": {
+      "id": "3820",
+      "finished": true,
+      "mode": "trigger",
+      "retryOf": null,
+      "retrySuccessId": null,
+      "status": "success",
+      "startedAt": "2026-08-20T03:00:46.043Z",
+      "stoppedAt": "2026-08-20T03:01:11.180Z",
+      "workflowId": "fA0ZjWH3Itl83aPC",
+      "waitTill": null
+    },
+    "trigger_executions_after_schedule_updatedAt": [],
+    "expected_new_cron_fire_times_utc_today": [
+      "10:00",
+      "20:00"
+    ],
+    "now_utc": "2026-08-20T06:23:54+00:00"
+  },
+  "v02.UWI_LANE03": {
+    "id": "qlM2XIv2BbFSh3in",
+    "schedule_updatedAt": "2026-08-20T03:25:28.334Z",
+    "total_executions_in_window": 50,
+    "modes_seen": [
+      "cli",
+      "trigger"
+    ],
+    "trigger_mode_execution_count": 48,
+    "most_recent_trigger_execution": {
+      "id": "3821",
+      "finished": true,
+      "mode": "trigger",
+      "retryOf": null,
+      "retrySuccessId": null,
+      "status": "success",
+      "startedAt": "2026-08-20T03:00:52.031Z",
+      "stoppedAt": "2026-08-20T03:00:59.196Z",
+      "workflowId": "qlM2XIv2BbFSh3in",
+      "waitTill": null
+    },
+    "trigger_executions_after_schedule_updatedAt": [],
+    "expected_new_cron_fire_times_utc_today": [
+      "10:00",
+      "20:00"
+    ],
+    "now_utc": "2026-08-20T06:23:54+00:00"
+  },
+  "v02.UWI_LANE04": {
+    "id": "w6xnelPQeRFZk8BG",
+    "schedule_updatedAt": "2026-08-20T03:27:45.707Z",
+    "total_executions_in_window": 17,
+    "modes_seen": [
+      "cli",
+      "trigger"
+    ],
+    "trigger_mode_execution_count": 14,
+    "most_recent_trigger_execution": {
+      "id": "3695",
+      "finished": true,
+      "mode": "trigger",
+      "retryOf": null,
+      "retrySuccessId": null,
+      "status": "success",
+      "startedAt": "2026-08-19T07:00:09.020Z",
+      "stoppedAt": "2026-08-19T07:00:23.757Z",
+      "workflowId": "w6xnelPQeRFZk8BG",
+      "waitTill": null
+    },
+    "trigger_executions_after_schedule_updatedAt": [],
+    "expected_new_cron_fire_times_utc_today": [
+      "10:00",
+      "20:00"
+    ],
+    "now_utc": "2026-08-20T06:23:54+00:00"
+  },
+  "v02.UWI_LANE05": {
+    "id": "4RiNqOKD9BCZFH6P",
+    "schedule_updatedAt": "2026-08-20T03:28:22.939Z",
+    "total_executions_in_window": 17,
+    "modes_seen": [
+      "cli",
+      "trigger"
+    ],
+    "trigger_mode_execution_count": 14,
+    "most_recent_trigger_execution": {
+      "id": "3696",
+      "finished": true,
+      "mode": "trigger",
+      "retryOf": null,
+      "retrySuccessId": null,
+      "status": "success",
+      "startedAt": "2026-08-19T07:00:12.035Z",
+      "stoppedAt": "2026-08-19T07:02:34.120Z",
+      "workflowId": "4RiNqOKD9BCZFH6P",
+      "waitTill": null
+    },
+    "trigger_executions_after_schedule_updatedAt": [],
+    "expected_new_cron_fire_times_utc_today": [
+      "10:00",
+      "20:00"
+    ],
+    "now_utc": "2026-08-20T06:23:54+00:00"
+  },
+  "v02.UWI_LANE06": {
+    "id": "poGV37VLUGIUxfGK",
+    "schedule_updatedAt": "2026-08-20T03:28:59.902Z",
+    "total_executions_in_window": 16,
+    "modes_seen": [
+      "cli",
+      "trigger"
+    ],
+    "trigger_mode_execution_count": 14,
+    "most_recent_trigger_execution": {
+      "id": "3701",
+      "finished": true,
+      "mode": "trigger",
+      "retryOf": null,
+      "retrySuccessId": null,
+      "status": "success",
+      "startedAt": "2026-08-19T07:00:52.108Z",
+      "stoppedAt": "2026-08-19T07:05:26.072Z",
+      "workflowId": "poGV37VLUGIUxfGK",
+      "waitTill": null
+    },
+    "trigger_executions_after_schedule_updatedAt": [],
+    "expected_new_cron_fire_times_utc_today": [
+      "10:00",
+      "20:00"
+    ],
+    "now_utc": "2026-08-20T06:23:54+00:00"
+  },
+  "v02.UWI_LANE07": {
+    "id": "08g3JNwQPVSxUl2H",
+    "schedule_updatedAt": "2026-08-20T03:29:37.901Z",
+    "total_executions_in_window": 16,
+    "modes_seen": [
+      "cli",
+      "trigger"
+    ],
+    "trigger_mode_execution_count": 14,
+    "most_recent_trigger_execution": {
+      "id": "3694",
+      "finished": true,
+      "mode": "trigger",
+      "retryOf": null,
+      "retrySuccessId": null,
+      "status": "success",
+      "startedAt": "2026-08-19T07:00:06.033Z",
+      "stoppedAt": "2026-08-19T07:00:13.563Z",
+      "workflowId": "08g3JNwQPVSxUl2H",
+      "waitTill": null
+    },
+    "trigger_executions_after_schedule_updatedAt": [],
+    "expected_new_cron_fire_times_utc_today": [
+      "10:00",
+      "20:00"
+    ],
+    "now_utc": "2026-08-20T06:23:54+00:00"
+  },
+  "v01.UWI_LANE08": {
+    "id": "uwIssy08RouteFacilities",
+    "schedule_updatedAt": "2026-08-20T03:30:14.544Z",
+    "total_executions_in_window": 1,
+    "modes_seen": [
+      "manual"
+    ],
+    "trigger_mode_execution_count": 0,
+    "most_recent_trigger_execution": null,
+    "trigger_executions_after_schedule_updatedAt": [],
+    "expected_new_cron_fire_times_utc_today": [
+      "10:00",
+      "20:00"
+    ],
+    "now_utc": "2026-08-20T06:23:54+00:00"
+  },
+  "v04.UWI_LANE20": {
+    "id": "gp8WlccGwLydNWG7",
+    "schedule_updatedAt": "2026-08-20T03:40:15.277Z",
+    "total_executions_in_window": 5,
+    "modes_seen": [
+      "cli",
+      "trigger"
+    ],
+    "trigger_mode_execution_count": 1,
+    "most_recent_trigger_execution": {
+      "id": "3829",
+      "finished": true,
+      "mode": "trigger",
+      "retryOf": null,
+      "retrySuccessId": null,
+      "status": "success",
+      "startedAt": "2026-08-20T03:30:33.027Z",
+      "stoppedAt": "2026-08-20T03:30:33.371Z",
+      "workflowId": "gp8WlccGwLydNWG7",
+      "waitTill": null
+    },
+    "trigger_executions_after_schedule_updatedAt": [],
+    "expected_new_cron_fire_times_utc_today": [
+      "10:15",
+      "20:15"
+    ],
+    "now_utc": "2026-08-20T06:23:54+00:00"
+  },
+  "v03.UWI_LANE30": {
+    "id": "KhbGg5gBn7Rbne68",
+    "schedule_updatedAt": "2026-08-20T03:31:30.045Z",
+    "total_executions_in_window": 3,
+    "modes_seen": [
+      "cli",
+      "trigger"
+    ],
+    "trigger_mode_execution_count": 1,
+    "most_recent_trigger_execution": {
+      "id": "3828",
+      "finished": true,
+      "mode": "trigger",
+      "retryOf": null,
+      "retrySuccessId": null,
+      "status": "success",
+      "startedAt": "2026-08-20T03:30:18.047Z",
+      "stoppedAt": "2026-08-20T03:30:18.461Z",
+      "workflowId": "KhbGg5gBn7Rbne68",
+      "waitTill": null
+    },
+    "trigger_executions_after_schedule_updatedAt": [],
+    "expected_new_cron_fire_times_utc_today": [
+      "10:20",
+      "20:20"
+    ],
+    "now_utc": "2026-08-20T06:23:54+00:00"
+  }
+}

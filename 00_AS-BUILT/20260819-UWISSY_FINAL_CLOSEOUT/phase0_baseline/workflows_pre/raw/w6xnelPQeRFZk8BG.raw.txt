@@ -1,0 +1,1083 @@
+Error tracking disabled because this release is older than 6 weeks.
+[
+  {
+    "updatedAt": "2026-08-19T05:52:59.279Z",
+    "createdAt": "2026-08-02T10:11:11.261Z",
+    "id": "w6xnelPQeRFZk8BG",
+    "name": "v02.UWI_LANE04",
+    "description": null,
+    "active": true,
+    "isArchived": false,
+    "nodes": [
+      {
+        "id": "manual_trigger",
+        "name": "Manual Trigger",
+        "type": "n8n-nodes-base.manualTrigger",
+        "position": [
+          220,
+          120
+        ],
+        "parameters": {},
+        "typeVersion": 1
+      },
+      {
+        "id": "schedule_trigger",
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "notes": "Every 24 hours. (Migrated from deprecated n8n-nodes-base.cron, whose stored parameter shape did not match this n8n version's actual Cron node schema and would not have fired.)",
+        "position": [
+          220,
+          240
+        ],
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "days",
+                "daysInterval": 1
+              }
+            ]
+          }
+        },
+        "typeVersion": 1.2
+      },
+      {
+        "id": "initialize_run_metadata",
+        "name": "Initialize Run Metadata",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          500,
+          180
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const now = new Date();\nconst runStamp = now.toISOString().replace(/[-:]/g, '').replace(/\\.\\d{3}Z$/, 'Z');\nconst runId = '04_WILDFIRE-' + runStamp + '-001';\nconst outputRoot = '/files/uw-issy-connectors';\nconst routeSections = [{\"segment_id\":\"01_uw_u_district\",\"segment_name\":\"UW / U-District\"},{\"segment_id\":\"02_burke_gilman_seattle\",\"segment_name\":\"Burke-Gilman - Seattle\"},{\"segment_id\":\"03_burke_gilman_north_lake_wa_kenmore\",\"segment_name\":\"Burke-Gilman - north Lake WA/Kenmore\"},{\"segment_id\":\"04_burke_gilman_connector_bothell\",\"segment_name\":\"Burke-Gilman/connector - Bothell\"},{\"segment_id\":\"05_sammamish_river_trail_bothell_woodinville\",\"segment_name\":\"Sammamish River Trail - Bothell/Woodinville\"},{\"segment_id\":\"06_sammamish_river_trail_redmond\",\"segment_name\":\"Sammamish River Trail - Redmond\"},{\"segment_id\":\"07_marymoor_park\",\"segment_name\":\"Marymoor Park\"},{\"segment_id\":\"08_east_lake_sammamish_trail_redmond\",\"segment_name\":\"East Lake Sammamish Trail - Redmond\"},{\"segment_id\":\"09_east_lake_sammamish_trail_sammamish\",\"segment_name\":\"East Lake Sammamish Trail - Sammamish\"},{\"segment_id\":\"10_issaquah_approach_terminus\",\"segment_name\":\"Issaquah approach / terminus\"}];\nconst sourceConfigs = {\n  \"NIFC-01\": {\n    \"source_id\": \"04_WILDFIRE:NIFC-01\",\n    \"source_name\": \"WFIGS Current Wildland Fire Locations\",\n    \"source_url\": \"https://services3.arcgis.com/T4QMspbfLg3qTGWY/ArcGIS/rest/services/WFIGS_Incident_Locations_Current/FeatureServer/0/query?where=1%3D1&geometry=-122.3057,47.55207,-122.04414,47.75889&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=IncidentName,IncidentTypeCategory,InitialLatitude,InitialLongitude,FireDiscoveryDateTime,ModifiedOnDateTime_dt,POOState,UniqueFireIdentifier,PercentContained,IncidentSize,DailyAcres,FireCause,GACC&returnGeometry=true&f=json\",\n    \"retrieval_method\": \"arcgis_rest_query\",\n    \"freshness_threshold_minutes\": 15,\n    \"route_section_ids\": [\n      \"all\"\n    ]\n  },\n  \"NIFC-02\": {\n    \"source_id\": \"04_WILDFIRE:NIFC-02\",\n    \"source_name\": \"WFIGS Current Interagency Fire Perimeters\",\n    \"source_url\": \"https://services3.arcgis.com/T4QMspbfLg3qTGWY/ArcGIS/rest/services/WFIGS_Interagency_Perimeters_Current/FeatureServer/0/query?where=1%3D1&geometry=-122.3057,47.55207,-122.04414,47.75889&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=poly_IncidentName,attr_IncidentTypeCategory,attr_POOState,attr_UniqueFireIdentifier,poly_GISAcres,poly_DateCurrent,attr_ModifiedOnDateTime_dt,attr_ContainmentDateTime&returnGeometry=true&f=json\",\n    \"retrieval_method\": \"arcgis_rest_query\",\n    \"freshness_threshold_minutes\": 15,\n    \"route_section_ids\": [\n      \"all\"\n    ]\n  },\n  \"NWS-01\": {\n    \"source_id\": \"04_WILDFIRE:NWS-01\",\n    \"source_name\": \"NOAA / National Weather Service active alerts API\",\n    \"source_url\": \"https://api.weather.gov/alerts/active?zone=WAZ654,WAZ657,WAC033\",\n    \"retrieval_method\": \"nws_active_alerts_geojson\",\n    \"freshness_threshold_minutes\": 15,\n    \"route_section_ids\": [\n      \"all\"\n    ]\n  },\n  \"NOAA-01\": {\n    \"source_id\": \"04_WILDFIRE:NOAA-01\",\n    \"source_name\": \"NOAA Hazard Mapping System smoke polygons\",\n    \"source_url\": \"={{ 'https://satepsanone.nesdis.noaa.gov/pub/FIRE/web/HMS/Smoke_Polygons/KML/' + new Date().getUTCFullYear() + '/' + String(new Date().getUTCMonth() + 1).padStart(2, '0') + '/hms_smoke' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + '.kml' }}\",\n    \"retrieval_method\": \"dated_kml_download\",\n    \"freshness_threshold_minutes\": 1440,\n    \"route_section_ids\": [\n      \"all\"\n    ]\n  },\n  \"KC-01\": {\n    \"source_id\": \"04_WILDFIRE:KC-01\",\n    \"source_name\": \"King County Fire Safety Burn Bans\",\n    \"source_url\": \"https://kingcounty.gov/en/dept/local-services/governance-leadership/local-government-for-unincorporated-king-county/fire-safety\",\n    \"retrieval_method\": \"html_page_fetch\",\n    \"freshness_threshold_minutes\": 360,\n    \"route_section_ids\": [\n      \"all\"\n    ]\n  }\n};\nreturn [{ json: { schema_version:'1.0.0', connector_id: '04_WILDFIRE', connector_name:'UW-Issaquah Wildfire Connector', connector_version:'v0002', lane: '04_WILDFIRE', workflow_name:'v02.UWI_LANE04', run_id:runId, run_stamp:runStamp, generated_at:now.toISOString(), published_at:null, output_root:outputRoot, canonical_gpx:'data/route/UnivWA-Issaquah.gpx', route_bbox:{min_lat:47.55207,max_lat:47.75889,min_lon:-122.3057,max_lon:-122.04414}, route_fire_zones:['WAZ654','WAZ657'], route_county_code:'WAC033', route_sections:routeSections, source_configs:sourceConfigs, freshness_policy:{ default_threshold_minutes:15, stale_source_policy:'preserve_last_known_good', source_threshold_minutes:{'04_WILDFIRE:NIFC-01':15,'04_WILDFIRE:NIFC-02':15,'04_WILDFIRE:NWS-01':15,'04_WILDFIRE:NOAA-01':1440,'04_WILDFIRE:KC-01':360} }, route_filter_policy:{ incident_point_include_miles:5, incident_point_high_priority_miles:2, perimeter_buffer_miles:10, perimeter_high_priority_miles:2, smoke_buffer_miles:5, fire_zones:['WAZ654','WAZ657'], county_code:'WAC033' } } }];"
+        },
+        "typeVersion": 2
+      },
+      {
+        "id": "read_lkg",
+        "name": "Read Last Known Good",
+        "type": "n8n-nodes-base.readWriteFile",
+        "onError": "continueRegularOutput",
+        "position": [
+          760,
+          180
+        ],
+        "parameters": {
+          "options": {},
+          "operation": "read",
+          "fileSelector": "={{ $('Initialize Run Metadata').first().json.output_root }}/last_known_good/04_WILDFIRE/current.json"
+        },
+        "typeVersion": 1,
+        "alwaysOutputData": true
+      },
+      {
+        "id": "parse_lkg",
+        "name": "Parse Last Known Good",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          1010,
+          180
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const first = $input.first();\nif (!first || first.error || (first.json && first.json.error) || !first.binary || !first.binary.data) return [{ json: { bySource: {} } }];\nlet parsed;\ntry { const buffer = await this.helpers.getBinaryDataBuffer(0, 'data'); parsed = JSON.parse(buffer.toString('utf8')); } catch (error) { return [{ json: { bySource: {} } }]; }\nif (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.source_health) || !Array.isArray(parsed.events)) return [{ json: { bySource: {} } }];\nconst bySource = {};\nfor (const entry of parsed.source_health) { if (!entry || typeof entry !== 'object' || !entry.source_id) continue; if (!['ok','empty_but_valid','using_last_known_good'].includes(entry.status)) continue; bySource[entry.source_id] = { source_health:entry, events:parsed.events.filter(event => event && event.source_id === entry.source_id), advisories:Array.isArray(parsed.advisories) ? parsed.advisories.filter(advisory => advisory && advisory.source_id === entry.source_id) : [], observations:Array.isArray(parsed.observations) ? parsed.observations.filter(observation => observation && observation.source_id === entry.source_id) : [] }; }\nreturn [{ json: { bySource } }];"
+        },
+        "typeVersion": 2
+      },
+      {
+        "id": "fetch_nifc_01",
+        "name": "Fetch NIFC-01 Locations",
+        "type": "n8n-nodes-base.httpRequest",
+        "onError": "continueRegularOutput",
+        "maxTries": 2,
+        "position": [
+          220,
+          420
+        ],
+        "parameters": {
+          "url": "https://services3.arcgis.com/T4QMspbfLg3qTGWY/ArcGIS/rest/services/WFIGS_Incident_Locations_Current/FeatureServer/0/query?where=1%3D1&geometry=-122.3057,47.55207,-122.04414,47.75889&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=IncidentName,IncidentTypeCategory,InitialLatitude,InitialLongitude,FireDiscoveryDateTime,ModifiedOnDateTime_dt,POOState,UniqueFireIdentifier,PercentContained,IncidentSize,DailyAcres,FireCause,GACC&returnGeometry=true&f=json",
+          "method": "GET",
+          "options": {
+            "timeout": 30000
+          },
+          "sendHeaders": true,
+          "responseFormat": "json",
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "User-Agent",
+                "value": "UW-Issy Route Monitor 04_WILDFIRE connector; contact john@biketourfrance.net"
+              },
+              {
+                "name": "Accept",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        "retryOnFail": true,
+        "typeVersion": 4.2,
+        "waitBetweenTries": 60000
+      },
+      {
+        "id": "land_nifc_01",
+        "name": "Land NIFC-01 Raw Payload",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          500,
+          420
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch NIFC-01 Locations').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyString = typeof body === 'string' ? body : JSON.stringify(body || null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { const text = String(input || ''); let hash = 2166136261; for (let i = 0; i < text.length; i++) { hash ^= text.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyString);\nconst filePath = run.output_root + '/raw/04_WILDFIRE/landings/NIFC-01_landing_' + run.run_stamp + '.json';\nconst landing = { schema_version:'1.0.0', connector_id:run.connector_id, source_id:'04_WILDFIRE:NIFC-01', source_name:\"WFIGS Current Wildland Fire Locations\", source_url:\"https://services3.arcgis.com/T4QMspbfLg3qTGWY/ArcGIS/rest/services/WFIGS_Incident_Locations_Current/FeatureServer/0/query?where=1%3D1&geometry=-122.3057,47.55207,-122.04414,47.75889&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=IncidentName,IncidentTypeCategory,InitialLatitude,InitialLongitude,FireDiscoveryDateTime,ModifiedOnDateTime_dt,POOState,UniqueFireIdentifier,PercentContained,IncidentSize,DailyAcres,FireCause,GACC&returnGeometry=true&f=json\", retrieved_at:run.generated_at, http_status:statusCode, retrieval_method:'arcgis_rest_query', content_hash:contentHash, body_length:bodyString.length, body:bodyString, fetch_status:fetch.error ? 'failed' : 'ok', error:fetch.error ? String(fetch.error.message || fetch.error) : null };\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json:{ file_path:filePath, source_id:landing.source_id, source_name:landing.source_name, content_hash:contentHash, retrieved_at:run.generated_at, body:bodyString }, binary:{ data:binary } }];"
+        },
+        "typeVersion": 2
+      },
+      {
+        "id": "write_nifc_01",
+        "name": "Write NIFC-01 Raw Landing",
+        "type": "n8n-nodes-base.readWriteFile",
+        "position": [
+          760,
+          420
+        ],
+        "parameters": {
+          "options": {},
+          "fileName": "={{ $json.file_path }}",
+          "operation": "write",
+          "dataPropertyName": "data"
+        },
+        "typeVersion": 1
+      },
+      {
+        "id": "normalize_nifc_01",
+        "name": "Normalize NIFC-01 Events",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          1010,
+          420
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const ROUTE_VERTICES = [{\"lat\":47.65051,\"lon\":-122.30462},{\"lat\":47.65791,\"lon\":-122.27949},{\"lat\":47.67452,\"lon\":-122.26358},{\"lat\":47.68847,\"lon\":-122.24709},{\"lat\":47.72712,\"lon\":-122.24631},{\"lat\":47.75387,\"lon\":-122.15802},{\"lat\":47.70533,\"lon\":-122.14575},{\"lat\":47.67619,\"lon\":-122.12458},{\"lat\":47.61236,\"lon\":-122.07655},{\"lat\":47.55218,\"lon\":-122.04427}];\nconst ROUTE_SECTION_IDS = [\"01_uw_u_district\",\"02_burke_gilman_seattle\",\"03_burke_gilman_north_lake_wa_kenmore\",\"04_burke_gilman_connector_bothell\",\"05_sammamish_river_trail_bothell_woodinville\",\"06_sammamish_river_trail_redmond\",\"07_marymoor_park\",\"08_east_lake_sammamish_trail_redmond\",\"09_east_lake_sammamish_trail_sammamish\",\"10_issaquah_approach_terminus\"];\nconst hashString = (input) => { const text = String(input || ''); let hash = 2166136261; for (let i = 0; i < text.length; i++) { hash ^= text.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst toRad = value => value * Math.PI / 180;\nconst pointOk = p => p && typeof p.lat === 'number' && typeof p.lon === 'number' && p.lat >= 47.0 && p.lat <= 48.3 && p.lon >= -123.0 && p.lon <= -121.0;\nconst pointSegMiles = (p,a,b) => { const ym = 69; const xm = Math.cos(toRad((a.lat + b.lat) / 2)) * 69.172; const ax = a.lon*xm, ay = a.lat*ym, bx = b.lon*xm, by = b.lat*ym, px = p.lon*xm, py = p.lat*ym; const dx = bx-ax, dy = by-ay, d = dx*dx + dy*dy; if (!d) return Math.hypot(px-ax, py-ay); const t = Math.max(0, Math.min(1, ((px-ax)*dx + (py-ay)*dy) / d)); return Math.hypot(px-(ax+t*dx), py-(ay+t*dy)); };\nconst routeMiles = p => { if (!pointOk(p)) return Infinity; let best = Infinity; for (let i = 1; i < ROUTE_VERTICES.length; i++) best = Math.min(best, pointSegMiles(p, ROUTE_VERTICES[i-1], ROUTE_VERTICES[i])); return best; };\nconst pointInPoly = (p, ring) => { let inside = false; for (let i=0,j=ring.length-1;i<ring.length;j=i++) { const xi=ring[i].lon, yi=ring[i].lat, xj=ring[j].lon, yj=ring[j].lat; const hit=((yi>p.lat)!==(yj>p.lat)) && (p.lon < (xj-xi)*(p.lat-yi)/((yj-yi)||1e-12)+xi); if (hit) inside=!inside; } return inside; };\nconst polyMiles = rings => { let best = Infinity; for (const ring of rings) { for (const rp of ROUTE_VERTICES) if (pointInPoly(rp, ring)) return 0; for (const p of ring) best = Math.min(best, routeMiles(p)); } return best; };\nconst safeIso = v => { if (v === null || v === undefined || v === '') return null; const ms = typeof v === 'number' ? v : Date.parse(v); return Number.isFinite(ms) ? new Date(ms).toISOString() : null; };\nconst sourceHealth = ({run, sourceId, sourceName, status, stale, count, http, observed, warnings, errors, retrieved}) => ({ schema_version:'1.0.0', connector_id:run.connector_id, source_id:sourceId, source_name:sourceName, status, retrieved_at:retrieved || run.generated_at, last_retrieved_at:retrieved || run.generated_at, stale_after_minutes:stale, record_count:count, http_status:http ?? null, last_observation_at:observed || retrieved || run.generated_at, freshness_state: status === 'failed' ? 'unknown' : (status === 'using_last_known_good' || status === 'stale' ? 'stale' : 'fresh'), warnings:warnings || [], errors:errors || [] });\nconst lkgIfUsable = ({run, sourceId, sourceName, stale, fetchError}) => { const lkg = (($('Parse Last Known Good').first().json.bySource || {})[sourceId]); const ts = lkg && lkg.source_health && lkg.source_health.retrieved_at ? Date.parse(lkg.source_health.retrieved_at) : NaN; const ownStale = lkg && lkg.source_health && lkg.source_health.stale_after_minutes !== undefined ? lkg.source_health.stale_after_minutes : stale; const usable = !!lkg && Number.isFinite(ts) && ((Date.now() - ts) / 60000) <= ownStale; if (!usable) return null; const events = Array.isArray(lkg.events) ? lkg.events : []; const advisories = Array.isArray(lkg.advisories) ? lkg.advisories : []; const observations = Array.isArray(lkg.observations) ? lkg.observations : []; return { events, advisories, observations, source_health: sourceHealth({run, sourceId, sourceName, status:'using_last_known_good', stale, count:events.length + advisories.length + observations.length, http:null, observed:lkg.source_health.last_observation_at || lkg.source_health.retrieved_at, retrieved:lkg.source_health.retrieved_at, warnings:[...(lkg.source_health.warnings || []), 'Live fetch failed; serving last-known-good data retrieved at ' + lkg.source_health.retrieved_at + '.'], errors:[String(fetchError && (fetchError.message || fetchError))]}) }; };\nconst run = $('Initialize Run Metadata').first().json; const fetch = $('Fetch NIFC-01 Locations').first().json || {}; const landing = $('Land NIFC-01 Raw Payload').first().json || {}; const sourceId='04_WILDFIRE:NIFC-01'; const sourceName='WFIGS Current Wildland Fire Locations'; const stale=15;\nlet fetchError = fetch.error || null; let body = fetch.body !== undefined ? fetch.body : fetch; if (typeof body === 'string') { try { body = JSON.parse(body); } catch (error) { fetchError = error; body = {}; } } if (body && body.error) fetchError = new Error(body.error.message || JSON.stringify(body.error));\nif (fetchError) { const lkg = lkgIfUsable({run, sourceId, sourceName, stale, fetchError}); if (lkg) return [{ json:{ source_id:sourceId, source_name:sourceName, ...lkg, raw_landing_path:landing.file_path || null, raw_content_hash:landing.content_hash || null, warnings:lkg.source_health.warnings, errors:lkg.source_health.errors } }]; const sh = sourceHealth({run, sourceId, sourceName, status:'failed', stale, count:0, http:fetch.statusCode ?? fetch.status ?? null, warnings:[], errors:[String(fetchError.message || fetchError)]}); return [{ json:{ source_id:sourceId, source_name:sourceName, source_health:sh, events:[], advisories:[], observations:[], raw_landing_path:landing.file_path || null, raw_content_hash:landing.content_hash || null, warnings:[], errors:sh.errors } }]; }\nconst events=[], observations=[]; const records = Array.isArray(body && body.features) ? body.features : [];\nfor (const record of records) { const a = record.attributes || record; const g = record.geometry || {}; const p = {lat:Number(a.InitialLatitude ?? g.y), lon:Number(a.InitialLongitude ?? g.x)}; if (!pointOk(p)) continue; const cat=String(a.IncidentTypeCategory || '').toUpperCase(); if (cat && !['WF','WILDFIRE','RX'].includes(cat)) continue; const d = routeMiles(p); if (!Number.isFinite(d) || d > 5) continue; const native = a.UniqueFireIdentifier || a.OBJECTID || hashString(JSON.stringify(a)); const title = String(a.IncidentName || 'WFIGS wildfire incident'); if (cat === 'RX') { observations.push({ observation_id:'obs_nifc01_rx_'+hashString(native), source_id:sourceId, observation_type:'source_gap_note', title:'Prescribed burn near route: '+title, severity:d<=2?'moderate':'low', route_relevance:'contextual_only', route_match_method:'point_distance', route_distance_miles:Number(d.toFixed(2)), segment_ids:ROUTE_SECTION_IDS, observed_at:safeIso(a.ModifiedOnDateTime_dt || a.FireDiscoveryDateTime) || run.generated_at, public_note:'Prescribed burn retained as context only unless another source confirms route impact.' }); continue; } events.push({ event_id:sourceId+':'+hashString(native), source_id:sourceId, source_event_id:native, event_type:'wildfire', title, status:a.PercentContained === 100 ? 'contained' : 'active', severity:d<=2?'high':'moderate', route_relevance:d<=2?'confirmed_route_impact':'near_route', route_match_method:'point_distance', route_distance_miles:Number(d.toFixed(2)), segment_ids:ROUTE_SECTION_IDS, location_label:a.POOState || null, started_at:safeIso(a.FireDiscoveryDateTime), updated_at:safeIso(a.ModifiedOnDateTime_dt), geometry_type:'point', latitude:p.lat, longitude:p.lon, public_note:d<=2?'Active wildfire point is within two miles of the route.':'Active wildfire point is within five miles of the route.', ownership_dedupe_key:'wildfire:'+String(native).toLowerCase() }); }\nconst sh = sourceHealth({run, sourceId, sourceName, status:events.length || observations.length ? 'ok' : 'empty_but_valid', stale, count:events.length + observations.length, http:fetch.statusCode ?? fetch.status ?? null, warnings:events.length || observations.length ? [] : ['Healthy WFIGS locations response; no route-relevant wildfire incidents found.'], errors:[]});\nreturn [{ json:{ source_id:sourceId, source_name:sourceName, source_health:sh, events, advisories:[], observations, raw_landing_path:landing.file_path || null, raw_content_hash:landing.content_hash || null, warnings:sh.warnings, errors:[] } }];"
+        },
+        "typeVersion": 2
+      },
+      {
+        "id": "fetch_nifc_02",
+        "name": "Fetch NIFC-02 Perimeters",
+        "type": "n8n-nodes-base.httpRequest",
+        "onError": "continueRegularOutput",
+        "maxTries": 2,
+        "position": [
+          220,
+          620
+        ],
+        "parameters": {
+          "url": "https://services3.arcgis.com/T4QMspbfLg3qTGWY/ArcGIS/rest/services/WFIGS_Interagency_Perimeters_Current/FeatureServer/0/query?where=1%3D1&geometry=-122.3057,47.55207,-122.04414,47.75889&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=poly_IncidentName,attr_IncidentTypeCategory,attr_POOState,attr_UniqueFireIdentifier,poly_GISAcres,poly_DateCurrent,attr_ModifiedOnDateTime_dt,attr_ContainmentDateTime&returnGeometry=true&f=json",
+          "method": "GET",
+          "options": {
+            "timeout": 30000
+          },
+          "sendHeaders": true,
+          "responseFormat": "json",
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "User-Agent",
+                "value": "UW-Issy Route Monitor 04_WILDFIRE connector; contact john@biketourfrance.net"
+              },
+              {
+                "name": "Accept",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        "retryOnFail": true,
+        "typeVersion": 4.2,
+        "waitBetweenTries": 60000
+      },
+      {
+        "id": "land_nifc_02",
+        "name": "Land NIFC-02 Raw Payload",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          500,
+          620
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch NIFC-02 Perimeters').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyString = typeof body === 'string' ? body : JSON.stringify(body || null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { const text = String(input || ''); let hash = 2166136261; for (let i = 0; i < text.length; i++) { hash ^= text.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyString);\nconst filePath = run.output_root + '/raw/04_WILDFIRE/landings/NIFC-02_landing_' + run.run_stamp + '.json';\nconst landing = { schema_version:'1.0.0', connector_id:run.connector_id, source_id:'04_WILDFIRE:NIFC-02', source_name:\"WFIGS Current Interagency Fire Perimeters\", source_url:\"https://services3.arcgis.com/T4QMspbfLg3qTGWY/ArcGIS/rest/services/WFIGS_Interagency_Perimeters_Current/FeatureServer/0/query?where=1%3D1&geometry=-122.3057,47.55207,-122.04414,47.75889&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=poly_IncidentName,attr_IncidentTypeCategory,attr_POOState,attr_UniqueFireIdentifier,poly_GISAcres,poly_DateCurrent,attr_ModifiedOnDateTime_dt,attr_ContainmentDateTime&returnGeometry=true&f=json\", retrieved_at:run.generated_at, http_status:statusCode, retrieval_method:'arcgis_rest_query', content_hash:contentHash, body_length:bodyString.length, body:bodyString, fetch_status:fetch.error ? 'failed' : 'ok', error:fetch.error ? String(fetch.error.message || fetch.error) : null };\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json:{ file_path:filePath, source_id:landing.source_id, source_name:landing.source_name, content_hash:contentHash, retrieved_at:run.generated_at, body:bodyString }, binary:{ data:binary } }];"
+        },
+        "typeVersion": 2
+      },
+      {
+        "id": "write_nifc_02",
+        "name": "Write NIFC-02 Raw Landing",
+        "type": "n8n-nodes-base.readWriteFile",
+        "position": [
+          760,
+          620
+        ],
+        "parameters": {
+          "options": {},
+          "fileName": "={{ $json.file_path }}",
+          "operation": "write",
+          "dataPropertyName": "data"
+        },
+        "typeVersion": 1
+      },
+      {
+        "id": "normalize_nifc_02",
+        "name": "Normalize NIFC-02 Events",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          1010,
+          620
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const ROUTE_VERTICES = [{\"lat\":47.65051,\"lon\":-122.30462},{\"lat\":47.65791,\"lon\":-122.27949},{\"lat\":47.67452,\"lon\":-122.26358},{\"lat\":47.68847,\"lon\":-122.24709},{\"lat\":47.72712,\"lon\":-122.24631},{\"lat\":47.75387,\"lon\":-122.15802},{\"lat\":47.70533,\"lon\":-122.14575},{\"lat\":47.67619,\"lon\":-122.12458},{\"lat\":47.61236,\"lon\":-122.07655},{\"lat\":47.55218,\"lon\":-122.04427}];\nconst ROUTE_SECTION_IDS = [\"01_uw_u_district\",\"02_burke_gilman_seattle\",\"03_burke_gilman_north_lake_wa_kenmore\",\"04_burke_gilman_connector_bothell\",\"05_sammamish_river_trail_bothell_woodinville\",\"06_sammamish_river_trail_redmond\",\"07_marymoor_park\",\"08_east_lake_sammamish_trail_redmond\",\"09_east_lake_sammamish_trail_sammamish\",\"10_issaquah_approach_terminus\"];\nconst hashString = (input) => { const text = String(input || ''); let hash = 2166136261; for (let i = 0; i < text.length; i++) { hash ^= text.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst toRad = value => value * Math.PI / 180;\nconst pointOk = p => p && typeof p.lat === 'number' && typeof p.lon === 'number' && p.lat >= 47.0 && p.lat <= 48.3 && p.lon >= -123.0 && p.lon <= -121.0;\nconst pointSegMiles = (p,a,b) => { const ym = 69; const xm = Math.cos(toRad((a.lat + b.lat) / 2)) * 69.172; const ax = a.lon*xm, ay = a.lat*ym, bx = b.lon*xm, by = b.lat*ym, px = p.lon*xm, py = p.lat*ym; const dx = bx-ax, dy = by-ay, d = dx*dx + dy*dy; if (!d) return Math.hypot(px-ax, py-ay); const t = Math.max(0, Math.min(1, ((px-ax)*dx + (py-ay)*dy) / d)); return Math.hypot(px-(ax+t*dx), py-(ay+t*dy)); };\nconst routeMiles = p => { if (!pointOk(p)) return Infinity; let best = Infinity; for (let i = 1; i < ROUTE_VERTICES.length; i++) best = Math.min(best, pointSegMiles(p, ROUTE_VERTICES[i-1], ROUTE_VERTICES[i])); return best; };\nconst pointInPoly = (p, ring) => { let inside = false; for (let i=0,j=ring.length-1;i<ring.length;j=i++) { const xi=ring[i].lon, yi=ring[i].lat, xj=ring[j].lon, yj=ring[j].lat; const hit=((yi>p.lat)!==(yj>p.lat)) && (p.lon < (xj-xi)*(p.lat-yi)/((yj-yi)||1e-12)+xi); if (hit) inside=!inside; } return inside; };\nconst polyMiles = rings => { let best = Infinity; for (const ring of rings) { for (const rp of ROUTE_VERTICES) if (pointInPoly(rp, ring)) return 0; for (const p of ring) best = Math.min(best, routeMiles(p)); } return best; };\nconst safeIso = v => { if (v === null || v === undefined || v === '') return null; const ms = typeof v === 'number' ? v : Date.parse(v); return Number.isFinite(ms) ? new Date(ms).toISOString() : null; };\nconst sourceHealth = ({run, sourceId, sourceName, status, stale, count, http, observed, warnings, errors, retrieved}) => ({ schema_version:'1.0.0', connector_id:run.connector_id, source_id:sourceId, source_name:sourceName, status, retrieved_at:retrieved || run.generated_at, last_retrieved_at:retrieved || run.generated_at, stale_after_minutes:stale, record_count:count, http_status:http ?? null, last_observation_at:observed || retrieved || run.generated_at, freshness_state: status === 'failed' ? 'unknown' : (status === 'using_last_known_good' || status === 'stale' ? 'stale' : 'fresh'), warnings:warnings || [], errors:errors || [] });\nconst lkgIfUsable = ({run, sourceId, sourceName, stale, fetchError}) => { const lkg = (($('Parse Last Known Good').first().json.bySource || {})[sourceId]); const ts = lkg && lkg.source_health && lkg.source_health.retrieved_at ? Date.parse(lkg.source_health.retrieved_at) : NaN; const ownStale = lkg && lkg.source_health && lkg.source_health.stale_after_minutes !== undefined ? lkg.source_health.stale_after_minutes : stale; const usable = !!lkg && Number.isFinite(ts) && ((Date.now() - ts) / 60000) <= ownStale; if (!usable) return null; const events = Array.isArray(lkg.events) ? lkg.events : []; const advisories = Array.isArray(lkg.advisories) ? lkg.advisories : []; const observations = Array.isArray(lkg.observations) ? lkg.observations : []; return { events, advisories, observations, source_health: sourceHealth({run, sourceId, sourceName, status:'using_last_known_good', stale, count:events.length + advisories.length + observations.length, http:null, observed:lkg.source_health.last_observation_at || lkg.source_health.retrieved_at, retrieved:lkg.source_health.retrieved_at, warnings:[...(lkg.source_health.warnings || []), 'Live fetch failed; serving last-known-good data retrieved at ' + lkg.source_health.retrieved_at + '.'], errors:[String(fetchError && (fetchError.message || fetchError))]}) }; };\nconst run = $('Initialize Run Metadata').first().json; const fetch = $('Fetch NIFC-02 Perimeters').first().json || {}; const landing = $('Land NIFC-02 Raw Payload').first().json || {}; const sourceId='04_WILDFIRE:NIFC-02'; const sourceName='WFIGS Current Interagency Fire Perimeters'; const stale=15;\nlet fetchError = fetch.error || null; let body = fetch.body !== undefined ? fetch.body : fetch; if (typeof body === 'string') { try { body = JSON.parse(body); } catch (error) { fetchError = error; body = {}; } } if (body && body.error) fetchError = new Error(body.error.message || JSON.stringify(body.error));\nif (fetchError) { const lkg = lkgIfUsable({run, sourceId, sourceName, stale, fetchError}); if (lkg) return [{ json:{ source_id:sourceId, source_name:sourceName, ...lkg, raw_landing_path:landing.file_path || null, raw_content_hash:landing.content_hash || null, warnings:lkg.source_health.warnings, errors:lkg.source_health.errors } }]; const sh = sourceHealth({run, sourceId, sourceName, status:'failed', stale, count:0, http:fetch.statusCode ?? fetch.status ?? null, warnings:[], errors:[String(fetchError.message || fetchError)]}); return [{ json:{ source_id:sourceId, source_name:sourceName, source_health:sh, events:[], advisories:[], observations:[], raw_landing_path:landing.file_path || null, raw_content_hash:landing.content_hash || null, warnings:[], errors:sh.errors } }]; }\nconst events=[]; const records = Array.isArray(body && body.features) ? body.features : [];\nfor (const record of records) { const a=record.attributes || record; const rings=(record.geometry && Array.isArray(record.geometry.rings) ? record.geometry.rings : []).map(r => r.map(x => ({lon:Number(x[0]),lat:Number(x[1])})).filter(pointOk)).filter(r => r.length >= 3); if (!rings.length) continue; const cat=String(a.attr_IncidentTypeCategory || a.IncidentTypeCategory || '').toUpperCase(); if (cat && !['WF','WILDFIRE'].includes(cat)) continue; const d=polyMiles(rings); if (!Number.isFinite(d) || d > 10) continue; const native=a.attr_UniqueFireIdentifier || a.UniqueFireIdentifier || a.OBJECTID || hashString(JSON.stringify(a)); const title=String(a.poly_IncidentName || a.IncidentName || 'WFIGS wildfire perimeter'); events.push({ event_id:sourceId+':'+hashString(native), source_id:sourceId, source_event_id:native, event_type:'wildfire', title, status:a.attr_ContainmentDateTime ? 'contained' : 'active', severity:d<=2?'high':'moderate', route_relevance:d<=2?'confirmed_route_impact':'near_route', route_match_method:'polygon_intersection', route_distance_miles:Number(d.toFixed(2)), segment_ids:ROUTE_SECTION_IDS, location_label:a.attr_POOState || null, started_at:null, updated_at:safeIso(a.poly_DateCurrent || a.attr_ModifiedOnDateTime_dt), geometry_type:'polygon', public_note:d<=2?'Current WFIGS perimeter intersects the route line or two-mile route buffer.':'Current WFIGS perimeter intersects the ten-mile route buffer.', ownership_dedupe_key:'wildfire:'+String(native).toLowerCase() }); }\nconst sh=sourceHealth({run, sourceId, sourceName, status:events.length?'ok':'empty_but_valid', stale, count:events.length, http:fetch.statusCode ?? fetch.status ?? null, warnings:events.length?[]:['Healthy WFIGS perimeters response; no route-relevant wildfire perimeters found.'], errors:[]});\nreturn [{ json:{ source_id:sourceId, source_name:sourceName, source_health:sh, events, advisories:[], observations:[], raw_landing_path:landing.file_path || null, raw_content_hash:landing.content_hash || null, warnings:sh.warnings, errors:[] } }];"
+        },
+        "typeVersion": 2
+      },
+      {
+        "id": "fetch_nws_01",
+        "name": "Fetch NWS-01 Alerts",
+        "type": "n8n-nodes-base.httpRequest",
+        "onError": "continueRegularOutput",
+        "maxTries": 2,
+        "position": [
+          220,
+          820
+        ],
+        "parameters": {
+          "url": "https://api.weather.gov/alerts/active?zone=WAZ654,WAZ657,WAC033",
+          "method": "GET",
+          "options": {
+            "timeout": 30000
+          },
+          "sendHeaders": true,
+          "responseFormat": "json",
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "User-Agent",
+                "value": "UW-Issy Route Monitor 04_WILDFIRE connector; contact john@biketourfrance.net"
+              },
+              {
+                "name": "Accept",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        "retryOnFail": true,
+        "typeVersion": 4.2,
+        "waitBetweenTries": 60000
+      },
+      {
+        "id": "land_nws_01",
+        "name": "Land NWS-01 Raw Payload",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          500,
+          820
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch NWS-01 Alerts').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyString = typeof body === 'string' ? body : JSON.stringify(body || null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { const text = String(input || ''); let hash = 2166136261; for (let i = 0; i < text.length; i++) { hash ^= text.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyString);\nconst filePath = run.output_root + '/raw/04_WILDFIRE/landings/NWS-01_landing_' + run.run_stamp + '.json';\nconst landing = { schema_version:'1.0.0', connector_id:run.connector_id, source_id:'04_WILDFIRE:NWS-01', source_name:\"NOAA / National Weather Service active alerts API\", source_url:\"https://api.weather.gov/alerts/active?zone=WAZ654,WAZ657,WAC033\", retrieved_at:run.generated_at, http_status:statusCode, retrieval_method:'nws_active_alerts_geojson', content_hash:contentHash, body_length:bodyString.length, body:bodyString, fetch_status:fetch.error ? 'failed' : 'ok', error:fetch.error ? String(fetch.error.message || fetch.error) : null };\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json:{ file_path:filePath, source_id:landing.source_id, source_name:landing.source_name, content_hash:contentHash, retrieved_at:run.generated_at, body:bodyString }, binary:{ data:binary } }];"
+        },
+        "typeVersion": 2
+      },
+      {
+        "id": "write_nws_01",
+        "name": "Write NWS-01 Raw Landing",
+        "type": "n8n-nodes-base.readWriteFile",
+        "position": [
+          760,
+          820
+        ],
+        "parameters": {
+          "options": {},
+          "fileName": "={{ $json.file_path }}",
+          "operation": "write",
+          "dataPropertyName": "data"
+        },
+        "typeVersion": 1
+      },
+      {
+        "id": "normalize_nws_01",
+        "name": "Normalize NWS-01 Events",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          1010,
+          820
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const ROUTE_VERTICES = [{\"lat\":47.65051,\"lon\":-122.30462},{\"lat\":47.65791,\"lon\":-122.27949},{\"lat\":47.67452,\"lon\":-122.26358},{\"lat\":47.68847,\"lon\":-122.24709},{\"lat\":47.72712,\"lon\":-122.24631},{\"lat\":47.75387,\"lon\":-122.15802},{\"lat\":47.70533,\"lon\":-122.14575},{\"lat\":47.67619,\"lon\":-122.12458},{\"lat\":47.61236,\"lon\":-122.07655},{\"lat\":47.55218,\"lon\":-122.04427}];\nconst ROUTE_SECTION_IDS = [\"01_uw_u_district\",\"02_burke_gilman_seattle\",\"03_burke_gilman_north_lake_wa_kenmore\",\"04_burke_gilman_connector_bothell\",\"05_sammamish_river_trail_bothell_woodinville\",\"06_sammamish_river_trail_redmond\",\"07_marymoor_park\",\"08_east_lake_sammamish_trail_redmond\",\"09_east_lake_sammamish_trail_sammamish\",\"10_issaquah_approach_terminus\"];\nconst hashString = (input) => { const text = String(input || ''); let hash = 2166136261; for (let i = 0; i < text.length; i++) { hash ^= text.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst toRad = value => value * Math.PI / 180;\nconst pointOk = p => p && typeof p.lat === 'number' && typeof p.lon === 'number' && p.lat >= 47.0 && p.lat <= 48.3 && p.lon >= -123.0 && p.lon <= -121.0;\nconst pointSegMiles = (p,a,b) => { const ym = 69; const xm = Math.cos(toRad((a.lat + b.lat) / 2)) * 69.172; const ax = a.lon*xm, ay = a.lat*ym, bx = b.lon*xm, by = b.lat*ym, px = p.lon*xm, py = p.lat*ym; const dx = bx-ax, dy = by-ay, d = dx*dx + dy*dy; if (!d) return Math.hypot(px-ax, py-ay); const t = Math.max(0, Math.min(1, ((px-ax)*dx + (py-ay)*dy) / d)); return Math.hypot(px-(ax+t*dx), py-(ay+t*dy)); };\nconst routeMiles = p => { if (!pointOk(p)) return Infinity; let best = Infinity; for (let i = 1; i < ROUTE_VERTICES.length; i++) best = Math.min(best, pointSegMiles(p, ROUTE_VERTICES[i-1], ROUTE_VERTICES[i])); return best; };\nconst pointInPoly = (p, ring) => { let inside = false; for (let i=0,j=ring.length-1;i<ring.length;j=i++) { const xi=ring[i].lon, yi=ring[i].lat, xj=ring[j].lon, yj=ring[j].lat; const hit=((yi>p.lat)!==(yj>p.lat)) && (p.lon < (xj-xi)*(p.lat-yi)/((yj-yi)||1e-12)+xi); if (hit) inside=!inside; } return inside; };\nconst polyMiles = rings => { let best = Infinity; for (const ring of rings) { for (const rp of ROUTE_VERTICES) if (pointInPoly(rp, ring)) return 0; for (const p of ring) best = Math.min(best, routeMiles(p)); } return best; };\nconst safeIso = v => { if (v === null || v === undefined || v === '') return null; const ms = typeof v === 'number' ? v : Date.parse(v); return Number.isFinite(ms) ? new Date(ms).toISOString() : null; };\nconst sourceHealth = ({run, sourceId, sourceName, status, stale, count, http, observed, warnings, errors, retrieved}) => ({ schema_version:'1.0.0', connector_id:run.connector_id, source_id:sourceId, source_name:sourceName, status, retrieved_at:retrieved || run.generated_at, last_retrieved_at:retrieved || run.generated_at, stale_after_minutes:stale, record_count:count, http_status:http ?? null, last_observation_at:observed || retrieved || run.generated_at, freshness_state: status === 'failed' ? 'unknown' : (status === 'using_last_known_good' || status === 'stale' ? 'stale' : 'fresh'), warnings:warnings || [], errors:errors || [] });\nconst lkgIfUsable = ({run, sourceId, sourceName, stale, fetchError}) => { const lkg = (($('Parse Last Known Good').first().json.bySource || {})[sourceId]); const ts = lkg && lkg.source_health && lkg.source_health.retrieved_at ? Date.parse(lkg.source_health.retrieved_at) : NaN; const ownStale = lkg && lkg.source_health && lkg.source_health.stale_after_minutes !== undefined ? lkg.source_health.stale_after_minutes : stale; const usable = !!lkg && Number.isFinite(ts) && ((Date.now() - ts) / 60000) <= ownStale; if (!usable) return null; const events = Array.isArray(lkg.events) ? lkg.events : []; const advisories = Array.isArray(lkg.advisories) ? lkg.advisories : []; const observations = Array.isArray(lkg.observations) ? lkg.observations : []; return { events, advisories, observations, source_health: sourceHealth({run, sourceId, sourceName, status:'using_last_known_good', stale, count:events.length + advisories.length + observations.length, http:null, observed:lkg.source_health.last_observation_at || lkg.source_health.retrieved_at, retrieved:lkg.source_health.retrieved_at, warnings:[...(lkg.source_health.warnings || []), 'Live fetch failed; serving last-known-good data retrieved at ' + lkg.source_health.retrieved_at + '.'], errors:[String(fetchError && (fetchError.message || fetchError))]}) }; };\nconst run = $('Initialize Run Metadata').first().json; const fetch = $('Fetch NWS-01 Alerts').first().json || {}; const landing = $('Land NWS-01 Raw Payload').first().json || {}; const sourceId='04_WILDFIRE:NWS-01'; const sourceName='NOAA / National Weather Service active alerts API'; const stale=15;\nlet fetchError = fetch.error || null; let body = fetch.body !== undefined ? fetch.body : fetch; if (typeof body === 'string') { try { body = JSON.parse(body); } catch (error) { fetchError = error; body = {}; } }\nif (fetchError) { const lkg = lkgIfUsable({run, sourceId, sourceName, stale, fetchError}); if (lkg) return [{ json:{ source_id:sourceId, source_name:sourceName, ...lkg, raw_landing_path:landing.file_path || null, raw_content_hash:landing.content_hash || null, warnings:lkg.source_health.warnings, errors:lkg.source_health.errors } }]; const sh = sourceHealth({run, sourceId, sourceName, status:'failed', stale, count:0, http:fetch.statusCode ?? fetch.status ?? null, warnings:[], errors:[String(fetchError.message || fetchError)]}); return [{ json:{ source_id:sourceId, source_name:sourceName, source_health:sh, events:[], advisories:[], observations:[], raw_landing_path:landing.file_path || null, raw_content_hash:landing.content_hash || null, warnings:[], errors:sh.errors } }]; }\nconst advisories=[], seen=new Set(); const features = Array.isArray(body && body.features) ? body.features : [];\nfor (const f of features) { const p=f.properties || f; const eventText=String(p.event || p.headline || '').toLowerCase(); if (!eventText.includes('red flag warning') && !eventText.includes('fire weather watch')) continue; const zones=(p.affectedZones || []).map(String).concat((p.geocode && p.geocode.UGC) || [], p.areaDesc || '').join(' '); const zoneMatch=['WAZ654','WAZ657'].some(z => zones.includes(z)); const county=zones.includes('WAC033') || String(p.areaDesc || '').toLowerCase().includes('king'); if (!zoneMatch && !county) continue; const native=p.id || f.id || hashString(JSON.stringify(p)); if (seen.has(native)) continue; seen.add(native); const type=eventText.includes('watch')?'fire_weather_watch':'red_flag_warning'; const sev=String(p.severity || '').toLowerCase(); advisories.push({ advisory_id:sourceId+':'+hashString(native), source_id:sourceId, advisory_type:type, title:p.event || p.headline || (type === 'red_flag_warning' ? 'Red Flag Warning' : 'Fire Weather Watch'), severity:sev === 'extreme' ? 'extreme' : (sev === 'severe' ? 'high' : (sev === 'minor' ? 'low' : 'moderate')), route_relevance:zoneMatch?'route_wide':'contextual_only', route_match_method:f.geometry?'polygon_intersection':'fire_zone_match', effective_at:safeIso(p.effective || p.sent), expires_at:safeIso(p.expires || p.ends), jurisdiction:zoneMatch ? ['WAZ654','WAZ657'].filter(z => zones.includes(z)).join(',') : 'WAC033', area_desc:p.areaDesc || null, public_note:zoneMatch?'Fire-weather alert affects a route fire-weather zone.':'Fire-weather alert matched King County context but not a route fire-weather zone.', ownership_dedupe_key:type+':'+String(native).toLowerCase() }); }\nconst sh=sourceHealth({run, sourceId, sourceName, status:advisories.length?'ok':'empty_but_valid', stale, count:advisories.length, http:fetch.statusCode ?? fetch.status ?? null, warnings:advisories.length?[]:['Healthy NWS active-alerts response; no active route fire-weather alerts found.'], errors:[]});\nreturn [{ json:{ source_id:sourceId, source_name:sourceName, source_health:sh, events:[], advisories, observations:[], raw_landing_path:landing.file_path || null, raw_content_hash:landing.content_hash || null, warnings:sh.warnings, errors:[] } }];"
+        },
+        "typeVersion": 2
+      },
+      {
+        "id": "fetch_noaa_01",
+        "name": "Fetch NOAA-01 HMS Smoke",
+        "type": "n8n-nodes-base.httpRequest",
+        "onError": "continueRegularOutput",
+        "maxTries": 2,
+        "position": [
+          220,
+          1020
+        ],
+        "parameters": {
+          "url": "={{ 'https://satepsanone.nesdis.noaa.gov/pub/FIRE/web/HMS/Smoke_Polygons/KML/' + new Date().getUTCFullYear() + '/' + String(new Date().getUTCMonth() + 1).padStart(2, '0') + '/hms_smoke' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + '.kml' }}",
+          "method": "GET",
+          "options": {
+            "timeout": 30000
+          },
+          "sendHeaders": true,
+          "responseFormat": "string",
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "User-Agent",
+                "value": "UW-Issy Route Monitor 04_WILDFIRE connector; contact john@biketourfrance.net"
+              },
+              {
+                "name": "Accept",
+                "value": "*/*"
+              }
+            ]
+          }
+        },
+        "retryOnFail": true,
+        "typeVersion": 4.2,
+        "waitBetweenTries": 60000
+      },
+      {
+        "id": "land_noaa_01",
+        "name": "Land NOAA-01 Raw Payload",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          500,
+          1020
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch NOAA-01 HMS Smoke').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyString = typeof body === 'string' ? body : JSON.stringify(body || null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { const text = String(input || ''); let hash = 2166136261; for (let i = 0; i < text.length; i++) { hash ^= text.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyString);\nconst filePath = run.output_root + '/raw/04_WILDFIRE/landings/NOAA-01_landing_' + run.run_stamp + '.json';\nconst landing = { schema_version:'1.0.0', connector_id:run.connector_id, source_id:'04_WILDFIRE:NOAA-01', source_name:\"NOAA Hazard Mapping System smoke polygons\", source_url:\"dynamic NOAA HMS dated KML URL\", retrieved_at:run.generated_at, http_status:statusCode, retrieval_method:'dated_kml_download', content_hash:contentHash, body_length:bodyString.length, body:bodyString, fetch_status:fetch.error ? 'failed' : 'ok', error:fetch.error ? String(fetch.error.message || fetch.error) : null };\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json:{ file_path:filePath, source_id:landing.source_id, source_name:landing.source_name, content_hash:contentHash, retrieved_at:run.generated_at, body:bodyString }, binary:{ data:binary } }];"
+        },
+        "typeVersion": 2
+      },
+      {
+        "id": "write_noaa_01",
+        "name": "Write NOAA-01 Raw Landing",
+        "type": "n8n-nodes-base.readWriteFile",
+        "position": [
+          760,
+          1020
+        ],
+        "parameters": {
+          "options": {},
+          "fileName": "={{ $json.file_path }}",
+          "operation": "write",
+          "dataPropertyName": "data"
+        },
+        "typeVersion": 1
+      },
+      {
+        "id": "normalize_noaa_01",
+        "name": "Normalize NOAA-01 Events",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          1010,
+          1020
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const ROUTE_VERTICES = [{\"lat\":47.65051,\"lon\":-122.30462},{\"lat\":47.65791,\"lon\":-122.27949},{\"lat\":47.67452,\"lon\":-122.26358},{\"lat\":47.68847,\"lon\":-122.24709},{\"lat\":47.72712,\"lon\":-122.24631},{\"lat\":47.75387,\"lon\":-122.15802},{\"lat\":47.70533,\"lon\":-122.14575},{\"lat\":47.67619,\"lon\":-122.12458},{\"lat\":47.61236,\"lon\":-122.07655},{\"lat\":47.55218,\"lon\":-122.04427}];\nconst ROUTE_SECTION_IDS = [\"01_uw_u_district\",\"02_burke_gilman_seattle\",\"03_burke_gilman_north_lake_wa_kenmore\",\"04_burke_gilman_connector_bothell\",\"05_sammamish_river_trail_bothell_woodinville\",\"06_sammamish_river_trail_redmond\",\"07_marymoor_park\",\"08_east_lake_sammamish_trail_redmond\",\"09_east_lake_sammamish_trail_sammamish\",\"10_issaquah_approach_terminus\"];\nconst hashString = (input) => { const text = String(input || ''); let hash = 2166136261; for (let i = 0; i < text.length; i++) { hash ^= text.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst toRad = value => value * Math.PI / 180;\nconst pointOk = p => p && typeof p.lat === 'number' && typeof p.lon === 'number' && p.lat >= 47.0 && p.lat <= 48.3 && p.lon >= -123.0 && p.lon <= -121.0;\nconst pointSegMiles = (p,a,b) => { const ym = 69; const xm = Math.cos(toRad((a.lat + b.lat) / 2)) * 69.172; const ax = a.lon*xm, ay = a.lat*ym, bx = b.lon*xm, by = b.lat*ym, px = p.lon*xm, py = p.lat*ym; const dx = bx-ax, dy = by-ay, d = dx*dx + dy*dy; if (!d) return Math.hypot(px-ax, py-ay); const t = Math.max(0, Math.min(1, ((px-ax)*dx + (py-ay)*dy) / d)); return Math.hypot(px-(ax+t*dx), py-(ay+t*dy)); };\nconst routeMiles = p => { if (!pointOk(p)) return Infinity; let best = Infinity; for (let i = 1; i < ROUTE_VERTICES.length; i++) best = Math.min(best, pointSegMiles(p, ROUTE_VERTICES[i-1], ROUTE_VERTICES[i])); return best; };\nconst pointInPoly = (p, ring) => { let inside = false; for (let i=0,j=ring.length-1;i<ring.length;j=i++) { const xi=ring[i].lon, yi=ring[i].lat, xj=ring[j].lon, yj=ring[j].lat; const hit=((yi>p.lat)!==(yj>p.lat)) && (p.lon < (xj-xi)*(p.lat-yi)/((yj-yi)||1e-12)+xi); if (hit) inside=!inside; } return inside; };\nconst polyMiles = rings => { let best = Infinity; for (const ring of rings) { for (const rp of ROUTE_VERTICES) if (pointInPoly(rp, ring)) return 0; for (const p of ring) best = Math.min(best, routeMiles(p)); } return best; };\nconst safeIso = v => { if (v === null || v === undefined || v === '') return null; const ms = typeof v === 'number' ? v : Date.parse(v); return Number.isFinite(ms) ? new Date(ms).toISOString() : null; };\nconst sourceHealth = ({run, sourceId, sourceName, status, stale, count, http, observed, warnings, errors, retrieved}) => ({ schema_version:'1.0.0', connector_id:run.connector_id, source_id:sourceId, source_name:sourceName, status, retrieved_at:retrieved || run.generated_at, last_retrieved_at:retrieved || run.generated_at, stale_after_minutes:stale, record_count:count, http_status:http ?? null, last_observation_at:observed || retrieved || run.generated_at, freshness_state: status === 'failed' ? 'unknown' : (status === 'using_last_known_good' || status === 'stale' ? 'stale' : 'fresh'), warnings:warnings || [], errors:errors || [] });\nconst lkgIfUsable = ({run, sourceId, sourceName, stale, fetchError}) => { const lkg = (($('Parse Last Known Good').first().json.bySource || {})[sourceId]); const ts = lkg && lkg.source_health && lkg.source_health.retrieved_at ? Date.parse(lkg.source_health.retrieved_at) : NaN; const ownStale = lkg && lkg.source_health && lkg.source_health.stale_after_minutes !== undefined ? lkg.source_health.stale_after_minutes : stale; const usable = !!lkg && Number.isFinite(ts) && ((Date.now() - ts) / 60000) <= ownStale; if (!usable) return null; const events = Array.isArray(lkg.events) ? lkg.events : []; const advisories = Array.isArray(lkg.advisories) ? lkg.advisories : []; const observations = Array.isArray(lkg.observations) ? lkg.observations : []; return { events, advisories, observations, source_health: sourceHealth({run, sourceId, sourceName, status:'using_last_known_good', stale, count:events.length + advisories.length + observations.length, http:null, observed:lkg.source_health.last_observation_at || lkg.source_health.retrieved_at, retrieved:lkg.source_health.retrieved_at, warnings:[...(lkg.source_health.warnings || []), 'Live fetch failed; serving last-known-good data retrieved at ' + lkg.source_health.retrieved_at + '.'], errors:[String(fetchError && (fetchError.message || fetchError))]}) }; };\nconst run = $('Initialize Run Metadata').first().json; const fetch = $('Fetch NOAA-01 HMS Smoke').first().json || {}; const landing = $('Land NOAA-01 Raw Payload').first().json || {}; const sourceId='04_WILDFIRE:NOAA-01'; const sourceName='NOAA Hazard Mapping System smoke polygons'; const stale=1440;\nlet fetchError = fetch.error || null; const body = fetch.body !== undefined ? fetch.body : (landing.body || fetch); const text = typeof body === 'string' ? body : JSON.stringify(body || ''); if (!text || text === '{}' || text === 'null') fetchError = fetchError || new Error('NOAA HMS smoke KML response was empty or malformed');\nif (fetchError) { const lkg = lkgIfUsable({run, sourceId, sourceName, stale, fetchError}); if (lkg) return [{ json:{ source_id:sourceId, source_name:sourceName, ...lkg, raw_landing_path:landing.file_path || null, raw_content_hash:landing.content_hash || null, warnings:lkg.source_health.warnings, errors:lkg.source_health.errors } }]; const sh = sourceHealth({run, sourceId, sourceName, status:'failed', stale, count:0, http:fetch.statusCode ?? fetch.status ?? null, warnings:[], errors:[String(fetchError.message || fetchError)]}); return [{ json:{ source_id:sourceId, source_name:sourceName, source_health:sh, events:[], advisories:[], observations:[], raw_landing_path:landing.file_path || null, raw_content_hash:landing.content_hash || null, warnings:[], errors:sh.errors } }]; }\nconst advisories=[]; const placemarks = text.match(new RegExp('<Placemark[\\\\s\\\\S]*?</Placemark>', 'gi')) || [];\nfor (const pm of placemarks) { const name=((pm.match(new RegExp('<name[^>]*>([\\\\s\\\\S]*?)</name>', 'i')) || [])[1] || 'NOAA HMS smoke polygon').replace(new RegExp('<!\\\\[CDATA\\\\[|\\\\]\\\\]>', 'g'),'').trim(); const coordText=((pm.match(new RegExp('<coordinates[^>]*>([\\\\s\\\\S]*?)</coordinates>', 'i')) || [])[1] || '').trim(); const ring=coordText.split(new RegExp('\\\\s+')).map(t => t.split(',')).map(x => ({lon:Number(x[0]),lat:Number(x[1])})).filter(pointOk); if (ring.length < 3) continue; const d=polyMiles([ring]); if (!Number.isFinite(d) || d > 5) continue; const density=(name+' '+pm).toLowerCase().includes('heavy')?'heavy':((name+' '+pm).toLowerCase().includes('medium')?'medium':'light'); advisories.push({ advisory_id:sourceId+':'+hashString(name + coordText.slice(0,120)), source_id:sourceId, advisory_type:'smoke_plume', title:'NOAA HMS smoke plume near route', severity:(density !== 'light' && d <= 0.5)?'high':(density === 'medium'?'moderate':'low'), route_relevance:d<=0.5?'confirmed_route_impact':'near_route', route_match_method:'polygon_intersection', effective_at:null, expires_at:null, jurisdiction:'NOAA HMS', area_desc:name, smoke_density_code:density, route_distance_miles:Number(d.toFixed(2)), public_note:'NOAA HMS smoke extent intersects the five-mile route buffer; air-quality health interpretation remains owned by lane 03.', ownership_dedupe_key:'smoke_plume:'+hashString(name + coordText.slice(0,120)) }); }\nconst sh=sourceHealth({run, sourceId, sourceName, status:advisories.length?'ok':'empty_but_valid', stale, count:advisories.length, http:fetch.statusCode ?? fetch.status ?? null, warnings:advisories.length?[]:['NOAA HMS KML parsed; no route-buffer smoke polygons found.'], errors:[]});\nreturn [{ json:{ source_id:sourceId, source_name:sourceName, source_health:sh, events:[], advisories, observations:[], raw_landing_path:landing.file_path || null, raw_content_hash:landing.content_hash || null, warnings:sh.warnings, errors:[] } }];"
+        },
+        "typeVersion": 2
+      },
+      {
+        "id": "fetch_kc_01",
+        "name": "Fetch KC-01 Burn Bans",
+        "type": "n8n-nodes-base.httpRequest",
+        "onError": "continueRegularOutput",
+        "maxTries": 2,
+        "position": [
+          220,
+          1220
+        ],
+        "parameters": {
+          "url": "https://kingcounty.gov/en/dept/local-services/governance-leadership/local-government-for-unincorporated-king-county/fire-safety",
+          "method": "GET",
+          "options": {
+            "timeout": 30000
+          },
+          "sendHeaders": true,
+          "responseFormat": "string",
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "User-Agent",
+                "value": "UW-Issy Route Monitor 04_WILDFIRE connector; contact john@biketourfrance.net"
+              },
+              {
+                "name": "Accept",
+                "value": "*/*"
+              }
+            ]
+          }
+        },
+        "retryOnFail": true,
+        "typeVersion": 4.2,
+        "waitBetweenTries": 60000
+      },
+      {
+        "id": "land_kc_01",
+        "name": "Land KC-01 Raw Payload",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          500,
+          1220
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const run = $('Initialize Run Metadata').first().json;\nconst fetch = $('Fetch KC-01 Burn Bans').first().json || {};\nconst body = fetch.body !== undefined ? fetch.body : fetch;\nconst bodyString = typeof body === 'string' ? body : JSON.stringify(body || null);\nconst statusCode = fetch.statusCode ?? fetch.status ?? null;\nconst hashString = (input) => { const text = String(input || ''); let hash = 2166136261; for (let i = 0; i < text.length; i++) { hash ^= text.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst contentHash = 'hash_' + hashString(bodyString);\nconst filePath = run.output_root + '/raw/04_WILDFIRE/landings/KC-01_landing_' + run.run_stamp + '.json';\nconst landing = { schema_version:'1.0.0', connector_id:run.connector_id, source_id:'04_WILDFIRE:KC-01', source_name:\"King County Fire Safety Burn Bans\", source_url:\"https://kingcounty.gov/en/dept/local-services/governance-leadership/local-government-for-unincorporated-king-county/fire-safety\", retrieved_at:run.generated_at, http_status:statusCode, retrieval_method:'html_page_fetch', content_hash:contentHash, body_length:bodyString.length, body:bodyString, fetch_status:fetch.error ? 'failed' : 'ok', error:fetch.error ? String(fetch.error.message || fetch.error) : null };\nconst buffer = Buffer.from(JSON.stringify(landing, null, 2), 'utf8');\nconst binary = await this.helpers.prepareBinaryData(buffer, filePath.split('/').pop(), 'application/json');\nreturn [{ json:{ file_path:filePath, source_id:landing.source_id, source_name:landing.source_name, content_hash:contentHash, retrieved_at:run.generated_at, body:bodyString }, binary:{ data:binary } }];"
+        },
+        "typeVersion": 2
+      },
+      {
+        "id": "write_kc_01",
+        "name": "Write KC-01 Raw Landing",
+        "type": "n8n-nodes-base.readWriteFile",
+        "position": [
+          760,
+          1220
+        ],
+        "parameters": {
+          "options": {},
+          "fileName": "={{ $json.file_path }}",
+          "operation": "write",
+          "dataPropertyName": "data"
+        },
+        "typeVersion": 1
+      },
+      {
+        "id": "normalize_kc_01",
+        "name": "Normalize KC-01 Events",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          1010,
+          1220
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const ROUTE_VERTICES = [{\"lat\":47.65051,\"lon\":-122.30462},{\"lat\":47.65791,\"lon\":-122.27949},{\"lat\":47.67452,\"lon\":-122.26358},{\"lat\":47.68847,\"lon\":-122.24709},{\"lat\":47.72712,\"lon\":-122.24631},{\"lat\":47.75387,\"lon\":-122.15802},{\"lat\":47.70533,\"lon\":-122.14575},{\"lat\":47.67619,\"lon\":-122.12458},{\"lat\":47.61236,\"lon\":-122.07655},{\"lat\":47.55218,\"lon\":-122.04427}];\nconst ROUTE_SECTION_IDS = [\"01_uw_u_district\",\"02_burke_gilman_seattle\",\"03_burke_gilman_north_lake_wa_kenmore\",\"04_burke_gilman_connector_bothell\",\"05_sammamish_river_trail_bothell_woodinville\",\"06_sammamish_river_trail_redmond\",\"07_marymoor_park\",\"08_east_lake_sammamish_trail_redmond\",\"09_east_lake_sammamish_trail_sammamish\",\"10_issaquah_approach_terminus\"];\nconst hashString = (input) => { const text = String(input || ''); let hash = 2166136261; for (let i = 0; i < text.length; i++) { hash ^= text.charCodeAt(i); hash = Math.imul(hash, 16777619); } return (hash >>> 0).toString(16).padStart(8, '0'); };\nconst toRad = value => value * Math.PI / 180;\nconst pointOk = p => p && typeof p.lat === 'number' && typeof p.lon === 'number' && p.lat >= 47.0 && p.lat <= 48.3 && p.lon >= -123.0 && p.lon <= -121.0;\nconst pointSegMiles = (p,a,b) => { const ym = 69; const xm = Math.cos(toRad((a.lat + b.lat) / 2)) * 69.172; const ax = a.lon*xm, ay = a.lat*ym, bx = b.lon*xm, by = b.lat*ym, px = p.lon*xm, py = p.lat*ym; const dx = bx-ax, dy = by-ay, d = dx*dx + dy*dy; if (!d) return Math.hypot(px-ax, py-ay); const t = Math.max(0, Math.min(1, ((px-ax)*dx + (py-ay)*dy) / d)); return Math.hypot(px-(ax+t*dx), py-(ay+t*dy)); };\nconst routeMiles = p => { if (!pointOk(p)) return Infinity; let best = Infinity; for (let i = 1; i < ROUTE_VERTICES.length; i++) best = Math.min(best, pointSegMiles(p, ROUTE_VERTICES[i-1], ROUTE_VERTICES[i])); return best; };\nconst pointInPoly = (p, ring) => { let inside = false; for (let i=0,j=ring.length-1;i<ring.length;j=i++) { const xi=ring[i].lon, yi=ring[i].lat, xj=ring[j].lon, yj=ring[j].lat; const hit=((yi>p.lat)!==(yj>p.lat)) && (p.lon < (xj-xi)*(p.lat-yi)/((yj-yi)||1e-12)+xi); if (hit) inside=!inside; } return inside; };\nconst polyMiles = rings => { let best = Infinity; for (const ring of rings) { for (const rp of ROUTE_VERTICES) if (pointInPoly(rp, ring)) return 0; for (const p of ring) best = Math.min(best, routeMiles(p)); } return best; };\nconst safeIso = v => { if (v === null || v === undefined || v === '') return null; const ms = typeof v === 'number' ? v : Date.parse(v); return Number.isFinite(ms) ? new Date(ms).toISOString() : null; };\nconst sourceHealth = ({run, sourceId, sourceName, status, stale, count, http, observed, warnings, errors, retrieved}) => ({ schema_version:'1.0.0', connector_id:run.connector_id, source_id:sourceId, source_name:sourceName, status, retrieved_at:retrieved || run.generated_at, last_retrieved_at:retrieved || run.generated_at, stale_after_minutes:stale, record_count:count, http_status:http ?? null, last_observation_at:observed || retrieved || run.generated_at, freshness_state: status === 'failed' ? 'unknown' : (status === 'using_last_known_good' || status === 'stale' ? 'stale' : 'fresh'), warnings:warnings || [], errors:errors || [] });\nconst lkgIfUsable = ({run, sourceId, sourceName, stale, fetchError}) => { const lkg = (($('Parse Last Known Good').first().json.bySource || {})[sourceId]); const ts = lkg && lkg.source_health && lkg.source_health.retrieved_at ? Date.parse(lkg.source_health.retrieved_at) : NaN; const ownStale = lkg && lkg.source_health && lkg.source_health.stale_after_minutes !== undefined ? lkg.source_health.stale_after_minutes : stale; const usable = !!lkg && Number.isFinite(ts) && ((Date.now() - ts) / 60000) <= ownStale; if (!usable) return null; const events = Array.isArray(lkg.events) ? lkg.events : []; const advisories = Array.isArray(lkg.advisories) ? lkg.advisories : []; const observations = Array.isArray(lkg.observations) ? lkg.observations : []; return { events, advisories, observations, source_health: sourceHealth({run, sourceId, sourceName, status:'using_last_known_good', stale, count:events.length + advisories.length + observations.length, http:null, observed:lkg.source_health.last_observation_at || lkg.source_health.retrieved_at, retrieved:lkg.source_health.retrieved_at, warnings:[...(lkg.source_health.warnings || []), 'Live fetch failed; serving last-known-good data retrieved at ' + lkg.source_health.retrieved_at + '.'], errors:[String(fetchError && (fetchError.message || fetchError))]}) }; };\nconst run = $('Initialize Run Metadata').first().json; const fetch = $('Fetch KC-01 Burn Bans').first().json || {}; const landing = $('Land KC-01 Raw Payload').first().json || {}; const sourceId='04_WILDFIRE:KC-01'; const sourceName='King County Fire Safety Burn Bans'; const stale=360;\nlet fetchError = fetch.error || null; const body = fetch.body !== undefined ? fetch.body : (landing.body || fetch); const bodyString = typeof body === 'string' ? body : JSON.stringify(body || null); if (!bodyString || bodyString === '{}' || bodyString === 'null') fetchError = fetchError || new Error('King County burn-ban page response was empty or malformed');\nif (fetchError) { const lkg = lkgIfUsable({run, sourceId, sourceName, stale, fetchError}); if (lkg) return [{ json:{ source_id:sourceId, source_name:sourceName, ...lkg, raw_landing_path:landing.file_path || null, raw_content_hash:landing.content_hash || null, warnings:lkg.source_health.warnings, errors:lkg.source_health.errors } }]; const sh = sourceHealth({run, sourceId, sourceName, status:'failed', stale, count:0, http:fetch.statusCode ?? fetch.status ?? null, warnings:[], errors:[String(fetchError.message || fetchError)]}); return [{ json:{ source_id:sourceId, source_name:sourceName, source_health:sh, events:[], advisories:[], observations:[], raw_landing_path:landing.file_path || null, raw_content_hash:landing.content_hash || null, warnings:[], errors:sh.errors } }]; }\nconst text=bodyString.replace(new RegExp('<script[\\\\s\\\\S]*?</script>','gi'),' ').replace(new RegExp('<style[\\\\s\\\\S]*?</style>','gi'),' ').replace(new RegExp('<[^>]+>','g'),' ').replace(new RegExp('\\\\s+','g'),' ').trim(); const lower=text.toLowerCase(); const hasStatus=lower.includes('current status') || lower.includes('burn ban') || lower.includes('fire safety'); const noBan=lower.includes('no fire safety burn ban') || lower.includes('no burn ban'); const stage=(lower.match(new RegExp('stage\\\\s*(1|2)\\\\s*(?:fire safety\\\\s*)?burn\\\\s*ban')) || lower.match(new RegExp('current status\\\\s*:?\\\\s*stage\\\\s*(1|2)')) || [])[1] || null; const active=!noBan && (!!stage || lower.includes('burn ban'));\nif (!hasStatus) fetchError = new Error('King County burn-ban current-status block was not found');\nif (fetchError) { const lkg = lkgIfUsable({run, sourceId, sourceName, stale, fetchError}); if (lkg) return [{ json:{ source_id:sourceId, source_name:sourceName, ...lkg, raw_landing_path:landing.file_path || null, raw_content_hash:landing.content_hash || null, warnings:lkg.source_health.warnings, errors:lkg.source_health.errors } }]; const sh = sourceHealth({run, sourceId, sourceName, status:'failed', stale, count:0, http:fetch.statusCode ?? fetch.status ?? null, warnings:[], errors:[String(fetchError.message || fetchError)]}); return [{ json:{ source_id:sourceId, source_name:sourceName, source_health:sh, events:[], advisories:[], observations:[], raw_landing_path:landing.file_path || null, raw_content_hash:landing.content_hash || null, warnings:[], errors:sh.errors } }]; }\nconst advisories=[]; if (active) advisories.push({ advisory_id:sourceId+':'+hashString('king_county_burn_ban_'+(stage || 'active')+'_'+(landing.content_hash || 'current')), source_id:sourceId, advisory_type:'burn_restriction', title:stage ? 'King County Stage '+stage+' fire safety burn ban' : 'King County fire safety burn ban', severity:stage === '2' ? 'moderate' : 'low', route_relevance:'route_wide', route_match_method:'county_match', effective_at:null, expires_at:null, jurisdiction:'King County', area_desc:'Unincorporated King County countywide fire-safety burn restriction context', public_note:'County burn restrictions are route-wide wildfire context and do not prove direct route closure.', ownership_dedupe_key:'burn_restriction:king_county:'+(stage ? 'stage'+stage : 'active') });\nconst sh=sourceHealth({run, sourceId, sourceName, status:advisories.length?'ok':'empty_but_valid', stale, count:advisories.length, http:fetch.statusCode ?? fetch.status ?? null, warnings:advisories.length?[]:['King County fire-safety page parsed; no active burn-ban status detected.'], errors:[]});\nreturn [{ json:{ source_id:sourceId, source_name:sourceName, source_health:sh, events:[], advisories, observations:[], raw_landing_path:landing.file_path || null, raw_content_hash:landing.content_hash || null, warnings:sh.warnings, errors:[] } }];"
+        },
+        "typeVersion": 2
+      },
+      {
+        "id": "merge_normalized_branches",
+        "name": "Merge Normalized Branches",
+        "type": "n8n-nodes-base.merge",
+        "position": [
+          1260,
+          820
+        ],
+        "parameters": {
+          "numberInputs": 5
+        },
+        "typeVersion": 3.1
+      },
+      {
+        "id": "aggregate_normalized_branches",
+        "name": "Aggregate Normalized Branches",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          1520,
+          820
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const run = $('Initialize Run Metadata').first().json; const items=$input.all(); const branches=items.map(i => i.json || {}); const source_health=[], events=[], advisories=[], observations=[], source_warnings=[], source_errors=[]; for (const b of branches) { if (b.source_health) source_health.push(b.source_health); for (const e of b.events || []) events.push(e); for (const a of b.advisories || []) advisories.push(a); for (const o of b.observations || []) observations.push(o); for (const w of b.warnings || []) source_warnings.push(b.source_id + ': ' + w); for (const e of b.errors || []) source_errors.push(b.source_id + ': ' + e); } return [{ json:{ ...run, source_health, normalized_events:events, normalized_advisories:advisories, normalized_observations:observations, source_warnings, source_errors, branch_count:branches.length } }];"
+        },
+        "typeVersion": 2
+      },
+      {
+        "id": "deduplicate_events",
+        "name": "Deduplicate Events",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          1760,
+          820
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const input=$input.first().json; const eventMap=new Map(); for (const e of input.normalized_events || []) { const k=e.ownership_dedupe_key || e.source_event_id || e.event_id; if (!eventMap.has(k)) eventMap.set(k,e); else { const old=eventMap.get(k); eventMap.set(k, (e.route_distance_miles ?? Infinity) < (old.route_distance_miles ?? Infinity) ? {...e, related_source_ids:Array.from(new Set([old.source_id,e.source_id]))} : {...old, related_source_ids:Array.from(new Set([old.source_id,e.source_id]))}); } } const advisoryMap=new Map(); for (const a of input.normalized_advisories || []) { const k=a.ownership_dedupe_key || a.advisory_id; if (!advisoryMap.has(k)) advisoryMap.set(k,a); } const observationMap=new Map(); for (const o of input.normalized_observations || []) if (!observationMap.has(o.observation_id)) observationMap.set(o.observation_id,o); return [{ json:{ ...input, deduplicated_events:Array.from(eventMap.values()), deduplicated_advisories:Array.from(advisoryMap.values()), deduplicated_observations:Array.from(observationMap.values()) } }];"
+        },
+        "typeVersion": 2
+      },
+      {
+        "id": "build_route_sections_rollups",
+        "name": "Build Route Sections Rollups",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          2000,
+          820
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const input=$input.first().json; const sectionMap=Object.fromEntries([[\"01_uw_u_district\",\"UW / U-District\"],[\"02_burke_gilman_seattle\",\"Burke-Gilman - Seattle\"],[\"03_burke_gilman_north_lake_wa_kenmore\",\"Burke-Gilman - north Lake WA/Kenmore\"],[\"04_burke_gilman_connector_bothell\",\"Burke-Gilman/connector - Bothell\"],[\"05_sammamish_river_trail_bothell_woodinville\",\"Sammamish River Trail - Bothell/Woodinville\"],[\"06_sammamish_river_trail_redmond\",\"Sammamish River Trail - Redmond\"],[\"07_marymoor_park\",\"Marymoor Park\"],[\"08_east_lake_sammamish_trail_redmond\",\"East Lake Sammamish Trail - Redmond\"],[\"09_east_lake_sammamish_trail_sammamish\",\"East Lake Sammamish Trail - Sammamish\"],[\"10_issaquah_approach_terminus\",\"Issaquah approach / terminus\"]].map(([segment_id,segment_name]) => [segment_id,{segment_id,segment_name,status:'clear',severity:'none',reason_codes:[],event_ids:[],advisory_ids:[]}])); const rank={none:0,low:1,moderate:2,high:3,extreme:4}; const mark=(id,p) => { const s=sectionMap[id]; if (!s) return; if ((rank[p.severity] || 0) >= (rank[s.severity] || 0)) { if (p.status) s.status=p.status; if (p.severity) s.severity=p.severity; } if (p.reason_code && !s.reason_codes.includes(p.reason_code)) s.reason_codes.push(p.reason_code); if (p.event_id && !s.event_ids.includes(p.event_id)) s.event_ids.push(p.event_id); if (p.advisory_id && !s.advisory_ids.includes(p.advisory_id)) s.advisory_ids.push(p.advisory_id); }; for (const e of input.deduplicated_events || []) { const ids=Array.isArray(e.segment_ids) && e.segment_ids.length ? e.segment_ids : Object.keys(sectionMap); for (const id of ids) mark(id,{status:e.event_type === 'fire_related_closure' ? 'closed' : 'nearby_fire', severity:e.severity || 'moderate', reason_code:e.event_type === 'evacuation' ? 'WILDFIRE_EVACUATION' : 'WILDFIRE_NEAR_ROUTE', event_id:e.event_id}); } for (const a of input.deduplicated_advisories || []) { const ids=a.route_relevance === 'route_wide' || !Array.isArray(a.segment_ids) ? Object.keys(sectionMap) : a.segment_ids; const status=a.advisory_type === 'smoke_plume' ? 'smoke_affected' : (a.advisory_type === 'burn_restriction' ? 'burn_restriction_context' : 'warning_area'); const reason=a.advisory_type === 'smoke_plume' ? 'NOAA_HMS_SMOKE' : (a.advisory_type === 'burn_restriction' ? 'KING_COUNTY_BURN_RESTRICTION' : 'NWS_FIRE_WEATHER_ALERT'); for (const id of ids) mark(id,{status,severity:a.severity || 'low',reason_code:reason,advisory_id:a.advisory_id}); } return [{ json:{ ...input, route_sections:Object.values(sectionMap) } }];"
+        },
+        "typeVersion": 2
+      },
+      {
+        "id": "validate_candidate_envelope",
+        "name": "Validate Candidate Envelope",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          2240,
+          820
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const input=$input.first().json; const errors=[], warnings=[]; for (const f of ['schema_version','connector_id','connector_name','connector_version','lane','run_id','generated_at','output_root','canonical_gpx']) if (!(f in input) || input[f] === null || input[f] === undefined || input[f] === '') errors.push('Missing required root field: '+f); for (const [field,label] of [['source_health','source_health'],['deduplicated_events','deduplicated_events'],['deduplicated_advisories','deduplicated_advisories'],['deduplicated_observations','deduplicated_observations'],['route_sections','route_sections']]) if (!Array.isArray(input[field])) errors.push(label+' must be an array'); const sev=['none','low','moderate','high','extreme'], rel=['confirmed_route_impact','near_route','route_wide','segment_specific','contextual_only','not_route_relevant'], meth=['point_distance','polygon_intersection','fire_zone_match','county_match','service_area_match','named_trail_match','point_in_polygon','manual_review']; for (const e of input.deduplicated_events || []) { for (const f of ['event_id','source_id','event_type','title','severity','route_relevance','route_match_method']) if (!(f in e) || e[f] === null || e[f] === undefined || e[f] === '') errors.push('Event missing required field: '+f+' ('+(e.event_id || 'unknown')+')'); if (!['wildfire','prescribed_burn','fire_related_closure','evacuation'].includes(e.event_type)) errors.push('Invalid event_type: '+e.event_type); if (!sev.includes(e.severity)) errors.push('Invalid severity: '+e.severity); if (!rel.includes(e.route_relevance)) errors.push('Invalid route_relevance: '+e.route_relevance); if (!meth.includes(e.route_match_method)) errors.push('Invalid route_match_method: '+e.route_match_method); } for (const a of input.deduplicated_advisories || []) { for (const f of ['advisory_id','source_id','advisory_type','title','severity','route_relevance','route_match_method']) if (!(f in a) || a[f] === null || a[f] === undefined || a[f] === '') errors.push('Advisory missing required field: '+f+' ('+(a.advisory_id || 'unknown')+')'); if (!['smoke_plume','red_flag_warning','fire_weather_watch','burn_restriction'].includes(a.advisory_type)) errors.push('Invalid advisory_type: '+a.advisory_type); if (!sev.includes(a.severity)) errors.push('Invalid advisory severity: '+a.severity); if (!rel.includes(a.route_relevance)) errors.push('Invalid advisory route_relevance: '+a.route_relevance); if (!meth.includes(a.route_match_method)) errors.push('Invalid advisory route_match_method: '+a.route_match_method); } for (const o of input.deduplicated_observations || []) for (const f of ['observation_id','source_id','observation_type','title','severity','route_relevance','route_match_method']) if (!(f in o) || o[f] === null || o[f] === undefined || o[f] === '') errors.push('Observation missing required field: '+f+' ('+(o.observation_id || 'unknown')+')'); for (const s of input.source_health || []) for (const f of ['schema_version','connector_id','source_id','source_name','status','retrieved_at','last_retrieved_at','stale_after_minutes','record_count','http_status','last_observation_at','freshness_state','warnings','errors']) if (!(f in s) || s[f] === undefined) errors.push('Source health missing field: '+f+' ('+(s.source_id || 'unknown')+')'); const candidate_validation_passed=errors.length === 0; if (!candidate_validation_passed) warnings.push('Validation failed; candidate will not be promoted to published output or LKG.'); return [{ json:{ ...input, validation_errors:errors, validation_warnings:warnings, candidate_validation_passed, validator_version:'1.0.0' } }];"
+        },
+        "typeVersion": 2
+      },
+      {
+        "id": "build_candidate_artifact",
+        "name": "Build Candidate Artifact",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          2480,
+          820
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const input=$input.first().json; const statuses=(input.source_health || []).map(s => s.status); const anyFailed=statuses.some(s => s === 'failed'); const anyStale=statuses.some(s => s === 'stale' || s === 'using_last_known_good'); const anyLkg=statuses.some(s => s === 'using_last_known_good'); const allFailed=(input.source_health || []).length > 0 && statuses.every(s => s === 'failed'); const allLkg=statuses.length > 0 && statuses.every(s => s === 'using_last_known_good'); const hasEvents=(input.deduplicated_events || []).length > 0; let dataStatus='ok'; if (!input.candidate_validation_passed) dataStatus='failed_validation'; else if (allFailed) dataStatus='failed_fetch'; else if (allLkg) dataStatus='using_last_known_good'; else if (!hasEvents && !anyFailed && !anyStale) dataStatus='no_relevant_events'; else if (anyFailed || anyStale) dataStatus='degraded'; const fresh=allFailed?'unknown':(anyFailed || anyStale ? 'stale' : 'fresh'); const staleIds=(input.source_health || []).filter(s => s.status === 'stale' || s.status === 'using_last_known_good').map(s => s.source_id); const sourceIds=(input.source_health || []).map(s => s.source_id); const ownership_annotations=[]; for (const e of input.deduplicated_events || []) ownership_annotations.push({record_id:e.event_id,canonical_owner_lane: '04_WILDFIRE',shared_with_lanes:e.event_type === 'fire_related_closure' ? ['01_ROUTE_CONDITIONS'] : [],dedupe_key:e.ownership_dedupe_key || e.event_id}); for (const a of input.deduplicated_advisories || []) ownership_annotations.push({record_id:a.advisory_id,canonical_owner_lane: '04_WILDFIRE',shared_with_lanes:a.advisory_type === 'smoke_plume' ? ['03_AIR_QUALITY'] : [],dedupe_key:a.ownership_dedupe_key || a.advisory_id}); const candidateEnvelope={ schema_version:input.schema_version, connector_id:input.connector_id, connector_name:input.connector_name, connector_version:input.connector_version, lane:input.lane, run_id:input.run_id, generated_at:input.generated_at, published_at:null, data_status:dataStatus, freshness:{overall_state:fresh,computed_at:input.generated_at,oldest_relevant_source_age_minutes:0,stale_source_ids:staleIds}, manifest_ref:{manifest_id:input.connector_id+'-v0002',schema_version:'1.0.0'}, source_health:input.source_health || [], connector_health:{schema_version:'1.0.0',connector_id:input.connector_id,status:input.candidate_validation_passed ? (anyFailed || anyStale ? 'degraded' : 'ok') : 'failed',failed_stage:input.candidate_validation_passed ? null : 'validation',warning_count:(input.validation_warnings || []).length + (input.source_warnings || []).length,error_count:(input.validation_errors || []).length + (input.source_errors || []).length,used_last_known_good:anyLkg,candidate_written:true,published_written:false}, events:input.deduplicated_events || [], observations:input.deduplicated_observations || [], route_sections:input.route_sections || [], provenance:{route_source:input.canonical_gpx,source_ids:sourceIds,source_ids_used:sourceIds}, validation_state:{schema_valid:input.candidate_validation_passed,freshness_valid:!allFailed,deduplication_valid:true,candidate_validation_passed:input.candidate_validation_passed,published_from_candidate:false,validator_version:input.validator_version || '1.0.0'}, metadata:{route_fire_zones:['WAZ654','WAZ657'],route_county_code:'WAC033',route_bbox:input.route_bbox,source_retrieved_at:Object.fromEntries((input.source_health || []).map(s => [s.source_id.replace('04_WILDFIRE:',''),s.retrieved_at])),notes:(input.validation_warnings || []).concat(input.source_warnings || [])}, advisories:input.deduplicated_advisories || [], ownership_annotations}; const normalizedPath=input.output_root+'/normalized/04_WILDFIRE/04_WILDFIRE_normalized_output_'+input.run_stamp+'.json'; const candidatePath=input.output_root+'/candidate/04_WILDFIRE/04_WILDFIRE_candidate_'+input.run_stamp+'.json'; const normalizedBinary=await this.helpers.prepareBinaryData(Buffer.from(JSON.stringify(candidateEnvelope,null,2),'utf8'), normalizedPath.split('/').pop(), 'application/json'); const candidateBinary=await this.helpers.prepareBinaryData(Buffer.from(JSON.stringify(candidateEnvelope,null,2),'utf8'), candidatePath.split('/').pop(), 'application/json'); return [{json:{file_path:normalizedPath,file_name:normalizedPath.split('/').pop(),artifact_type:'normalized',candidate_envelope: candidateEnvelope},binary:{data:normalizedBinary}},{json:{file_path:candidatePath,file_name:candidatePath.split('/').pop(),artifact_type:'candidate',candidate_envelope: candidateEnvelope},binary:{data:candidateBinary}}];"
+        },
+        "typeVersion": 2
+      },
+      {
+        "id": "write_candidate_artifact",
+        "name": "Write Candidate Artifact",
+        "type": "n8n-nodes-base.readWriteFile",
+        "position": [
+          2720,
+          820
+        ],
+        "parameters": {
+          "options": {},
+          "fileName": "={{ $json.file_path }}",
+          "operation": "write",
+          "dataPropertyName": "data"
+        },
+        "typeVersion": 1
+      },
+      {
+        "id": "publish_gate_decision",
+        "name": "Publish Gate Decision",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          2960,
+          820
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const input=$('Build Candidate Artifact').first().json.candidate_envelope; const validation=$('Validate Candidate Envelope').first().json; const should_publish=!!validation.candidate_validation_passed; return [{ json:{ should_publish, reason: should_publish ? 'Validation passed' : 'Validation failed: '+(validation.validation_errors || []).join('; '), candidate_envelope:input, validation_errors:validation.validation_errors || [], validation_warnings:validation.validation_warnings || [], source_errors:validation.source_errors || [], source_warnings:validation.source_warnings || [], run_id:validation.run_id, run_stamp:validation.run_stamp, output_root:validation.output_root, connector_id:validation.connector_id, connector_name:validation.connector_name, connector_version:validation.connector_version, lane:validation.lane, generated_at:validation.generated_at, source_health:validation.source_health || [], deduplicated_events:validation.deduplicated_events || [], deduplicated_advisories:validation.deduplicated_advisories || [], deduplicated_observations:validation.deduplicated_observations || [], route_sections:validation.route_sections || [] } }];"
+        },
+        "typeVersion": 2
+      },
+      {
+        "id": "build_final_artifact_bundle",
+        "name": "Build Final Artifact Bundle",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          3200,
+          820
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const gate=$input.first().json; const candidateEnvelope=gate.candidate_envelope || $('Build Candidate Artifact').first().json.candidate_envelope; const runStamp=gate.run_stamp || candidateEnvelope.generated_at.replace(/[-:]/g,'').replace(/\\.\\d{3}Z$/,'Z'); const now=new Date().toISOString(); const outputRoot=gate.output_root || '/files/uw-issy-connectors'; const publishedPath=outputRoot+'/published/04_WILDFIRE/04_WILDFIRE_published_'+runStamp+'.json'; const publishedCurrentPath=outputRoot+'/published/04_WILDFIRE/current.json'; const lkgCurrentPath=outputRoot+'/last_known_good/04_WILDFIRE/current.json'; const lkgArchivePath=outputRoot+'/last_known_good/04_WILDFIRE/archive/'+runStamp+'.json'; const validationLogPath=outputRoot+'/logs/04_WILDFIRE/validation_log_'+runStamp+'.jsonl'; const statusPath=outputRoot+'/health/04_WILDFIRE/status.json'; const handoffPath=outputRoot+'/handoff/04_WILDFIRE/'+gate.connector_id+'-'+runStamp+'-001.json'; const failedLogPath=outputRoot+'/logs/04_WILDFIRE/'+runStamp+'_validation_failed.json'; const executionEvidencePath=outputRoot+'/health/04_WILDFIRE/execution_evidence_'+runStamp+'.json'; const validationErrors=gate.validation_errors || [], validationWarnings=gate.validation_warnings || [], sourceHealth=gate.source_health || []; const statuses=sourceHealth.map(s => s.status); const anyFailed=statuses.some(s => s === 'failed'); const anyStale=statuses.some(s => s === 'stale' || s === 'using_last_known_good'); const anyLkg=statuses.some(s => s === 'using_last_known_good'); const allFailed=sourceHealth.length > 0 && statuses.every(s => s === 'failed'); const allLkg=statuses.length > 0 && statuses.every(s => s === 'using_last_known_good'); const hasEvents=(gate.deduplicated_events || []).length > 0; let dataStatus='ok'; if (allFailed) dataStatus='failed_fetch'; else if (allLkg) dataStatus='using_last_known_good'; else if (!hasEvents && !anyFailed && !anyStale) dataStatus='no_relevant_events'; else if (anyFailed || anyStale) dataStatus='degraded'; const publishedEnvelope=gate.should_publish ? {...candidateEnvelope,published_at:now,data_status:dataStatus,connector_health:{...candidateEnvelope.connector_health,status:anyFailed || anyStale ? 'degraded' : 'ok',failed_stage:null,candidate_written:true,published_written:true,used_last_known_good:anyLkg},validation_state:{...candidateEnvelope.validation_state,schema_valid:true,candidate_validation_passed:true,published_from_candidate:true},freshness:{...candidateEnvelope.freshness,overall_state:allFailed ? 'unknown' : (anyFailed || anyStale ? 'stale' : 'fresh'),computed_at:now}} : null; const statusDoc={lane_id:'lane_04_wildfire',connector_version:gate.connector_version || candidateEnvelope.connector_version,run_id:gate.run_id || candidateEnvelope.run_id,last_fetch_at:gate.generated_at || candidateEnvelope.generated_at,last_success_at:gate.should_publish ? now : null,status:gate.should_publish ? (anyFailed || anyStale ? 'degraded' : 'ok') : 'failed',data_status:gate.should_publish ? dataStatus : 'failed_validation',source_health:sourceHealth,error_messages:validationErrors.concat(gate.source_errors || []),stale_data_fields:anyStale ? sourceHealth.filter(s => s.status === 'stale' || s.status === 'using_last_known_good').map(s => s.source_id) : [],using_last_known_good:anyLkg,published_artifact_ref:gate.should_publish ? publishedPath : null,last_known_good_ref:lkgCurrentPath}; const handoffDoc={schema_version:'1.0.0',connector_id:gate.connector_id || candidateEnvelope.connector_id,lane:gate.lane || candidateEnvelope.lane,run_id:gate.run_id || candidateEnvelope.run_id,handoff_generated_at:now,connector_output_path:gate.should_publish ? publishedPath : null,manifest_path:outputRoot+'/manifests/04_WILDFIRE/connector-manifest.json',validation_result_path:validationLogPath,execution_evidence_path:executionEvidencePath,publication_status:gate.should_publish ? 'published' : 'blocked',data_status:gate.should_publish ? dataStatus : 'failed_validation',uses_last_known_good:anyLkg,schema_compatible_with_workflow_08:!!gate.should_publish,route_sections:gate.route_sections || []}; const executionEvidenceDoc={run_id:gate.run_id || candidateEnvelope.run_id,connector_id:gate.connector_id || candidateEnvelope.connector_id,lane:gate.lane || candidateEnvelope.lane,workflow_name:'v02.UWI_LANE04',workflow_id:'w6xnelPQeRFZk8BG',generated_at:gate.generated_at || candidateEnvelope.generated_at,published_at:gate.should_publish ? now : null,should_publish:!!gate.should_publish,status:gate.should_publish ? (anyFailed || anyStale ? 'degraded' : 'ok') : 'failed',data_status:gate.should_publish ? dataStatus : 'failed_validation',source_health:sourceHealth,validation_errors:validationErrors,validation_warnings:validationWarnings,published_artifact_ref:gate.should_publish ? publishedPath : null,last_known_good_ref:lkgCurrentPath,artifact_paths:{published:gate.should_publish ? publishedPath : null,published_current:gate.should_publish ? publishedCurrentPath : null,last_known_good_current:gate.should_publish ? lkgCurrentPath : null,last_known_good_archive:gate.should_publish ? lkgArchivePath : null,quarantine:gate.should_publish ? null : failedLogPath,validation_log:validationLogPath,status:statusPath,handoff:handoffPath,execution_evidence:executionEvidencePath}}; const lines=[]; for (const s of sourceHealth) lines.push(JSON.stringify({source_id:s.source_id,run_id:gate.run_id || candidateEnvelope.run_id,stage:'source_normalize',check:'source_health',result:s.status === 'failed' ? 'fail' : 'pass',message:s.status+' / '+s.record_count+' record(s)',timestamp:gate.generated_at || candidateEnvelope.generated_at})); lines.push(JSON.stringify({source_id:'CONNECTOR',run_id:gate.run_id || candidateEnvelope.run_id,stage:'validation',check:'candidate_schema',result:gate.should_publish?'pass':'fail',message:gate.should_publish?'Candidate passed validation.':(validationErrors.join('; ') || 'Validation failed.'),timestamp:gate.generated_at || candidateEnvelope.generated_at})); lines.push(JSON.stringify({source_id:'CONNECTOR',run_id:gate.run_id || candidateEnvelope.run_id,stage:'publish_gate',check:'promotion',result:gate.should_publish?'pass':'fail',message:gate.should_publish?'Candidate promoted to published.':gate.reason,timestamp:now})); const mk=async (filePath,payload,artifactType,mime='application/json') => { const body=typeof payload === 'string' ? payload : JSON.stringify(payload,null,2); const binary=await this.helpers.prepareBinaryData(Buffer.from(body,'utf8'), filePath.split('/').pop(), mime); return {json:{file_path:filePath,file_name:filePath.split('/').pop(),artifact_type:artifactType},binary:{data:binary}}; }; const items=[]; if (gate.should_publish && publishedEnvelope) { items.push(await mk(publishedPath,publishedEnvelope,'published')); items.push(await mk(publishedCurrentPath,{run_id:gate.run_id || candidateEnvelope.run_id,artifact:publishedPath},'published_current')); items.push(await mk(lkgCurrentPath,publishedEnvelope,'last_known_good_current')); items.push(await mk(lkgArchivePath,publishedEnvelope,'last_known_good_archive')); } else items.push(await mk(failedLogPath,{run_id:gate.run_id || candidateEnvelope.run_id,reason:gate.reason,validation_errors:validationErrors,validation_warnings:validationWarnings,candidate_envelope:candidateEnvelope},'validation_failure_log')); items.push(await mk(validationLogPath,lines.join('\\n'),'validation_log','text/plain')); items.push(await mk(statusPath,statusDoc,'status')); items.push(await mk(handoffPath,handoffDoc,'handoff')); items.push(await mk(executionEvidencePath,executionEvidenceDoc,'execution_evidence')); return items;"
+        },
+        "typeVersion": 2
+      },
+      {
+        "id": "write_final_artifacts",
+        "name": "Write Final Artifacts",
+        "type": "n8n-nodes-base.readWriteFile",
+        "position": [
+          3440,
+          820
+        ],
+        "parameters": {
+          "options": {},
+          "fileName": "={{ $json.file_path }}",
+          "operation": "write",
+          "dataPropertyName": "data"
+        },
+        "typeVersion": 1
+      },
+      {
+        "id": "final_status_report",
+        "name": "Final Status Report",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          3680,
+          820
+        ],
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "\nconst gate=$('Publish Gate Decision').first().json;\nconst bundleItems=$('Build Final Artifact Bundle').all();\nconst candidate=$('Build Candidate Artifact').first().json.candidate_envelope;\nconst sourceHealth=Array.isArray(gate.source_health)?gate.source_health:(Array.isArray(candidate.source_health)?candidate.source_health:[]);\nconst sourceStatuses=sourceHealth.map(source=>source.status);\nconst failedSourceCount=sourceStatuses.filter(status=>status==='failed').length;\nconst usingLastKnownGood=sourceStatuses.includes('using_last_known_good') || !!(candidate.connector_health && candidate.connector_health.used_last_known_good);\nconst staleOrDegraded=sourceStatuses.some(status=>['failed','stale','degraded','using_last_known_good'].includes(status));\nconst dataStatus=gate.data_status || candidate.data_status || 'unknown';\nconst runStamp=gate.run_stamp || (candidate.generated_at || '').replace(/[-:]/g,'').replace(/\\.\\d{3}Z$/,'Z');\nconst outputRoot=gate.output_root || '/files/uw-issy-connectors';\nconst publishedPath=gate.should_publish ? outputRoot + '/published/04_WILDFIRE/04_WILDFIRE_published_' + runStamp + '.json' : null;\nconst artifactTypes=bundleItems.map(item=>item.json && item.json.artifact_type).filter(Boolean);\nlet status='FAILED';\nif(gate.should_publish) status=(staleOrDegraded || usingLastKnownGood || ['degraded','using_last_known_good','failed_fetch','stale'].includes(dataStatus)) ? 'DEGRADED' : 'PASSED';\nconst events=Array.isArray(candidate.events)?candidate.events:[];\nconst advisories=Array.isArray(candidate.advisories)?candidate.advisories:[];\nconst observations=Array.isArray(candidate.observations)?candidate.observations:[];\nconst smokeEventCount=advisories.filter(item=>/smoke/i.test(String(item.advisory_type || item.event_type || item.source_id || ''))).length;\nreturn [{json:{run_id:gate.run_id || candidate.run_id,status,data_status:dataStatus,candidate_written:true,published_written:!!gate.should_publish,quarantine_written:!gate.should_publish,validation_log_written:artifactTypes.includes('validation_log'),status_written:artifactTypes.includes('status'),handoff_written:artifactTypes.includes('handoff'),execution_evidence_written:artifactTypes.includes('execution_evidence'),artifact_count_written:bundleItems.length,event_count:events.length + advisories.length,source_count:sourceHealth.length,failed_source_count:failedSourceCount,using_last_known_good:usingLastKnownGood,wildfire_event_count:events.length,smoke_event_count:smokeEventCount,observation_count:observations.length,published_path:publishedPath,timestamp:candidate.generated_at}}];"
+        },
+        "typeVersion": 2
+      }
+    ],
+    "connections": {
+      "Manual Trigger": {
+        "main": [
+          [
+            {
+              "node": "Initialize Run Metadata",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Initialize Run Metadata",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Deduplicate Events": {
+        "main": [
+          [
+            {
+              "node": "Build Route Sections Rollups",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Fetch NWS-01 Alerts": {
+        "main": [
+          [
+            {
+              "node": "Land NWS-01 Raw Payload",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Read Last Known Good": {
+        "main": [
+          [
+            {
+              "node": "Parse Last Known Good",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Fetch KC-01 Burn Bans": {
+        "main": [
+          [
+            {
+              "node": "Land KC-01 Raw Payload",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Publish Gate Decision": {
+        "main": [
+          [
+            {
+              "node": "Build Final Artifact Bundle",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Write Final Artifacts": {
+        "main": [
+          [
+            {
+              "node": "Final Status Report",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Land KC-01 Raw Payload": {
+        "main": [
+          [
+            {
+              "node": "Write KC-01 Raw Landing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Normalize KC-01 Events": {
+        "main": [
+          [
+            {
+              "node": "Merge Normalized Branches",
+              "type": "main",
+              "index": 4
+            }
+          ]
+        ]
+      },
+      "Fetch NIFC-01 Locations": {
+        "main": [
+          [
+            {
+              "node": "Land NIFC-01 Raw Payload",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Fetch NOAA-01 HMS Smoke": {
+        "main": [
+          [
+            {
+              "node": "Land NOAA-01 Raw Payload",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Initialize Run Metadata": {
+        "main": [
+          [
+            {
+              "node": "Read Last Known Good",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Fetch NIFC-01 Locations",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Fetch NIFC-02 Perimeters",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Fetch NWS-01 Alerts",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Fetch NOAA-01 HMS Smoke",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Fetch KC-01 Burn Bans",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Land NWS-01 Raw Payload": {
+        "main": [
+          [
+            {
+              "node": "Write NWS-01 Raw Landing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Normalize NWS-01 Events": {
+        "main": [
+          [
+            {
+              "node": "Merge Normalized Branches",
+              "type": "main",
+              "index": 2
+            }
+          ]
+        ]
+      },
+      "Write KC-01 Raw Landing": {
+        "main": [
+          [
+            {
+              "node": "Normalize KC-01 Events",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Build Candidate Artifact": {
+        "main": [
+          [
+            {
+              "node": "Write Candidate Artifact",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Fetch NIFC-02 Perimeters": {
+        "main": [
+          [
+            {
+              "node": "Land NIFC-02 Raw Payload",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Land NIFC-01 Raw Payload": {
+        "main": [
+          [
+            {
+              "node": "Write NIFC-01 Raw Landing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Land NIFC-02 Raw Payload": {
+        "main": [
+          [
+            {
+              "node": "Write NIFC-02 Raw Landing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Land NOAA-01 Raw Payload": {
+        "main": [
+          [
+            {
+              "node": "Write NOAA-01 Raw Landing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Normalize NIFC-01 Events": {
+        "main": [
+          [
+            {
+              "node": "Merge Normalized Branches",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Normalize NIFC-02 Events": {
+        "main": [
+          [
+            {
+              "node": "Merge Normalized Branches",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Normalize NOAA-01 Events": {
+        "main": [
+          [
+            {
+              "node": "Merge Normalized Branches",
+              "type": "main",
+              "index": 3
+            }
+          ]
+        ]
+      },
+      "Write Candidate Artifact": {
+        "main": [
+          [
+            {
+              "node": "Publish Gate Decision",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Write NWS-01 Raw Landing": {
+        "main": [
+          [
+            {
+              "node": "Normalize NWS-01 Events",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge Normalized Branches": {
+        "main": [
+          [
+            {
+              "node": "Aggregate Normalized Branches",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Write NIFC-01 Raw Landing": {
+        "main": [
+          [
+            {
+              "node": "Normalize NIFC-01 Events",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Write NIFC-02 Raw Landing": {
+        "main": [
+          [
+            {
+              "node": "Normalize NIFC-02 Events",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Write NOAA-01 Raw Landing": {
+        "main": [
+          [
+            {
+              "node": "Normalize NOAA-01 Events",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Build Final Artifact Bundle": {
+        "main": [
+          [
+            {
+              "node": "Write Final Artifacts",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Validate Candidate Envelope": {
+        "main": [
+          [
+            {
+              "node": "Build Candidate Artifact",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Build Route Sections Rollups": {
+        "main": [
+          [
+            {
+              "node": "Validate Candidate Envelope",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aggregate Normalized Branches": {
+        "main": [
+          [
+            {
+              "node": "Deduplicate Events",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "timezone": "America/Los_Angeles",
+      "executionOrder": "v1"
+    },
+    "staticData": {
+      "node:Schedule Trigger": {
+        "recurrenceRules": []
+      }
+    },
+    "meta": null,
+    "pinData": null,
+    "versionId": "b93b194d-41aa-48cf-8f5b-01c13f9c9473",
+    "activeVersionId": "b93b194d-41aa-48cf-8f5b-01c13f9c9473",
+    "versionCounter": 4,
+    "triggerCount": 1,
+    "tags": [],
+    "shared": [
+      {
+        "updatedAt": "2026-08-02T10:11:11.261Z",
+        "createdAt": "2026-08-02T10:11:11.261Z",
+        "role": "workflow:owner",
+        "workflowId": "w6xnelPQeRFZk8BG",
+        "projectId": "Y0Ygmqe59jevHoeV",
+        "project": {
+          "updatedAt": "2026-07-10T05:38:45.677Z",
+          "createdAt": "2026-06-02T20:51:11.579Z",
+          "id": "Y0Ygmqe59jevHoeV",
+          "name": "John Brooks <john@biketourfrance.net>",
+          "type": "personal",
+          "icon": null,
+          "description": null,
+          "creatorId": "5dadc5f6-6bff-44cf-9566-6b82f3d768dc"
+        }
+      }
+    ],
+    "versionMetadata": {
+      "name": "v02.UWI_LANE04",
+      "description": null
+    }
+  }
+]

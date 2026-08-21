@@ -1,0 +1,137 @@
+{
+  "result": "PASS",
+  "report": {
+    "run_id": "07_GOVERNMENT_SAFETY_ALERTS-20260819T062655Z-001",
+    "status": "PASSED",
+    "data_status": "ok",
+    "candidate_written": true,
+    "published_written": true,
+    "quarantine_written": false,
+    "validation_log_written": true,
+    "status_written": true,
+    "handoff_written": true,
+    "execution_evidence_written": true,
+    "artifact_count_written": 9,
+    "event_count": 7,
+    "source_count": 8,
+    "failed_source_count": 0,
+    "using_last_known_good": false,
+    "government_alert_count": 7,
+    "observation_count": 96,
+    "published_path": "/files/uw-issy-connectors/published/07_GOVERNMENT_SAFETY_ALERTS/07_GOVERNMENT_SAFETY_ALERTS_published_20260819T062655Z.json",
+    "timestamp": "2026-08-19T06:26:55.293Z"
+  },
+  "published": {
+    "data_status": "ok",
+    "event_count": 7,
+    "observation_count": 96,
+    "source_count": 8,
+    "failed_source_count": 0
+  },
+  "pointer": {
+    "run_id": "07_GOVERNMENT_SAFETY_ALERTS-20260819T062655Z-001",
+    "artifact": "/files/uw-issy-connectors/published/07_GOVERNMENT_SAFETY_ALERTS/07_GOVERNMENT_SAFETY_ALERTS_published_20260819T062655Z.json"
+  },
+  "checks": [
+    {
+      "name": "candidate exists/parses",
+      "result": true
+    },
+    {
+      "name": "normalized exists/parses",
+      "result": true
+    },
+    {
+      "name": "published exists/parses",
+      "result": true
+    },
+    {
+      "name": "published pointer resolves",
+      "result": true
+    },
+    {
+      "name": "lkg current same run",
+      "result": true
+    },
+    {
+      "name": "lkg stable same run",
+      "result": true
+    },
+    {
+      "name": "lkg archive same run",
+      "result": true
+    },
+    {
+      "name": "status run matches",
+      "result": true
+    },
+    {
+      "name": "handoff run matches",
+      "result": true
+    },
+    {
+      "name": "execution evidence run matches",
+      "result": true
+    },
+    {
+      "name": "validation log parses",
+      "result": true
+    },
+    {
+      "name": "published_written true matches file",
+      "result": true
+    },
+    {
+      "name": "candidate_written true matches file",
+      "result": true
+    },
+    {
+      "name": "validation_log_written true matches file",
+      "result": true
+    },
+    {
+      "name": "status_written true matches file",
+      "result": true
+    },
+    {
+      "name": "handoff_written true matches file",
+      "result": true
+    },
+    {
+      "name": "execution_evidence_written true matches file",
+      "result": true
+    },
+    {
+      "name": "quarantine false",
+      "result": true
+    },
+    {
+      "name": "event_count matches published",
+      "result": true
+    },
+    {
+      "name": "government_alert_count matches published",
+      "result": true
+    },
+    {
+      "name": "observation_count matches published",
+      "result": true
+    },
+    {
+      "name": "source_count matches published",
+      "result": true
+    },
+    {
+      "name": "failed_source_count matches published",
+      "result": true
+    },
+    {
+      "name": "passed reflects no failed/degraded/LKG source",
+      "result": true
+    },
+    {
+      "name": "artifact_count matches final bundle files",
+      "result": true
+    }
+  ]
+}

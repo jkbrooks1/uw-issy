@@ -1,0 +1,1 @@
+PASS: /tmp/v02.UWI_LANE02.inactive-for-validator.json — name "v02.UWI_LANE02", 40 node(s), trigger present, active=false, connector_id/lane/run_id prefix all match "02_WEATHER", tags: []

@@ -1,0 +1,27 @@
+{
+  "run_id": "06_TRAIL_INFRASTRUCTURE_STATUS-20260819T061817Z-001",
+  "lane_id": "06_TRAIL_INFRASTRUCTURE_STATUS",
+  "workflow_id": "poGV37VLUGIUxfGK",
+  "workflow_name": "v02.UWI_LANE06",
+  "connector_version": "v0002",
+  "generated_at": "2026-08-19T06:18:17.442Z",
+  "evaluated_at": "2026-08-19T06:19:23.862Z",
+  "n8n_project": "UWISSY",
+  "should_publish": true,
+  "data_status": "degraded",
+  "status": "degraded",
+  "source_count": 8,
+  "failed_source_count": 2,
+  "event_count": 5,
+  "artifact_paths": {
+    "candidate": "/files/uw-issy-connectors/candidate/06_TRAIL_INFRASTRUCTURE_STATUS/06_TRAIL_INFRASTRUCTURE_STATUS_candidate_20260819T061817Z.json",
+    "normalized": "/files/uw-issy-connectors/normalized/06_TRAIL_INFRASTRUCTURE_STATUS/06_TRAIL_INFRASTRUCTURE_STATUS_normalized_output_20260819T061817Z.json",
+    "published": "/files/uw-issy-connectors/published/06_TRAIL_INFRASTRUCTURE_STATUS/06_TRAIL_INFRASTRUCTURE_STATUS_published_20260819T061817Z.json",
+    "published_current": "/files/uw-issy-connectors/published/06_TRAIL_INFRASTRUCTURE_STATUS/current.json",
+    "last_known_good_current": "/files/uw-issy-connectors/last_known_good/06_TRAIL_INFRASTRUCTURE_STATUS/current.json",
+    "validation_log": "/files/uw-issy-connectors/logs/06_TRAIL_INFRASTRUCTURE_STATUS/validation_log_20260819T061817Z.jsonl",
+    "status": "/files/uw-issy-connectors/health/06_TRAIL_INFRASTRUCTURE_STATUS/status.json",
+    "handoff": "/files/uw-issy-connectors/handoff/06_TRAIL_INFRASTRUCTURE_STATUS/06_TRAIL_INFRASTRUCTURE_STATUS_handoff_20260819T061817Z.json",
+    "quarantine": null
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "lane_id": "07_GOVERNMENT_SAFETY_ALERTS",
+  "run_id": "07_GOVERNMENT_SAFETY_ALERTS-20260819T062655Z-001",
+  "last_fetch_at": "2026-08-19T06:26:55.293Z",
+  "last_success_at": "2026-08-19T06:26:58.934Z",
+  "status": "ok",
+  "source_health": [
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "07_GOVERNMENT_SAFETY_ALERTS",
+      "source_id": "07_GOVERNMENT_SAFETY_ALERTS:NWS-01",
+      "source_name": "NWS modern alerts API and CAP products",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T06:26:55.293Z",
+      "stale_after_minutes": 15,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T06:26:55.293Z",
+      "warnings": [
+        "No primary lane-07 events retained for this source in this run."
+      ],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "07_GOVERNMENT_SAFETY_ALERTS",
+      "source_id": "07_GOVERNMENT_SAFETY_ALERTS:SEA-01",
+      "source_name": "AlertSeattle public feed and WordPress API",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T06:26:55.293Z",
+      "stale_after_minutes": 15,
+      "record_count": 0,
+      "http_status": "publish",
+      "last_observation_at": "2026-08-19T06:26:55.293Z",
+      "warnings": [
+        "No structured records were extracted, but the source response was structurally valid.",
+        "No primary lane-07 events retained for this source in this run."
+      ],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "07_GOVERNMENT_SAFETY_ALERTS",
+      "source_id": "07_GOVERNMENT_SAFETY_ALERTS:UW-01",
+      "source_name": "UW Alert blog feed and WordPress API",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T06:26:55.293Z",
+      "stale_after_minutes": 15,
+      "record_count": 0,
+      "http_status": "publish",
+      "last_observation_at": "2026-08-19T06:26:55.293Z",
+      "warnings": [
+        "No structured records were extracted, but the source response was structurally valid.",
+        "No primary lane-07 events retained for this source in this run."
+      ],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "07_GOVERNMENT_SAFETY_ALERTS",
+      "source_id": "07_GOVERNMENT_SAFETY_ALERTS:SEAFD-01",
+      "source_name": "Seattle Fire Department Fireline RSS",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T06:26:55.293Z",
+      "stale_after_minutes": 30,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T06:26:55.293Z",
+      "warnings": [
+        "No primary lane-07 events retained for this source in this run."
+      ],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "07_GOVERNMENT_SAFETY_ALERTS",
+      "source_id": "07_GOVERNMENT_SAFETY_ALERTS:SEAPD-01",
+      "source_name": "Seattle Police Blotter RSS and Significant Incident Reports page",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T06:26:55.293Z",
+      "stale_after_minutes": 30,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T06:26:55.293Z",
+      "warnings": [
+        "No primary lane-07 events retained for this source in this run."
+      ],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "07_GOVERNMENT_SAFETY_ALERTS",
+      "source_id": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02",
+      "source_name": "Washington Health Alert Network public table",
+      "status": "ok",
+      "retrieved_at": "2026-08-19T06:26:55.293Z",
+      "stale_after_minutes": 360,
+      "record_count": 7,
+      "http_status": null,
+      "last_observation_at": "2026-05-19T00:00:00.000Z",
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "07_GOVERNMENT_SAFETY_ALERTS",
+      "source_id": "07_GOVERNMENT_SAFETY_ALERTS:ST-01",
+      "source_name": "Sound Transit GTFS Realtime service alerts",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T06:26:55.293Z",
+      "stale_after_minutes": 15,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T06:26:55.293Z",
+      "warnings": [
+        "No primary lane-07 events retained for this source in this run."
+      ],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "07_GOVERNMENT_SAFETY_ALERTS",
+      "source_id": "07_GOVERNMENT_SAFETY_ALERTS:KCMETRO-01",
+      "source_name": "King County Metro GTFS Realtime service alerts",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T06:26:55.293Z",
+      "stale_after_minutes": 15,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T06:26:55.293Z",
+      "warnings": [
+        "No primary lane-07 events retained for this source in this run."
+      ],
+      "errors": []
+    }
+  ],
+  "error_messages": [],
+  "stale_data_fields": [],
+  "used_last_known_good": false,
+  "published_artifact_ref": "/files/uw-issy-connectors/published/07_GOVERNMENT_SAFETY_ALERTS/07_GOVERNMENT_SAFETY_ALERTS_published_20260819T062655Z.json",
+  "last_known_good_ref": "/files/uw-issy-connectors/last_known_good/07_GOVERNMENT_SAFETY_ALERTS/current.json"
+}

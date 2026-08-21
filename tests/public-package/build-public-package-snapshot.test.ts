@@ -103,7 +103,7 @@ describe("build-public-package-snapshot.mjs", () => {
     const { result, outDir } = writeSnapshotAndBuild(baseSnapshot());
     expect(result.status).toBe(0);
     const dashboardData = JSON.parse(readFileSync(join(outDir, "dashboard-data.json"), "utf8"));
-    expect(dashboardData.laneSummaries).toHaveLength(7);
+    expect(dashboardData.laneSummaries).toHaveLength(8);
     const missingLane = dashboardData.laneSummaries.find(
       (l: { laneId: string }) => l.laneId === "07_GOVERNMENT_SAFETY_ALERTS",
     );

@@ -1,0 +1,692 @@
+[
+  {
+    "name": "workflow_name",
+    "ok": true,
+    "detail": "v02.UWI_LANE05"
+  },
+  {
+    "name": "workflow_id_preserved",
+    "ok": true,
+    "detail": "4RiNqOKD9BCZFH6P"
+  },
+  {
+    "name": "active_state_preserved",
+    "ok": true,
+    "detail": "true"
+  },
+  {
+    "name": "node_count_preserved",
+    "ok": true,
+    "detail": "56"
+  },
+  {
+    "name": "report_degraded",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "report_execution_evidence",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "timeout_Fetch USGS-01 Gauge",
+    "ok": true,
+    "detail": "{\"timeout\":30000}"
+  },
+  {
+    "name": "timeout_Fetch USGS-02 Gauge",
+    "ok": true,
+    "detail": "{\"timeout\":30000}"
+  },
+  {
+    "name": "timeout_Fetch USGS-03 Gauge",
+    "ok": true,
+    "detail": "{\"timeout\":30000}"
+  },
+  {
+    "name": "timeout_Fetch NWPS-01 Status",
+    "ok": true,
+    "detail": "{\"timeout\":30000}"
+  },
+  {
+    "name": "timeout_Fetch NWPS-02 Status",
+    "ok": true,
+    "detail": "{\"timeout\":30000}"
+  },
+  {
+    "name": "timeout_Fetch NWS-01 Alerts",
+    "ok": true,
+    "detail": "{\"timeout\":30000}"
+  },
+  {
+    "name": "timeout_Fetch ISS-01 Flood Page",
+    "ok": true,
+    "detail": "{\"timeout\":30000}"
+  },
+  {
+    "name": "timeout_Fetch REDM-01 Alerts",
+    "ok": true,
+    "detail": "{\"timeout\":30000}"
+  },
+  {
+    "name": "timeout_Fetch KC-ROAD-01 Alerts",
+    "ok": true,
+    "detail": "{\"timeout\":30000}"
+  },
+  {
+    "name": "timeout_Fetch WSDOT-01 Alerts",
+    "ok": true,
+    "detail": "{\"timeout\":30000}"
+  },
+  {
+    "name": "connector_v0002",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "workflow_name_metadata",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "connection_from_exists_Manual Trigger",
+    "ok": true,
+    "detail": "Manual Trigger"
+  },
+  {
+    "name": "connection_to_exists_Manual Trigger_to_Initialize Run Metadata",
+    "ok": true,
+    "detail": "Initialize Run Metadata"
+  },
+  {
+    "name": "connection_from_exists_Schedule Trigger",
+    "ok": true,
+    "detail": "Schedule Trigger"
+  },
+  {
+    "name": "connection_to_exists_Schedule Trigger_to_Initialize Run Metadata",
+    "ok": true,
+    "detail": "Initialize Run Metadata"
+  },
+  {
+    "name": "connection_from_exists_Initialize Run Metadata",
+    "ok": true,
+    "detail": "Initialize Run Metadata"
+  },
+  {
+    "name": "connection_to_exists_Initialize Run Metadata_to_Read Last Known Good",
+    "ok": true,
+    "detail": "Read Last Known Good"
+  },
+  {
+    "name": "connection_to_exists_Initialize Run Metadata_to_Fetch USGS-01 Gauge",
+    "ok": true,
+    "detail": "Fetch USGS-01 Gauge"
+  },
+  {
+    "name": "connection_to_exists_Initialize Run Metadata_to_Fetch USGS-02 Gauge",
+    "ok": true,
+    "detail": "Fetch USGS-02 Gauge"
+  },
+  {
+    "name": "connection_to_exists_Initialize Run Metadata_to_Fetch USGS-03 Gauge",
+    "ok": true,
+    "detail": "Fetch USGS-03 Gauge"
+  },
+  {
+    "name": "connection_to_exists_Initialize Run Metadata_to_Fetch NWPS-01 Status",
+    "ok": true,
+    "detail": "Fetch NWPS-01 Status"
+  },
+  {
+    "name": "connection_to_exists_Initialize Run Metadata_to_Fetch NWPS-02 Status",
+    "ok": true,
+    "detail": "Fetch NWPS-02 Status"
+  },
+  {
+    "name": "connection_to_exists_Initialize Run Metadata_to_Fetch NWS-01 Alerts",
+    "ok": true,
+    "detail": "Fetch NWS-01 Alerts"
+  },
+  {
+    "name": "connection_to_exists_Initialize Run Metadata_to_Fetch ISS-01 Flood Page",
+    "ok": true,
+    "detail": "Fetch ISS-01 Flood Page"
+  },
+  {
+    "name": "connection_to_exists_Initialize Run Metadata_to_Fetch REDM-01 Alerts",
+    "ok": true,
+    "detail": "Fetch REDM-01 Alerts"
+  },
+  {
+    "name": "connection_to_exists_Initialize Run Metadata_to_Fetch KC-ROAD-01 Alerts",
+    "ok": true,
+    "detail": "Fetch KC-ROAD-01 Alerts"
+  },
+  {
+    "name": "connection_to_exists_Initialize Run Metadata_to_Fetch WSDOT-01 Alerts",
+    "ok": true,
+    "detail": "Fetch WSDOT-01 Alerts"
+  },
+  {
+    "name": "connection_from_exists_Fetch USGS-01 Gauge",
+    "ok": true,
+    "detail": "Fetch USGS-01 Gauge"
+  },
+  {
+    "name": "connection_to_exists_Fetch USGS-01 Gauge_to_Land USGS-01 Raw Payload",
+    "ok": true,
+    "detail": "Land USGS-01 Raw Payload"
+  },
+  {
+    "name": "connection_from_exists_Land USGS-01 Raw Payload",
+    "ok": true,
+    "detail": "Land USGS-01 Raw Payload"
+  },
+  {
+    "name": "connection_to_exists_Land USGS-01 Raw Payload_to_Write USGS-01 Raw Landing",
+    "ok": true,
+    "detail": "Write USGS-01 Raw Landing"
+  },
+  {
+    "name": "connection_from_exists_Write USGS-01 Raw Landing",
+    "ok": true,
+    "detail": "Write USGS-01 Raw Landing"
+  },
+  {
+    "name": "connection_to_exists_Write USGS-01 Raw Landing_to_Normalize USGS-01 Events",
+    "ok": true,
+    "detail": "Normalize USGS-01 Events"
+  },
+  {
+    "name": "connection_from_exists_Normalize USGS-01 Events",
+    "ok": true,
+    "detail": "Normalize USGS-01 Events"
+  },
+  {
+    "name": "connection_to_exists_Normalize USGS-01 Events_to_Merge Normalized Branches",
+    "ok": true,
+    "detail": "Merge Normalized Branches"
+  },
+  {
+    "name": "connection_from_exists_Fetch USGS-02 Gauge",
+    "ok": true,
+    "detail": "Fetch USGS-02 Gauge"
+  },
+  {
+    "name": "connection_to_exists_Fetch USGS-02 Gauge_to_Land USGS-02 Raw Payload",
+    "ok": true,
+    "detail": "Land USGS-02 Raw Payload"
+  },
+  {
+    "name": "connection_from_exists_Land USGS-02 Raw Payload",
+    "ok": true,
+    "detail": "Land USGS-02 Raw Payload"
+  },
+  {
+    "name": "connection_to_exists_Land USGS-02 Raw Payload_to_Write USGS-02 Raw Landing",
+    "ok": true,
+    "detail": "Write USGS-02 Raw Landing"
+  },
+  {
+    "name": "connection_from_exists_Write USGS-02 Raw Landing",
+    "ok": true,
+    "detail": "Write USGS-02 Raw Landing"
+  },
+  {
+    "name": "connection_to_exists_Write USGS-02 Raw Landing_to_Normalize USGS-02 Events",
+    "ok": true,
+    "detail": "Normalize USGS-02 Events"
+  },
+  {
+    "name": "connection_from_exists_Normalize USGS-02 Events",
+    "ok": true,
+    "detail": "Normalize USGS-02 Events"
+  },
+  {
+    "name": "connection_to_exists_Normalize USGS-02 Events_to_Merge Normalized Branches",
+    "ok": true,
+    "detail": "Merge Normalized Branches"
+  },
+  {
+    "name": "connection_from_exists_Fetch USGS-03 Gauge",
+    "ok": true,
+    "detail": "Fetch USGS-03 Gauge"
+  },
+  {
+    "name": "connection_to_exists_Fetch USGS-03 Gauge_to_Land USGS-03 Raw Payload",
+    "ok": true,
+    "detail": "Land USGS-03 Raw Payload"
+  },
+  {
+    "name": "connection_from_exists_Land USGS-03 Raw Payload",
+    "ok": true,
+    "detail": "Land USGS-03 Raw Payload"
+  },
+  {
+    "name": "connection_to_exists_Land USGS-03 Raw Payload_to_Write USGS-03 Raw Landing",
+    "ok": true,
+    "detail": "Write USGS-03 Raw Landing"
+  },
+  {
+    "name": "connection_from_exists_Write USGS-03 Raw Landing",
+    "ok": true,
+    "detail": "Write USGS-03 Raw Landing"
+  },
+  {
+    "name": "connection_to_exists_Write USGS-03 Raw Landing_to_Normalize USGS-03 Events",
+    "ok": true,
+    "detail": "Normalize USGS-03 Events"
+  },
+  {
+    "name": "connection_from_exists_Normalize USGS-03 Events",
+    "ok": true,
+    "detail": "Normalize USGS-03 Events"
+  },
+  {
+    "name": "connection_to_exists_Normalize USGS-03 Events_to_Merge Normalized Branches",
+    "ok": true,
+    "detail": "Merge Normalized Branches"
+  },
+  {
+    "name": "connection_from_exists_Fetch NWPS-01 Status",
+    "ok": true,
+    "detail": "Fetch NWPS-01 Status"
+  },
+  {
+    "name": "connection_to_exists_Fetch NWPS-01 Status_to_Land NWPS-01 Raw Payload",
+    "ok": true,
+    "detail": "Land NWPS-01 Raw Payload"
+  },
+  {
+    "name": "connection_from_exists_Land NWPS-01 Raw Payload",
+    "ok": true,
+    "detail": "Land NWPS-01 Raw Payload"
+  },
+  {
+    "name": "connection_to_exists_Land NWPS-01 Raw Payload_to_Write NWPS-01 Raw Landing",
+    "ok": true,
+    "detail": "Write NWPS-01 Raw Landing"
+  },
+  {
+    "name": "connection_from_exists_Write NWPS-01 Raw Landing",
+    "ok": true,
+    "detail": "Write NWPS-01 Raw Landing"
+  },
+  {
+    "name": "connection_to_exists_Write NWPS-01 Raw Landing_to_Normalize NWPS-01 Events",
+    "ok": true,
+    "detail": "Normalize NWPS-01 Events"
+  },
+  {
+    "name": "connection_from_exists_Normalize NWPS-01 Events",
+    "ok": true,
+    "detail": "Normalize NWPS-01 Events"
+  },
+  {
+    "name": "connection_to_exists_Normalize NWPS-01 Events_to_Merge Normalized Branches",
+    "ok": true,
+    "detail": "Merge Normalized Branches"
+  },
+  {
+    "name": "connection_from_exists_Fetch NWPS-02 Status",
+    "ok": true,
+    "detail": "Fetch NWPS-02 Status"
+  },
+  {
+    "name": "connection_to_exists_Fetch NWPS-02 Status_to_Land NWPS-02 Raw Payload",
+    "ok": true,
+    "detail": "Land NWPS-02 Raw Payload"
+  },
+  {
+    "name": "connection_from_exists_Land NWPS-02 Raw Payload",
+    "ok": true,
+    "detail": "Land NWPS-02 Raw Payload"
+  },
+  {
+    "name": "connection_to_exists_Land NWPS-02 Raw Payload_to_Write NWPS-02 Raw Landing",
+    "ok": true,
+    "detail": "Write NWPS-02 Raw Landing"
+  },
+  {
+    "name": "connection_from_exists_Write NWPS-02 Raw Landing",
+    "ok": true,
+    "detail": "Write NWPS-02 Raw Landing"
+  },
+  {
+    "name": "connection_to_exists_Write NWPS-02 Raw Landing_to_Normalize NWPS-02 Events",
+    "ok": true,
+    "detail": "Normalize NWPS-02 Events"
+  },
+  {
+    "name": "connection_from_exists_Normalize NWPS-02 Events",
+    "ok": true,
+    "detail": "Normalize NWPS-02 Events"
+  },
+  {
+    "name": "connection_to_exists_Normalize NWPS-02 Events_to_Merge Normalized Branches",
+    "ok": true,
+    "detail": "Merge Normalized Branches"
+  },
+  {
+    "name": "connection_from_exists_Fetch NWS-01 Alerts",
+    "ok": true,
+    "detail": "Fetch NWS-01 Alerts"
+  },
+  {
+    "name": "connection_to_exists_Fetch NWS-01 Alerts_to_Land NWS-01 Raw Payload",
+    "ok": true,
+    "detail": "Land NWS-01 Raw Payload"
+  },
+  {
+    "name": "connection_from_exists_Land NWS-01 Raw Payload",
+    "ok": true,
+    "detail": "Land NWS-01 Raw Payload"
+  },
+  {
+    "name": "connection_to_exists_Land NWS-01 Raw Payload_to_Write NWS-01 Raw Landing",
+    "ok": true,
+    "detail": "Write NWS-01 Raw Landing"
+  },
+  {
+    "name": "connection_from_exists_Write NWS-01 Raw Landing",
+    "ok": true,
+    "detail": "Write NWS-01 Raw Landing"
+  },
+  {
+    "name": "connection_to_exists_Write NWS-01 Raw Landing_to_Normalize NWS-01 Events",
+    "ok": true,
+    "detail": "Normalize NWS-01 Events"
+  },
+  {
+    "name": "connection_from_exists_Normalize NWS-01 Events",
+    "ok": true,
+    "detail": "Normalize NWS-01 Events"
+  },
+  {
+    "name": "connection_to_exists_Normalize NWS-01 Events_to_Merge Normalized Branches",
+    "ok": true,
+    "detail": "Merge Normalized Branches"
+  },
+  {
+    "name": "connection_from_exists_Fetch ISS-01 Flood Page",
+    "ok": true,
+    "detail": "Fetch ISS-01 Flood Page"
+  },
+  {
+    "name": "connection_to_exists_Fetch ISS-01 Flood Page_to_Land ISS-01 Raw Payload",
+    "ok": true,
+    "detail": "Land ISS-01 Raw Payload"
+  },
+  {
+    "name": "connection_from_exists_Land ISS-01 Raw Payload",
+    "ok": true,
+    "detail": "Land ISS-01 Raw Payload"
+  },
+  {
+    "name": "connection_to_exists_Land ISS-01 Raw Payload_to_Write ISS-01 Raw Landing",
+    "ok": true,
+    "detail": "Write ISS-01 Raw Landing"
+  },
+  {
+    "name": "connection_from_exists_Write ISS-01 Raw Landing",
+    "ok": true,
+    "detail": "Write ISS-01 Raw Landing"
+  },
+  {
+    "name": "connection_to_exists_Write ISS-01 Raw Landing_to_Normalize ISS-01 Events",
+    "ok": true,
+    "detail": "Normalize ISS-01 Events"
+  },
+  {
+    "name": "connection_from_exists_Normalize ISS-01 Events",
+    "ok": true,
+    "detail": "Normalize ISS-01 Events"
+  },
+  {
+    "name": "connection_to_exists_Normalize ISS-01 Events_to_Merge Normalized Branches",
+    "ok": true,
+    "detail": "Merge Normalized Branches"
+  },
+  {
+    "name": "connection_from_exists_Fetch REDM-01 Alerts",
+    "ok": true,
+    "detail": "Fetch REDM-01 Alerts"
+  },
+  {
+    "name": "connection_to_exists_Fetch REDM-01 Alerts_to_Land REDM-01 Raw Payload",
+    "ok": true,
+    "detail": "Land REDM-01 Raw Payload"
+  },
+  {
+    "name": "connection_from_exists_Land REDM-01 Raw Payload",
+    "ok": true,
+    "detail": "Land REDM-01 Raw Payload"
+  },
+  {
+    "name": "connection_to_exists_Land REDM-01 Raw Payload_to_Write REDM-01 Raw Landing",
+    "ok": true,
+    "detail": "Write REDM-01 Raw Landing"
+  },
+  {
+    "name": "connection_from_exists_Write REDM-01 Raw Landing",
+    "ok": true,
+    "detail": "Write REDM-01 Raw Landing"
+  },
+  {
+    "name": "connection_to_exists_Write REDM-01 Raw Landing_to_Normalize REDM-01 Events",
+    "ok": true,
+    "detail": "Normalize REDM-01 Events"
+  },
+  {
+    "name": "connection_from_exists_Normalize REDM-01 Events",
+    "ok": true,
+    "detail": "Normalize REDM-01 Events"
+  },
+  {
+    "name": "connection_to_exists_Normalize REDM-01 Events_to_Merge Normalized Branches",
+    "ok": true,
+    "detail": "Merge Normalized Branches"
+  },
+  {
+    "name": "connection_from_exists_Fetch KC-ROAD-01 Alerts",
+    "ok": true,
+    "detail": "Fetch KC-ROAD-01 Alerts"
+  },
+  {
+    "name": "connection_to_exists_Fetch KC-ROAD-01 Alerts_to_Land KC-ROAD-01 Raw Payload",
+    "ok": true,
+    "detail": "Land KC-ROAD-01 Raw Payload"
+  },
+  {
+    "name": "connection_from_exists_Land KC-ROAD-01 Raw Payload",
+    "ok": true,
+    "detail": "Land KC-ROAD-01 Raw Payload"
+  },
+  {
+    "name": "connection_to_exists_Land KC-ROAD-01 Raw Payload_to_Write KC-ROAD-01 Raw Landing",
+    "ok": true,
+    "detail": "Write KC-ROAD-01 Raw Landing"
+  },
+  {
+    "name": "connection_from_exists_Write KC-ROAD-01 Raw Landing",
+    "ok": true,
+    "detail": "Write KC-ROAD-01 Raw Landing"
+  },
+  {
+    "name": "connection_to_exists_Write KC-ROAD-01 Raw Landing_to_Normalize KC-ROAD-01 Events",
+    "ok": true,
+    "detail": "Normalize KC-ROAD-01 Events"
+  },
+  {
+    "name": "connection_from_exists_Normalize KC-ROAD-01 Events",
+    "ok": true,
+    "detail": "Normalize KC-ROAD-01 Events"
+  },
+  {
+    "name": "connection_to_exists_Normalize KC-ROAD-01 Events_to_Merge Normalized Branches",
+    "ok": true,
+    "detail": "Merge Normalized Branches"
+  },
+  {
+    "name": "connection_from_exists_Fetch WSDOT-01 Alerts",
+    "ok": true,
+    "detail": "Fetch WSDOT-01 Alerts"
+  },
+  {
+    "name": "connection_to_exists_Fetch WSDOT-01 Alerts_to_Land WSDOT-01 Raw Payload",
+    "ok": true,
+    "detail": "Land WSDOT-01 Raw Payload"
+  },
+  {
+    "name": "connection_from_exists_Land WSDOT-01 Raw Payload",
+    "ok": true,
+    "detail": "Land WSDOT-01 Raw Payload"
+  },
+  {
+    "name": "connection_to_exists_Land WSDOT-01 Raw Payload_to_Write WSDOT-01 Raw Landing",
+    "ok": true,
+    "detail": "Write WSDOT-01 Raw Landing"
+  },
+  {
+    "name": "connection_from_exists_Write WSDOT-01 Raw Landing",
+    "ok": true,
+    "detail": "Write WSDOT-01 Raw Landing"
+  },
+  {
+    "name": "connection_to_exists_Write WSDOT-01 Raw Landing_to_Normalize WSDOT-01 Events",
+    "ok": true,
+    "detail": "Normalize WSDOT-01 Events"
+  },
+  {
+    "name": "connection_from_exists_Normalize WSDOT-01 Events",
+    "ok": true,
+    "detail": "Normalize WSDOT-01 Events"
+  },
+  {
+    "name": "connection_to_exists_Normalize WSDOT-01 Events_to_Merge Normalized Branches",
+    "ok": true,
+    "detail": "Merge Normalized Branches"
+  },
+  {
+    "name": "connection_from_exists_Read Last Known Good",
+    "ok": true,
+    "detail": "Read Last Known Good"
+  },
+  {
+    "name": "connection_to_exists_Read Last Known Good_to_Parse Last Known Good",
+    "ok": true,
+    "detail": "Parse Last Known Good"
+  },
+  {
+    "name": "connection_from_exists_Merge Normalized Branches",
+    "ok": true,
+    "detail": "Merge Normalized Branches"
+  },
+  {
+    "name": "connection_to_exists_Merge Normalized Branches_to_Aggregate Normalized Branches",
+    "ok": true,
+    "detail": "Aggregate Normalized Branches"
+  },
+  {
+    "name": "connection_from_exists_Aggregate Normalized Branches",
+    "ok": true,
+    "detail": "Aggregate Normalized Branches"
+  },
+  {
+    "name": "connection_to_exists_Aggregate Normalized Branches_to_Deduplicate Events",
+    "ok": true,
+    "detail": "Deduplicate Events"
+  },
+  {
+    "name": "connection_from_exists_Deduplicate Events",
+    "ok": true,
+    "detail": "Deduplicate Events"
+  },
+  {
+    "name": "connection_to_exists_Deduplicate Events_to_Build Route Sections Rollups",
+    "ok": true,
+    "detail": "Build Route Sections Rollups"
+  },
+  {
+    "name": "connection_from_exists_Build Route Sections Rollups",
+    "ok": true,
+    "detail": "Build Route Sections Rollups"
+  },
+  {
+    "name": "connection_to_exists_Build Route Sections Rollups_to_Validate Candidate Envelope",
+    "ok": true,
+    "detail": "Validate Candidate Envelope"
+  },
+  {
+    "name": "connection_from_exists_Validate Candidate Envelope",
+    "ok": true,
+    "detail": "Validate Candidate Envelope"
+  },
+  {
+    "name": "connection_to_exists_Validate Candidate Envelope_to_Build Candidate Artifact",
+    "ok": true,
+    "detail": "Build Candidate Artifact"
+  },
+  {
+    "name": "connection_from_exists_Build Candidate Artifact",
+    "ok": true,
+    "detail": "Build Candidate Artifact"
+  },
+  {
+    "name": "connection_to_exists_Build Candidate Artifact_to_Write Candidate Artifact",
+    "ok": true,
+    "detail": "Write Candidate Artifact"
+  },
+  {
+    "name": "connection_from_exists_Write Candidate Artifact",
+    "ok": true,
+    "detail": "Write Candidate Artifact"
+  },
+  {
+    "name": "connection_to_exists_Write Candidate Artifact_to_Publish Gate Decision",
+    "ok": true,
+    "detail": "Publish Gate Decision"
+  },
+  {
+    "name": "connection_from_exists_Publish Gate Decision",
+    "ok": true,
+    "detail": "Publish Gate Decision"
+  },
+  {
+    "name": "connection_to_exists_Publish Gate Decision_to_Build Final Artifact Bundle",
+    "ok": true,
+    "detail": "Build Final Artifact Bundle"
+  },
+  {
+    "name": "connection_from_exists_Build Final Artifact Bundle",
+    "ok": true,
+    "detail": "Build Final Artifact Bundle"
+  },
+  {
+    "name": "connection_to_exists_Build Final Artifact Bundle_to_Write Final Artifacts",
+    "ok": true,
+    "detail": "Write Final Artifacts"
+  },
+  {
+    "name": "connection_from_exists_Write Final Artifacts",
+    "ok": true,
+    "detail": "Write Final Artifacts"
+  },
+  {
+    "name": "connection_to_exists_Write Final Artifacts_to_Final Status Report",
+    "ok": true,
+    "detail": "Final Status Report"
+  },
+  {
+    "name": "final_report_reachable",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "name": "embedded_secret_scan",
+    "ok": true,
+    "detail": null
+  }
+]

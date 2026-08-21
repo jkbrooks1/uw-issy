@@ -1,0 +1,27 @@
+{
+  "run_id": "07_GOVERNMENT_SAFETY_ALERTS-20260819T062655Z-001",
+  "lane_id": "07_GOVERNMENT_SAFETY_ALERTS",
+  "workflow_id": "08g3JNwQPVSxUl2H",
+  "workflow_name": "v02.UWI_LANE07",
+  "connector_version": "v0002",
+  "generated_at": "2026-08-19T06:26:55.293Z",
+  "evaluated_at": "2026-08-19T06:26:58.934Z",
+  "n8n_project": "UWISSY",
+  "should_publish": true,
+  "data_status": "ok",
+  "status": "ok",
+  "source_count": 8,
+  "failed_source_count": 0,
+  "event_count": 7,
+  "observation_count": 96,
+  "artifact_paths": {
+    "candidate": "/files/uw-issy-connectors/candidate/07_GOVERNMENT_SAFETY_ALERTS/07_GOVERNMENT_SAFETY_ALERTS_candidate_20260819T062655Z.json",
+    "normalized": "/files/uw-issy-connectors/normalized/07_GOVERNMENT_SAFETY_ALERTS/07_GOVERNMENT_SAFETY_ALERTS_normalized_20260819T062655Z.json",
+    "published": "/files/uw-issy-connectors/published/07_GOVERNMENT_SAFETY_ALERTS/07_GOVERNMENT_SAFETY_ALERTS_published_20260819T062655Z.json",
+    "published_current": "/files/uw-issy-connectors/published/07_GOVERNMENT_SAFETY_ALERTS/current.json",
+    "last_known_good_current": "/files/uw-issy-connectors/last_known_good/07_GOVERNMENT_SAFETY_ALERTS/current.json",
+    "validation_log": "/files/uw-issy-connectors/logs/07_GOVERNMENT_SAFETY_ALERTS/validation_log_20260819T062655Z.jsonl",
+    "status": "/files/uw-issy-connectors/health/07_GOVERNMENT_SAFETY_ALERTS/status.json",
+    "handoff": "/files/uw-issy-connectors/handoff/07_GOVERNMENT_SAFETY_ALERTS/07_GOVERNMENT_SAFETY_ALERTS-20260819T062655Z-001.json"
+  }
+}

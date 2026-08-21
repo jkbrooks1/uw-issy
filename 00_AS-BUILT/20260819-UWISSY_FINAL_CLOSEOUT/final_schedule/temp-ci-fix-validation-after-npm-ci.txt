@@ -1,0 +1,102 @@
+PASS: data/route/UnivWA-Issaquah.gpx — 1 track(s), 1 segment(s), 1470 point(s), bounds [47.55207, -122.30570] to [47.75889, -122.04414], plausible for UW-Issaquah
+PASS: wrote public/routes/UnivWA-Issaquah.geojson — LineString with 1470 point(s)
+PASS: public/routes/UnivWA-Issaquah.geojson — LineString with 1470 coordinate(s), bounds [47.55207, -122.30570] to [47.75889, -122.04414], plausible for UW-Issaquah
+PASS: wrote 4 public package files to public/data (release 20_STATUS_PUBLISHER-20260820T034129Z-001) — 1 of 20 candidate event(s) eligible for public display, 19 excluded, 0 duplicate(s) merged
+NOTE: 19 mapping gap(s) logged (buildspec 11.4):
+  - 03_AIR_QUALITY:PSCAA-02:burn-ban:20260820T030052Z: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 03_AIR_QUALITY:WASMOKE-01:8f69ba66: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 05_FLOOD_CONDITIONS:USGS-01:b62db084: no "geometry" field published by its lane — used real event.location.{latitude,longitude} as a Point instead (source-native, not invented)
+  - 05_FLOOD_CONDITIONS:USGS-02:632d4c3f: no "geometry" field published by its lane — used real event.location.{latitude,longitude} as a Point instead (source-native, not invented)
+  - 05_FLOOD_CONDITIONS:USGS-03:7d7b2df4: no "geometry" field published by its lane — used real event.location.{latitude,longitude} as a Point instead (source-native, not invented)
+  - 05_FLOOD_CONDITIONS:NWPS-01:e1e70ab0: no "geometry" field published by its lane — used real event.location.{latitude,longitude} as a Point instead (source-native, not invented)
+  - 05_FLOOD_CONDITIONS:NWPS-02:721210d7: no "geometry" field published by its lane — used real event.location.{latitude,longitude} as a Point instead (source-native, not invented)
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:656ace49: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:115a3c27: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:KC-03:69c3253a: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:d2c2a234: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02:3f489f7f: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c31a0f8a: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_29734473: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_bf9b0b4d: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_f2b6e839: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c29944a0: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_dc98040f: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_3a69f580: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null
+NOTE: 19 event(s) excluded from public display:
+  - 03_AIR_QUALITY:PSCAA-02:burn-ban:20260820T030052Z (03_AIR_QUALITY): no_route_impact
+  - 03_AIR_QUALITY:WASMOKE-01:8f69ba66 (03_AIR_QUALITY): no_route_impact
+  - 05_FLOOD_CONDITIONS:USGS-01:b62db084 (05_FLOOD_CONDITIONS): flood_no_active_category
+  - 05_FLOOD_CONDITIONS:USGS-02:632d4c3f (05_FLOOD_CONDITIONS): flood_no_active_category
+  - 05_FLOOD_CONDITIONS:USGS-03:7d7b2df4 (05_FLOOD_CONDITIONS): flood_no_active_category
+  - 05_FLOOD_CONDITIONS:NWPS-01:e1e70ab0 (05_FLOOD_CONDITIONS): flood_below_major
+  - 05_FLOOD_CONDITIONS:NWPS-02:721210d7 (05_FLOOD_CONDITIONS): flood_below_major
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:656ace49 (06_TRAIL_INFRASTRUCTURE_STATUS): off_route
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:115a3c27 (06_TRAIL_INFRASTRUCTURE_STATUS): off_route
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:KC-03:69c3253a (06_TRAIL_INFRASTRUCTURE_STATUS): off_route
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:d2c2a234 (06_TRAIL_INFRASTRUCTURE_STATUS): off_route
+  - 06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02:3f489f7f (06_TRAIL_INFRASTRUCTURE_STATUS): off_route
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c31a0f8a (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_29734473 (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_bf9b0b4d (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_f2b6e839 (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_c29944a0 (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_dc98040f (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+  - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:hash_3a69f580 (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+PASS: public/data — all four public package files are valid, release 20_STATUS_PUBLISHER-20260820T034129Z-001
+
+> uw-issy-route-status@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.10 /private/tmp/uwissy-ci-current-input-fix
+
+FAIL: Snapshot file does not exist: /var/folders/5g/vs4ywyrn2195wtptbt4m2gz40000gn/T/build-pkg-test-xILaAy/missing.json
+FAIL: GPX file does not exist: /var/folders/5g/vs4ywyrn2195wtptbt4m2gz40000gn/T/does-not-exist.gpx
+FAIL: Missing required file: /var/folders/5g/vs4ywyrn2195wtptbt4m2gz40000gn/T/pkg-test-CTKL5C/release-manifest.json
+FAIL: GPX is not valid XML: mismatched closing tag </trk> (expected </name>)
+FAIL: dashboard-data.json is missing required field "routeId"
+FAIL: GPX has no usable route: found 1 track(s) and 0 track point(s); need at least 1 track with at least 2 points
+FAIL: Release IDs do not match across the four files: TEST-RELEASE-001, DIFFERENT-RELEASE
+FAIL: Track point 0 has invalid latitude: 97
+FAIL: Track point 0 has invalid longitude: -190.2
+FAIL: dashboard-data.json references event "evt-does-not-exist" that is missing from route-events.geojson
+FAIL: Route bounds are not plausible for the UW-Issaquah route: padded bbox [lat 9.8000..10.2100, lon 9.8000..10.2100] does not contain reference point "UW Seattle" (47.6553, -122.3035)
+FAIL: route-events.geojson feature "evt-1" has an invalid geometry type
+FAIL: GPX is not valid XML: mismatched closing tag </trk> (expected </name>)
+FAIL: GPX contains no usable track segment (need at least one segment with 2+ points)
+FAIL: route-events.geojson is not a valid GeoJSON FeatureCollection
+FAIL: route-events.geojson is missing its own release/generated marker
+
+ Test Files  6 passed (6)
+      Tests  95 passed (95)
+   Start at  20:45:06
+   Duration  2.39s (transform 450ms, setup 0ms, import 578ms, tests 3.88s, environment 1ms)
+
+
+> uw-issy-route-status@0.1.0 typecheck
+> tsc --noEmit -p tsconfig.json
+
+
+> uw-issy-route-status@0.1.0 build
+> astro build
+
+20:45:13 [types] Generated 149ms
+20:45:13 [build] output: "static"
+20:45:13 [build] mode: "static"
+20:45:13 [build] directory: /private/tmp/uwissy-ci-current-input-fix/dist/
+20:45:13 [build] Collecting build info...
+20:45:13 [build] ✓ Completed in 197ms.
+20:45:13 [build] Building static entrypoints...
+20:45:13 [vite] ✓ built in 765ms
+20:45:13 [vite] ✓ built in 151ms
+20:45:13 [build] Rearranging server assets...
+
+ generating static routes 
+20:45:13   ├─ /index.html (+9ms) 
+20:45:14 ✓ Completed in 36ms.
+
+20:45:14 [build] ✓ Completed in 976ms.
+20:45:14 [build] 1 page(s) built in 1.17s
+20:45:14 [build] Complete!
+PASS: all required built assets present
+PASS: dist — scanned 13 file(s), no secret-like content found

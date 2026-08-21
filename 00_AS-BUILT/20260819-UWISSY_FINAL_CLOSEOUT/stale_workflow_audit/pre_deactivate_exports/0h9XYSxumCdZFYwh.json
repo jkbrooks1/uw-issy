@@ -1,0 +1,713 @@
+{
+  "updatedAt": "2026-08-01T04:21:26.199Z",
+  "createdAt": "2026-07-21T18:03:12.479Z",
+  "id": "0h9XYSxumCdZFYwh",
+  "name": "v0001.07_GovernmentSafetyAlertsConnector",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        140
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "manual",
+        "duplicateItem": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "connectorId",
+              "name": "connectorId",
+              "type": "string",
+              "value": "07_GOVERNMENT_SAFETY_ALERTS"
+            },
+            {
+              "id": "connectorNumber",
+              "name": "connectorNumber",
+              "type": "string",
+              "value": "07"
+            },
+            {
+              "id": "connectorName",
+              "name": "connectorName",
+              "type": "string",
+              "value": "CDM Government Safety Alerts Connector"
+            },
+            {
+              "id": "workflowName",
+              "name": "workflowName",
+              "type": "string",
+              "value": "v0001.07_GovernmentSafetyAlertsConnector"
+            },
+            {
+              "id": "workflowVersion",
+              "name": "workflowVersion",
+              "type": "string",
+              "value": "v0001"
+            },
+            {
+              "id": "timezone",
+              "name": "timezone",
+              "type": "string",
+              "value": "Europe/Paris"
+            },
+            {
+              "id": "generatedAt",
+              "name": "generatedAt",
+              "type": "string",
+              "value": "={{ $now.toUTC().toISO() }}"
+            },
+            {
+              "id": "outputDirectory",
+              "name": "outputDirectory",
+              "type": "string",
+              "value": "/files/cdm-status-output"
+            },
+            {
+              "id": "staleAfterMinutes",
+              "name": "staleAfterMinutes",
+              "type": "number",
+              "value": 720
+            },
+            {
+              "id": "finalOutputPath",
+              "name": "finalOutputPath",
+              "type": "string",
+              "value": "/files/cdm-status-output/07_government_safety_alerts.json"
+            },
+            {
+              "id": "stagingOutputPath",
+              "name": "stagingOutputPath",
+              "type": "string",
+              "value": "/files/cdm-status-output/07_government_safety_alerts.staging.json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-config",
+      "name": "Set Connector Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        280,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Embedded verbatim from data/route-monitoring/route-geography-crosswalk.json (all 9 CDM route-day\n// segments). Each segment carries departments[]/rideDay/kmStart/kmEnd/keyPlaces/alternateSpellings,\n// reused for department/place matching exactly as 06_CANAL_STATUS's precedent established.\nconst segments = [{\"segmentId\":\"RD01\",\"rideDay\":1,\"date\":\"2026-09-12\",\"startTown\":\"Bordeaux\",\"endTown\":\"La Réole\",\"kmStart\":0,\"kmEnd\":74.694,\"mpStart\":0,\"mpEnd\":46.4,\"departments\":[\"33\"],\"boundingBox\":{\"west\":-0.57727,\"south\":44.5831,\"east\":-0.03343,\"north\":44.84017},\"alternateSpellings\":[\"Bordeaux Saint-Jean\",\"Bordèu\",\"La Reole\",\"La Réole\"],\"canalReach\":\"Garonne riverside and Piste Roger Lapébie approach to the Canal de Garonne\",\"keyPlaces\":[\"Pont de Pierre\",\"Latresne\",\"Créon\",\"Sauveterre-de-Guyenne\",\"La Réole\"],\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/piste-cyclable-roger-lapebie-bordeaux-creon\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/bordeaux-creon\"},{\"segmentId\":\"RD02\",\"rideDay\":2,\"date\":\"2026-09-13\",\"startTown\":\"La Réole\",\"endTown\":\"Agen\",\"kmStart\":74.694,\"kmEnd\":154.548,\"mpStart\":46.4,\"mpEnd\":96,\"departments\":[\"33\",\"47\"],\"boundingBox\":{\"west\":-0.04149,\"south\":44.20351,\"east\":0.61595,\"north\":44.5841},\"alternateSpellings\":[\"La Reole\",\"Marmande\",\"Aiguillon\",\"Agen\"],\"canalReach\":\"Canal latéral à la Garonne\",\"keyPlaces\":[\"Fontet\",\"Meilhan-sur-Garonne\",\"Marmande\",\"Le Mas-d’Agenais\",\"Agen canal bridge\"],\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-de-garonne-a-velo-la-reole-marmande\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/la-reole-marmande\"},{\"segmentId\":\"RD03\",\"rideDay\":3,\"date\":\"2026-09-14\",\"startTown\":\"Agen\",\"endTown\":\"Moissac\",\"kmStart\":154.548,\"kmEnd\":200.152,\"mpStart\":96,\"mpEnd\":124.4,\"departments\":[\"47\",\"82\"],\"boundingBox\":{\"west\":0.61128,\"south\":44.08342,\"east\":1.08648,\"north\":44.21064},\"alternateSpellings\":[\"Agen\",\"Valence d Agen\",\"Valence-d’Agen\",\"Moissac\"],\"canalReach\":\"Canal latéral à la Garonne\",\"keyPlaces\":[\"Pont-canal d’Agen\",\"Lamagistère\",\"Valence d’Agen\",\"Pont-canal du Cacor\",\"Moissac\"],\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-de-garonne-a-velo-agen-valence-d-agen\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/agen-valence-d-agen\"},{\"segmentId\":\"RD04\",\"rideDay\":4,\"date\":\"2026-09-15\",\"startTown\":\"Moissac\",\"endTown\":\"Toulouse\",\"kmStart\":200.152,\"kmEnd\":274.273,\"mpStart\":124.4,\"mpEnd\":170.4,\"departments\":[\"82\",\"31\"],\"boundingBox\":{\"west\":1.08614,\"south\":43.58717,\"east\":1.46041,\"north\":44.10055},\"alternateSpellings\":[\"Moissac\",\"Castelsarrasin\",\"Montech\",\"Toulouse\"],\"canalReach\":\"Canal latéral à la Garonne to Toulouse\",\"keyPlaces\":[\"Pont-canal du Cacor\",\"Castelsarrasin\",\"Montech\",\"Grisolles\",\"Ponts-Jumeaux\"],\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-de-garonne-a-velo-castelnau-d-estretefonds-toulouse\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/castelnau-d-estretefonds-toulouse\"},{\"segmentId\":\"RD05\",\"rideDay\":5,\"date\":\"2026-09-17\",\"startTown\":\"Toulouse\",\"endTown\":\"Castelnaudary\",\"kmStart\":274.273,\"kmEnd\":339.357,\"mpStart\":170.4,\"mpEnd\":210.9,\"departments\":[\"31\",\"11\"],\"boundingBox\":{\"west\":1.44571,\"south\":43.31267,\"east\":1.95696,\"north\":43.61002},\"alternateSpellings\":[\"Toulouse\",\"Montgiscard\",\"Seuil de Naurouze\",\"Castelnaudary\"],\"canalReach\":\"Canal du Midi - Toulouse to Lauragais and Seuil de Naurouze\",\"keyPlaces\":[\"Canal du Midi Toulouse\",\"Montgiscard\",\"Gardouch\",\"Seuil de Naurouze\",\"Castelnaudary Grand Bassin\"],\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-seuil-de-naurouze-castelnaudary\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/seuil-de-naurouze-castelnaudary\"},{\"segmentId\":\"RD06\",\"rideDay\":6,\"date\":\"2026-09-18\",\"startTown\":\"Castelnaudary\",\"endTown\":\"Carcassonne\",\"kmStart\":339.357,\"kmEnd\":384.517,\"mpStart\":210.9,\"mpEnd\":238.9,\"departments\":[\"11\"],\"boundingBox\":{\"west\":1.9507,\"south\":43.20974,\"east\":2.361,\"north\":43.32091},\"alternateSpellings\":[\"Castelnaudary\",\"Bram\",\"Carcassonne\"],\"canalReach\":\"Canal du Midi - Lauragais and Carcassonne approach\",\"keyPlaces\":[\"Ecluse Saint-Roch\",\"Bram\",\"Villesèquelande\",\"Carcassonne port\"],\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-bram-carcassonne\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/bram-carcassonne\"},{\"segmentId\":\"RD07\",\"rideDay\":7,\"date\":\"2026-09-19\",\"startTown\":\"Carcassonne\",\"endTown\":\"Tourouzelle\",\"kmStart\":384.517,\"kmEnd\":439.119,\"mpStart\":238.9,\"mpEnd\":272.9,\"departments\":[\"11\"],\"boundingBox\":{\"west\":2.35185,\"south\":43.19374,\"east\":2.76545,\"north\":43.27003},\"alternateSpellings\":[\"Carcassonne\",\"Trèbes\",\"Trebes\",\"Marseillette\",\"Tourouzelle\"],\"canalReach\":\"Canal du Midi - Carcassonne, Trèbes, and Minervois\",\"keyPlaces\":[\"Carcassonne\",\"Trèbes\",\"Marseillette\",\"La Redorte\",\"Argens-Minervois\"],\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-bram-carcassonne\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/bram-carcassonne\"},{\"segmentId\":\"RD08\",\"rideDay\":8,\"date\":\"2026-09-20\",\"startTown\":\"Tourouzelle\",\"endTown\":\"Capestang\",\"kmStart\":439.119,\"kmEnd\":483.287,\"mpStart\":272.9,\"mpEnd\":300.3,\"departments\":[\"11\",\"34\"],\"boundingBox\":{\"west\":2.72218,\"south\":43.23919,\"east\":3.04372,\"north\":43.3319},\"alternateSpellings\":[\"Tourouzelle\",\"Homps\",\"Le Somail\",\"Capestang\"],\"canalReach\":\"Canal du Midi - Minervois to Capestang\",\"keyPlaces\":[\"Homps\",\"Lac de Jouarres\",\"Le Somail\",\"Poilhes\",\"Capestang\"],\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-le-somail-capestang\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/le-somail-capestang\"},{\"segmentId\":\"RD09\",\"rideDay\":9,\"date\":\"2026-09-21\",\"startTown\":\"Capestang\",\"endTown\":\"Sète\",\"kmStart\":483.287,\"kmEnd\":554.954,\"mpStart\":300.3,\"mpEnd\":344.8,\"departments\":[\"34\"],\"boundingBox\":{\"west\":3.04324,\"south\":43.28619,\"east\":3.69798,\"north\":43.41032},\"alternateSpellings\":[\"Capestang\",\"Béziers\",\"Beziers\",\"Agde\",\"Sete\",\"Sète\"],\"canalReach\":\"Canal du Midi, Orb/Hérault works, and Étang de Thau approach\",\"keyPlaces\":[\"Tunnel de Malpas\",\"Neuf écluses de Fonseranes\",\"Béziers\",\"Agde écluse ronde\",\"Marseillan plage\",\"Sète\"],\"officialStageUrl\":\"https://www.canaldes2mersavelo.com/itineraire/le-canal-du-midi-a-velo-agde-sete\",\"franceVeloUrl\":\"https://www.francevelotourisme.com/itineraire/le-canal-des-2-mers-a-velo/agde-sete\"}];\nreturn [{ json: { segments, contextGeneratedAt: new Date().toISOString(), contextSource: 'data/route-monitoring/route-geography-crosswalk.json' } }];"
+      },
+      "id": "load-context",
+      "name": "Load / Embed Department Route Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Embedded verbatim from scripts/route-monitoring/fetch-prefectures.mjs's prefectures[] array\n// (6 department prefecture sites, all confirmed live/HTML/unauthenticated by the 2026-07-21 source-shape probe).\nconst config = $items('Set Connector Config')[0].json;\nconst prefectures = [{\"department\":\"33\",\"name\":\"Préfecture de la Gironde\",\"url\":\"https://www.gironde.gouv.fr/Actualites\"},{\"department\":\"47\",\"name\":\"Préfecture de Lot-et-Garonne\",\"url\":\"https://www.lot-et-garonne.gouv.fr/Actualites\"},{\"department\":\"82\",\"name\":\"Préfecture de Tarn-et-Garonne\",\"url\":\"https://www.tarn-et-garonne.gouv.fr/Actualites\"},{\"department\":\"31\",\"name\":\"Préfecture de la Haute-Garonne\",\"url\":\"https://www.haute-garonne.gouv.fr/Actualites\"},{\"department\":\"11\",\"name\":\"Préfecture de l'Aude\",\"url\":\"https://www.aude.gouv.fr/Actualites\"},{\"department\":\"34\",\"name\":\"Préfecture de l'Hérault\",\"url\":\"https://www.herault.gouv.fr/Actualites\"}];\nreturn prefectures.map((p) => ({ json: { ...p, generatedAt: config.generatedAt } }));"
+      },
+      "id": "build-request-config",
+      "name": "Build Government Source Request Config",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        840,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Faithful adaptation of scripts/route-monitoring/fetch-prefectures.mjs's listing/article fetch,\n// extractCards(), genericArticlePattern prescreen, and hazardTermPattern/routeTermPattern inclusion gate.\n// Runs entirely in one Code node (runOnceForAllItems) using this.helpers.httpRequest because the real\n// flow spans 6 department listing pages plus conditional per-article follow-up fetches - a shape n8n's\n// single-endpoint HTTP Request node cannot express directly (same reasoning as 06_CANAL_STATUS's VNF\n// discovery node).\nconst prefectureItems = $input.all().map((i) => i.json || {});\n\nfunction escapeRegExp(value) { return value.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&'); }\nfunction normalizeText(value) {\n  return String(value || '')\n    .normalize('NFKD')\n    .replace(/[\\u0300-\\u036f]/g, '')\n    .replace(/['`]/g, \"'\")\n    .replace(/\\s+/g, ' ')\n    .trim()\n    .toLowerCase();\n}\nconst routeTermPattern = new RegExp(['canal du midi','canal lateral','canal de garonne','canal des deux mers','voie verte','piste cyclable','chemin de halage','velo','cyclable','cycliste'].map(escapeRegExp).join('|'), 'i');\nconst hazardTermPattern = new RegExp(['fermeture','coupure','travaux','chantier','deviation','inondation','crue','incendie','feu de foret','acces interdit','circulation interdite','restriction de circulation','interdiction de circuler','route barree','effondrement','glissement de terrain'].map(escapeRegExp).join('|'), 'i');\nconst genericArticlePattern = new RegExp(['fermeture au public','accueil du public',\"services de l'etat\",'service public',\"horaires d'ouverture\",'bons reflexes','sensibilisation','campagne de prevention',\"campagne d'information\",'journee nationale','journee internationale','ceremonie','commemoration','recrutement','appel a projets','appel a candidatures','enquete publique','consultation publique','elections','carte grise','titre de sejour','permis de conduire','demarches administratives','france services'].map(escapeRegExp).join('|'), 'i');\n\nconst namedEntities = { amp:'&', apos:\"'\", gt:'>', lt:'<', nbsp:' ', quot:'\"', rsquo:\"'\", laquo:'«', raquo:'»', eacute:'é', egrave:'è', ecirc:'ê', agrave:'à', ugrave:'ù', ccedil:'ç', ocirc:'ô', icirc:'î' };\nfunction decodeEntities(value) {\n  return String(value || '').replace(/&(#x?[0-9a-f]+|[a-z]+);/gi, (match, entity) => {\n    const lower = entity.toLowerCase();\n    if (lower.startsWith('#x')) return String.fromCodePoint(Number.parseInt(lower.slice(2), 16));\n    if (lower.startsWith('#')) return String.fromCodePoint(Number.parseInt(lower.slice(1), 10));\n    return namedEntities[lower] !== undefined ? namedEntities[lower] : match;\n  });\n}\nfunction stripHtml(html) {\n  return decodeEntities(String(html || '')\n    .replace(/<script[\\s\\S]*?<\\/script>/gi, ' ')\n    .replace(/<style[\\s\\S]*?<\\/style>/gi, ' ')\n    .replace(/<br\\s*\\/?>/gi, '\\n')\n    .replace(/<\\/p>/gi, '\\n')\n    .replace(/<[^>]+>/g, ' '))\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\nfunction excerpt(text, maxLength) {\n  maxLength = maxLength || 900;\n  const clean = String(text || '').replace(/\\s+/g, ' ').trim();\n  if (clean.length <= maxLength) return clean;\n  return clean.slice(0, maxLength - 1).trim() + '…';\n}\nfunction extractAttr(tag, attrName) {\n  const match = String(tag || '').match(new RegExp(attrName + '\\\\s*=\\\\s*([\"\\'])(.*?)\\\\1', 'i'));\n  return match ? decodeEntities(match[2]) : null;\n}\nfunction resolveUrl(href, baseUrl) {\n  // Manual absolute/relative URL resolver - the global URL constructor is confirmed UNAVAILABLE in\n  // this n8n instance's Code-node sandbox (empirically confirmed live during 06_CANAL_STATUS testing).\n  const value = String(href || '').trim();\n  if (!value) return null;\n  if (/^https?:\\/\\//i.test(value)) return value;\n  const originMatch = baseUrl.match(/^(https?:\\/\\/[^/]+)/i);\n  const origin = originMatch ? originMatch[1] : baseUrl;\n  if (value.startsWith('/')) return origin + value;\n  if (/^(mailto:|tel:|javascript:|data:|#)/i.test(value)) return null;\n  return origin + '/' + value;\n}\nfunction extractCards(html, baseUrl) {\n  const matches = [...html.matchAll(/<h2\\b[^>]*class=([\"'])[^\"']*fr-card__title[^\"']*\\1[^>]*>[\\s\\S]*?<a\\b([^>]*)>([\\s\\S]*?)<\\/a>[\\s\\S]*?<\\/h2>/gi)];\n  return matches.map((match, index) => {\n    const href = extractAttr(match[2], 'href');\n    const url = href ? resolveUrl(decodeEntities(href), baseUrl) : null;\n    const nextIndex = matches[index + 1] ? matches[index + 1].index : Math.min(html.length, match.index + 2500);\n    const cardHtml = html.slice(match.index, nextIndex);\n    const dateMatch = cardHtml.match(/Publi\\u00e9 le\\s+(\\d{2})\\/(\\d{2})\\/(\\d{4})/i);\n    const publishedAt = dateMatch ? (dateMatch[3] + '-' + dateMatch[2] + '-' + dateMatch[1] + 'T12:00:00.000Z') : null;\n    return { title: stripHtml(match[3]), url, publishedAt, listingText: stripHtml(cardHtml) };\n  }).filter((entry) => entry.title && entry.url);\n}\nfunction extractMainHtml(html) {\n  const article = html.match(/<article\\b[\\s\\S]*?<\\/article>/i);\n  if (article) return article[0];\n  const main = html.match(/<main\\b[\\s\\S]*?<\\/main>/i);\n  if (main) return main[0];\n  return html;\n}\nfunction extractArticleBody(html) {\n  const main = extractMainHtml(html);\n  const h1 = main.match(/<h1\\b[^>]*>([\\s\\S]*?)<\\/h1>/i);\n  const title = h1 ? stripHtml(h1[1]).replace(/\\s+-\\s+Les services de l'\\u00c9tat.*$/i, '').trim() : null;\n  const text = stripHtml(main);\n  const body = title && text.startsWith(title) ? text.slice(title.length).trim() : text;\n  return { title, bodyText: body };\n}\nfunction detectListingStructureWarning(html) {\n  const normalized = String(html || '');\n  if (normalized.length > 0 && normalized.length < 1500) return 'listing body unexpectedly small (' + normalized.length + ' bytes)';\n  if (!/fr-card__title/i.test(normalized)) return 'listing markup missing expected fr-card__title entries';\n  return null;\n}\nfunction matchesFilter(article) {\n  const text = normalizeText((article.title || '') + ' ' + (article.listingText || ''));\n  if (genericArticlePattern.test(text)) return false;\n  return hazardTermPattern.test(text) || routeTermPattern.test(text);\n}\n\nasync function fetchText(url) {\n  let lastError;\n  for (let attempt = 1; attempt <= 3; attempt += 1) {\n    try {\n      const response = await this.helpers.httpRequest({\n        method: 'GET',\n        url,\n        timeout: 25000,\n        returnFullResponse: true,\n        headers: {\n          'User-Agent': 'BikeTourFrance-CDM-RouteMonitor/0.1 (+https://biketourfrance.net; route status research)',\n          Accept: 'text/html,application/xhtml+xml,application/xml,text/plain;q=0.9,*/*;q=0.8',\n        },\n      });\n      return typeof response.body === 'string' ? response.body : String(response.body);\n    } catch (err) {\n      lastError = err;\n      const message = String(err && err.message ? err.message : err);\n      const retryable = /socket hang up|ECONNRESET|ETIMEDOUT|EAI_AGAIN|503|502|504/i.test(message);\n      if (!retryable || attempt === 3) throw err;\n      await new Promise((resolve) => setTimeout(resolve, attempt * 1500));\n    }\n  }\n  throw lastError;\n}\n\nconst checkedAt = new Date().toISOString();\nconst fetchMetaItems = [];\nconst rawArticleItems = [];\n\nfor (const prefecture of prefectureItems) {\n  const sourceId = 'prefecture-' + prefecture.department;\n  const meta = {\n    recordKind: 'sourceFetchMeta',\n    sourceId,\n    sourceName: prefecture.name,\n    sourceUrl: prefecture.url,\n    department: prefecture.department,\n    checkedAt,\n    ok: true,\n    listingArticles: 0,\n    matchingArticles: 0,\n    articleFetches: 0,\n    candidates: 0,\n    ignoredArticles: [],\n    errors: [],\n  };\n  try {\n    const listingHtml = await fetchText.call(this, prefecture.url);\n    meta.listingBytes = listingHtml.length;\n    const structureWarning = detectListingStructureWarning(listingHtml);\n    if (structureWarning) {\n      meta.ok = false;\n      meta.structureWarning = structureWarning;\n      meta.errors.push({ stage: 'listing', type: 'source_shape_changed', message: 'listing fetch returned unexpected content: ' + structureWarning });\n      fetchMetaItems.push(meta);\n      continue;\n    }\n    const cards = extractCards(listingHtml, prefecture.url);\n    meta.listingArticles = cards.length;\n    const matching = [];\n    for (const card of cards) {\n      if (matchesFilter(card)) {\n        matching.push(card);\n      } else {\n        const text = normalizeText((card.title || '') + ' ' + (card.listingText || ''));\n        if (hazardTermPattern.test(text) || genericArticlePattern.test(text)) {\n          meta.ignoredArticles.push({\n            title: card.title,\n            url: card.url,\n            reason: genericArticlePattern.test(text)\n              ? 'generic administrative or public-information article (listing prescreen)'\n              : 'no route term or route-relevant framing (listing prescreen)',\n          });\n        }\n      }\n    }\n    meta.matchingArticles = matching.length;\n    for (const card of matching) {\n      let bodyText = '';\n      let articleTitle = card.title;\n      try {\n        const articleHtml = await fetchText.call(this, card.url);\n        meta.articleFetches += 1;\n        const article = extractArticleBody(articleHtml);\n        bodyText = article.bodyText || card.listingText || '';\n        articleTitle = article.title || card.title;\n      } catch (err) {\n        meta.errors.push({ stage: 'article', type: 'fetch_error', articleUrl: card.url, message: err.message });\n        bodyText = card.listingText || '';\n      }\n      meta.candidates += 1;\n      rawArticleItems.push({\n        recordKind: 'rawArticle',\n        sourceId,\n        sourceName: prefecture.name,\n        sourceUrl: prefecture.url,\n        department: prefecture.department,\n        title: articleTitle,\n        articleUrl: card.url,\n        publishedAt: card.publishedAt,\n        bodyText,\n        checkedAt,\n      });\n    }\n  } catch (err) {\n    meta.ok = false;\n    meta.errors.push({ stage: 'listing', type: 'fetch_error', message: err.message, status: err.httpCode || null });\n  }\n  fetchMetaItems.push(meta);\n}\n\nreturn [...fetchMetaItems.map((m) => ({ json: m })), ...rawArticleItems.map((a) => ({ json: a }))];"
+      },
+      "id": "fetch-sources",
+      "name": "Fetch Government / Prefecture Sources",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Source-shape probe (2026-07-21) confirmed ZERO PDF hrefs on any of the six prefecture listing\n// pages for this connector (unlike 06_CANAL_STATUS's VNF source, which does require PDF handling).\n// This node is a documented, evidence-based no-op passthrough - kept in the workflow to preserve\n// the standard 21-node connector shape and to make future PDF-document handling a trivial addition\n// if a prefecture ever links a PDF, without inventing document fetching that has no current basis.\nreturn $input.all();"
+      },
+      "id": "fetch-documents",
+      "name": "Fetch Government Documents If Required",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1400,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Passes sourceFetchMeta records through unchanged; converts rawArticle records into parsed candidate\n// records with a cleaned evidence excerpt, mirroring fetch-prefectures.mjs's excerpt()/normalizeText().\nconst items = $input.all().map((i) => i.json || {});\nfunction excerpt(text, maxLength) {\n  maxLength = maxLength || 1200;\n  const clean = String(text || '').replace(/\\s+/g, ' ').trim();\n  if (clean.length <= maxLength) return clean;\n  return clean.slice(0, maxLength - 1).trim() + '\\u2026';\n}\nreturn items.map((item) => {\n  if (item.recordKind !== 'rawArticle') return { json: item };\n  const bodyExcerpt = excerpt(item.bodyText, 1000);\n  const evidenceText = excerpt((item.title || '') + '. ' + bodyExcerpt, 1400);\n  return {\n    json: {\n      recordKind: 'parsedGovernmentItem',\n      sourceId: item.sourceId,\n      sourceName: item.sourceName,\n      sourceUrl: item.sourceUrl,\n      department: item.department,\n      title: item.title,\n      summary: excerpt(bodyExcerpt, 280),\n      evidenceText,\n      articleUrl: item.articleUrl,\n      publishedAt: item.publishedAt,\n      checkedAt: item.checkedAt,\n    },\n  };\n});"
+      },
+      "id": "parse-items",
+      "name": "Parse Government / Prefecture Items",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1680,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Classifies each parsedGovernmentItem into an official-notice-type / alert-category taxonomy derived\n// from fetch-prefectures.mjs's eventTypeFor() hazard-term buckets. Never classifies any category as a\n// route closure by default - official government alert type/status stays official.\nconst items = $input.all().map((i) => i.json || {});\nfunction normalize(value) {\n  return String(value || '').normalize('NFKD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase();\n}\nfunction classify(text) {\n  const n = normalize(text);\n  if (/(inondation|crue)/.test(n)) return { officialAlertCategory: 'flood_safety_notice', officialGovernmentStatus: 'flood_hazard_notice' };\n  if (/(incendie|feu de foret)/.test(n)) return { officialAlertCategory: 'fire_safety_notice', officialGovernmentStatus: 'fire_hazard_notice' };\n  if (/(vigilance|canicule|meteo|baine|orage)/.test(n)) return { officialAlertCategory: 'weather_safety_notice', officialGovernmentStatus: 'weather_alert_notice' };\n  if (/(deviation)/.test(n)) return { officialAlertCategory: 'road_access_notice', officialGovernmentStatus: 'detour_notice' };\n  if (/(travaux|chantier)/.test(n)) return { officialAlertCategory: 'road_access_notice', officialGovernmentStatus: 'works_notice' };\n  if (/(fermeture|coupure)/.test(n)) return { officialAlertCategory: 'road_access_notice', officialGovernmentStatus: 'closure_notice' };\n  if (/(acces interdit|interdit|restriction|circulation)/.test(n)) return { officialAlertCategory: 'public_access_notice', officialGovernmentStatus: 'access_restriction_notice' };\n  if (/(effondrement|glissement de terrain)/.test(n)) return { officialAlertCategory: 'civil_security_notice', officialGovernmentStatus: 'civil_security_notice' };\n  return { officialAlertCategory: 'informational_notice', officialGovernmentStatus: 'notice_published' };\n}\nfunction noticeType(category) {\n  if (category === 'road_access_notice') return 'public_access_notice';\n  if (category === 'public_access_notice') return 'public_access_notice';\n  if (category === 'fire_safety_notice' || category === 'flood_safety_notice' || category === 'weather_safety_notice') return 'public_safety_notice';\n  if (category === 'civil_security_notice') return 'emergency_notice';\n  return 'prefecture_notice';\n}\nreturn items.map((item) => {\n  if (item.recordKind !== 'parsedGovernmentItem') return { json: item };\n  const c = classify(item.evidenceText);\n  const officialNoticeType = noticeType(c.officialAlertCategory);\n  return { json: { ...item, ...c, officialNoticeType } };\n});"
+      },
+      "id": "classify-type",
+      "name": "Classify Official Government Alert Type",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1960,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Detects EXPLICIT official route/towpath/public-access impact per the strict CDM domain-boundary rule:\n// a general government safety alert alone is never route status. routeImpactStatus only becomes\n// \"reported\" when the evidence text contains an explicit combined phrase from the task's own French\n// term list, OR a cycling-infrastructure term combined with a closure verb - never from keyword presence\n// alone (e.g. \"velo\"/\"cyclable\" mentioned in an unrelated context does not set routeImpactStatus=reported).\nconst items = $input.all().map((i) => i.json || {});\nconst towpathTerm = /(chemin de halage|voie verte|piste cyclable|itin[ée]raire v[ée]lo|route cyclable|acc[èe]s public)/i;\nconst closureVerb = /(ferm[ée]e?s?|interdit|interrompu|coup[ée]e?s?|barr[ée]e?s?|impact[ée]e?s?)/i;\nconst explicitPhrases = [\n  /chemin de halage ferm/i,\n  /voie verte ferm/i,\n  /piste cyclable ferm/i,\n  /itin[ée]raire v[ée]lo ferm/i,\n  /acc[èe]s public interdit/i,\n  /d[ée]viation cyclable/i,\n  /fermeture du chemin/i,\n  /interruption de l.?itin[ée]raire/i,\n  /route cyclable impact[ée]e/i,\n  /restriction d.?acc[èe]s public/i,\n  /interdiction d.?acc[èe]s/i,\n  /fermeture au public/i,\n  /[ée]vacuation d.?un secteur travers[ée] par l.?itin[ée]raire/i,\n  /p[ée]rim[èe]tre de s[ée]curit[ée] couvrant l.?itin[ée]raire/i,\n];\nfunction detect(text) {\n  const t = String(text || '');\n  const explicit = explicitPhrases.some((re) => re.test(t));\n  const combined = towpathTerm.test(t) && closureVerb.test(t);\n  const hasExplicitImpact = explicit || combined;\n  const normalizedT = t.normalize('NFKD').replace(/[\\u0300-\\u036f]/g, '');\n  return {\n    routeImpactStatus: hasExplicitImpact ? 'reported' : 'not_indicated',\n    routeClosureConfirmed: false,\n    towpathClosureConfirmed: hasExplicitImpact && /chemin de halage|halage/i.test(t),\n    publicAccessClosureConfirmed: hasExplicitImpact && /acc[èe]s public/i.test(t),\n    detourConfirmed: hasExplicitImpact && /d[ée]viation/i.test(t),\n    hasCyclistTermMention: /(chemin de halage|voie verte|piste cyclable|velo|cyclable|cycliste)/i.test(normalizedT),\n  };\n}\nreturn items.map((item) => {\n  if (item.recordKind !== 'parsedGovernmentItem') return { json: item };\n  return { json: { ...item, ...detect(item.evidenceText) } };\n});"
+      },
+      "id": "detect-impact",
+      "name": "Detect Explicit Route / Towpath / Public-Access Impact",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2240,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Adapted from fetch-prefectures.mjs's buildLocationIndex()/locateArticle(), using the segment list\n// embedded in \"Load / Embed Department Route Context\" (real repo data - never invented).\nconst contextItems = $items('Load / Embed Department Route Context');\nconst segments = (contextItems[0] && contextItems[0].json.segments) || [];\nconst items = $input.all().map((i) => i.json || {});\n\nfunction normalize(value) {\n  return String(value || '').normalize('NFKD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase().replace(/[’']/g, ' ').replace(/[^a-z0-9]+/g, ' ').trim();\n}\nfunction escapeRegExp(value) { return value.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&'); }\nfunction buildLocationIndex() {\n  const entries = [];\n  for (const segment of segments) {\n    const names = new Set([segment.startTown, segment.endTown, ...(segment.alternateSpellings || []), ...(segment.keyPlaces || [])].filter(Boolean));\n    for (const name of names) {\n      const normalized = normalize(name);\n      if (normalized.length < 4) continue;\n      entries.push({ name, normalized, segment });\n    }\n  }\n  return entries.sort((a, b) => b.normalized.length - a.normalized.length);\n}\nconst locationIndex = buildLocationIndex();\nfunction locate(text, sourceDepartment) {\n  const normalized = normalize(text);\n  const match = locationIndex.find((entry) => {\n    const pattern = new RegExp('(^|[^a-z0-9])' + escapeRegExp(entry.normalized) + '([^a-z0-9]|$)', 'i');\n    return pattern.test(normalized);\n  });\n  if (!match) {\n    return { locationText: 'D\\u00e9partement ' + sourceDepartment, department: sourceDepartment, confidence: 'low', routeRelation: 'same_department', rideDays: [], distanceFromRouteKm: null };\n  }\n  const segment = match.segment;\n  const matchedDepartment = segment.departments.includes(sourceDepartment) ? sourceDepartment : segment.departments[0];\n  return {\n    locationText: match.name,\n    commune: match.name,\n    department: matchedDepartment,\n    confidence: 'medium',\n    routeRelation: 'near_route',\n    rideDays: [segment.rideDay],\n    nearestRouteKm: segment.kmStart,\n    nearestRouteMp: segment.mpStart,\n    distanceFromRouteKm: null,\n  };\n}\nreturn items.map((item) => {\n  if (item.recordKind !== 'parsedGovernmentItem') return { json: item };\n  const location = locate(item.title + ' ' + item.evidenceText, item.department);\n  const mappingConfidence = location.confidence;\n  return { json: { ...item, ...location, mappingConfidence } };\n});"
+      },
+      "id": "match-corridor",
+      "name": "Match Alerts to CDM Corridor / Ride Days",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2520,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Produces normalized official government alert records with a strict four-way\n// classification gate. Route-relevant publication requires explicit official\n// cyclist/towpath/public-access wording plus a specific corridor match.\nconst items = $input.all().map((i) => i.json || {});\nconst checkedAt = new Date().toISOString();\n\nconst noticeTypeLabelFr = {\n  prefecture_notice: 'Avis préfectoral',\n  emergency_notice: \"Avis d'urgence / sécurité civile\",\n  public_safety_notice: 'Avis de sécurité publique',\n  public_access_notice: \"Avis de restriction d'accès public\",\n  informational_notice: 'Avis informatif',\n  unknown_notice_type: 'Avis non classé',\n};\nconst noticeTypeLabelEn = {\n  prefecture_notice: 'Prefecture notice',\n  emergency_notice: 'Emergency / civil-security notice',\n  public_safety_notice: 'Public safety notice',\n  public_access_notice: 'Public access restriction notice',\n  informational_notice: 'Informational notice',\n  unknown_notice_type: 'Unclassified notice',\n};\nfunction noImpactWording(noticeType) {\n  if (noticeType === 'prefecture_notice') return 'Official prefecture notice in place - no route impact indicated.';\n  if (noticeType === 'public_safety_notice' || noticeType === 'emergency_notice') return 'Official public-safety notice in place - route impact requires manual review unless explicitly stated.';\n  return 'Official government safety alert in place - no route impact indicated.';\n}\nfunction classify(item) {\n  const hasExplicitImpact = item.routeImpactStatus === 'reported';\n  const hasSpecificRouteMatch = item.routeRelation === 'near_route' && Array.isArray(item.rideDays) && item.rideDays.length > 0;\n  const hasCyclistOrTowpathEvidence = Boolean(item.hasCyclistTermMention) || Boolean(item.towpathClosureConfirmed) || Boolean(item.publicAccessClosureConfirmed);\n  const publishedMs = item.publishedAt ? Date.parse(item.publishedAt) : NaN;\n  const ageDays = Number.isFinite(publishedMs) ? ((Date.now() - publishedMs) / 86400000) : null;\n  const recentEnough = ageDays !== null && ageDays <= 7;\n  if (hasExplicitImpact && hasSpecificRouteMatch && hasCyclistOrTowpathEvidence && recentEnough) return 'ROUTE_RELEVANT_PUBLISHED';\n  if (!hasExplicitImpact && hasSpecificRouteMatch) return 'OFFICIAL_NOT_ROUTE_RELEVANT';\n  return 'REQUIRES_HUMAN_REVIEW';\n}\n\nconst normalized = items.map((item) => {\n  if (item.recordKind !== 'parsedGovernmentItem') return item;\n  const classificationLabel = classify(item);\n  const isImpactReported = item.routeImpactStatus === 'reported';\n  const statusExplanation = (classificationLabel === 'ROUTE_RELEVANT_PUBLISHED'\n    ? ('Official source explicitly reports cyclist, towpath, or public-access impact near ' + (item.locationText || 'the route corridor') + '; confirm before riding.')\n    : (noImpactWording(item.officialNoticeType) + ' Verify locally before treating this as route status.'))\n    .split(/\\s+/).slice(0, 20).join(' ');\n  return {\n    recordKind: 'officialGovernmentAlert',\n    classificationLabel,\n    externalId: 'gov-' + item.sourceId + '-' + (item.articleUrl ? item.articleUrl.split('/').pop() : 'unknown'),\n    sourceId: item.sourceId,\n    sourceType: 'prefectures',\n    category: 'official_government_alert',\n    semanticStatus: 'government_safety_alert_near_route',\n    officialGovernmentStatus: item.officialGovernmentStatus || 'notice_published',\n    officialNoticeType: item.officialNoticeType || 'unknown_notice_type',\n    officialAlertCategory: item.officialAlertCategory || 'informational_notice',\n    officialNoticeLabelFr: noticeTypeLabelFr[item.officialNoticeType] || noticeTypeLabelFr.unknown_notice_type,\n    officialNoticeLabelEn: noticeTypeLabelEn[item.officialNoticeType] || noticeTypeLabelEn.unknown_notice_type,\n    routeImpactStatus: item.routeImpactStatus || 'not_indicated',\n    routeClosureConfirmed: Boolean(item.routeClosureConfirmed),\n    towpathClosureConfirmed: Boolean(item.towpathClosureConfirmed),\n    publicAccessClosureConfirmed: Boolean(item.publicAccessClosureConfirmed),\n    detourConfirmed: Boolean(item.detourConfirmed),\n    hasCyclistTermMention: Boolean(item.hasCyclistTermMention),\n    status: classificationLabel === 'ROUTE_RELEVANT_PUBLISHED' ? 'route_relevant_published' : 'manual_review_required',\n    title: item.title,\n    nearestPlace: item.locationText || ('Département ' + item.department),\n    departmentCode: item.department || 'unknown',\n    departmentName: item.sourceName || 'unknown',\n    commune: item.commune || null,\n    rideDay: null,\n    rideDays: (item.rideDays || []).map((d) => 'RD' + String(d).padStart(2, '0')),\n    routeRelation: item.routeRelation || 'unknown',\n    distanceFromRouteKm: item.distanceFromRouteKm != null ? item.distanceFromRouteKm : null,\n    nearestRouteKm: item.nearestRouteKm != null ? item.nearestRouteKm : null,\n    nearestRouteMp: item.nearestRouteMp != null ? item.nearestRouteMp : null,\n    mappingConfidence: item.mappingConfidence || 'unknown',\n    reviewState: classificationLabel === 'ROUTE_RELEVANT_PUBLISHED' ? 'route_relevant_published' : 'manual_review_required',\n    routeInfluenceConfirmed: classificationLabel === 'ROUTE_RELEVANT_PUBLISHED',\n    startTime: item.publishedAt || checkedAt,\n    expectedEndTime: null,\n    publicationDate: item.publishedAt || null,\n    checkedAt,\n    sourceUrl: item.sourceUrl,\n    documentUrl: item.articleUrl || null,\n    summary: ((item.summary || '') + ' ' + noImpactWording(item.officialNoticeType)).trim(),\n    statusTitle: item.title,\n    statusExplanation,\n    statusSource: { name: item.sourceName, url: item.articleUrl || item.sourceUrl, official: true, checkedAt, sourceLanguage: 'fr', translationMethod: 'condensed_official_source' },\n    whyItMatters: classificationLabel === 'ROUTE_RELEVANT_PUBLISHED'\n      ? 'An official government/prefecture source explicitly reports cyclist, towpath, or public-access impact near the route corridor.'\n      : 'An official government/prefecture safety alert is in effect near the route corridor; this is a government fact, not a confirmed cyclist route impact.',\n    recommendedAction: classificationLabel === 'ROUTE_RELEVANT_PUBLISHED'\n      ? 'Check the official notice, confirm the affected route segment, and brief riders on the verified impact.'\n      : 'Review official prefecture notice and route-specific sources before treating this as a route impact.',\n    suggestedDetour: null,\n    detourImpact: null,\n    raw: { evidenceText: item.evidenceText, articleUrl: item.articleUrl },\n  };\n});\n\nreturn normalized.map((r) => ({ json: r }));"
+      },
+      "id": "normalize-records",
+      "name": "Normalize Government Safety Alert Records",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2800,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// One source-health item per department PLUS one aggregate summary item, consistent with the real\n// repo's per-department health.departments.{code} breakdown structure (source-state.json evidence).\nconst config = $items('Set Connector Config')[0].json;\nconst fetchMetaItems = $items('Fetch Government / Prefecture Sources').map((i) => i.json).filter((i) => i.recordKind === 'sourceFetchMeta');\nconst normalizedItems = $items('Normalize Government Safety Alert Records').map((i) => i.json).filter((i) => i.recordKind === 'officialGovernmentAlert');\nconst fetchedAt = new Date().toISOString();\n\nconst perDepartment = fetchMetaItems.map((m) => {\n  const deptRecords = normalizedItems.filter((n) => n.sourceId === m.sourceId);\n  const status = m.structureWarning ? 'source_shape_changed' : (!m.ok ? 'failed' : 'ok');\n  return {\n    recordKind: 'sourceHealth',\n    sourceId: m.sourceId,\n    sourceName: m.sourceName,\n    status,\n    fetchedAt,\n    staleAfterMinutes: Number(config.staleAfterMinutes),\n    httpStatus: m.ok ? 200 : 0,\n    itemCount: m.listingArticles || 0,\n    documentCount: m.articleFetches || 0,\n    officialGovernmentAlertCount: deptRecords.length,\n    prefectureNoticeCount: deptRecords.filter((r) => r.officialNoticeType === 'prefecture_notice').length,\n    emergencyNoticeCount: deptRecords.filter((r) => r.officialNoticeType === 'emergency_notice').length,\n    ignoredCount: (m.ignoredArticles || []).length,\n    recordCount: deptRecords.length,\n    ignored: m.ignoredArticles || [],\n    errors: m.errors || [],\n    warnings: m.structureWarning ? [m.structureWarning] : [],\n  };\n});\n\nconst succeeded = perDepartment.filter((d) => d.status === 'ok');\nconst failed = perDepartment.filter((d) => d.status !== 'ok');\nconst aggregateStatus = failed.length === perDepartment.length && perDepartment.length > 0\n  ? 'source_api_blocked'\n  : (failed.length > 0 ? 'degraded' : 'ok');\n\nconst aggregate = {\n  recordKind: 'sourceHealth',\n  sourceId: 'prefectures',\n  sourceName: 'French prefecture / government alert sources',\n  status: aggregateStatus,\n  fetchedAt,\n  staleAfterMinutes: Number(config.staleAfterMinutes),\n  httpStatus: succeeded.length > 0 ? 200 : 0,\n  itemCount: perDepartment.reduce((s, d) => s + d.itemCount, 0),\n  documentCount: perDepartment.reduce((s, d) => s + d.documentCount, 0),\n  officialGovernmentAlertCount: normalizedItems.length,\n  prefectureNoticeCount: normalizedItems.filter((r) => r.officialNoticeType === 'prefecture_notice').length,\n  emergencyNoticeCount: normalizedItems.filter((r) => r.officialNoticeType === 'emergency_notice').length,\n  ignoredCount: perDepartment.reduce((s, d) => s + d.ignoredCount, 0),\n  recordCount: normalizedItems.length,\n  ignored: perDepartment.flatMap((d) => d.ignored.map((x) => ({ sourceId: d.sourceId, ...x }))),\n  errors: perDepartment.flatMap((d) => d.errors),\n  warnings: perDepartment.flatMap((d) => d.warnings),\n  succeededDepartments: succeeded.map((d) => d.sourceId),\n  failedDepartments: failed.map((d) => d.sourceId),\n};\n\nreturn [aggregate, ...perDepartment].map((h) => ({ json: h }));"
+      },
+      "id": "build-source-health",
+      "name": "Build Source Health",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3080,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst records = $input.all().map((i) => i.json || {}).filter((i) => i.recordKind === 'officialGovernmentAlert');\n\nconst events = records\n  .filter((n) => n.classificationLabel === 'ROUTE_RELEVANT_PUBLISHED')\n  .map((n) => ({\n    eventType: 'government_safety_alert',\n    sourceType: 'prefectures',\n    sourceId: n.sourceId,\n    sourceName: n.departmentName,\n    officialGovernmentStatus: n.officialGovernmentStatus,\n    officialNoticeType: n.officialNoticeType,\n    officialAlertCategory: n.officialAlertCategory,\n    routeImpactStatus: n.routeImpactStatus,\n    routeClosureConfirmed: n.routeClosureConfirmed,\n    towpathClosureConfirmed: n.towpathClosureConfirmed,\n    publicAccessClosureConfirmed: n.publicAccessClosureConfirmed,\n    detourConfirmed: n.detourConfirmed,\n    reviewState: n.reviewState,\n    classificationLabel: n.classificationLabel,\n    matchConfidence: n.mappingConfidence,\n    title: n.title,\n    summary: n.summary,\n    rideDays: n.rideDays,\n    departmentCode: n.departmentCode,\n    checkedAt: n.checkedAt,\n    sourceUrl: n.sourceUrl,\n    externalId: n.externalId,\n  }));\nconst reviewQueue = records\n  .filter((n) => n.classificationLabel !== 'ROUTE_RELEVANT_PUBLISHED')\n  .map((n) => ({\n    eventType: 'government_safety_alert',\n    sourceType: 'prefectures',\n    sourceId: n.sourceId,\n    sourceName: n.departmentName,\n    officialGovernmentStatus: n.officialGovernmentStatus,\n    officialNoticeType: n.officialNoticeType,\n    officialAlertCategory: n.officialAlertCategory,\n    routeImpactStatus: n.routeImpactStatus,\n    routeClosureConfirmed: n.routeClosureConfirmed,\n    towpathClosureConfirmed: n.towpathClosureConfirmed,\n    publicAccessClosureConfirmed: n.publicAccessClosureConfirmed,\n    detourConfirmed: n.detourConfirmed,\n    reviewState: n.reviewState,\n    classificationLabel: n.classificationLabel,\n    matchConfidence: n.mappingConfidence,\n    title: n.title,\n    summary: n.summary,\n    rideDays: n.rideDays,\n    departmentCode: n.departmentCode,\n    checkedAt: n.checkedAt,\n    sourceUrl: n.sourceUrl,\n    externalId: n.externalId,\n  }));\n\nreturn [{ json: { recordKind: 'compatibilityCandidates', eventsCompat: events, reviewQueueCompat: reviewQueue, generatedAt: config.generatedAt } }];"
+      },
+      "id": "build-compat",
+      "name": "Build Compatibility Candidates",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3080,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      },
+      "id": "merge-normalize-health",
+      "name": "Merge Normalize And Health",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        3360,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      },
+      "id": "merge-compat",
+      "name": "Merge Compat",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        3640,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst allInputs = $input.all().map((i) => i.json || {});\nconst errors = [];\nconst warnings = [];\nconst allowedClassificationLabels = ['ROUTE_RELEVANT_PUBLISHED', 'OFFICIAL_NOT_ROUTE_RELEVANT', 'REQUIRES_HUMAN_REVIEW', 'SOURCE_UNAVAILABLE'];\nconst validIso = (value) => typeof value === 'string' && /^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{3})?Z$/.test(value);\n\nif (config.finalOutputPath !== '/files/cdm-status-output/07_government_safety_alerts.json') errors.push('Final output path mismatch: expected /files/cdm-status-output/07_government_safety_alerts.json');\nif (config.stagingOutputPath !== '/files/cdm-status-output/07_government_safety_alerts.staging.json') errors.push('Staging output path mismatch: expected /files/cdm-status-output/07_government_safety_alerts.staging.json');\nif (!String(config.stagingOutputPath || '').startsWith('/files/cdm-status-output/')) errors.push('Staging output path must stay within /files/cdm-status-output');\n\nlet sawSourceHealth = false;\nlet sawAnyAlert = false;\nfor (const r of allInputs) {\n  if (r.recordKind === 'sourceHealth') {\n    sawSourceHealth = true;\n    for (const field of ['sourceId', 'sourceName', 'status', 'fetchedAt', 'staleAfterMinutes', 'recordCount', 'errors', 'warnings']) {\n      if (r[field] === undefined || r[field] === null) errors.push('sourceHealth ' + (r.sourceId || 'unknown') + ' missing ' + field);\n    }\n    if (!validIso(r.fetchedAt)) errors.push('sourceHealth ' + r.sourceId + ' has invalid fetchedAt');\n    if (!['ok', 'degraded', 'failed', 'stale', 'source_api_blocked', 'source_shape_changed'].includes(r.status)) errors.push('sourceHealth ' + r.sourceId + ' has invalid status enum: ' + r.status);\n    continue;\n  }\n  if (r.recordKind === 'officialGovernmentAlert') {\n    sawAnyAlert = true;\n    for (const field of ['externalId', 'sourceId', 'category', 'officialGovernmentStatus', 'officialNoticeType', 'officialAlertCategory', 'routeImpactStatus', 'title', 'checkedAt', 'statusExplanation', 'statusSource', 'classificationLabel']) {\n      if (r[field] === undefined || r[field] === null || r[field] === '') errors.push('officialGovernmentAlert/' + (r.externalId || 'unknown') + ': missing required field ' + field);\n    }\n    if (!allowedClassificationLabels.includes(r.classificationLabel)) errors.push('officialGovernmentAlert/' + r.externalId + ': invalid classificationLabel ' + r.classificationLabel);\n    if (!['not_indicated', 'reported', 'unknown'].includes(r.routeImpactStatus)) errors.push('officialGovernmentAlert/' + r.externalId + ': invalid routeImpactStatus ' + r.routeImpactStatus);\n    if (!validIso(r.checkedAt) || !validIso(r.startTime)) errors.push('officialGovernmentAlert/' + r.externalId + ': invalid ISO timestamp');\n    if (!r.statusSource || r.statusSource.official !== true) errors.push('officialGovernmentAlert/' + r.externalId + ': elevated record missing official statusSource');\n    if (r.classificationLabel === 'ROUTE_RELEVANT_PUBLISHED') {\n      if (r.routeImpactStatus !== 'reported') errors.push('officialGovernmentAlert/' + r.externalId + ': route-relevant publication requires routeImpactStatus=reported');\n      if (!Array.isArray(r.rideDays) || r.rideDays.length === 0) errors.push('officialGovernmentAlert/' + r.externalId + ': route-relevant publication requires explicit rideDay match');\n      if (r.routeRelation !== 'near_route') errors.push('officialGovernmentAlert/' + r.externalId + ': route-relevant publication requires routeRelation=near_route');\n      if (r.hasCyclistTermMention !== true && r.towpathClosureConfirmed !== true && r.publicAccessClosureConfirmed !== true) {\n        errors.push('officialGovernmentAlert/' + r.externalId + ': route-relevant publication requires explicit cyclist/towpath/public-access wording');\n      }\n    }\n    if (r.classificationLabel !== 'ROUTE_RELEVANT_PUBLISHED' && r.reviewState !== 'manual_review_required') {\n      errors.push('officialGovernmentAlert/' + r.externalId + ': non-published government alerts must remain manual_review_required');\n    }\n    if (r.classificationLabel === 'OFFICIAL_NOT_ROUTE_RELEVANT' && r.routeImpactStatus === 'reported') {\n      errors.push('officialGovernmentAlert/' + r.externalId + ': OFFICIAL_NOT_ROUTE_RELEVANT cannot carry explicit reported route impact');\n    }\n    continue;\n  }\n  if (r.recordKind === 'compatibilityCandidates') {\n    if (!Array.isArray(r.eventsCompat) || !Array.isArray(r.reviewQueueCompat)) errors.push('compatibilityCandidates missing eventsCompat[] or reviewQueueCompat[]');\n    const badEvent = (r.eventsCompat || []).find((item) => item.classificationLabel !== 'ROUTE_RELEVANT_PUBLISHED');\n    if (badEvent) errors.push('compatibilityCandidates.eventsCompat contains non-route-relevant record ' + (badEvent.externalId || 'unknown'));\n  }\n}\nif (!sawSourceHealth) errors.push('No sourceHealth record observed in merged input (upstream fetch may not have run)');\n\nreturn [{ json: { recordKind: 'validationResult', passed: errors.length === 0, errors, warnings, alertsSeen: sawAnyAlert, supportedClassificationLabels: allowedClassificationLabels } }, ...allInputs.map((r) => ({ json: r }))];"
+      },
+      "id": "validate-output",
+      "name": "Validate Government Safety Alerts Connector Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3920,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst items = $input.all().map((i) => i.json || {});\nconst validation = items.find((i) => i.recordKind === 'validationResult') || { passed: true, errors: [], warnings: [], supportedClassificationLabels: [] };\nconst alerts = items.filter((i) => i.recordKind === 'officialGovernmentAlert');\nconst sourceHealth = items.filter((i) => i.recordKind === 'sourceHealth');\nconst compat = items.find((i) => i.recordKind === 'compatibilityCandidates') || { eventsCompat: [], reviewQueueCompat: [] };\nconst ignoredItems = sourceHealth.flatMap((h) => (h.ignored || []).map((x) => ({ sourceId: h.sourceId, ...x })));\n\nconst prefectureNoticeRecords = alerts.filter((a) => a.officialNoticeType === 'prefecture_notice');\nconst emergencyNoticeRecords = alerts.filter((a) => a.officialNoticeType === 'emergency_notice');\nconst publicAccessNoticeRecords = alerts.filter((a) => a.officialNoticeType === 'public_access_notice');\nconst routeImpactRecords = alerts.filter((a) => a.classificationLabel === 'ROUTE_RELEVANT_PUBLISHED');\n\nconst anyBlocked = sourceHealth.some((h) => h.status === 'source_api_blocked');\nconst anyShapeChanged = sourceHealth.some((h) => h.status === 'source_shape_changed');\nconst anyDegraded = sourceHealth.some((h) => ['degraded', 'failed', 'stale'].includes(h.status));\nconst sourceErrors = sourceHealth.flatMap((h) => (h.errors || []).map((err) => typeof err === 'string' ? err : JSON.stringify(err)));\nconst sourceWarnings = sourceHealth.flatMap((h) => h.warnings || []);\nconst outputWarnings = [...(validation.warnings || []), ...sourceWarnings];\nconst outputErrors = [...(validation.errors || []), ...sourceErrors];\nconst completedAt = new Date().toISOString();\nconst sourceTimes = sourceHealth.map((h) => h.fetchedAt).filter(Boolean).sort();\nconst sourceUpdatedAt = sourceTimes.length ? sourceTimes[sourceTimes.length - 1] : null;\nconst stale = anyBlocked || anyShapeChanged || anyDegraded;\nconst status = outputErrors.length > 0\n  ? 'FAILED_NO_OUTPUT'\n  : (outputWarnings.length > 0 || stale ? 'SUCCESS_WITH_WARNINGS' : 'SUCCESS');\nconst runId = config.connectorId + '--' + String(config.generatedAt || completedAt).replace(/[^0-9A-Za-z]/g, '');\n\nconst sourcesList = [\n  'https://www.gironde.gouv.fr/Actualites',\n  'https://www.lot-et-garonne.gouv.fr/Actualites',\n  'https://www.tarn-et-garonne.gouv.fr/Actualites',\n  'https://www.haute-garonne.gouv.fr/Actualites',\n  'https://www.aude.gouv.fr/Actualites',\n  'https://www.herault.gouv.fr/Actualites',\n];\n\nconst data = {\n  connectorId: config.connectorId,\n  connectorNumber: config.connectorNumber,\n  connectorName: config.connectorName,\n  workflowName: config.workflowName,\n  workflowVersion: config.workflowVersion,\n  generatedAt: config.generatedAt,\n  timezone: config.timezone,\n  sourceStatus: anyBlocked ? 'source_api_blocked' : anyShapeChanged ? 'source_shape_changed' : anyDegraded ? 'degraded' : 'ok',\n  officialGovernmentAlerts: alerts,\n  prefectureNoticeRecords,\n  emergencyNoticeRecords,\n  publicAccessNoticeRecords,\n  routeImpactRecords,\n  ignoredItems,\n  records: alerts,\n  sourceHealth: sourceHealth.map((h) => ({ ...h, classificationLabel: h.status === 'ok' ? null : 'SOURCE_UNAVAILABLE' })),\n  attribution: { required: true, source: 'French prefecture / government sources', official: true },\n  officialGovernmentAlertPolicy: { preserveOfficialStatus: true, preserveOfficialNoticeType: true, preserveOfficialAlertCategory: true, separateRouteImpactFromOfficialGovernmentAlert: true },\n  routeImpactPolicy: { routeClosureRequiresExplicitOfficialRouteImpactSource: true, towpathClosureRequiresExplicitOfficialRouteImpactSource: true, publicAccessClosureRequiresExplicitOfficialRouteImpactSource: true, detourRequiresExplicitOfficialRouteImpactSource: true, governmentAlertIsNotRouteStatus: true, defaultRouteImpactStatus: 'not_indicated' },\n  manualReviewPolicy: { prefectureAlertsManualReviewUnlessLocationAndRouteImpactExplicit: true, generalGovernmentNewsNeverAutoPublishesRouteStatus: true },\n  compatibility: { events: compat.eventsCompat || [], reviewQueue: compat.reviewQueueCompat || [] },\n};\n\nconst envelope = {\n  schema_version: '1.0.0',\n  connector_id: config.connectorId,\n  connector_name: config.connectorName,\n  run_id: runId,\n  status,\n  started_at: config.generatedAt,\n  completed_at: completedAt,\n  generated_at: completedAt,\n  source_updated_at: sourceUpdatedAt || null,\n  record_count: alerts.length,\n  source_count: sourcesList.length,\n  sources: sourcesList,\n  data,\n  warnings: outputWarnings,\n  errors: outputErrors,\n  stale,\n  last_known_good: { is_last_known_good: false, reason: 'Fresh successful run generated and validated before atomic replace.' },\n  validation: { schema_valid: validation.passed === true },\n};\n\nreturn [{ json: {\n  finalPath: config.finalOutputPath,\n  stagingPath: config.stagingOutputPath,\n  label: '07_government_safety_alerts',\n  jsonText: JSON.stringify(envelope, null, 2) + '\\n',\n  supportedClassificationLabels: validation.supportedClassificationLabels || [],\n} }];"
+      },
+      "id": "build-payloads",
+      "name": "Build Government Safety Alerts Output Payloads",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = [];\nfor (const item of $input.all()) {\n  const buf = Buffer.from(item.json.jsonText, 'utf8');\n  const fileName = String(item.json.stagingPath).split('/').pop();\n  const binary = await this.helpers.prepareBinaryData(buf, fileName, 'application/json');\n  output.push({ json: item.json, binary: { data: binary } });\n}\nreturn output;"
+      },
+      "id": "prepare-binary",
+      "name": "Prepare Binary Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $json.stagingPath }}",
+        "dataPropertyName": "data",
+        "options": {}
+      },
+      "id": "write-files",
+      "name": "Write Government Safety Alert Output Files",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        4760,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "fileSelector": "={{ $json.stagingPath }}",
+        "options": {}
+      },
+      "id": "read-back-files",
+      "name": "Read Back Government Safety Alert Output Files",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        5040,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst items = $input.all();\nconst results = [];\nfor (let i = 0; i < items.length; i += 1) {\n  const item = items[i];\n  const stagingPath = config.stagingOutputPath;\n  const finalPath = config.finalOutputPath;\n  if (!item.binary || !item.binary.data) {\n    results.push({ json: { stagingPath, finalPath, validJson: false, bytes: 0, error: 'No binary data read back for ' + stagingPath } });\n    continue;\n  }\n  const buf = await this.helpers.getBinaryDataBuffer(i, 'data');\n  const text = buf.toString('utf8');\n  let parsed;\n  try {\n    parsed = JSON.parse(text);\n  } catch (err) {\n    results.push({ json: { stagingPath, finalPath, validJson: false, bytes: Buffer.byteLength(text, 'utf8'), error: 'Invalid JSON: ' + err.message } });\n    continue;\n  }\n  const requiredTopLevelFields = ['schema_version', 'connector_id', 'connector_name', 'run_id', 'status', 'started_at', 'completed_at', 'generated_at', 'record_count', 'source_count', 'sources', 'data', 'warnings', 'errors', 'stale', 'last_known_good', 'validation'];\n  const missing = requiredTopLevelFields.filter((field) => !(field in parsed));\n  let shapeError = null;\n  if (missing.length > 0) shapeError = 'Missing required top-level fields: ' + missing.join(', ');\n  if (!shapeError && parsed.schema_version !== '1.0.0') shapeError = 'schema_version must be 1.0.0';\n  if (!shapeError && parsed.connector_id !== '07_GOVERNMENT_SAFETY_ALERTS') shapeError = 'connector_id mismatch';\n  if (!shapeError && parsed.connector_name !== 'CDM Government Safety Alerts Connector') shapeError = 'connector_name mismatch';\n  if (!shapeError && parsed.validation && parsed.validation.schema_valid !== true) shapeError = 'validation.schema_valid must be true before promotion';\n  if (!shapeError && !['SUCCESS', 'SUCCESS_WITH_WARNINGS'].includes(parsed.status)) shapeError = 'candidate status must be SUCCESS or SUCCESS_WITH_WARNINGS before promotion';\n  if (!shapeError && !Array.isArray(parsed.sources)) shapeError = 'sources must be an array';\n  if (!shapeError && !Array.isArray(parsed.data?.officialGovernmentAlerts)) shapeError = 'data.officialGovernmentAlerts must be an array';\n  if (!shapeError) {\n    for (const alert of parsed.data.officialGovernmentAlerts) {\n      if (!['ROUTE_RELEVANT_PUBLISHED', 'OFFICIAL_NOT_ROUTE_RELEVANT', 'REQUIRES_HUMAN_REVIEW', 'SOURCE_UNAVAILABLE'].includes(alert.classificationLabel)) {\n        shapeError = 'Invalid alert classificationLabel for ' + (alert.externalId || 'unknown');\n        break;\n      }\n    }\n  }\n  results.push({ json: { stagingPath, finalPath, validJson: !shapeError, bytes: Buffer.byteLength(text, 'utf8'), error: shapeError } });\n}\nconst failures = results.filter((r) => r.json.validJson !== true || r.json.error);\nif (failures.length > 0) {\n  throw new Error('Staging output validation failed: ' + failures.map((f) => f.json.error || 'unknown error').join(' | '));\n}\nreturn results;"
+      },
+      "id": "validate-written",
+      "name": "Validate Written Government Safety Alert Files",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5320,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const config = $items('Set Connector Config')[0].json;\nconst validationResults = $items('Validate Written Government Safety Alert Files').map((i) => i.json || {});\nconst generatedAt = config.generatedAt || new Date().toISOString();\nconst completedAt = new Date().toISOString();\nconst failures = validationResults.filter((r) => r.validJson !== true || r.error);\nconst errors = failures.map((f) => ({ targetPath: f.stagingPath, message: f.error || 'Output file did not pass validation' }));\n\nconst normalizeItemsRaw = $items('Normalize Government Safety Alert Records').map((i) => i.json);\nconst normalizeItems = normalizeItemsRaw.filter((n) => n.recordKind === 'officialGovernmentAlert');\nconst officialGovernmentAlertCount = normalizeItems.length;\nconst routeRelevantPublishedCount = normalizeItems.filter((n) => n.classificationLabel === 'ROUTE_RELEVANT_PUBLISHED').length;\nconst officialNotRouteRelevantCount = normalizeItems.filter((n) => n.classificationLabel === 'OFFICIAL_NOT_ROUTE_RELEVANT').length;\nconst manualReviewCount = normalizeItems.filter((n) => n.classificationLabel === 'REQUIRES_HUMAN_REVIEW').length;\n\nconst healthItems = $items('Build Source Health').map((i) => i.json);\nconst sourceApiBlocked = healthItems.some((h) => h.status === 'source_api_blocked');\nconst sourceShapeChanged = healthItems.some((h) => h.status === 'source_shape_changed');\n\nreturn [{\n  json: {\n    recordKind: 'runDiagnostics',\n    ok: errors.length === 0,\n    connectorId: config.connectorId,\n    workflowName: config.workflowName,\n    workflowVersion: config.workflowVersion,\n    generatedAt,\n    completedAt,\n    validationStatus: errors.length === 0 ? 'passed' : 'failed',\n    sourceStatus: sourceApiBlocked ? 'source_api_blocked' : sourceShapeChanged ? 'source_shape_changed' : 'ok',\n    writeStatus: validationResults.length > 0 ? 'attempted' : 'not_attempted',\n    infraBlocked: false,\n    fileAccessRegression: false,\n    sourceApiBlocked,\n    sourceShapeChanged,\n    outputFilenames: [config.finalOutputPath],\n    officialGovernmentAlertCount,\n    routeRelevantPublishedCount,\n    officialNotRouteRelevantCount,\n    manualReviewCount,\n    errors,\n    warnings: [],\n    nextAction: errors.length === 0 ? 'Workflow output promoted to final path after staging validation.' : 'Debug failing node before promotion',\n    folderMoveRequired: false,\n  },\n}];"
+      },
+      "id": "build-diagnostics",
+      "name": "Build Run Diagnostics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5600,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "command": "={{ \"mv \" + $json.stagingPath + \" \" + $json.finalPath }}"
+      },
+      "id": "promote-validated-output",
+      "name": "Promote Validated Government Safety Alert Output",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        5600,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Connector Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Connector Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Connector Config": {
+      "main": [
+        [
+          {
+            "node": "Load / Embed Department Route Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load / Embed Department Route Context": {
+      "main": [
+        [
+          {
+            "node": "Build Government Source Request Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Government Source Request Config": {
+      "main": [
+        [
+          {
+            "node": "Fetch Government / Prefecture Sources",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Government / Prefecture Sources": {
+      "main": [
+        [
+          {
+            "node": "Fetch Government Documents If Required",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Government Documents If Required": {
+      "main": [
+        [
+          {
+            "node": "Parse Government / Prefecture Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Government / Prefecture Items": {
+      "main": [
+        [
+          {
+            "node": "Classify Official Government Alert Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify Official Government Alert Type": {
+      "main": [
+        [
+          {
+            "node": "Detect Explicit Route / Towpath / Public-Access Impact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detect Explicit Route / Towpath / Public-Access Impact": {
+      "main": [
+        [
+          {
+            "node": "Match Alerts to CDM Corridor / Ride Days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Match Alerts to CDM Corridor / Ride Days": {
+      "main": [
+        [
+          {
+            "node": "Normalize Government Safety Alert Records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Government Safety Alert Records": {
+      "main": [
+        [
+          {
+            "node": "Build Source Health",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Build Compatibility Candidates",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge Normalize And Health",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Source Health": {
+      "main": [
+        [
+          {
+            "node": "Merge Normalize And Health",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Normalize And Health": {
+      "main": [
+        [
+          {
+            "node": "Merge Compat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Compatibility Candidates": {
+      "main": [
+        [
+          {
+            "node": "Merge Compat",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Compat": {
+      "main": [
+        [
+          {
+            "node": "Validate Government Safety Alerts Connector Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Government Safety Alerts Connector Output": {
+      "main": [
+        [
+          {
+            "node": "Build Government Safety Alerts Output Payloads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Government Safety Alerts Output Payloads": {
+      "main": [
+        [
+          {
+            "node": "Prepare Binary Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Binary Payload": {
+      "main": [
+        [
+          {
+            "node": "Write Government Safety Alert Output Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Government Safety Alert Output Files": {
+      "main": [
+        [
+          {
+            "node": "Read Back Government Safety Alert Output Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Back Government Safety Alert Output Files": {
+      "main": [
+        [
+          {
+            "node": "Validate Written Government Safety Alert Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Written Government Safety Alert Files": {
+      "main": [
+        [
+          {
+            "node": "Promote Validated Government Safety Alert Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Promote Validated Government Safety Alert Output": {
+      "main": [
+        [
+          {
+            "node": "Build Run Diagnostics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "timezone": "Europe/Paris",
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": [
+        0
+      ]
+    }
+  },
+  "meta": null,
+  "pinData": {},
+  "versionId": "e8b737e3-f8ad-4ff5-88fc-d98b04b5bc09",
+  "activeVersionId": "e8b737e3-f8ad-4ff5-88fc-d98b04b5bc09",
+  "versionCounter": 4,
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-07-21T18:03:12.479Z",
+      "createdAt": "2026-07-21T18:03:12.479Z",
+      "role": "workflow:owner",
+      "workflowId": "0h9XYSxumCdZFYwh",
+      "projectId": "Y0Ygmqe59jevHoeV",
+      "project": {
+        "updatedAt": "2026-07-10T05:38:45.677Z",
+        "createdAt": "2026-06-02T20:51:11.579Z",
+        "id": "Y0Ygmqe59jevHoeV",
+        "name": "John Brooks <john@biketourfrance.net>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "5dadc5f6-6bff-44cf-9566-6b82f3d768dc"
+      }
+    }
+  ],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

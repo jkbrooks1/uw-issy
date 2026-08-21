@@ -1,0 +1,15 @@
+BEGIN
+CREATE TABLE
+INSERT 0 1
+UPDATE 1
+id	name	active	nodes	versionCounter	versionId	activeVersionId	parentFolderId
+RR7cLSV9oGngrJdA	v02.UWI_LANE01	t	32	19	7192cded-72af-4f29-b73f-9496658655d0	bc320298-2096-4db6-8276-1a0d07f138a4	LaS9Q6sil9yCDzrV
+(1 row)
+COMMIT
+BEGIN
+INSERT 0 1
+UPDATE 1
+id	name	active	versionId	activeVersionId	history_rows
+RR7cLSV9oGngrJdA	v02.UWI_LANE01	t	7192cded-72af-4f29-b73f-9496658655d0	7192cded-72af-4f29-b73f-9496658655d0	1
+(1 row)
+COMMIT

@@ -1,0 +1,270 @@
+{
+  "schema_version": "1.0.0",
+  "connector_id": "04_WILDFIRE",
+  "connector_name": "UW-Issaquah Wildfire Connector",
+  "connector_version": "v0001",
+  "lane": "04_WILDFIRE",
+  "run_id": "04_WILDFIRE-20260819T054657.294Z-001",
+  "generated_at": "2026-08-19T05:46:57.294Z",
+  "published_at": "2026-08-19T05:47:11.100Z",
+  "data_status": "degraded",
+  "freshness": {
+    "overall_state": "stale",
+    "computed_at": "2026-08-19T05:47:11.100Z",
+    "oldest_relevant_source_age_minutes": 0,
+    "stale_source_ids": []
+  },
+  "manifest_ref": {
+    "manifest_id": "04_WILDFIRE-v0001",
+    "schema_version": "1.0.0"
+  },
+  "source_health": [
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "04_WILDFIRE",
+      "source_id": "04_WILDFIRE:NIFC-01",
+      "source_name": "WFIGS Current Wildland Fire Locations",
+      "status": "failed",
+      "retrieved_at": "2026-08-19T05:46:57.294Z",
+      "last_retrieved_at": "2026-08-19T05:46:57.294Z",
+      "stale_after_minutes": 15,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T05:46:57.294Z",
+      "freshness_state": "unknown",
+      "warnings": [],
+      "errors": [
+        "Cannot perform query. Invalid query parameters."
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "04_WILDFIRE",
+      "source_id": "04_WILDFIRE:NIFC-02",
+      "source_name": "WFIGS Current Interagency Fire Perimeters",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T05:46:57.294Z",
+      "last_retrieved_at": "2026-08-19T05:46:57.294Z",
+      "stale_after_minutes": 15,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T05:46:57.294Z",
+      "freshness_state": "fresh",
+      "warnings": [
+        "Healthy WFIGS perimeters response; no route-relevant wildfire perimeters found."
+      ],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "04_WILDFIRE",
+      "source_id": "04_WILDFIRE:NWS-01",
+      "source_name": "NOAA / National Weather Service active alerts API",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T05:46:57.294Z",
+      "last_retrieved_at": "2026-08-19T05:46:57.294Z",
+      "stale_after_minutes": 15,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T05:46:57.294Z",
+      "freshness_state": "fresh",
+      "warnings": [
+        "Healthy NWS active-alerts response; no active route fire-weather alerts found."
+      ],
+      "errors": []
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "04_WILDFIRE",
+      "source_id": "04_WILDFIRE:NOAA-01",
+      "source_name": "NOAA Hazard Mapping System smoke polygons",
+      "status": "failed",
+      "retrieved_at": "2026-08-19T05:46:57.294Z",
+      "last_retrieved_at": "2026-08-19T05:46:57.294Z",
+      "stale_after_minutes": 1440,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T05:46:57.294Z",
+      "freshness_state": "unknown",
+      "warnings": [],
+      "errors": [
+        "404 - \"<!DOCTYPE HTML PUBLIC \\\"-//IETF//DTD HTML 2.0//EN\\\">\\n<html><head>\\n<title>404 Not Found</title>\\n</head><body>\\n<h1>Not Found</h1>\\n<p>The requested URL was not found on this server.</p>\\n</body></html>\\n\""
+      ]
+    },
+    {
+      "schema_version": "1.0.0",
+      "connector_id": "04_WILDFIRE",
+      "source_id": "04_WILDFIRE:KC-01",
+      "source_name": "King County Fire Safety Burn Bans",
+      "status": "empty_but_valid",
+      "retrieved_at": "2026-08-19T05:46:57.294Z",
+      "last_retrieved_at": "2026-08-19T05:46:57.294Z",
+      "stale_after_minutes": 360,
+      "record_count": 0,
+      "http_status": null,
+      "last_observation_at": "2026-08-19T05:46:57.294Z",
+      "freshness_state": "fresh",
+      "warnings": [
+        "King County fire-safety page parsed; no active burn-ban status detected."
+      ],
+      "errors": []
+    }
+  ],
+  "connector_health": {
+    "schema_version": "1.0.0",
+    "connector_id": "04_WILDFIRE",
+    "status": "degraded",
+    "failed_stage": null,
+    "warning_count": 3,
+    "error_count": 2,
+    "used_last_known_good": false,
+    "candidate_written": true,
+    "published_written": true
+  },
+  "events": [],
+  "observations": [],
+  "route_sections": [
+    {
+      "segment_id": "01_uw_u_district",
+      "segment_name": "UW / U-District",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    },
+    {
+      "segment_id": "02_burke_gilman_seattle",
+      "segment_name": "Burke-Gilman - Seattle",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    },
+    {
+      "segment_id": "03_burke_gilman_north_lake_wa_kenmore",
+      "segment_name": "Burke-Gilman - north Lake WA/Kenmore",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    },
+    {
+      "segment_id": "04_burke_gilman_connector_bothell",
+      "segment_name": "Burke-Gilman/connector - Bothell",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    },
+    {
+      "segment_id": "05_sammamish_river_trail_bothell_woodinville",
+      "segment_name": "Sammamish River Trail - Bothell/Woodinville",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    },
+    {
+      "segment_id": "06_sammamish_river_trail_redmond",
+      "segment_name": "Sammamish River Trail - Redmond",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    },
+    {
+      "segment_id": "07_marymoor_park",
+      "segment_name": "Marymoor Park",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    },
+    {
+      "segment_id": "08_east_lake_sammamish_trail_redmond",
+      "segment_name": "East Lake Sammamish Trail - Redmond",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    },
+    {
+      "segment_id": "09_east_lake_sammamish_trail_sammamish",
+      "segment_name": "East Lake Sammamish Trail - Sammamish",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    },
+    {
+      "segment_id": "10_issaquah_approach_terminus",
+      "segment_name": "Issaquah approach / terminus",
+      "status": "clear",
+      "severity": "none",
+      "reason_codes": [],
+      "event_ids": [],
+      "advisory_ids": []
+    }
+  ],
+  "provenance": {
+    "route_source": "data/route/UnivWA-Issaquah.gpx",
+    "source_ids": [
+      "04_WILDFIRE:NIFC-01",
+      "04_WILDFIRE:NIFC-02",
+      "04_WILDFIRE:NWS-01",
+      "04_WILDFIRE:NOAA-01",
+      "04_WILDFIRE:KC-01"
+    ],
+    "source_ids_used": [
+      "04_WILDFIRE:NIFC-01",
+      "04_WILDFIRE:NIFC-02",
+      "04_WILDFIRE:NWS-01",
+      "04_WILDFIRE:NOAA-01",
+      "04_WILDFIRE:KC-01"
+    ]
+  },
+  "validation_state": {
+    "schema_valid": true,
+    "freshness_valid": true,
+    "deduplication_valid": true,
+    "candidate_validation_passed": true,
+    "published_from_candidate": true,
+    "validator_version": "1.0.0"
+  },
+  "metadata": {
+    "route_fire_zones": [
+      "WAZ654",
+      "WAZ657"
+    ],
+    "route_county_code": "WAC033",
+    "route_bbox": {
+      "min_lat": 47.55207,
+      "max_lat": 47.75889,
+      "min_lon": -122.3057,
+      "max_lon": -122.04414
+    },
+    "source_retrieved_at": {
+      "NIFC-01": "2026-08-19T05:46:57.294Z",
+      "NIFC-02": "2026-08-19T05:46:57.294Z",
+      "NWS-01": "2026-08-19T05:46:57.294Z",
+      "NOAA-01": "2026-08-19T05:46:57.294Z",
+      "KC-01": "2026-08-19T05:46:57.294Z"
+    },
+    "notes": [
+      "04_WILDFIRE:NIFC-02: Healthy WFIGS perimeters response; no route-relevant wildfire perimeters found.",
+      "04_WILDFIRE:NWS-01: Healthy NWS active-alerts response; no active route fire-weather alerts found.",
+      "04_WILDFIRE:KC-01: King County fire-safety page parsed; no active burn-ban status detected."
+    ]
+  },
+  "advisories": [],
+  "ownership_annotations": []
+}
