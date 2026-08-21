@@ -2967,3 +2967,10 @@ Each new file was generated from the verified live post-rename export, and each 
 - Live resources changed: OVH watchdog workflow `4jn9PNp9Slpy19aV` — credential reference updated, activated, schedule temporarily retuned twice and reverted both times (all disclosed and confirmed reverted via fresh `GET`), two real emails sent during controlled/real testing (both to the approved destination, both clearly either test-labeled or genuinely truthful). No other live resource touched.
 - Validation result: PASS. All mandatory closeout gates proven with live evidence, one honestly disclosed residual limitation (dedup double-fire persistence) that does not block closure per the explicit "trigger and real alert path" closure criterion, both of which are proven.
 - **FINAL RESULT: `PASS / PROJECT CLOSED`.**
+
+## 2026-08-20 20:46 PDT — Final push, CI, and proof ZIP for the closed project
+
+- Pushed final closeout commit `0941b76` to `origin/main` (`a13eab6..0941b76`); GitHub Actions run `32444344244` completed green (all 19 steps, including the built-output secret scan and production verification). Pulled the resulting CI proof commit `5953ab7` (fast-forward). `git rev-list --left-right --count HEAD...origin/main` → `0 0`.
+- Production reconfirmed current and unaffected: `release-manifest.json` still reports `20_STATUS_PUBLISHER-20260820T201500Z-001`.
+- Final proof ZIP: `/Users/jkbrookspersonal/Downloads/UWISSY_PROJECT_CLOSED_20260821T034600Z.zip`, 7,901,639 bytes, SHA-256 `1cf248d9d69b01926b1caee551790ab8dac8f0ed6486860d4ad347442c366a62`, integrity confirmed via `unzip -t` (no errors).
+- **Project status: `PASS / PROJECT CLOSED`.**
