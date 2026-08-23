@@ -1,0 +1,39 @@
+{
+  "type": "FeatureCollection",
+  "releaseId": "20_STATUS_PUBLISHER-20260823T101500Z-001",
+  "generatedAt": "2026-08-23T10:15:00.067Z",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01",
+      "geometry": null,
+      "properties": {
+        "id": "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01",
+        "laneId": "01_ROUTE_CONDITIONS",
+        "laneLabel": "Route Conditions",
+        "title": "East Lake Sammamish Trail closure for George Davis Creek culvert replacement.",
+        "summary": "East Lake Sammamish Trail closure for George Davis Creek culvert replacement.",
+        "locationLabel": "Between Louis Thompson Rd NE and NE Inglewood Hill Rd.",
+        "routeSegmentId": "09_east_lake_sammamish_trail_sammamish",
+        "routeSegmentLabel": null,
+        "displayTier": "unknown",
+        "routeEffect": "confirmed_route_impact",
+        "reportedAt": "2026-08-23T10:00:00.209Z",
+        "effectiveFrom": "2026-06-01T00:00:00Z",
+        "effectiveUntil": "2026-12-31T23:59:59Z",
+        "sourceName": "King County Parks - East Lake Sammamish Trail page",
+        "sourceUrl": "https://kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/east-lake-sammamish",
+        "mergedSourceUrls": null,
+        "confidence": null,
+        "isLastKnownGood": false,
+        "isStale": true,
+        "presentationEligible": true,
+        "presentationReason": "eligible",
+        "routeRelevant": true,
+        "routeImpact": true,
+        "duplicateGroupKey": null,
+        "lastSourceRefreshAt": "2026-08-23T10:00:00.209Z"
+      }
+    }
+  ]
+}

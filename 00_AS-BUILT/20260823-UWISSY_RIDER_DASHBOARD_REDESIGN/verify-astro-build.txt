@@ -1,0 +1,18 @@
+13:42:02 [types] Generated 28ms
+13:42:02 [build] output: "static"
+13:42:02 [build] mode: "static"
+13:42:02 [build] directory: /Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/dist/
+13:42:02 [build] Collecting build info...
+13:42:02 [build] ✓ Completed in 60ms.
+13:42:02 [build] Building static entrypoints...
+13:42:02 [vite] ✓ built in 161ms
+13:42:02 [vite] ✓ built in 138ms
+13:42:02 [build] Rearranging server assets...
+
+ generating static routes 
+13:42:02   ├─ /index.html (+12ms) 
+13:42:02 ✓ Completed in 36ms.
+
+13:42:02 [build] ✓ Completed in 360ms.
+13:42:02 [build] 1 page(s) built in 422ms
+13:42:02 [build] Complete!

@@ -1,0 +1,56 @@
+commit 49238e13ce3a8f3f319ea20f45b38bdc08ed36e5
+Author: jkbrooks <jkbrookspersonal@MacBook-Air.local>
+Date:   Sun Aug 23 13:29:11 2026 -0700
+
+    Rebuild dashboard around rider decisions, fix pipeline drops and empty map
+    
+    Pipeline: classifyRouteRelevance/classifyRouteImpact now trust lane 06's
+    real route_relevance.classification + matched_route_sections signal, and
+    isClosureTypeEvent/deriveFreshnessState recognize any lane's real
+    status:"closed"/"planned" as a long-running closure, not just lane 01's
+    event_type:"trail_closure". This surfaces real active trail closures that
+    were being silently dropped as stale. mapEventGeometry no longer discards
+    known-segment events with geometry:"none" — it derives real LineString/
+    Point geometry from the canonical route line so the map has something to
+    plot. presentation-eligibility.ts's independent dashboard guard mirrors
+    the same closure-status exemption so it doesn't re-exclude events the
+    data layer already approved.
+    
+    UI: CurrentRouteState.astro (built earlier, never wired into the page) is
+    now the top-of-page Route Status panel with rider vocabulary (CLEAR/
+    CAUTION/MAJOR ISSUE/CLOSED/DATA STALE). Page order is now status summary
+    -> map -> current issues -> closures/detours -> weather/air -> route
+    impacts -> collapsed monitor health, moving lane architecture out of
+    prime space. RouteMap.svelte uses the CyclOSM cycling base layer instead
+    of a generic CARTO basemap. Event cards carry severity, current status,
+    detour availability, and rider passability where the source data
+    supports it. Removed the unapproved footer tagline.
+    
+    Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
+    Claude-Session: https://claude.ai/code/session_01XirgzyqxC5iX6piH5ARKs3
+
+ 00_PROJECT_BUILDLOG.md                             |  23 +
+ public/data/dashboard-data.json                    |  37 +-
+ public/data/release-manifest.json                  |   7 +-
+ public/data/route-events.geojson                   | 899 ++++++++++++++++++++-
+ public/data/system-health.json                     |  39 +-
+ scripts/build-public-package-snapshot.mjs          | 233 +++++-
+ .../route-status/ClosuresAndDetours.astro          |  51 ++
+ .../route-status/CurrentRouteState.astro           |  97 ++-
+ src/components/route-status/EventDetail.astro      |  30 +
+ src/components/route-status/EventListMobile.astro  |   5 +
+ src/components/route-status/EventTable.astro       |   4 +
+ .../route-status/MonitorHealthDisclosure.astro     |  28 +
+ .../route-status/MonitoringSources.astro           |  61 +-
+ src/components/route-status/RouteImpacts.astro     |  26 +-
+ src/components/route-status/RouteMap.svelte        |  13 +-
+ .../route-status/SystemHealthDisclosure.astro      |  11 +-
+ .../route-status/WeatherAirSummary.astro           |  49 ++
+ src/components/site/SiteFooter.astro               |   1 -
+ src/lib/route-status/normalize-route-events.ts     |   4 +
+ src/lib/route-status/presentation-eligibility.ts   |  25 +-
+ src/lib/route-status/types.ts                      |  11 +
+ src/pages/index.astro                              |  75 +-
+ src/styles/route-status.css                        | 150 +++-
+ tests/ui/dashboard-layout.test.ts                  | 106 ++-
+ 24 files changed, 1790 insertions(+), 195 deletions(-)
