@@ -75,6 +75,13 @@ export type DashboardEvent = {
   routeImpact: boolean;
   duplicateGroupKey: string | null;
   lastSourceRefreshAt: string | null;
+  /** Round 2 rider-facing enrichment — real upstream fields, carried through only when the source actually supplies them (never invented). */
+  severity: string | null;
+  /** The event's own raw status string as reported by its source lane (e.g. "closed", "planned", "active", "monitoring"). */
+  currentStatus: string | null;
+  detourAvailable: boolean | null;
+  /** "no" | "unknown" | null — never "yes" unless a source explicitly says so; null means passability is not a meaningful question for this event (not a closure signal). */
+  riderCanPass: "yes" | "no" | "unknown" | null;
 };
 
 /**
@@ -148,6 +155,10 @@ export type RouteEventProperties = {
   routeImpact: boolean;
   duplicateGroupKey: string | null;
   lastSourceRefreshAt: string | null;
+  severity: string | null;
+  currentStatus: string | null;
+  detourAvailable: boolean | null;
+  riderCanPass: "yes" | "no" | "unknown" | null;
 };
 
 export type RouteEventFeature = {

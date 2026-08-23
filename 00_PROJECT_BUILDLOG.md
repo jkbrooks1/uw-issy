@@ -2974,3 +2974,26 @@ Each new file was generated from the verified live post-rename export, and each 
 - Production reconfirmed current and unaffected: `release-manifest.json` still reports `20_STATUS_PUBLISHER-20260820T201500Z-001`.
 - Final proof ZIP: `/Users/jkbrookspersonal/Downloads/UWISSY_PROJECT_CLOSED_20260821T034600Z.zip`, 7,901,639 bytes, SHA-256 `1cf248d9d69b01926b1caee551790ab8dac8f0ed6486860d4ad347442c366a62`, integrity confirmed via `unzip -t` (no errors).
 - **Project status: `PASS / PROJECT CLOSED`.**
+
+## 2026-08-21 17:51:39 PDT — BTF style audit / UWISSY fix-list search
+
+- Searched the canonical UWISSY project and Downloads for the Aug. 20 BTF style audit and fix-list work.
+- Search report: `/Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/00_DOCS/2026-0821.UWISSY_BTF_STYLE_AUDIT_SEARCH.txt`
+- Full report copied to clipboard.
+- No source code, workflows, n8n state, or live site content was changed.
+
+## 2026-08-21 17:53:07 PDT — Recovered BTF audit source files
+
+- Read Downloads/01.audit_context.rtf and Downloads/audit-table.csv.
+- Converted the RTF to plain text and copied both source files together to the clipboard for review.
+- No UWISSY source code, workflow, n8n state, or live site content was changed.
+
+## 2026-08-23 — Rider-first redesign round 1: pipeline fix (data layer only)
+
+- Scope: pipeline/data round only (UI round is separate, not done here). Edited `scripts/build-public-package-snapshot.mjs` only; no `.astro`/`.svelte`/UI file touched; `git` untouched.
+- Verified the brief's diagnosis against the real evidence file (`data/connectors/evidence/workflow20-status-latest.json`) before trusting it: the 5 real active/planned `06_TRAIL_INFRASTRUCTURE_STATUS` closures were actually being excluded as `off_route`/`no_route_impact` (route-relevance/route-impact classification gaps), one step earlier than the brief's hypothesized freshness bug — the freshness bug was real too, just further downstream. Fixed all three real, compounding gaps: `classifyRouteRelevance` didn't trust lane 06's real `text_location_match`/`named_trail_match` methods despite real `matched_route_sections`; `classifyRouteImpact` only read a top-level `route_impact_state` field lane 06 never publishes (real value lives nested at `route_relevance.classification`); `isClosureTypeEvent`/`deriveFreshnessState` didn't recognize real `status: "closed"`/`"planned"` as a closure signal outside lane 01/`event_type==="trail_closure"`.
+- Added a real fallback geometry path (`deriveRouteSegmentFallbackGeometry`) that derives `LineString`/`Point` geometry from the real canonical route line (`public/routes/UnivWA-Issaquah.geojson`) for events with a resolvable route-section id but no raw geometry — previously `geometry.type === "none"` short-circuited to `null` before this was ever attempted. Populated the previously-hardcoded-null `routeSegmentLabel` from each event's own real `trail_or_street_name`/`facilities[0]` fields.
+- Result on the real evidence file: eligible candidate events went from 1 of 20 (before) to 4 of 20 (after); events with real non-null geometry went from 6 of 20 to 11 of 20; the remaining 9 null-geometry events are each individually justified (non-ordinal air-quality/waypoint segment ids, or empty segment lists) and logged as gaps, not silently dropped.
+- Verification, run against `/tmp/pkg_after` (not `public/data` — that stays regenerated-output-only per ownership boundary): `node scripts/build-public-package-snapshot.mjs ... /tmp/pkg_after /tmp/audit_after` → PASS; `node scripts/validate-public-package.mjs /tmp/pkg_after` → PASS, exit 0; `npx vitest run tests/public-package` → 65/65 passed, no regressions.
+- Full root-cause writeup, reconciliation table (all 8 lanes), geometry accounting, and events deliberately left ineligible: `notes.md` in the round-1 task scratch directory (`/Users/jkbrookspersonal/.ringer/work/uwissy-rider-redesign-20260823/01-pipeline-fix/pipeline_fix/notes.md`).
+- Not done here (round 2, separate worker): applying this pipeline output to any UI/page/component file, regenerating `public/data` for real deployment, or any git commit/push.

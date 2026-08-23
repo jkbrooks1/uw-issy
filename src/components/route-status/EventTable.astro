@@ -22,6 +22,7 @@ const { events } = Astro.props;
         <th scope="col">Location or route part</th>
         <th scope="col">Time</th>
         <th scope="col">State</th>
+        <th scope="col">Can I pass?</th>
       </tr>
     </thead>
     <tbody>
@@ -41,6 +42,9 @@ const { events } = Astro.props;
               <span class={`tier-badge tier-badge--${event.displayTier}`}>
                 {event.displayTier}
               </span>
+            </td>
+            <td>
+              {event.riderCanPass === "no" ? "No" : event.riderCanPass === "unknown" ? "Unknown" : "—"}
             </td>
           </tr>
         ))

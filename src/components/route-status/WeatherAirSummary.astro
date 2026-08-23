@@ -1,0 +1,49 @@
+---
+// Round 2 — lightweight rider-facing weather/air/smoke summary. The real
+// pipeline only ever publishes one lane-wide reading per lane (weather, air
+// quality, wildfire) — never a multi-point forecast — so this section says
+// that plainly instead of implying coverage that doesn't exist.
+import type { NormalizedLaneSummary } from "../../lib/route-status/normalize-dashboard-data";
+import type { DashboardEventWithUnknownLane } from "../../lib/route-status/types";
+
+type Props = {
+  laneSummaries: NormalizedLaneSummary[];
+  events: DashboardEventWithUnknownLane[];
+};
+
+const { laneSummaries, events } = Astro.props;
+
+const WEATHER_AIR_LANE_IDS = ["02_WEATHER", "03_AIR_QUALITY", "04_WILDFIRE"];
+const lanes = laneSummaries.filter((lane) => WEATHER_AIR_LANE_IDS.includes(lane.laneId));
+---
+
+<section class="panel" aria-labelledby="weather-air-heading">
+  <h2 class="panel__heading" id="weather-air-heading">Weather, air quality, and smoke</h2>
+  <p class="empty-note">
+    Each reading below is one route-wide check, not a multi-point forecast along the route.
+  </p>
+  <ul class="lane-list">
+    {
+      lanes.map((lane) => {
+        const laneEvents = events.filter((event) => event.laneId === lane.laneId);
+        return (
+          <li class="lane-row">
+            <span class="lane-row__body">
+              <span class="lane-row__label">{lane.laneLabel}</span>
+              <span class="lane-row__meta">
+                {laneEvents.length > 0
+                  ? `${laneEvents.length} active reading${laneEvents.length === 1 ? "" : "s"}`
+                  : "No active issues reported"}
+                {" — "}
+                {lane.sourceStateText}
+              </span>
+              {laneEvents.map((event) => (
+                <span class="lane-row__meta">{event.title}</span>
+              ))}
+            </span>
+          </li>
+        );
+      })
+    }
+  </ul>
+</section>

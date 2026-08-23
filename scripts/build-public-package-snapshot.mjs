@@ -90,6 +90,26 @@ const VALID_GEOMETRY_TYPES = new Set([
 const SHORT_LIVED_FRESHNESS_HOURS = 48;
 const LONG_RUNNING_CLOSURE_CHECK_HOURS = 24;
 
+// Real `status` values seen across every lane in the evidence file: active,
+// current, forecast, monitoring, closed, planned. Of these, "closed" and
+// "planned" are themselves an ongoing/planned-closure signal regardless of
+// which lane reported them or what event_type string they used — deliberately
+// excludes "active" here, since "active" alone is also used by non-closure
+// event types (e.g. lane 07 health advisories) and is already covered for
+// real closures via laneId 01 / event_type "trail_closure" below. "current",
+// "forecast", and "monitoring" are not closure signals, so they correctly
+// stay on the generic short-lived-alert rule.
+const ONGOING_OR_PLANNED_CLOSURE_STATUSES = new Set(["closed", "planned"]);
+
+// Route-section ids observed across the evidence file are zero-padded
+// two-digit ordinals ("01".."10", e.g. lane 06's "03"/"09" and lane 01's
+// "09_east_lake_sammamish_trail_sammamish"), implying the route is divided
+// into 10 ordinal sections start-to-end. No true section-boundary reference
+// data exists anywhere in this repo (checked data/ and public/), so this is
+// the most defensible non-invented structure available — logged as a gap
+// wherever it is actually used to derive geometry.
+const TOTAL_ROUTE_SECTIONS = 10;
+
 // Route-relevance: only trust a route-relevance method that is genuinely
 // tied to the route corridor (a named trail/street match, a close point-to-
 // route distance, or an approved upstream-gauge relationship). Broad
@@ -185,12 +205,111 @@ function mapSourceNativePoint(rawEvent) {
   return null;
 }
 
+// Real, resolvable route-segment id (see mapRouteSegmentId) drawn from the
+// event's own route_sections / location.route_section_ids field. Some ids
+// are the bare two-digit ordinal ("03"), others are a longer descriptive
+// slug with the same ordinal as a prefix ("09_east_lake_sammamish_trail_
+// sammamish") — both real, both grounded in the source data.
+function extractSectionOrdinal(routeSegmentId) {
+  if (typeof routeSegmentId !== "string") return null;
+  const match = routeSegmentId.match(/^(\d{1,2})/);
+  if (!match) return null;
+  const ordinal = Number.parseInt(match[1], 10);
+  return ordinal >= 1 && ordinal <= TOTAL_ROUTE_SECTIONS ? ordinal : null;
+}
+
+let cachedRouteLineCoordinates = null;
+
+// Reads the real, GPX-derived canonical route LineString once per run.
+// Never generates or geocodes a coordinate — every coordinate returned here
+// is a real point already present in public/routes/UnivWA-Issaquah.geojson.
+function loadRouteLineCoordinates(gaps) {
+  if (cachedRouteLineCoordinates !== null) return cachedRouteLineCoordinates;
+  try {
+    const url = new URL("../public/routes/UnivWA-Issaquah.geojson", import.meta.url);
+    const routeGeojson = JSON.parse(readFileSync(url, "utf8"));
+    const coords = routeGeojson?.features?.[0]?.geometry?.coordinates;
+    cachedRouteLineCoordinates = Array.isArray(coords) ? coords : [];
+  } catch (cause) {
+    gaps.push(`route-line: could not load canonical route geometry for segment-derived fallback geometry (${cause.message})`);
+    cachedRouteLineCoordinates = [];
+  }
+  return cachedRouteLineCoordinates;
+}
+
+// Splits the real route line into TOTAL_ROUTE_SECTIONS equal-count chunks
+// by point index and returns the real coordinates for one ordinal chunk.
+// This is an ordinal approximation (real section lengths are not equal),
+// not a geocoded segment boundary — every caller logs that as a gap.
+function getRouteSectionChunkCoordinates(sectionOrdinal, routeCoords) {
+  if (routeCoords.length === 0) return null;
+  const chunkSize = Math.floor(routeCoords.length / TOTAL_ROUTE_SECTIONS);
+  if (chunkSize === 0) return null;
+  const startIdx = (sectionOrdinal - 1) * chunkSize;
+  if (startIdx >= routeCoords.length) return null;
+  const endIdx = sectionOrdinal === TOTAL_ROUTE_SECTIONS ? routeCoords.length - 1 : startIdx + chunkSize;
+  return routeCoords.slice(startIdx, Math.min(endIdx + 1, routeCoords.length));
+}
+
+// A real "between X and Y" closure description, or a route_relevance
+// matched_terms list of [trail name, ...endpoint terms], names two real
+// cross-street/endpoint terms. Returns them verbatim — never invented.
+function extractNamedEndpointTerms(rawEvent) {
+  const text = rawEvent.location_description_raw;
+  if (typeof text === "string") {
+    const match = text.match(/between\s+(.+?)\s+and\s+(.+?)\.?\s*$/i);
+    if (match) return [match[1].trim(), match[2].trim()];
+  }
+  const matchedTerms = rawEvent.route_relevance?.matched_terms;
+  if (Array.isArray(matchedTerms) && matchedTerms.length >= 3) {
+    return [matchedTerms[matchedTerms.length - 2], matchedTerms[matchedTerms.length - 1]];
+  }
+  return null;
+}
+
+// Real fallback for an event with no raw geometry/location but a real,
+// resolvable routeSegmentId: derive geometry from the real canonical route
+// line instead of discarding the event's location entirely. When the event
+// names two real endpoint terms, use the matched section's full real
+// coordinate range as the best-defensible bounded stretch (the exact
+// position of the named cross streets along the line is not geocoded in
+// this repo). Otherwise fall back to the section's real midpoint Point.
+// Every use is logged to `gaps` — never a silent guess.
+function deriveRouteSegmentFallbackGeometry(rawEvent, gaps, eventId) {
+  const routeSegmentId = mapRouteSegmentId(rawEvent);
+  if (!routeSegmentId) return null;
+
+  const sectionOrdinal = extractSectionOrdinal(routeSegmentId);
+  if (sectionOrdinal === null) {
+    gaps.push(`${eventId}: routeSegmentId "${routeSegmentId}" has no recognizable 01-${TOTAL_ROUTE_SECTIONS} ordinal section number — cannot derive fallback geometry from the canonical route line — geometry left null`);
+    return null;
+  }
+
+  const routeCoords = loadRouteLineCoordinates(gaps);
+  const chunkCoords = getRouteSectionChunkCoordinates(sectionOrdinal, routeCoords);
+  if (!chunkCoords || chunkCoords.length === 0) {
+    gaps.push(`${eventId}: could not derive a coordinate range for section ${sectionOrdinal} from the canonical route line — geometry left null`);
+    return null;
+  }
+
+  const endpointTerms = extractNamedEndpointTerms(rawEvent);
+  if (endpointTerms) {
+    gaps.push(
+      `${eventId}: no raw geometry/location published — derived a LineString from the real canonical route line for section "${routeSegmentId}" (ordinal ${sectionOrdinal} of ${TOTAL_ROUTE_SECTIONS}), the best-defensible bounded stretch for its real named endpoints "${endpointTerms[0]}" and "${endpointTerms[1]}" (their exact positions along the line are not geocoded in this repo, so the full section range is used instead of two invented endpoint coordinates)`,
+    );
+    return { type: "LineString", coordinates: chunkCoords };
+  }
+
+  const midIndex = Math.floor(chunkCoords.length / 2);
+  gaps.push(
+    `${eventId}: no raw geometry/location and no two named endpoint terms in its location text — used the real canonical route line's midpoint within section "${routeSegmentId}" (ordinal ${sectionOrdinal} of ${TOTAL_ROUTE_SECTIONS}) as a representative Point instead (source-derived from the canonical route, not invented)`,
+  );
+  return { type: "Point", coordinates: chunkCoords[midIndex] };
+}
+
 function mapEventGeometry(rawEvent, gaps, eventId) {
   const geometry = rawEvent.geometry;
-  if (geometry && typeof geometry === "object") {
-    if (geometry.type === "none" || geometry.coordinates === null) {
-      return null;
-    }
+  if (geometry && typeof geometry === "object" && geometry.type !== "none" && geometry.coordinates !== null) {
     if (!VALID_GEOMETRY_TYPES.has(geometry.type)) {
       gaps.push(`${eventId}: unsupported geometry type "${geometry.type}" — geometry left null`);
       return null;
@@ -204,7 +323,10 @@ function mapEventGeometry(rawEvent, gaps, eventId) {
     return nativePoint;
   }
 
-  gaps.push(`${eventId}: no "geometry" field and no usable event.location.{latitude,longitude} published by its lane — geometry left null`);
+  const fallbackGeometry = deriveRouteSegmentFallbackGeometry(rawEvent, gaps, eventId);
+  if (fallbackGeometry) return fallbackGeometry;
+
+  gaps.push(`${eventId}: no "geometry" field, no usable event.location.{latitude,longitude}, and no resolvable route segment published by its lane — geometry left null`);
   return null;
 }
 
@@ -234,6 +356,20 @@ function mapLocationLabel(rawEvent) {
   );
 }
 
+// Human-readable label for the resolved route segment, grounded in the same
+// event's own real trail/facility fields (no separate invented lookup
+// table exists in this repo — checked data/ and public/ first). Only
+// populated when a routeSegmentId is actually resolvable for the event.
+function mapRouteSegmentLabel(rawEvent) {
+  if (!mapRouteSegmentId(rawEvent)) return null;
+  return firstDefined(
+    rawEvent.trail_or_street_name,
+    Array.isArray(rawEvent.facilities) && rawEvent.facilities.length > 0 ? rawEvent.facilities[0] : undefined,
+    rawEvent.location?.name,
+    rawEvent.location?.named_area,
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Noise-reduction policy: route relevance
 // ---------------------------------------------------------------------------
@@ -249,6 +385,22 @@ function classifyRouteRelevance(rawEvent) {
   const rel = rawEvent.route_relevance;
   if (rel && typeof rel === "object") {
     if (rel.classification === "not_route_relevant") return false;
+
+    // A real, named match to one or more known route sections is itself a
+    // provable route-corridor tie (the exact "named trail/street match" the
+    // policy comment above already trusts) regardless of which method-label
+    // string the connector used — lane 06 reports this real signal via
+    // route_relevance.matched_route_sections instead of one of the
+    // pre-approved method names. This is distinct from lane 07's broad
+    // matched_tokens area matches, which stay untrusted below.
+    if (
+      rel.classification === "confirmed_route_impact" &&
+      Array.isArray(rel.matched_route_sections) &&
+      rel.matched_route_sections.length > 0
+    ) {
+      return true;
+    }
+
     if (!TRUSTED_ROUTE_RELEVANCE_METHODS.has(rel.method)) return false;
     if (rel.method === "point_to_route_distance") {
       const distance = rel.distance_km ?? rel.distance_to_route_km;
@@ -320,6 +472,13 @@ function classifyRouteImpact(laneId, rawEvent) {
     return DIRECT_ROUTE_IMPACT_STATES.has(rawEvent.route_impact_state);
   }
 
+  // Some lanes (e.g. 06) publish the same confirmed-impact signal nested
+  // under route_relevance.classification instead of a top-level
+  // route_impact_state field — same real value, different real location.
+  if (typeof rawEvent.route_relevance?.classification === "string") {
+    return DIRECT_ROUTE_IMPACT_STATES.has(rawEvent.route_relevance.classification);
+  }
+
   return false;
 }
 
@@ -389,7 +548,11 @@ function isCheckedRecently(lastSourceRefreshAt, buildNowMs, hours) {
 // to the generic 48h short-lived-alert rule, which exists for advisories,
 // not closures. Everything else follows the short-lived-alert rule only.
 function isClosureTypeEvent(laneId, rawEvent) {
-  return laneId === "01_ROUTE_CONDITIONS" || rawEvent.event_type === "trail_closure";
+  return (
+    laneId === "01_ROUTE_CONDITIONS" ||
+    rawEvent.event_type === "trail_closure" ||
+    ONGOING_OR_PLANNED_CLOSURE_STATUSES.has(rawEvent.status)
+  );
 }
 
 /**
@@ -404,7 +567,8 @@ function deriveFreshnessState(laneId, rawEvent, lastSourceRefreshAt, buildNowMs)
 
   if (isClosureTypeEvent(laneId, rawEvent)) {
     if (hasPassedEndDate(rawEvent, buildNowMs)) return "expired";
-    if (rawEvent.status === "active" && isCheckedRecently(lastSourceRefreshAt, buildNowMs, LONG_RUNNING_CLOSURE_CHECK_HOURS)) {
+    const hasCurrentClosureStatus = rawEvent.status === "active" || ONGOING_OR_PLANNED_CLOSURE_STATUSES.has(rawEvent.status);
+    if (hasCurrentClosureStatus && isCheckedRecently(lastSourceRefreshAt, buildNowMs, LONG_RUNNING_CLOSURE_CHECK_HOURS)) {
       return "fresh";
     }
     return "stale";
@@ -551,6 +715,55 @@ function mergeDuplicateGroup(members) {
   return { representative, sourceUrls, suppressed: sorted.slice(1) };
 }
 
+// ---------------------------------------------------------------------------
+// Round 2 rider-facing enrichment (Step 1) — real upstream fields only.
+// Never invents a value a lane does not really supply (same "no silent
+// inference" rule as the rest of this script).
+// ---------------------------------------------------------------------------
+
+function mapSeverity(rawEvent) {
+  return firstDefined(rawEvent.severity, rawEvent.cap_severity);
+}
+
+// The event's own raw status string, distinct from the per-lane
+// display_severity mapped elsewhere in this file.
+function mapCurrentStatus(rawEvent) {
+  return firstDefined(rawEvent.status);
+}
+
+function mapDetourAvailable(rawEvent) {
+  return typeof rawEvent.detour_available === "boolean" ? rawEvent.detour_available : null;
+}
+
+// A closure/access signal exists when the event's own status is "closed" or
+// "planned" (see ONGOING_OR_PLANNED_CLOSURE_STATUSES above), or when the
+// status is "active" and the event's own event_type is "trail_closure" —
+// the exact same real-field combination isClosureTypeEvent already uses to
+// decide freshness. Reuses that signal rather than inventing a second
+// closure heuristic. Non-closure events (gauge readings, forecasts,
+// advisories) get riderCanPass: null — passability is not a meaningful
+// question for them.
+function isClosureSignalEvent(rawEvent) {
+  return (
+    ONGOING_OR_PLANNED_CLOSURE_STATUSES.has(rawEvent.status) ||
+    (rawEvent.status === "active" && rawEvent.event_type === "trail_closure")
+  );
+}
+
+// Never invents "yes": a rider-passable claim would require an explicit
+// source statement that riders can get through, which no lane in this
+// evidence file publishes. A confirmed closure with detour_available:false
+// is the strongest real signal available — "no". A closure with no
+// detour_available field, or detour_available:true (an alternate route
+// exists, but that is not the same claim as "you can ride through this
+// exact point"), stays "unknown" rather than guessing either way.
+function mapRiderCanPass(rawEvent) {
+  if (!isClosureSignalEvent(rawEvent)) return null;
+  const detourAvailable = mapDetourAvailable(rawEvent);
+  if (detourAvailable === false) return "no";
+  return "unknown";
+}
+
 function buildRouteEventFeature(laneId, laneLabel, rawEvent, laneIsStale, laneUsedLastKnownGood, geometry, decision, mergedSourceUrls, duplicateGroupKey) {
   const id = rawEvent.event_id;
   if (typeof id !== "string" || id.length === 0) {
@@ -571,7 +784,7 @@ function buildRouteEventFeature(laneId, laneLabel, rawEvent, laneIsStale, laneUs
       summary: firstDefined(rawEvent.summary, rawEvent.details),
       locationLabel: mapLocationLabel(rawEvent),
       routeSegmentId: mapRouteSegmentId(rawEvent),
-      routeSegmentLabel: null,
+      routeSegmentLabel: mapRouteSegmentLabel(rawEvent),
       // No per-event display tier is published by the Status Publisher today — only a
       // per-lane display_severity. Buildspec 11.3/34.5 forbid inferring an
       // unknown value as "normal", so every event is "unknown" pending a
@@ -593,6 +806,10 @@ function buildRouteEventFeature(laneId, laneLabel, rawEvent, laneIsStale, laneUs
       routeImpact: decision.routeImpact,
       duplicateGroupKey,
       lastSourceRefreshAt: decision.lastSourceRefreshAt,
+      severity: mapSeverity(rawEvent),
+      currentStatus: mapCurrentStatus(rawEvent),
+      detourAvailable: mapDetourAvailable(rawEvent),
+      riderCanPass: mapRiderCanPass(rawEvent),
     },
   };
 }

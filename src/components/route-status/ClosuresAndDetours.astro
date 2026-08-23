@@ -1,0 +1,51 @@
+---
+// Round 2 — a short, prominent reference view of only real closures/detours.
+// Not a duplicate of the full event list: same underlying events, filtered
+// to the ones this project's own real fields already flag as a closure/
+// access signal (riderCanPass !== null — see build-public-package-snapshot.mjs
+// Step 1 for how that signal is derived).
+import type { DashboardEventWithUnknownLane } from "../../lib/route-status/types";
+import { formatPacificTime } from "../../lib/route-status/format-time";
+
+type Props = {
+  events: DashboardEventWithUnknownLane[];
+};
+
+const { events } = Astro.props;
+
+const closures = events.filter((event) => event.riderCanPass !== null && event.riderCanPass !== undefined);
+---
+
+<section class="panel" aria-labelledby="closures-detours-heading">
+  <h2 class="panel__heading" id="closures-detours-heading">Closures and detours</h2>
+  {
+    closures.length === 0 ? (
+      <p class="empty-note">No closures currently reported.</p>
+    ) : (
+      <ul class="closure-list">
+        {closures.map((event) => (
+          <li class="closure-row">
+            <div class="closure-row__top">
+              <span class="closure-row__title">{event.title}</span>
+              <span class={`tier-badge tier-badge--${event.displayTier}`}>
+                {event.riderCanPass === "no" ? "No pass" : "Passability unknown"}
+              </span>
+            </div>
+            <p class="closure-row__meta">
+              {event.locationLabel ?? event.routeSegmentLabel ?? event.routeSegmentId ?? "Location not available"}
+              {event.currentStatus ? ` — ${event.currentStatus}` : ""}
+            </p>
+            {event.detourAvailable !== null && (
+              <p class="closure-row__meta">
+                Detour available: <strong>{event.detourAvailable ? "Yes" : "No"}</strong>
+              </p>
+            )}
+            <p class="closure-row__meta">
+              {formatPacificTime(event.reportedAt) ?? "Report time not available"}
+            </p>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</section>

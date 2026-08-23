@@ -5,6 +5,11 @@
 // during `astro build`), then normalized through the same adapters the
 // buildspec requires the browser to use if it ever needs to re-derive
 // state client-side.
+//
+// Round 2 hierarchy (rider decisions first, monitoring-lane architecture
+// last): SiteHeader -> Route status summary -> Route map -> Current rider
+// issues -> Closures and detours -> Weather/air/smoke -> Route facilities
+// -> Monitor health (collapsed).
 import "../styles/route-status.css";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -12,12 +17,13 @@ import { join } from "node:path";
 import SiteHeader from "../components/site/SiteHeader.astro";
 import SiteFooter from "../components/site/SiteFooter.astro";
 import DashboardHeading from "../components/route-status/DashboardHeading.astro";
-import FreshnessNotice from "../components/route-status/FreshnessNotice.astro";
-import MonitoringSources from "../components/route-status/MonitoringSources.astro";
-import RouteImpacts from "../components/route-status/RouteImpacts.astro";
-import CurrentRouteAlerts from "../components/route-status/CurrentRouteAlerts.astro";
-import SystemHealthDisclosure from "../components/route-status/SystemHealthDisclosure.astro";
+import CurrentRouteState from "../components/route-status/CurrentRouteState.astro";
 import RouteMap from "../components/route-status/RouteMap.svelte";
+import CurrentRouteAlerts from "../components/route-status/CurrentRouteAlerts.astro";
+import ClosuresAndDetours from "../components/route-status/ClosuresAndDetours.astro";
+import WeatherAirSummary from "../components/route-status/WeatherAirSummary.astro";
+import RouteImpacts from "../components/route-status/RouteImpacts.astro";
+import MonitorHealthDisclosure from "../components/route-status/MonitorHealthDisclosure.astro";
 
 import { normalizeDashboardData } from "../lib/route-status/normalize-dashboard-data";
 import { normalizeRouteEvents } from "../lib/route-status/normalize-route-events";
@@ -56,6 +62,9 @@ const { events } = routeEventsFile
   : { events: [], gaps: [] };
 
 const hasSourceFailures = (systemHealth?.failedLaneIds.length ?? 0) > 0;
+
+const facilitiesLane = summary.laneSummaries.find((lane) => lane.laneId === "08_ROUTE_FACILITIES") ?? null;
+const facilitiesEvents = events.filter((event) => event.laneId === "08_ROUTE_FACILITIES");
 ---
 
 <html lang="en">
@@ -74,12 +83,8 @@ const hasSourceFailures = (systemHealth?.failedLaneIds.length ?? 0) > 0;
       <DashboardHeading summary={summary} />
 
       <div class="dashboard-layout">
-        <div class="item-freshness">
-          <FreshnessNotice summary={summary} systemHealth={packageAvailable ? systemHealth : null} />
-        </div>
-
-        <div class="item-monitoring-sources">
-          <MonitoringSources laneSummaries={summary.laneSummaries} systemHealth={systemHealth} />
+        <div class="item-route-status">
+          <CurrentRouteState summary={summary} systemHealth={packageAvailable ? systemHealth : null} events={events} />
         </div>
 
         <section class="panel item-route-map" aria-labelledby="route-map-heading">
@@ -87,16 +92,52 @@ const hasSourceFailures = (systemHealth?.failedLaneIds.length ?? 0) > 0;
           <RouteMap client:only="svelte" routeDisplayTier={summary.displayTier} />
         </section>
 
-        <div class="item-route-impacts">
-          <RouteImpacts routeImpacts={summary.routeImpacts} />
-        </div>
-
         <div class="item-route-alerts">
           <CurrentRouteAlerts events={events} hasSourceFailures={hasSourceFailures} />
         </div>
 
-        <div class="item-system-health">
-          <SystemHealthDisclosure systemHealth={systemHealth} />
+        <div class="item-closures">
+          <ClosuresAndDetours events={events} />
+        </div>
+
+        <div class="item-weather-air">
+          <WeatherAirSummary laneSummaries={summary.laneSummaries} events={events} />
+        </div>
+
+        <div class="item-route-impacts">
+          <RouteImpacts routeImpacts={summary.routeImpacts} />
+        </div>
+
+        {
+          facilitiesLane && (
+            <div class="item-facilities">
+              {facilitiesEvents.length === 0 ? (
+                <p class="empty-note">
+                  Route facilities: no facility notices currently reported for this route.
+                </p>
+              ) : (
+                <section class="panel" aria-labelledby="route-facilities-heading">
+                  <h2 class="panel__heading" id="route-facilities-heading">Route facilities</h2>
+                  <ul class="lane-list">
+                    {facilitiesEvents.map((event) => (
+                      <li class="lane-row">
+                        <span class="lane-row__body">
+                          <span class="lane-row__label">{event.title}</span>
+                          <span class="lane-row__meta">
+                            {event.locationLabel ?? event.routeSegmentLabel ?? event.routeSegmentId ?? "—"}
+                          </span>
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+            </div>
+          )
+        }
+
+        <div class="item-monitor-health">
+          <MonitorHealthDisclosure summary={summary} systemHealth={systemHealth} />
         </div>
       </div>
     </main>

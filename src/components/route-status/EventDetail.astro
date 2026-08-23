@@ -34,6 +34,36 @@ const untilLabel = formatPacificTime(event.effectiveUntil);
       <dd>{event.routeEffect}</dd>
     </>
   )}
+  {event.geometry === null && (
+    <>
+      <dt>Map location</dt>
+      <dd>Broad area — no exact route point supplied</dd>
+    </>
+  )}
+  {event.severity && (
+    <>
+      <dt>Severity</dt>
+      <dd>{event.severity}</dd>
+    </>
+  )}
+  {event.currentStatus && (
+    <>
+      <dt>Current status</dt>
+      <dd>{event.currentStatus}</dd>
+    </>
+  )}
+  {event.riderCanPass && (
+    <>
+      <dt>Can riders pass</dt>
+      <dd>{event.riderCanPass === "no" ? "No" : "Unknown"}</dd>
+    </>
+  )}
+  {typeof event.detourAvailable === "boolean" && (
+    <>
+      <dt>Detour available</dt>
+      <dd>{event.detourAvailable ? "Yes" : "No"}</dd>
+    </>
+  )}
   {reportedLabel && (
     <>
       <dt>Reported</dt>

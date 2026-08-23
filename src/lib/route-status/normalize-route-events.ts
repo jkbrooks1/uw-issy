@@ -77,6 +77,10 @@ export function normalizeRouteEvents(file: RouteEventsFile): NormalizedRouteEven
       routeImpact: props.routeImpact,
       duplicateGroupKey: props.duplicateGroupKey,
       lastSourceRefreshAt: props.lastSourceRefreshAt,
+      severity: props.severity,
+      currentStatus: props.currentStatus,
+      detourAvailable: props.detourAvailable,
+      riderCanPass: props.riderCanPass,
     };
 
     // Dashboard final guard (buildspec noise-reduction policy): the public

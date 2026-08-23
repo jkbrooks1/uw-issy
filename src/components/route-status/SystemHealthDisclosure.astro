@@ -1,8 +1,9 @@
 ---
 // Not a named buildspec section, but supports 10.6/19.4's requirement that
 // failure detail be visible, and 39.4's "hazard state and source health are
-// separate" rule — a low-emphasis disclosure so it doesn't compete with the
-// route-wide state for attention.
+// separate" rule. Round 2: content-only (no own <details>) so it merges into
+// the single collapsed Monitor Health section (MonitorHealthDisclosure.astro)
+// instead of being a separate duplicate disclosure.
 import type { SystemHealthFile } from "../../lib/route-status/types";
 
 type Props = {
@@ -14,8 +15,8 @@ const { systemHealth } = Astro.props;
 
 {
   systemHealth && (
-    <details class="system-health-disclosure">
-      <summary>System health detail</summary>
+    <div class="system-health-disclosure">
+      <h3 class="monitor-health__subheading">System health detail</h3>
       <ul>
         {systemHealth.lanes.map((lane) => (
           <li>
@@ -24,6 +25,6 @@ const { systemHealth } = Astro.props;
           </li>
         ))}
       </ul>
-    </details>
+    </div>
   )
 }

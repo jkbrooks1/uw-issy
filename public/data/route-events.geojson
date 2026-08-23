@@ -1,38 +1,919 @@
 {
   "type": "FeatureCollection",
-  "releaseId": "08_STATUS_PUBLISHER-2026-08-02T162329490Z-001",
-  "generatedAt": "2026-08-02T16:23:29.490Z",
+  "releaseId": "20_STATUS_PUBLISHER-20260823T201500Z-001",
+  "generatedAt": "2026-08-23T20:15:00.121Z",
   "features": [
     {
       "type": "Feature",
-      "id": "01_ROUTE_CONDITIONS:KC-03:hash_7f6bfcb8",
-      "geometry": null,
+      "id": "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -122.08925,
+            47.64973,
+            14.7
+          ],
+          [
+            -122.08912,
+            47.64961,
+            15
+          ],
+          [
+            -122.08892,
+            47.64943,
+            15.3
+          ],
+          [
+            -122.0887,
+            47.64926,
+            15.6
+          ],
+          [
+            -122.08821,
+            47.64885,
+            15.5
+          ],
+          [
+            -122.08748,
+            47.64825,
+            15.3
+          ],
+          [
+            -122.08701,
+            47.64783,
+            15.4
+          ],
+          [
+            -122.08675,
+            47.64756,
+            15.7
+          ],
+          [
+            -122.08654,
+            47.6473,
+            15.3
+          ],
+          [
+            -122.08626,
+            47.64688,
+            15.4
+          ],
+          [
+            -122.08597,
+            47.64646,
+            15.5
+          ],
+          [
+            -122.08584,
+            47.64631,
+            15.7
+          ],
+          [
+            -122.0857,
+            47.64616,
+            15.8
+          ],
+          [
+            -122.08552,
+            47.64602,
+            16.4
+          ],
+          [
+            -122.08499,
+            47.64567,
+            16.8
+          ],
+          [
+            -122.08446,
+            47.64533,
+            16.9
+          ],
+          [
+            -122.08392,
+            47.64491,
+            16.5
+          ],
+          [
+            -122.08378,
+            47.64478,
+            16.3
+          ],
+          [
+            -122.08355,
+            47.64452,
+            16
+          ],
+          [
+            -122.08291,
+            47.64384,
+            16.3
+          ],
+          [
+            -122.08249,
+            47.64343,
+            14.4
+          ],
+          [
+            -122.08192,
+            47.64279,
+            14
+          ],
+          [
+            -122.08135,
+            47.64215,
+            14.4
+          ],
+          [
+            -122.08078,
+            47.64151,
+            16.2
+          ],
+          [
+            -122.08035,
+            47.64106,
+            16.1
+          ],
+          [
+            -122.08,
+            47.64074,
+            16
+          ],
+          [
+            -122.07964,
+            47.64046,
+            16
+          ],
+          [
+            -122.07907,
+            47.64006,
+            15.9
+          ],
+          [
+            -122.07834,
+            47.63956,
+            15.9
+          ],
+          [
+            -122.07757,
+            47.63901,
+            15.8
+          ],
+          [
+            -122.0768,
+            47.63847,
+            15.9
+          ],
+          [
+            -122.076,
+            47.63792,
+            16.3
+          ],
+          [
+            -122.07536,
+            47.63746,
+            16.2
+          ],
+          [
+            -122.07472,
+            47.637,
+            16.2
+          ],
+          [
+            -122.07408,
+            47.63654,
+            16.8
+          ],
+          [
+            -122.07356,
+            47.63603,
+            17.2
+          ],
+          [
+            -122.07328,
+            47.6357,
+            18.9
+          ],
+          [
+            -122.0731,
+            47.63543,
+            18.5
+          ],
+          [
+            -122.07274,
+            47.63496,
+            18.6
+          ],
+          [
+            -122.0727,
+            47.63492,
+            18.9
+          ],
+          [
+            -122.07254,
+            47.63484,
+            20.7
+          ],
+          [
+            -122.07221,
+            47.63439,
+            20
+          ],
+          [
+            -122.07188,
+            47.63394,
+            19.7
+          ],
+          [
+            -122.07184,
+            47.63377,
+            17.4
+          ],
+          [
+            -122.0714,
+            47.63323,
+            18.7
+          ],
+          [
+            -122.07121,
+            47.63295,
+            19.2
+          ],
+          [
+            -122.07097,
+            47.63252,
+            19.4
+          ],
+          [
+            -122.07075,
+            47.6317,
+            16.6
+          ],
+          [
+            -122.07067,
+            47.6311,
+            16
+          ],
+          [
+            -122.07065,
+            47.63045,
+            15.6
+          ],
+          [
+            -122.07062,
+            47.6298,
+            16.6
+          ],
+          [
+            -122.0706,
+            47.62914,
+            16.7
+          ],
+          [
+            -122.07058,
+            47.62863,
+            16.4
+          ],
+          [
+            -122.07055,
+            47.62812,
+            17
+          ],
+          [
+            -122.07053,
+            47.6276,
+            17.2
+          ],
+          [
+            -122.07052,
+            47.62708,
+            16.9
+          ],
+          [
+            -122.07052,
+            47.62658,
+            17.4
+          ],
+          [
+            -122.07054,
+            47.62631,
+            17.3
+          ],
+          [
+            -122.07065,
+            47.62599,
+            16.1
+          ],
+          [
+            -122.07071,
+            47.62591,
+            15.7
+          ],
+          [
+            -122.07095,
+            47.62542,
+            15.7
+          ],
+          [
+            -122.07108,
+            47.62518,
+            15.4
+          ],
+          [
+            -122.07022,
+            47.62514,
+            24.3
+          ],
+          [
+            -122.07027,
+            47.62459,
+            23.8
+          ],
+          [
+            -122.07035,
+            47.62406,
+            23
+          ],
+          [
+            -122.07035,
+            47.62387,
+            22.8
+          ],
+          [
+            -122.07033,
+            47.62366,
+            22.7
+          ],
+          [
+            -122.0703,
+            47.62354,
+            22.8
+          ],
+          [
+            -122.07024,
+            47.62336,
+            22.8
+          ],
+          [
+            -122.07013,
+            47.62314,
+            23.1
+          ],
+          [
+            -122.07002,
+            47.62298,
+            23.4
+          ],
+          [
+            -122.06982,
+            47.62273,
+            24
+          ],
+          [
+            -122.06968,
+            47.62248,
+            23.7
+          ],
+          [
+            -122.06955,
+            47.62235,
+            23.9
+          ],
+          [
+            -122.06932,
+            47.62214,
+            24.7
+          ],
+          [
+            -122.06899,
+            47.62172,
+            25.6
+          ],
+          [
+            -122.06868,
+            47.62101,
+            24.1
+          ],
+          [
+            -122.06851,
+            47.62056,
+            23.6
+          ],
+          [
+            -122.06823,
+            47.61975,
+            19.9
+          ],
+          [
+            -122.06796,
+            47.61894,
+            19.2
+          ],
+          [
+            -122.06768,
+            47.61813,
+            20.1
+          ],
+          [
+            -122.06759,
+            47.61783,
+            20.2
+          ],
+          [
+            -122.06757,
+            47.61767,
+            20.4
+          ],
+          [
+            -122.06757,
+            47.61749,
+            20
+          ],
+          [
+            -122.06761,
+            47.61711,
+            18.9
+          ],
+          [
+            -122.0677,
+            47.61639,
+            18.3
+          ],
+          [
+            -122.0678,
+            47.61568,
+            17.9
+          ],
+          [
+            -122.0679,
+            47.61496,
+            17.6
+          ],
+          [
+            -122.06797,
+            47.61494,
+            17.2
+          ],
+          [
+            -122.068,
+            47.61491,
+            17
+          ],
+          [
+            -122.06813,
+            47.61471,
+            16.4
+          ],
+          [
+            -122.06817,
+            47.61468,
+            16.2
+          ],
+          [
+            -122.06826,
+            47.61468,
+            15.7
+          ],
+          [
+            -122.06838,
+            47.6139,
+            15.4
+          ],
+          [
+            -122.06849,
+            47.61312,
+            15.1
+          ],
+          [
+            -122.06856,
+            47.61278,
+            15.1
+          ],
+          [
+            -122.06863,
+            47.61258,
+            14.9
+          ],
+          [
+            -122.0687,
+            47.61241,
+            14.6
+          ],
+          [
+            -122.06882,
+            47.61217,
+            13.9
+          ],
+          [
+            -122.06894,
+            47.61197,
+            13.1
+          ],
+          [
+            -122.06911,
+            47.61173,
+            12.4
+          ],
+          [
+            -122.06927,
+            47.61154,
+            12.1
+          ],
+          [
+            -122.06941,
+            47.61139,
+            12.2
+          ],
+          [
+            -122.07011,
+            47.61078,
+            12.2
+          ],
+          [
+            -122.0708,
+            47.61016,
+            12.3
+          ],
+          [
+            -122.07111,
+            47.60985,
+            12.7
+          ],
+          [
+            -122.07188,
+            47.60917,
+            12.6
+          ],
+          [
+            -122.07264,
+            47.6085,
+            12.2
+          ],
+          [
+            -122.07302,
+            47.6082,
+            12.1
+          ],
+          [
+            -122.0737,
+            47.60757,
+            12.5
+          ],
+          [
+            -122.0743,
+            47.60704,
+            12.3
+          ],
+          [
+            -122.0749,
+            47.60651,
+            12.2
+          ],
+          [
+            -122.07499,
+            47.60643,
+            12.2
+          ],
+          [
+            -122.07499,
+            47.60643,
+            12.2
+          ],
+          [
+            -122.0757,
+            47.60584,
+            12
+          ],
+          [
+            -122.07584,
+            47.60569,
+            12.4
+          ],
+          [
+            -122.07629,
+            47.60529,
+            13.9
+          ],
+          [
+            -122.07674,
+            47.60489,
+            14.2
+          ],
+          [
+            -122.07727,
+            47.60437,
+            14.1
+          ],
+          [
+            -122.07758,
+            47.60409,
+            13.9
+          ],
+          [
+            -122.07784,
+            47.60377,
+            14
+          ],
+          [
+            -122.07812,
+            47.6035,
+            14
+          ],
+          [
+            -122.07874,
+            47.60275,
+            13.8
+          ],
+          [
+            -122.07884,
+            47.60258,
+            13.9
+          ],
+          [
+            -122.07894,
+            47.60244,
+            14
+          ],
+          [
+            -122.07914,
+            47.60219,
+            14
+          ],
+          [
+            -122.0793,
+            47.60195,
+            13.9
+          ],
+          [
+            -122.07966,
+            47.60137,
+            13.6
+          ],
+          [
+            -122.07997,
+            47.60081,
+            13.5
+          ],
+          [
+            -122.08013,
+            47.60048,
+            13.4
+          ],
+          [
+            -122.08019,
+            47.60034,
+            13.3
+          ],
+          [
+            -122.08021,
+            47.60025,
+            13.4
+          ],
+          [
+            -122.08033,
+            47.59999,
+            14
+          ],
+          [
+            -122.08042,
+            47.5998,
+            15.4
+          ],
+          [
+            -122.08052,
+            47.59964,
+            15.8
+          ],
+          [
+            -122.08065,
+            47.59938,
+            15.4
+          ],
+          [
+            -122.08082,
+            47.59895,
+            15.9
+          ],
+          [
+            -122.08105,
+            47.59844,
+            16.3
+          ],
+          [
+            -122.08128,
+            47.59794,
+            16.1
+          ],
+          [
+            -122.0814,
+            47.5977,
+            16.1
+          ],
+          [
+            -122.08156,
+            47.59743,
+            15.8
+          ],
+          [
+            -122.0818,
+            47.59712,
+            15.2
+          ],
+          [
+            -122.08208,
+            47.59681,
+            14.7
+          ],
+          [
+            -122.08255,
+            47.59643,
+            13.8
+          ],
+          [
+            -122.08292,
+            47.59618,
+            13.2
+          ],
+          [
+            -122.08311,
+            47.59607,
+            12.8
+          ],
+          [
+            -122.08331,
+            47.59597,
+            12.6
+          ],
+          [
+            -122.08437,
+            47.59548,
+            13.1
+          ]
+        ]
+      },
       "properties": {
-        "id": "01_ROUTE_CONDITIONS:KC-03:hash_7f6bfcb8",
+        "id": "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01",
         "laneId": "01_ROUTE_CONDITIONS",
         "laneLabel": "Route Conditions",
         "title": "East Lake Sammamish Trail closure for George Davis Creek culvert replacement.",
         "summary": "East Lake Sammamish Trail closure for George Davis Creek culvert replacement.",
         "locationLabel": "Between Louis Thompson Rd NE and NE Inglewood Hill Rd.",
         "routeSegmentId": "09_east_lake_sammamish_trail_sammamish",
-        "routeSegmentLabel": null,
+        "routeSegmentLabel": "East Lake Sammamish Trail",
         "displayTier": "unknown",
         "routeEffect": "confirmed_route_impact",
-        "reportedAt": "2026-08-01T16:14:02.013Z",
+        "reportedAt": "2026-08-23T20:00:00.346Z",
         "effectiveFrom": "2026-06-01T00:00:00Z",
         "effectiveUntil": "2026-12-31T23:59:59Z",
         "sourceName": "King County Parks - East Lake Sammamish Trail page",
         "sourceUrl": "https://kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/east-lake-sammamish",
         "mergedSourceUrls": null,
         "confidence": null,
-        "isLastKnownGood": true,
+        "isLastKnownGood": false,
         "isStale": true,
         "presentationEligible": true,
         "presentationReason": "eligible",
         "routeRelevant": true,
         "routeImpact": true,
         "duplicateGroupKey": null,
-        "lastSourceRefreshAt": "2026-08-01T16:14:02.013Z"
+        "lastSourceRefreshAt": "2026-08-23T20:00:00.346Z",
+        "severity": "high",
+        "currentStatus": "active",
+        "detourAvailable": false,
+        "riderCanPass": "no"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:ae7e8f59",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.27404,
+          47.75443,
+          14
+        ]
+      },
+      "properties": {
+        "id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:ae7e8f59",
+        "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
+        "laneLabel": "Trail Infrastructure Status",
+        "title": "Burke-Gilman Trail infrastructure notice",
+        "summary": "{\"data\":\"\\r\\n\\r\\n\\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n \\r\\n\\r\\n\\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n Burke-Gilman Trail - King County, Washington \\r\\n \\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n\\r\\n \\r\\n \\",
+        "locationLabel": null,
+        "routeSegmentId": "03",
+        "routeSegmentLabel": "Burke-Gilman Trail",
+        "displayTier": "unknown",
+        "routeEffect": null,
+        "reportedAt": null,
+        "effectiveFrom": null,
+        "effectiveUntil": null,
+        "sourceName": "King County Parks Burke-Gilman Trail page",
+        "sourceUrl": "https://cd10-prod.kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/burke-gilman",
+        "mergedSourceUrls": null,
+        "confidence": "medium",
+        "isLastKnownGood": false,
+        "isStale": true,
+        "presentationEligible": true,
+        "presentationReason": "eligible",
+        "routeRelevant": true,
+        "routeImpact": true,
+        "duplicateGroupKey": null,
+        "lastSourceRefreshAt": "2026-08-23T20:00:00.317Z",
+        "severity": "high",
+        "currentStatus": "closed",
+        "detourAvailable": null,
+        "riderCanPass": "unknown"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:ec9a6c33",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.16895,
+          47.75499,
+          7.3
+        ]
+      },
+      "properties": {
+        "id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:ec9a6c33",
+        "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
+        "laneLabel": "Trail Infrastructure Status",
+        "title": "Sammamish River Trail infrastructure notice",
+        "summary": "{\"data\":\"\\r\\n\\r\\n\\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n \\r\\n\\r\\n\\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n Sammamish River Trail - King County, Washington \\r\\n \\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n\\r\\n \\r\\",
+        "locationLabel": null,
+        "routeSegmentId": "05",
+        "routeSegmentLabel": "Sammamish River Trail",
+        "displayTier": "unknown",
+        "routeEffect": null,
+        "reportedAt": null,
+        "effectiveFrom": null,
+        "effectiveUntil": null,
+        "sourceName": "King County Parks Sammamish River Trail page",
+        "sourceUrl": "https://cd10-prod.kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/sammamish-river-trail",
+        "mergedSourceUrls": null,
+        "confidence": "medium",
+        "isLastKnownGood": false,
+        "isStale": true,
+        "presentationEligible": true,
+        "presentationReason": "eligible",
+        "routeRelevant": true,
+        "routeImpact": true,
+        "duplicateGroupKey": null,
+        "lastSourceRefreshAt": "2026-08-23T20:00:00.317Z",
+        "severity": "high",
+        "currentStatus": "closed",
+        "detourAvailable": null,
+        "riderCanPass": "unknown"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:b3d1e147",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.06932,
+          47.62214,
+          24.7
+        ]
+      },
+      "properties": {
+        "id": "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:b3d1e147",
+        "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
+        "laneLabel": "Trail Infrastructure Status",
+        "title": "George Davis Creek fish-passage and storm improvement project",
+        "summary": "{\"data\":\"\\r\\n \\r\\n \\r\\n \\r\\n George Davis Creek Fish Passage and Storm Improvement Project | City of Sammamish \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n",
+        "locationLabel": null,
+        "routeSegmentId": "09",
+        "routeSegmentLabel": "George Davis Creek",
+        "displayTier": "unknown",
+        "routeEffect": null,
+        "reportedAt": null,
+        "effectiveFrom": null,
+        "effectiveUntil": null,
+        "sourceName": "City of Sammamish George Davis Creek Fish Passage and Storm Improvement Project page",
+        "sourceUrl": "https://www.sammamish.us/projects/george-davis-creek-fish-passage-and-storm-improvement-project/",
+        "mergedSourceUrls": [
+          "https://www.sammamish.us/projects/george-davis-creek-fish-passage-and-storm-improvement-project/",
+          "https://cd10-prod.kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/east-lake-sammamish",
+          "https://www.sammamish.us/news/george-davis-creek-project-to-start-this-spring/"
+        ],
+        "confidence": "medium",
+        "isLastKnownGood": false,
+        "isStale": true,
+        "presentationEligible": true,
+        "presentationReason": "eligible",
+        "routeRelevant": true,
+        "routeImpact": true,
+        "duplicateGroupKey": "06_TRAIL_INFRASTRUCTURE_STATUS::09",
+        "lastSourceRefreshAt": "2026-08-23T20:00:00.317Z",
+        "severity": "high",
+        "currentStatus": "closed",
+        "detourAvailable": null,
+        "riderCanPass": "unknown"
       }
     }
   ]

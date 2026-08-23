@@ -1,0 +1,28 @@
+---
+// Round 2 — collapsed "Monitor Health" section (matches the collapsed
+// <details> pattern SystemHealthDisclosure.astro already used). Demotes the
+// internal monitoring-lane architecture well below the rider content
+// (route status, map, current issues, closures, weather/air) per the
+// product goal: lead with rider decisions, not internal lane plumbing.
+// Merges MonitoringSources.astro and SystemHealthDisclosure.astro into one
+// collapsed section instead of two separate duplicate disclosures.
+import type { RouteWideSummary } from "../../lib/route-status/normalize-dashboard-data";
+import type { SystemHealthFile } from "../../lib/route-status/types";
+import FreshnessNotice from "./FreshnessNotice.astro";
+import MonitoringSources from "./MonitoringSources.astro";
+import SystemHealthDisclosure from "./SystemHealthDisclosure.astro";
+
+type Props = {
+  summary: RouteWideSummary;
+  systemHealth: SystemHealthFile | null;
+};
+
+const { summary, systemHealth } = Astro.props;
+---
+
+<details class="monitor-health-disclosure">
+  <summary>Monitor health</summary>
+  <FreshnessNotice summary={summary} systemHealth={systemHealth} />
+  <MonitoringSources laneSummaries={summary.laneSummaries} systemHealth={systemHealth} />
+  <SystemHealthDisclosure systemHealth={systemHealth} />
+</details>

@@ -59,6 +59,13 @@
     addRow("Location", props.locationLabel ?? props.routeSegmentLabel ?? props.routeSegmentId);
     addRow("Route effect", props.routeEffect);
     addRow("State", props.displayTier);
+    addRow("Severity", props.severity);
+    addRow("Current status", props.currentStatus);
+    if (typeof props.detourAvailable === "boolean") {
+      addRow("Detour available", props.detourAvailable ? "Yes" : "No");
+    }
+    if (props.riderCanPass === "no") addRow("Can riders pass", "No");
+    else if (props.riderCanPass === "unknown") addRow("Can riders pass", "Unknown");
     if (props.isStale) addRow("Note", "Data may be out of date");
     if (props.isLastKnownGood) addRow("Note", "Showing last known data");
 
@@ -101,10 +108,10 @@
         scrollWheelZoom: true,
       });
 
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+      L.tileLayer("https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png", {
         attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        maxZoom: 19,
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Style: <a href="https://www.cyclosm.org">CyclOSM</a>',
+        maxZoom: 20,
       }).addTo(map);
 
       const style = ROUTE_STYLE_BY_TIER[routeDisplayTier] ?? ROUTE_STYLE_BY_TIER.unknown;

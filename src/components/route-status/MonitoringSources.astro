@@ -1,5 +1,12 @@
 ---
-// Buildspec section 20 — monitoring sources panel. Shows all seven lanes.
+// Buildspec section 20 — monitoring sources. Round 2: demoted into the
+// collapsed Monitor Health section (see MonitorHealthDisclosure.astro) and
+// reworded so it reads as source/ingestion health for the monitors
+// themselves, not as rider-relevant active route events — a rider should
+// never read "5 active route events" here when what actually happened is
+// "5 raw events were ingested from this source, some of them filtered out
+// by the noise-reduction policy before ever reaching the rider-facing
+// event list".
 import type { NormalizedLaneSummary } from "../../lib/route-status/normalize-dashboard-data";
 import { laneColorFor } from "../../lib/route-status/lane-colors";
 import type { SystemHealthFile } from "../../lib/route-status/types";
@@ -16,32 +23,28 @@ function usingLastKnownGood(laneId: string): boolean {
 }
 ---
 
-<section class="panel" aria-labelledby="monitoring-sources-heading">
-  <h2 class="panel__heading" id="monitoring-sources-heading">Monitoring sources</h2>
-  <ul class="lane-list">
-    {
-      laneSummaries.map((lane) => (
-        <li class="lane-row">
-          <span
-            class="lane-row__marker"
-            style={`background:${laneColorFor(lane.laneId) ?? "#9AA39A"}`}
-            aria-hidden="true"
-          />
-          <span class="lane-row__body">
-            <span class="lane-row__label">{lane.laneLabel}</span>
-            <span class="lane-row__meta">
-              {lane.eventCount > 0
-                ? `${lane.eventCount} active route event${lane.eventCount === 1 ? "" : "s"}`
-                : "No active route events"}
-              {" — "}
-              {lane.sourceStateText}
-            </span>
-            {usingLastKnownGood(lane.laneId) && (
-              <span class="lane-row__lkg">Showing last known data</span>
-            )}
+<h3 class="monitor-health__subheading">Monitoring sources</h3>
+<ul class="lane-list">
+  {
+    laneSummaries.map((lane) => (
+      <li class="lane-row">
+        <span
+          class="lane-row__marker"
+          style={`background:${laneColorFor(lane.laneId) ?? "#9AA39A"}`}
+          aria-hidden="true"
+        />
+        <span class="lane-row__body">
+          <span class="lane-row__label">{lane.laneLabel} source</span>
+          <span class="lane-row__meta">
+            {lane.eventCount} event{lane.eventCount === 1 ? "" : "s"} ingested
+            {" — "}
+            {lane.sourceStateText}
           </span>
-        </li>
-      ))
-    }
-  </ul>
-</section>
+          {usingLastKnownGood(lane.laneId) && (
+            <span class="lane-row__lkg">Showing last known data</span>
+          )}
+        </span>
+      </li>
+    ))
+  }
+</ul>

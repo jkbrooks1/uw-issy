@@ -1,6 +1,6 @@
 {
-  "releaseId": "08_STATUS_PUBLISHER-2026-08-02T162329490Z-001",
-  "assembledAt": "2026-08-02T16:23:29.490Z",
+  "releaseId": "20_STATUS_PUBLISHER-20260823T201500Z-001",
+  "assembledAt": "2026-08-23T20:15:00.121Z",
   "schemaVersion": "1.0.0",
   "laneRunIds": {
     "01_ROUTE_CONDITIONS": null,
@@ -9,7 +9,8 @@
     "04_WILDFIRE": null,
     "05_FLOOD_CONDITIONS": null,
     "06_TRAIL_INFRASTRUCTURE_STATUS": null,
-    "07_GOVERNMENT_SAFETY_ALERTS": null
+    "07_GOVERNMENT_SAFETY_ALERTS": null,
+    "08_ROUTE_FACILITIES": null
   },
   "sourceGitCommit": null,
   "buildState": "unknown",

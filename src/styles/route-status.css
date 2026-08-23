@@ -210,12 +210,11 @@ button:focus-visible,
   padding-left: 20px;
 }
 
-/* Buildspec 16 — layout. Every direct child of .dashboard-layout is placed
-   individually (no wrapper divs) so mobile can use the exact interleaved
-   order from buildspec 16.3, which does not match a simple "rail then
-   main" grouping. Desktop uses named grid-areas rather than relying on
-   grid auto-placement, which silently drops later items into the narrow
-   first column once `order` is reset at the breakpoint. */
+/* Round 2 layout — rider decisions first, monitoring-lane architecture
+   last. A single vertical column at every width (no sidebar rail): the
+   route map is the primary visual element and stays full width, and
+   Monitor Health is demoted to a collapsed section at the very bottom
+   regardless of viewport. */
 .dashboard-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -223,38 +222,19 @@ button:focus-visible,
   padding-bottom: 40px;
 }
 
-/* Buildspec 16.3 — mobile order (Current Route State removed 2026-08-03;
-   Monitoring Sources moved up to sit parallel with the route map at
-   desktop widths — see the desktop grid-areas below). */
-.item-freshness { order: 1; }
+.item-route-status { order: 1; }
 .item-route-map { order: 2; }
 .item-route-alerts { order: 3; }
-.item-monitoring-sources { order: 4; }
-.item-route-impacts { order: 5; }
-.item-system-health { order: 6; }
-
-@media (min-width: 900px) {
-  .dashboard-layout {
-    grid-template-columns: 290px minmax(0, 1fr);
-    grid-template-areas:
-      "freshness freshness"
-      "rail-top main-top"
-      "rail-mid main-mid"
-      ". main-bottom";
-    gap: 20px;
-  }
-
-  .item-freshness { grid-area: freshness; order: unset; }
-  .item-monitoring-sources { grid-area: rail-top; order: unset; }
-  .item-route-impacts { grid-area: rail-mid; order: unset; }
-  .item-route-map { grid-area: main-top; order: unset; }
-  .item-route-alerts { grid-area: main-mid; order: unset; }
-  .item-system-health { grid-area: main-bottom; order: unset; }
-}
+.item-closures { order: 4; }
+.item-weather-air { order: 5; }
+.item-route-impacts { order: 6; }
+.item-facilities { order: 7; }
+.item-monitor-health { order: 8; }
 
 @media (min-width: 1100px) {
   .dashboard-layout {
-    grid-template-columns: 330px minmax(0, 1fr);
+    max-width: 960px;
+    margin: 0 auto;
     gap: 24px;
   }
 }
@@ -296,6 +276,14 @@ button:focus-visible,
 .tier-alert { color: #A81F16; }
 .tier-unknown { color: var(--text-soft); }
 
+/* Round 2 — rider-facing status vocabulary (CLEAR / CAUTION / MAJOR ISSUE /
+   CLOSED / DATA STALE), distinct from the internal tier classes above. */
+.rider-state--clear { color: #1F3D11; }
+.rider-state--caution { color: #8A5300; }
+.rider-state--major { color: #A81F16; }
+.rider-state--closed { color: #A81F16; }
+.rider-state--stale { color: var(--text-soft); }
+
 .route-state__count {
   font-size: 14px;
   color: var(--text-soft);
@@ -305,7 +293,33 @@ button:focus-visible,
 .route-state__reason {
   font-size: 13px;
   color: var(--text-soft);
-  margin: 0;
+  margin: 0 0 10px 0;
+}
+
+.route-state__meta {
+  font-size: 13px;
+  color: var(--text-soft);
+  margin: 0 0 8px 0;
+}
+
+.route-state__meta strong {
+  color: var(--text-main);
+}
+
+.route-state__confidence {
+  font-size: 13px;
+  color: #8A5300;
+  background: #FBF3E8;
+  border: 1px solid #E7C9A9;
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin: 0 0 10px 0;
+}
+
+.route-state__counts {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 /* Buildspec 20 — monitoring sources */
@@ -381,6 +395,7 @@ button:focus-visible,
 
 .impact-row__top {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 10px;
   font-weight: 600;
@@ -397,6 +412,12 @@ button:focus-visible,
   font-size: 14px;
   color: var(--text-soft);
   margin: 0;
+}
+
+/* Round 2 — compact route-impacts note when no real breakdown exists, so
+   it does not take prime page space as a full empty-looking panel. */
+.route-impacts-compact {
+  padding: 4px 4px;
 }
 
 /* Buildspec 23 — route map */
@@ -582,14 +603,69 @@ button:focus-visible,
   text-decoration: underline;
 }
 
-/* Buildspec 20 — system health disclosure */
-.system-health-disclosure summary {
+/* Round 2 — closures and detours */
+.closure-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.closure-row {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--row-divider);
+}
+
+.closure-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.closure-row__top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.closure-row__title {
+  min-width: 0;
+}
+
+.closure-row__meta {
+  font-size: 13px;
+  color: var(--text-soft);
+  margin: 2px 0 0 0;
+}
+
+/* Round 2 — collapsed Monitor Health section (replaces the two separate
+   Monitoring Sources / System health detail panels; wraps both). */
+.monitor-health-disclosure {
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  padding: 4px 20px 20px 20px;
+}
+
+.monitor-health-disclosure summary {
   cursor: pointer;
   font-weight: 600;
   font-size: 14px;
-  padding: 10px 0;
+  padding: 16px 0;
 }
 
+.monitor-health__subheading {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 16px 0 8px 0;
+}
+
+/* Buildspec 20 — system health disclosure */
 .system-health-disclosure ul {
   margin: 8px 0 0 0;
   padding-left: 18px;

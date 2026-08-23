@@ -1,6 +1,19 @@
 import type { DashboardEvent, PresentationReason } from "./types";
 
 const SHORT_LIVED_FRESHNESS_HOURS = 48;
+const LONG_RUNNING_CLOSURE_CHECK_HOURS = 24;
+
+/**
+ * Mirrors scripts/build-public-package-snapshot.mjs's `isClosureTypeEvent`
+ * exemption: a real, current `status` of "closed" or "planned" is a
+ * long-running-closure signal regardless of lane, and must not be judged
+ * against the generic 48h short-lived-alert rule below. Without this, this
+ * guard silently re-excludes events the data layer already approved,
+ * producing a rider-facing count that understates real active issues —
+ * exactly the "count without matching detail" defect this dashboard exists
+ * to prevent.
+ */
+const ONGOING_OR_PLANNED_CLOSURE_STATUSES = new Set(["closed", "planned"]);
 
 export type EligibilityCheck = {
   eligible: boolean;
@@ -25,7 +38,8 @@ export function isEligibleForDisplay(
     | "routeImpact"
     | "effectiveUntil"
     | "lastSourceRefreshAt"
-  >,
+  > &
+    Partial<Pick<DashboardEvent, "currentStatus">>,
   nowMs: number = Date.now(),
 ): EligibilityCheck {
   if (event.presentationEligible !== true) {
@@ -55,7 +69,14 @@ export function isEligibleForDisplay(
   }
   if (!hasValidFutureEnd) {
     const refreshMs = event.lastSourceRefreshAt ? Date.parse(event.lastSourceRefreshAt) : NaN;
-    if (!Number.isFinite(refreshMs) || nowMs - refreshMs > SHORT_LIVED_FRESHNESS_HOURS * 60 * 60 * 1000) {
+    const isClosureStatus =
+      event.currentStatus !== null &&
+      event.currentStatus !== undefined &&
+      ONGOING_OR_PLANNED_CLOSURE_STATUSES.has(event.currentStatus);
+    const freshnessWindowHours = isClosureStatus
+      ? LONG_RUNNING_CLOSURE_CHECK_HOURS
+      : SHORT_LIVED_FRESHNESS_HOURS;
+    if (!Number.isFinite(refreshMs) || nowMs - refreshMs > freshnessWindowHours * 60 * 60 * 1000) {
       return { eligible: false, reason: "stale_short_lived_alert" };
     }
   }

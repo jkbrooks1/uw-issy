@@ -1,29 +1,96 @@
 ---
-// Buildspec section 18 — current route state panel.
+// Round 2 rebuild of the top-of-page rider status panel (formerly "Current
+// route state", not wired into index.astro in Round 1 — see notes.md).
+// Rider-facing vocabulary (CLEAR / CAUTION / MAJOR ISSUE / CLOSED / DATA
+// STALE) is derived from the internal displayTier plus real data-confidence
+// signals, extending display-tier.ts's "unknown never becomes normal" rule:
+// a stale, failed, or unknown data state can never present as CLEAR.
 import type { RouteWideSummary } from "../../lib/route-status/normalize-dashboard-data";
+import type { DashboardEventWithUnknownLane, SystemHealthFile } from "../../lib/route-status/types";
 
 type Props = {
   summary: RouteWideSummary;
+  systemHealth: SystemHealthFile | null;
+  events: DashboardEventWithUnknownLane[];
 };
 
-const { summary } = Astro.props;
+const { summary, systemHealth, events } = Astro.props;
 
-const ICONS: Record<string, string> = {
-  normal: "✓", // check
-  watch: "◯", // circle (eye/caution stand-in)
-  alert: "⚠", // warning triangle
-  unknown: "?",
+type RiderState = "CLEAR" | "CAUTION" | "MAJOR ISSUE" | "CLOSED" | "DATA STALE";
+
+// Counts the actual rendered `events` list (post dashboard final guard in
+// presentation-eligibility.ts), not the raw dashboardData.activeEventCount —
+// that guard independently re-derives freshness against real wall-clock
+// time and can legitimately exclude events the build-time snapshot judged
+// eligible. Showing a headline count that does not match what the rider
+// can actually see below it would itself be a silent, misleading gap.
+const activeEventCount = events.length;
+
+// A closure/access signal — reuses the same real-field-derived riderCanPass
+// value the build script already computed (never a second invented
+// heuristic; see build-public-package-snapshot.mjs Step 1).
+const closureEvents = events.filter((event) => event.riderCanPass !== null && event.riderCanPass !== undefined);
+const closureCount = closureEvents.length;
+
+const isDataUnavailable = systemHealth === null;
+const isAssemblyFailed = systemHealth?.assemblyState === "failed";
+const failedCount = systemHealth?.failedLaneIds.length ?? 0;
+const degradedCount = systemHealth?.degradedLaneIds.length ?? 0;
+
+function deriveRiderState(): RiderState {
+  if (isDataUnavailable || isAssemblyFailed || summary.displayTier === "unknown") return "DATA STALE";
+  if (closureCount > 0) return "CLOSED";
+  if (summary.displayTier === "alert") return "MAJOR ISSUE";
+  if (summary.displayTier === "watch" || failedCount > 0 || degradedCount > 0) return "CAUTION";
+  return "CLEAR";
+}
+
+const riderState = deriveRiderState();
+
+const STATE_META: Record<RiderState, { icon: string; label: string; cssClass: string }> = {
+  CLEAR: { icon: "✓", label: "Clear", cssClass: "rider-state--clear" },
+  CAUTION: { icon: "◯", label: "Caution", cssClass: "rider-state--caution" },
+  "MAJOR ISSUE": { icon: "⚠", label: "Major issue", cssClass: "rider-state--major" },
+  CLOSED: { icon: "✕", label: "Closed", cssClass: "rider-state--closed" },
+  "DATA STALE": { icon: "?", label: "Data stale", cssClass: "rider-state--stale" },
 };
+
+const meta = STATE_META[riderState];
+const hasConfidenceIssue = isDataUnavailable || isAssemblyFailed || failedCount > 0 || degradedCount > 0 || summary.displayTier === "unknown";
 ---
 
-<section class="panel" aria-labelledby="current-route-state-heading">
-  <h2 class="panel__heading" id="current-route-state-heading">Current route state</h2>
-  <p class={`route-state__value tier-${summary.displayTier}`}>
-    <span class="route-state__icon" aria-hidden="true">{ICONS[summary.displayTier]}</span>
-    <span>{summary.displayTierLabel}</span>
+<section class="panel route-status-summary" aria-labelledby="route-status-summary-heading">
+  <h2 class="panel__heading" id="route-status-summary-heading">Route status</h2>
+  <p class={`route-state__value ${meta.cssClass}`}>
+    <span class="route-state__icon" aria-hidden="true">{meta.icon}</span>
+    <span>{meta.label}</span>
   </p>
-  <p class="route-state__count">
-    Active route events: <strong>{summary.activeEventCount}</strong>
+  {
+    summary.overallMessage && (
+      <p class="route-state__reason">{summary.overallMessage}</p>
+    )
+  }
+  <p class="route-state__meta">
+    Last full route check:{" "}
+    <strong>{summary.lastUpdatedLabel ?? "Not available"}</strong>
   </p>
-  {summary.overallMessage && <p class="route-state__reason">{summary.overallMessage}</p>}
+  {
+    hasConfidenceIssue && (
+      <p class="route-state__confidence">
+        {isDataUnavailable || isAssemblyFailed
+          ? "Route data could not be fully assembled — some information below may be incomplete."
+          : summary.displayTier === "unknown"
+            ? "Route-wide status could not be determined from the latest update."
+            : `Data confidence reduced: ${failedCount} source${failedCount === 1 ? "" : "s"} failed, ${degradedCount} degraded.`}
+      </p>
+    )
+  }
+  <div class="route-state__counts">
+    <p class="route-state__count">
+      Rider-relevant active issues: <strong>{activeEventCount}</strong>
+    </p>
+    <p class="route-state__count">
+      Closures reported: <strong>{closureCount}</strong>
+    </p>
+  </div>
 </section>

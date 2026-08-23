@@ -26,6 +26,11 @@ const { events } = Astro.props;
           {formatPacificTime(event.reportedAt) ?? "Report time not available"}
         </p>
         <span class={`tier-badge tier-badge--${event.displayTier}`}>{event.displayTier}</span>
+        {event.riderCanPass && (
+          <p class="event-card__meta">
+            Can I pass? <strong>{event.riderCanPass === "no" ? "No" : "Unknown"}</strong>
+          </p>
+        )}
         <details>
           <summary class="event-card__link">View details</summary>
           <EventDetail event={event} />

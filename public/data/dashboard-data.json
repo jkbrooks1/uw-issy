@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.0.0",
-  "releaseId": "08_STATUS_PUBLISHER-2026-08-02T162329490Z-001",
-  "assembledAt": "2026-08-02T16:23:29.490Z",
+  "releaseId": "20_STATUS_PUBLISHER-20260823T201500Z-001",
+  "assembledAt": "2026-08-23T20:15:00.121Z",
   "routeId": "UnivWA-Issaquah",
   "routeName": "University of Washington to Issaquah",
   "displayTier": "watch",
-  "overallMessage": "One or more lanes are degraded, stale, or running on last-known-good data.",
-  "activeEventCount": 1,
+  "overallMessage": "All expected source lanes ran, with one or more degraded, stale, or using last-known-good data.",
+  "activeEventCount": 4,
   "laneSummaries": [
     {
       "laneId": "01_ROUTE_CONDITIONS",
@@ -21,8 +21,8 @@
       "laneLabel": "Weather",
       "available": true,
       "displayTier": "normal",
-      "sourceState": "no_relevant_events",
-      "eventCount": 0
+      "sourceState": "ok",
+      "eventCount": 1
     },
     {
       "laneId": "03_AIR_QUALITY",
@@ -30,7 +30,7 @@
       "available": true,
       "displayTier": "watch",
       "sourceState": "degraded",
-      "eventCount": 1
+      "eventCount": 2
     },
     {
       "laneId": "04_WILDFIRE",
@@ -51,10 +51,10 @@
     {
       "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
       "laneLabel": "Trail Infrastructure Status",
-      "available": false,
-      "displayTier": "unknown",
-      "sourceState": "unknown",
-      "eventCount": 0
+      "available": true,
+      "displayTier": "watch",
+      "sourceState": "degraded",
+      "eventCount": 5
     },
     {
       "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
@@ -62,11 +62,22 @@
       "available": true,
       "displayTier": "normal",
       "sourceState": "ok",
-      "eventCount": 5
+      "eventCount": 7
+    },
+    {
+      "laneId": "08_ROUTE_FACILITIES",
+      "laneLabel": "Route Facilities",
+      "available": true,
+      "displayTier": "normal",
+      "sourceState": "ok",
+      "eventCount": 0
     }
   ],
   "routeImpacts": null,
   "eventRefs": [
-    "01_ROUTE_CONDITIONS:KC-03:hash_7f6bfcb8"
+    "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01",
+    "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:ae7e8f59",
+    "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:ec9a6c33",
+    "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:b3d1e147"
   ]
 }

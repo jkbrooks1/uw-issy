@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "releaseId": "08_STATUS_PUBLISHER-2026-08-02T162329490Z-001",
-  "assembledAt": "2026-08-02T16:23:29.490Z",
+  "releaseId": "20_STATUS_PUBLISHER-20260823T201500Z-001",
+  "assembledAt": "2026-08-23T20:15:00.121Z",
   "lanes": [
     {
       "laneId": "01_ROUTE_CONDITIONS",
@@ -10,18 +10,18 @@
       "sourceState": "degraded",
       "publicText": "Partial data",
       "freshnessState": "stale",
-      "usingLastKnownGood": true,
+      "usingLastKnownGood": false,
       "eventCount": 1
     },
     {
       "laneId": "02_WEATHER",
       "laneLabel": "Weather",
       "available": true,
-      "sourceState": "no_relevant_events",
-      "publicText": "No route-related events",
+      "sourceState": "ok",
+      "publicText": "Current",
       "freshnessState": "fresh",
       "usingLastKnownGood": false,
-      "eventCount": 0
+      "eventCount": 1
     },
     {
       "laneId": "03_AIR_QUALITY",
@@ -31,7 +31,7 @@
       "publicText": "Partial data",
       "freshnessState": "stale",
       "usingLastKnownGood": false,
-      "eventCount": 1
+      "eventCount": 2
     },
     {
       "laneId": "04_WILDFIRE",
@@ -56,12 +56,12 @@
     {
       "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
       "laneLabel": "Trail Infrastructure Status",
-      "available": false,
-      "sourceState": "unknown",
-      "publicText": "Source state unknown",
-      "freshnessState": "unknown",
+      "available": true,
+      "sourceState": "degraded",
+      "publicText": "Partial data",
+      "freshnessState": "stale",
       "usingLastKnownGood": false,
-      "eventCount": 0
+      "eventCount": 5
     },
     {
       "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
@@ -71,7 +71,17 @@
       "publicText": "Current",
       "freshnessState": "fresh",
       "usingLastKnownGood": false,
-      "eventCount": 5
+      "eventCount": 7
+    },
+    {
+      "laneId": "08_ROUTE_FACILITIES",
+      "laneLabel": "Route Facilities",
+      "available": true,
+      "sourceState": "ok",
+      "publicText": "Current",
+      "freshnessState": "fresh",
+      "usingLastKnownGood": false,
+      "eventCount": 0
     }
   ],
   "failedLaneIds": [],
@@ -79,7 +89,8 @@
     "01_ROUTE_CONDITIONS",
     "03_AIR_QUALITY",
     "04_WILDFIRE",
-    "05_FLOOD_CONDITIONS"
+    "05_FLOOD_CONDITIONS",
+    "06_TRAIL_INFRASTRUCTURE_STATUS"
   ],
   "assemblyState": "ok",
   "publicationState": "published"
