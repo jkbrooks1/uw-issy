@@ -1,0 +1,26 @@
+{
+  "markerCount": 4,
+  "ringMarkerCount": 0,
+  "markerClasses": [
+    "leaflet-marker-icon map-marker-triangle event-marker--major leaflet-zoom-animated leaflet-interactive",
+    "leaflet-marker-icon map-marker-triangle event-marker--major leaflet-zoom-animated leaflet-interactive",
+    "leaflet-marker-icon map-marker-triangle event-marker--major leaflet-zoom-animated leaflet-interactive",
+    "leaflet-marker-icon map-marker-triangle event-marker--major leaflet-zoom-animated leaflet-interactive"
+  ],
+  "markerBox": {
+    "x": 860,
+    "y": 981.09375,
+    "width": 28,
+    "height": 24
+  },
+  "routeStrokes": [
+    "#C72B20",
+    "#C72B20"
+  ],
+  "logo": {
+    "width": 50,
+    "height": 50
+  },
+  "status": "⚠Partial closure",
+  "popupText": "George Davis Creek fish-passage and storm improvement projectLaneTrail Infrastructure StatusSummary{\"data\":\"\\r\\n \\r\\n \\r\\n \\r\\n George Davis Creek Fish Passage and Storm Improvement Project | City of Sammamish \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\nLocationGeorge Davis CreekStateunknownSeverityhighCurrent statusclosedCan riders passUnknownNoteData may be out of dateCity of Sammamish George Davis Creek Fish Passage and Storm Improvement Project page"
+}

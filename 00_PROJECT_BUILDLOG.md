@@ -3008,3 +3008,8 @@ Each new file was generated from the verified live post-rename export, and each 
 ## 2026-08-23 15:13 PDT — Marker clickability follow-up
 - Fixed triangle marker CSS so the visual child cannot intercept pointer events; marker clicks/taps reach the Leaflet marker popup.
 - Re-ran tests, typecheck, build, and secret scan: PASS.
+
+## 2026-08-23 15:18 PDT — UW-Issy status/map symbol fix final closeout
+- Final GitHub Actions/Cloudflare Pages deploy passed for commit `4eec1fb`; Pages URL `https://132badbc.uw-issy.pages.dev` verified 27/27.
+- Targeted Cloudflare cache purge made the plain custom domain serve the corrected shell. Live status is `Partial closure`, full route reported closed = NO, route line is red, incident markers are red triangles, and marker popup click proof passed.
+- Proof folder and final proof ZIP recorded under `00_AS-BUILT/20260823-UWISSY_STATUS_MAP_SYMBOL_FIX/` and `/Users/jkbrookspersonal/Downloads/20260823-UWISSY_STATUS_MAP_SYMBOL_FIX_PROOF.zip`.

@@ -875,3 +875,14 @@ No commit, push, merge, reset, or working-tree clean was performed. All pre-exis
 - Workflow result: success
 - Deploy URL: https://132badbc.uw-issy.pages.dev
 - Run: https://github.com/jkbrooks1/uw-issy/actions/runs/32669948655
+
+## 2026-08-23 15:18 PDT — UW-Issy status/map symbol fix final closeout
+- Final deploy commit: `4eec1fb` (`Fix UW-Issy triangle marker clickability`). Final GitHub Actions run `32669948655` passed all build, validation, test, typecheck, build, secret-scan, deploy, and Pages verification steps.
+- Final Pages deploy URL: https://132badbc.uw-issy.pages.dev. Existing approved deployment path (GitHub Actions to Cloudflare Pages) was used.
+- Custom-domain cache: plain `https://uw-issy.biketourfrance.net` initially served the previous shell after the first deploy; used Cloudflare API targeted purge for the custom-domain root and public data URLs. Final plain live URL serves the corrected shell.
+- Final live route status: `Partial closure`; whole-route `Closed` headline is absent; supporting copy says localized route segments are closed and the full route is not reported closed. Full route reported closed: NO.
+- Final live map: full route line red `#C72B20`; 4 semantic red triangle markers; no legacy ring markers; marker center-click opened useful popup detail (proof: `final-live-marker-popup-proof.json` and `screenshots/final-live-marker-popup.png`).
+- Final live logo: post-change header uses `width="200" height="50"`; CSS render heights are 50px desktop and 42.5px mobile, exactly 25% larger than old 40px/34px values. Final 390px and 320px screenshots show no header clipping or overflow.
+- Final production verification: `node scripts/verify-production.mjs https://132badbc.uw-issy.pages.dev` PASS 27/27. Custom domain verifier shows 26/27 due only to the known Cloudflare Email Address Obfuscation mailto rewrite; all route/status/data checks passed.
+- Final proof folder: `00_AS-BUILT/20260823-UWISSY_STATUS_MAP_SYMBOL_FIX/`.
+- Final proof ZIP: `/Users/jkbrookspersonal/Downloads/20260823-UWISSY_STATUS_MAP_SYMBOL_FIX_PROOF.zip` (created after this log entry).
