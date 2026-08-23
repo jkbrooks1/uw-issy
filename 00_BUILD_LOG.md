@@ -817,3 +817,12 @@ No commit, push, merge, reset, or working-tree clean was performed. All pre-exis
 - Workflow result: success
 - Deploy URL: https://4237aa95.uw-issy.pages.dev
 - Run: https://github.com/jkbrooks1/uw-issy/actions/runs/32665305555
+
+## 2026-08-23 20:44 UTC — Rider-first dashboard redesign closeout (John's task)
+
+- Root cause: `scripts/build-public-package-snapshot.mjs`'s route-relevance/route-impact classification and closure-freshness exemption did not recognize Lane 06 Trail Infrastructure's real field shapes (`route_relevance.classification`/`matched_route_sections`, `status: "closed"/"planned"`), silently excluding real active closures; `mapEventGeometry` discarded events with `geometry.type: "none"` even when a resolvable route segment existed. Fixed all three, plus the same closure-exemption gap independently in the dashboard's own `presentation-eligibility.ts` guard (found during final verification, not present in the original round-2 diff).
+- UI: rider-first page order (Route status → map → current issues → closures/detours → weather/air → route impacts → collapsed monitor health), CyclOSM cycling base layer replacing CARTO, enriched event fields (severity, current status, detour availability, rider passability), unauthorized footer tagline removed.
+- Verified live, this session, independently: `activeEventCount` 1→4, all 4 events carry real non-null geometry, CyclOSM tile URL/attribution present in the live JS bundle, footer copy absent, `verify-production.mjs` 26/27 (1 pre-existing disclosed gap, unchanged).
+- Deploy commits: `49238e1` (feature), `a62705c` (proof folder). CI run 32664558345 green, 18/18 steps.
+- Proof folder: `00_AS-BUILT/20260823-UWISSY_RIDER_DASHBOARD_REDESIGN/` (reconciliation table, 10-gate acceptance report, before/after evidence, all verification command output).
+- Local HEAD had been 2 days behind `origin/main` (stale evidence file); fast-forward pulled cleanly before final verification and deploy — no overlap with working-tree changes.
