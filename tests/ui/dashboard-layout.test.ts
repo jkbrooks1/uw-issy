@@ -117,6 +117,7 @@ describe("title and layout (Round 2 rider-first rebuild)", () => {
     expect(routeMap).toMatch(/markerPresentationForEvent/);
     expect(routeMap).not.toMatch(/laneColorFor/);
     expect(CSS).toMatch(/\.map-marker-triangle span\s*\{[^}]*border-bottom:\s*24px solid #D99100/s);
+    expect(CSS).toMatch(/\.map-marker-triangle span\s*\{[^}]*pointer-events:\s*none/s);
     expect(CSS).toMatch(/\.event-marker--major span,[\s\S]*border-bottom-color:\s*#C72B20/);
     expect(CSS).toMatch(/\.event-marker--caution span,[\s\S]*border-bottom-color:\s*#D99100/);
     expect(CSS).toMatch(/\.event-marker--clear span,[\s\S]*border-bottom-color:\s*#2D7A30/);

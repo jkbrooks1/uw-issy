@@ -3004,3 +3004,7 @@ Each new file was generated from the verified live post-rename export, and each 
 - Added focused tests for partial-vs-full closure, source degradation separation, severity-to-color mapping, red route line, triangle marker CSS, and logo size.
 - Local validation passed: tests, typecheck, build, public-package rebuild/validation, route source/GeoJSON validation, and secret scan.
 - Proof folder: `00_AS-BUILT/20260823-UWISSY_STATUS_MAP_SYMBOL_FIX/`.
+
+## 2026-08-23 15:13 PDT — Marker clickability follow-up
+- Fixed triangle marker CSS so the visual child cannot intercept pointer events; marker clicks/taps reach the Leaflet marker popup.
+- Re-ran tests, typecheck, build, and secret scan: PASS.

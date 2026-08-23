@@ -34,3 +34,7 @@ Fallback: caution.
 The current mappable active events are high/closed/passability-impacting, so their incident symbols are red triangles.
 
 No yellow or green active production marker is forced where the current event data does not support one.
+
+## Clickability Fix
+
+The triangle marker's visual child uses `pointer-events: none`, so click/tap events reach Leaflet's marker element and open the bound event popup.

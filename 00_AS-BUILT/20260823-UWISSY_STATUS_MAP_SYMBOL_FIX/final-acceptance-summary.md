@@ -16,6 +16,8 @@ PASS: canonical full route line is red.
 
 PASS: incident symbols are triangles.
 
+PASS: triangle marker visual children do not intercept pointer events; marker click/tap reaches the Leaflet marker and opens event detail.
+
 PASS: marker color is derived from rider impact/severity, not source lane.
 
 PASS: current major/closure markers are red.

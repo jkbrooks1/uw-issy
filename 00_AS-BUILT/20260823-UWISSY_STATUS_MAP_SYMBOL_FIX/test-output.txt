@@ -5,16 +5,16 @@
 
  RUN  v4.1.10 /Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor
 
-FAIL: Snapshot file does not exist: /var/folders/5g/vs4ywyrn2195wtptbt4m2gz40000gn/T/build-pkg-test-tAFFOj/missing.json
 FAIL: GPX file does not exist: /var/folders/5g/vs4ywyrn2195wtptbt4m2gz40000gn/T/does-not-exist.gpx
+FAIL: Snapshot file does not exist: /var/folders/5g/vs4ywyrn2195wtptbt4m2gz40000gn/T/build-pkg-test-UVu1As/missing.json
+FAIL: Missing required file: /var/folders/5g/vs4ywyrn2195wtptbt4m2gz40000gn/T/pkg-test-6DdSaL/release-manifest.json
 FAIL: GPX is not valid XML: mismatched closing tag </trk> (expected </name>)
-FAIL: Missing required file: /var/folders/5g/vs4ywyrn2195wtptbt4m2gz40000gn/T/pkg-test-VZA2eN/release-manifest.json
-FAIL: GPX has no usable route: found 1 track(s) and 0 track point(s); need at least 1 track with at least 2 points
 FAIL: dashboard-data.json is missing required field "routeId"
-FAIL: Track point 0 has invalid latitude: 97
+FAIL: GPX has no usable route: found 1 track(s) and 0 track point(s); need at least 1 track with at least 2 points
 FAIL: Release IDs do not match across the four files: TEST-RELEASE-001, DIFFERENT-RELEASE
-FAIL: Track point 0 has invalid longitude: -190.2
+FAIL: Track point 0 has invalid latitude: 97
 FAIL: dashboard-data.json references event "evt-does-not-exist" that is missing from route-events.geojson
+FAIL: Track point 0 has invalid longitude: -190.2
 FAIL: Route bounds are not plausible for the UW-Issaquah route: padded bbox [lat 9.8000..10.2100, lon 9.8000..10.2100] does not contain reference point "UW Seattle" (47.6553, -122.3035)
 FAIL: route-events.geojson feature "evt-1" has an invalid geometry type
 FAIL: GPX is not valid XML: mismatched closing tag </trk> (expected </name>)
@@ -24,6 +24,6 @@ FAIL: route-events.geojson is missing its own release/generated marker
 
  Test Files  8 passed (8)
       Tests  107 passed (107)
-   Start at  15:02:16
-   Duration  3.01s (transform 479ms, setup 0ms, import 786ms, tests 5.26s, environment 1ms)
+   Start at  15:12:39
+   Duration  2.84s (transform 292ms, setup 0ms, import 512ms, tests 5.24s, environment 2ms)
 

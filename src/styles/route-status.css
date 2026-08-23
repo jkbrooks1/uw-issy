@@ -503,12 +503,14 @@ button:focus-visible,
 
 .map-marker-triangle span {
   display: block;
+  position: relative;
   width: 0;
   height: 0;
   border-left: 14px solid transparent;
   border-right: 14px solid transparent;
   border-bottom: 24px solid #D99100;
   filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+  pointer-events: none;
 }
 
 .map-marker-triangle span::after {

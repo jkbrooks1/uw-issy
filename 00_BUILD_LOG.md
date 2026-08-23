@@ -861,3 +861,10 @@ No commit, push, merge, reset, or working-tree clean was performed. All pre-exis
 - Workflow result: success
 - Deploy URL: https://01a2487c.uw-issy.pages.dev
 - Run: https://github.com/jkbrooks1/uw-issy/actions/runs/32669546244
+
+## 2026-08-23 15:13 PDT — Marker clickability follow-up
+- Live marker popup test found the triangle marker child `<span>` intercepted pointer events before the Leaflet marker could receive the click.
+- Fixed `src/styles/route-status.css` with `pointer-events: none` and `position: relative` on `.map-marker-triangle span` so markers remain clickable/tappable while preserving the triangle visual.
+- Added UI source test coverage for the pointer-events rule in `tests/ui/dashboard-layout.test.ts`.
+- Re-ran `npm test`, `npm run typecheck`, `npm run build`, and dist secret scan: PASS.
+- Deployment: pending follow-up GitHub Actions/Cloudflare Pages deploy from the next commit.
