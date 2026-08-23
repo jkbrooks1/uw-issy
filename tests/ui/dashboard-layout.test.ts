@@ -20,6 +20,7 @@ const CURRENT_ROUTE_STATE_ASTRO = readFileSync(
   join(REPO_ROOT, "src", "components", "route-status", "CurrentRouteState.astro"),
   "utf8",
 );
+const RIDER_STATE_TS = readFileSync(join(REPO_ROOT, "src", "lib", "route-status", "rider-state.ts"), "utf8");
 const FOOTER_ASTRO = readFileSync(join(REPO_ROOT, "src", "components", "site", "SiteFooter.astro"), "utf8");
 const CSS = readFileSync(join(REPO_ROOT, "src", "styles", "route-status.css"), "utf8");
 
@@ -36,10 +37,11 @@ describe("title and layout (Round 2 rider-first rebuild)", () => {
     expect(CURRENT_ROUTE_STATE_ASTRO).toMatch(/CLEAR/);
     expect(CURRENT_ROUTE_STATE_ASTRO).toMatch(/CAUTION/);
     expect(CURRENT_ROUTE_STATE_ASTRO).toMatch(/MAJOR ISSUE/);
+    expect(CURRENT_ROUTE_STATE_ASTRO).toMatch(/PARTIAL CLOSURE/);
     expect(CURRENT_ROUTE_STATE_ASTRO).toMatch(/CLOSED/);
     expect(CURRENT_ROUTE_STATE_ASTRO).toMatch(/DATA STALE/);
     // Unknown/failed/stale data must never present as CLEAR.
-    expect(CURRENT_ROUTE_STATE_ASTRO).toMatch(/isDataUnavailable \|\| isAssemblyFailed \|\| summary\.displayTier === "unknown"/);
+    expect(RIDER_STATE_TS).toMatch(/isDataUnavailable \|\| isAssemblyFailed \|\| summary\.displayTier === "unknown"/);
   });
 
   it("3. rider content (status summary, map, issues) renders before the collapsed Monitor Health section", () => {
@@ -103,5 +105,27 @@ describe("title and layout (Round 2 rider-first rebuild)", () => {
     );
     expect(routeMap).not.toMatch(/basemaps\.cartocdn\.com/);
     expect(routeMap).toMatch(/CyclOSM/);
+  });
+
+  it("8. the route line is fixed red and event markers are semantic triangles", () => {
+    const routeMap = readFileSync(
+      join(REPO_ROOT, "src", "components", "route-status", "RouteMap.svelte"),
+      "utf8",
+    );
+    expect(routeMap).toMatch(/const ROUTE_STYLE = \{ color: "#C72B20", weight: 6, opacity: 0\.98 \}/);
+    expect(routeMap).toMatch(/map-marker-triangle/);
+    expect(routeMap).toMatch(/markerPresentationForEvent/);
+    expect(routeMap).not.toMatch(/laneColorFor/);
+    expect(CSS).toMatch(/\.map-marker-triangle span\s*\{[^}]*border-bottom:\s*24px solid #D99100/s);
+    expect(CSS).toMatch(/\.event-marker--major span,[\s\S]*border-bottom-color:\s*#C72B20/);
+    expect(CSS).toMatch(/\.event-marker--caution span,[\s\S]*border-bottom-color:\s*#D99100/);
+    expect(CSS).toMatch(/\.event-marker--clear span,[\s\S]*border-bottom-color:\s*#2D7A30/);
+  });
+
+  it("9. the BTF logo render size is increased by exactly 25 percent", () => {
+    const header = readFileSync(join(REPO_ROOT, "src", "components", "site", "SiteHeader.astro"), "utf8");
+    expect(header).toMatch(/width="200" height="50"/);
+    expect(CSS).toMatch(/\.site-header__logo img\s*\{[^}]*height:\s*50px/s);
+    expect(CSS).toMatch(/@media \(max-width: 480px\)[\s\S]*\.site-header__logo img\s*\{[^}]*height:\s*42\.5px/s);
   });
 });

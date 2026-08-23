@@ -833,3 +833,24 @@ No commit, push, merge, reset, or working-tree clean was performed. All pre-exis
 - Workflow result: success
 - Deploy URL: https://49fda5b8.uw-issy.pages.dev
 - Run: https://github.com/jkbrooks1/uw-issy/actions/runs/32665441968
+
+## 2026-08-23 14:52:12 PDT — Lane status/map symbol fix handed off to Codex
+- Executor: Codex CLI
+- Scope: correct partial-vs-full closure status, red route line, severity-coded triangle incident markers, and 25% larger BTF logo.
+- Live target: https://uw-issy.biketourfrance.net
+- Execution mode: unattended; routine gates must not wait for user confirmation.
+
+## 2026-08-23 15:07 PDT — UW-Issy status/map symbol production UI fix
+- Root cause: `src/components/route-status/CurrentRouteState.astro` promoted any rendered event with a non-null `riderCanPass` closure/access field to top-level `CLOSED`, which falsely implied the whole roughly 33-mile route was closed. The current package's closure evidence is localized (named segment/location/geometry), not route-wide. Degraded source count was separate data-confidence state and is now kept distinct.
+- State-logic change: added `src/lib/route-status/rider-state.ts`; localized closure/access events now produce `PARTIAL CLOSURE`, while `CLOSED` is reserved for explicit whole/full/entire route closure language without localized evidence. Current truth: full route reported closed = NO; localized closures reported = 4.
+- UI copy: top Route status now says `Partial closure` and explains that localized route segments are closed while the full route is not reported closed; data confidence still reports 0 failed sources and 5 degraded sources separately.
+- Route-line color: changed canonical full route line in `src/components/route-status/RouteMap.svelte` to red `#C72B20`, weight 6, opacity 0.98; route geometry unchanged.
+- Marker logic: added `src/lib/route-status/event-marker.ts`; map and issue cards use semantic triangle markers. Red = major/closure/severe rider impact; yellow = caution/moderate/degraded/unknown passability; green = clear/resolved/low-risk informational marker. Color is not based on source lane.
+- Map behavior: all mappable event geometries now get representative clickable/tappable triangle markers, including LineString closures; event geometries retain useful popup detail.
+- Logo size: old rendered values were img attrs 160x40, desktop CSS height 40px, mobile CSS height 34px. New values are img attrs 200x50, desktop CSS height 50px, mobile CSS height 42.5px, exactly 25% larger with aspect ratio preserved.
+- Files changed: `src/lib/route-status/rider-state.ts`, `src/lib/route-status/event-marker.ts`, `src/components/route-status/CurrentRouteState.astro`, `src/components/route-status/RouteMap.svelte`, `src/components/route-status/EventTable.astro`, `src/components/route-status/EventListMobile.astro`, `src/components/site/SiteHeader.astro`, `src/styles/route-status.css`, `tests/route-status/rider-state.test.ts`, `tests/route-status/event-marker.test.ts`, `tests/ui/dashboard-layout.test.ts`.
+- Local validation: `npm test` PASS (107 tests); `npm run typecheck` PASS; `npm run build` PASS; public package rebuild PASS (4 of 21 candidates eligible, 17 excluded, 2 duplicates merged); public package validation PASS; route source validation PASS; route GeoJSON validation PASS; secret scan PASS.
+- Visual proof: captured pre-change live desktop/mobile screenshots and post-change local desktop/390/320 screenshots; 320px and 390px mobile header fit without clipping or overflow.
+- Proof folder: `00_AS-BUILT/20260823-UWISSY_STATUS_MAP_SYMBOL_FIX/`.
+- Proof ZIP target: `/Users/jkbrookspersonal/Downloads/20260823-UWISSY_STATUS_MAP_SYMBOL_FIX_PROOF.zip`.
+- Deployment: pending GitHub Actions/Cloudflare Pages deploy from this commit; live production verification to be appended after deploy.

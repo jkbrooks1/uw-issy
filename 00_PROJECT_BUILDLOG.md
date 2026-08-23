@@ -2997,3 +2997,10 @@ Each new file was generated from the verified live post-rename export, and each 
 - Verification, run against `/tmp/pkg_after` (not `public/data` — that stays regenerated-output-only per ownership boundary): `node scripts/build-public-package-snapshot.mjs ... /tmp/pkg_after /tmp/audit_after` → PASS; `node scripts/validate-public-package.mjs /tmp/pkg_after` → PASS, exit 0; `npx vitest run tests/public-package` → 65/65 passed, no regressions.
 - Full root-cause writeup, reconciliation table (all 8 lanes), geometry accounting, and events deliberately left ineligible: `notes.md` in the round-1 task scratch directory (`/Users/jkbrookspersonal/.ringer/work/uwissy-rider-redesign-20260823/01-pipeline-fix/pipeline_fix/notes.md`).
 - Not done here (round 2, separate worker): applying this pipeline output to any UI/page/component file, regenerating `public/data` for real deployment, or any git commit/push.
+
+## 2026-08-23 15:07 PDT — UW-Issy status/map symbol production UI fix
+- Corrected rider dashboard top state so localized route closures produce `Partial closure`, not whole-route `Closed`; full route reported closed = NO in current public package.
+- Changed full route map line to red, replaced lane-colored circular markers with rider-impact severity triangle markers, and increased BTF logo render size by exactly 25%.
+- Added focused tests for partial-vs-full closure, source degradation separation, severity-to-color mapping, red route line, triangle marker CSS, and logo size.
+- Local validation passed: tests, typecheck, build, public-package rebuild/validation, route source/GeoJSON validation, and secret scan.
+- Proof folder: `00_AS-BUILT/20260823-UWISSY_STATUS_MAP_SYMBOL_FIX/`.

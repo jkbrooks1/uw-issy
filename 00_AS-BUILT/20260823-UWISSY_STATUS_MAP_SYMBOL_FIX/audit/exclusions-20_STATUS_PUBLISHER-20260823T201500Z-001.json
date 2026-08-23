@@ -1,0 +1,217 @@
+{
+  "releaseId": "20_STATUS_PUBLISHER-20260823T201500Z-001",
+  "assembledAt": "2026-08-23T20:15:00.121Z",
+  "totalCandidates": 21,
+  "records": [
+    {
+      "eventId": "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01",
+      "laneId": "01_ROUTE_CONDITIONS",
+      "presentationEligible": true,
+      "presentationReason": "eligible",
+      "routeRelevant": true,
+      "routeImpact": true,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "threshold:WP1:thunder_caution:2026-08-23T12:00:00Z",
+      "laneId": "02_WEATHER",
+      "presentationEligible": false,
+      "presentationReason": "unknown_or_unusable_location",
+      "routeRelevant": false,
+      "routeImpact": true,
+      "freshnessState": "expired",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "03_AIR_QUALITY:PSCAA-02:burn-ban:unknown",
+      "laneId": "03_AIR_QUALITY",
+      "presentationEligible": false,
+      "presentationReason": "no_route_impact",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "stale",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "03_AIR_QUALITY:WASMOKE-01:smoke-context:seattle:unhealthy",
+      "laneId": "03_AIR_QUALITY",
+      "presentationEligible": false,
+      "presentationReason": "no_route_impact",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "stale",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "05_FLOOD_CONDITIONS:USGS-01:gauge-observation:advisory:monitoring",
+      "laneId": "05_FLOOD_CONDITIONS",
+      "presentationEligible": false,
+      "presentationReason": "flood_no_active_category",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "05_FLOOD_CONDITIONS:USGS-02:gauge-observation:advisory:monitoring",
+      "laneId": "05_FLOOD_CONDITIONS",
+      "presentationEligible": false,
+      "presentationReason": "flood_no_active_category",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "05_FLOOD_CONDITIONS:USGS-03:gauge-observation:advisory:monitoring",
+      "laneId": "05_FLOOD_CONDITIONS",
+      "presentationEligible": false,
+      "presentationReason": "flood_no_active_category",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "05_FLOOD_CONDITIONS:NWPS-01:no-flooding:advisory",
+      "laneId": "05_FLOOD_CONDITIONS",
+      "presentationEligible": false,
+      "presentationReason": "flood_below_major",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "05_FLOOD_CONDITIONS:NWPS-02:not-defined:advisory",
+      "laneId": "05_FLOOD_CONDITIONS",
+      "presentationEligible": false,
+      "presentationReason": "flood_below_major",
+      "routeRelevant": true,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:ae7e8f59",
+      "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "presentationEligible": true,
+      "presentationReason": "eligible",
+      "routeRelevant": true,
+      "routeImpact": true,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:ec9a6c33",
+      "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "presentationEligible": true,
+      "presentationReason": "eligible",
+      "routeRelevant": true,
+      "routeImpact": true,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-03:df5291f5",
+      "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "presentationEligible": false,
+      "presentationReason": "duplicate_merged",
+      "routeRelevant": true,
+      "routeImpact": true,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:b3d1e147",
+      "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "presentationEligible": true,
+      "presentationReason": "eligible",
+      "routeRelevant": true,
+      "routeImpact": true,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": "06_TRAIL_INFRASTRUCTURE_STATUS::09"
+    },
+    {
+      "eventId": "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02:0a230e2c",
+      "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
+      "presentationEligible": false,
+      "presentationReason": "duplicate_merged",
+      "routeRelevant": true,
+      "routeImpact": true,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:08/12/2026|Public Health – Seattle & King County|Health Advisory: Take Steps Now. Measles Stops with Us. (PDF)|",
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "presentationEligible": false,
+      "presentationReason": "health_alert_excluded",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:08/11/2026|Centers for Disease Control and Prevention|Health Advisory: Risk of Severe Arboviral Disease in Patients Receiving B Cell-Depleting or Modulating Medications|",
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "presentationEligible": false,
+      "presentationReason": "health_alert_excluded",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:07/23/2026|Yakima Health District|Health Advisory: Potential Exposure to Measles from Visitor at MultiCare Yakima Memorial Hospital|",
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "presentationEligible": false,
+      "presentationReason": "health_alert_excluded",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:07/14/2026|Centers for Disease Control and Prevention|Health Advisory: Domestically Acquired Cyclosporiasis Cases in Multiple U.S. States, 2026|",
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "presentationEligible": false,
+      "presentationReason": "health_alert_excluded",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:05/22/2026|Washington State Department of Health|Health Alert: Ebola Outbreak in DRC and Uganda; Public Health Monitoring of Returning Travelers|",
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "presentationEligible": false,
+      "presentationReason": "health_alert_excluded",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:05/12/2026|Public Health – Seattle & King County|Three King County residents connected to international cruise ship in Public Health monitoring for Hantavirus|",
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "presentationEligible": false,
+      "presentationReason": "health_alert_excluded",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    },
+    {
+      "eventId": "07_GOVERNMENT_SAFETY_ALERTS:DOH-02:05/08/2026|Centers for Disease Control and Prevention|Health Advisory: 2026 Multi-country Hantavirus Cluster Linked to Cruise Ship|",
+      "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
+      "presentationEligible": false,
+      "presentationReason": "health_alert_excluded",
+      "routeRelevant": false,
+      "routeImpact": false,
+      "freshnessState": "fresh",
+      "duplicateGroupKey": null
+    }
+  ]
+}

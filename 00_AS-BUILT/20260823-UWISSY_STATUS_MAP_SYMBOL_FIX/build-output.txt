@@ -1,0 +1,44 @@
+
+> uw-issy-route-status@0.1.0 build
+> astro build
+
+15:02:34 [types] Generated 45ms
+15:02:34 [build] output: "static"
+15:02:34 [build] mode: "static"
+15:02:34 [build] directory: /Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/dist/
+15:02:34 [build] Collecting build info...
+15:02:34 [build] ✓ Completed in 94ms.
+15:02:34 [build] Building static entrypoints...
+15:02:34 [vite] ✓ built in 208ms
+15:02:34 [vite] ✓ built in 157ms
+15:02:34 [build] Rearranging server assets...
+
+ generating static routes 
+15:02:34   ├─ /index.html (+24ms) 
+15:02:34 ✓ Completed in 55ms.
+
+15:02:34 [build] ✓ Completed in 448ms.
+15:02:34 [build] 1 page(s) built in 546ms
+15:02:34 [build] Complete!
+
+> uw-issy-route-status@0.1.0 build
+> astro build
+
+15:02:44 [types] Generated 42ms
+15:02:44 [build] output: "static"
+15:02:44 [build] mode: "static"
+15:02:44 [build] directory: /Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/dist/
+15:02:44 [build] Collecting build info...
+15:02:44 [build] ✓ Completed in 83ms.
+15:02:44 [build] Building static entrypoints...
+15:02:44 [vite] ✓ built in 215ms
+15:02:44 [vite] ✓ built in 213ms
+15:02:44 [build] Rearranging server assets...
+
+ generating static routes 
+15:02:44   ├─ /index.html (+17ms) 
+15:02:44 ✓ Completed in 47ms.
+
+15:02:44 [build] ✓ Completed in 506ms.
+15:02:44 [build] 1 page(s) built in 592ms
+15:02:44 [build] Complete!

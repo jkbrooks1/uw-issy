@@ -71,7 +71,7 @@ button:focus-visible,
 
 .site-header__logo img {
   display: block;
-  height: 40px;
+  height: 50px;
   width: auto;
 }
 
@@ -128,7 +128,7 @@ button:focus-visible,
     width: 100%;
   }
   .site-header__logo img {
-    height: 34px;
+    height: 42.5px;
   }
 }
 
@@ -281,6 +281,7 @@ button:focus-visible,
 .rider-state--clear { color: #1F3D11; }
 .rider-state--caution { color: #8A5300; }
 .rider-state--major { color: #A81F16; }
+.rider-state--partial-closure { color: #A81F16; }
 .rider-state--closed { color: #A81F16; }
 .rider-state--stale { color: var(--text-soft); }
 
@@ -294,6 +295,10 @@ button:focus-visible,
   font-size: 13px;
   color: var(--text-soft);
   margin: 0 0 10px 0;
+}
+
+.route-state__reason--primary {
+  color: var(--text-main);
 }
 
 .route-state__meta {
@@ -489,14 +494,56 @@ button:focus-visible,
   font-size: 13px;
 }
 
-.map-marker-ring {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
+.map-marker-triangle {
+  width: 28px;
+  height: 24px;
+  background: transparent;
+  border: 0;
+}
+
+.map-marker-triangle span {
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-bottom: 24px solid #D99100;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+}
+
+.map-marker-triangle span::after {
+  content: "";
+  position: absolute;
+  transform: translate(-3px, 9px);
+  width: 6px;
+  height: 6px;
   background: var(--btf-white);
-  border-width: 3px;
-  border-style: solid;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+  border-radius: 50%;
+}
+
+.event-marker--major span,
+.event-marker-inline.event-marker--major {
+  border-bottom-color: #C72B20;
+}
+
+.event-marker--caution span,
+.event-marker-inline.event-marker--caution {
+  border-bottom-color: #D99100;
+}
+
+.event-marker--clear span,
+.event-marker-inline.event-marker--clear {
+  border-bottom-color: #2D7A30;
+}
+
+.event-marker-inline {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 9px solid #D99100;
+  flex-shrink: 0;
 }
 
 /* Buildspec 24 — event table (desktop) */

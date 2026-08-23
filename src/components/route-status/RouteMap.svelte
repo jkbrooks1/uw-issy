@@ -4,7 +4,8 @@
   // client:* directives), so it is safe to touch window/document here, but
   // never at module scope in a way that would run during SSR.
   import { onMount, onDestroy } from "svelte";
-  import { laneColorFor } from "../../lib/route-status/lane-colors";
+  import { markerPresentationForEvent } from "../../lib/route-status/event-marker";
+  import type { DashboardEventWithUnknownLane } from "../../lib/route-status/types";
   // Imported here, not in the <style> block below: Svelte scopes selectors
   // inside a component's <style> block, but Leaflet creates its DOM nodes
   // imperatively (not through the Svelte template), so those elements never
@@ -21,15 +22,56 @@
   let status: "loading" | "ready" | "error" = "loading";
   let errorMessage = "";
 
-  const ROUTE_STYLE_BY_TIER: Record<string, { color: string; weight: number; opacity: number; dashArray?: string }> = {
-    normal: { color: "#167A31", weight: 5, opacity: 0.95 },
-    watch: { color: "#C87900", weight: 5, opacity: 0.95 },
-    alert: { color: "#C72B20", weight: 6, opacity: 0.95, dashArray: "8 6" },
-    unknown: { color: "#657067", weight: 5, opacity: 0.8, dashArray: "4 6" },
-  };
+  const ROUTE_STYLE = { color: "#C72B20", weight: 6, opacity: 0.98 };
 
-  function laneColorForRaw(laneId: string): string {
-    return laneColorFor(laneId) ?? "#657067";
+  function markerPropsForFeature(feature: GeoJSON.Feature): DashboardEventWithUnknownLane {
+    return (feature.properties ?? {}) as DashboardEventWithUnknownLane;
+  }
+
+  function coordinateToLatLng(L: typeof import("leaflet"), coordinate: GeoJSON.Position): import("leaflet").LatLng {
+    return L.latLng(coordinate[1], coordinate[0]);
+  }
+
+  function representativeCoordinate(geometry: GeoJSON.Geometry | null): GeoJSON.Position | null {
+    if (!geometry) return null;
+    if (geometry.type === "Point") return geometry.coordinates;
+    if (geometry.type === "LineString") return geometry.coordinates[Math.floor(geometry.coordinates.length / 2)] ?? null;
+    if (geometry.type === "MultiLineString") {
+      const line = geometry.coordinates.find((candidate) => candidate.length > 0);
+      return line?.[Math.floor(line.length / 2)] ?? null;
+    }
+    if (geometry.type === "Polygon") {
+      const ring = geometry.coordinates[0] ?? [];
+      return ring[Math.floor(ring.length / 2)] ?? null;
+    }
+    if (geometry.type === "MultiPolygon") {
+      const ring = geometry.coordinates[0]?.[0] ?? [];
+      return ring[Math.floor(ring.length / 2)] ?? null;
+    }
+    return null;
+  }
+
+  function buildTriangleMarker(
+    L: typeof import("leaflet"),
+    feature: GeoJSON.Feature,
+    latlng: import("leaflet").LatLng,
+  ): import("leaflet").Marker {
+    const presentation = markerPresentationForEvent(markerPropsForFeature(feature));
+    const title = String((feature.properties ?? {}).title ?? "Route event");
+    const icon = L.divIcon({
+      className: `map-marker-triangle ${presentation.cssClass}`,
+      html: `<span aria-hidden="true"></span>`,
+      iconSize: [28, 24],
+      iconAnchor: [14, 12],
+      popupAnchor: [0, -12],
+    });
+    const marker = L.marker(latlng, {
+      icon,
+      keyboard: true,
+      alt: `${presentation.label}: ${title}`,
+    });
+    marker.bindPopup(() => buildPopupContent(feature));
+    return marker;
   }
 
   // Buildspec 22.5 — build real DOM nodes for popup content; never feed raw
@@ -114,35 +156,32 @@
         maxZoom: 20,
       }).addTo(map);
 
-      const style = ROUTE_STYLE_BY_TIER[routeDisplayTier] ?? ROUTE_STYLE_BY_TIER.unknown;
-      const routeLayer = L.geoJSON(routeGeoJson, { style: () => style }).addTo(map);
+      void routeDisplayTier;
+      const routeLayer = L.geoJSON(routeGeoJson, { style: () => ROUTE_STYLE }).addTo(map);
 
-      const eventLayer = L.geoJSON(eventsGeoJson, {
-        pointToLayer: (feature, latlng) => {
-          const laneId = String((feature.properties ?? {}).laneId ?? "");
-          const color = laneColorForRaw(laneId);
-          const icon = L.divIcon({
-            className: "map-marker-ring",
-            html: "",
-            iconSize: [20, 20],
-          });
-          const marker = L.marker(latlng, {
-            icon,
-            keyboard: true,
-            alt: String((feature.properties ?? {}).title ?? "Route event"),
-          });
-          // divIcon renders an empty <div class="map-marker-ring">; color the
-          // border per-lane via inline style once the element exists.
-          marker.on("add", () => {
-            const el = marker.getElement();
-            if (el) (el as HTMLElement).style.borderColor = color;
-          });
-          return marker;
+      const eventGeometryLayer = L.geoJSON(eventsGeoJson, {
+        filter: (feature) => feature.geometry !== null && feature.geometry.type !== "Point",
+        style: (feature) => {
+          const presentation = markerPresentationForEvent(markerPropsForFeature(feature as GeoJSON.Feature));
+          return {
+            color: presentation.color,
+            weight: 4,
+            opacity: 0.9,
+            dashArray: presentation.severity === "major" ? "6 5" : undefined,
+          };
         },
         onEachFeature: (feature, layer) => {
           layer.bindPopup(() => buildPopupContent(feature));
         },
       }).addTo(map);
+
+      const eventMarkerLayer = L.layerGroup();
+      for (const feature of eventsGeoJson.features ?? []) {
+        const coordinate = representativeCoordinate(feature.geometry);
+        if (!coordinate) continue;
+        buildTriangleMarker(L, feature, coordinateToLatLng(L, coordinate)).addTo(eventMarkerLayer);
+      }
+      eventMarkerLayer.addTo(map);
 
       // The container can still be mid-layout (e.g. CSS Grid not yet
       // settled) at the moment the Svelte island hydrates, which makes
@@ -184,7 +223,8 @@
       });
       new FitRouteControl().addTo(map);
 
-      void eventLayer;
+      void eventGeometryLayer;
+      void eventMarkerLayer;
       status = "ready";
     } catch (cause) {
       status = "error";

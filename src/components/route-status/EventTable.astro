@@ -3,6 +3,7 @@
 // header scope, per buildspec section 26 accessibility requirements.
 import type { DashboardEventWithUnknownLane } from "../../lib/route-status/types";
 import { formatPacificTime } from "../../lib/route-status/format-time";
+import { markerPresentationForEvent } from "../../lib/route-status/event-marker";
 import EventDetail from "./EventDetail.astro";
 
 type Props = {
@@ -40,6 +41,10 @@ const { events } = Astro.props;
             <td>{formatPacificTime(event.reportedAt) ?? "—"}</td>
             <td>
               <span class={`tier-badge tier-badge--${event.displayTier}`}>
+                <span
+                  class={`event-marker-inline ${markerPresentationForEvent(event).cssClass}`}
+                  aria-hidden="true"
+                ></span>
                 {event.displayTier}
               </span>
             </td>

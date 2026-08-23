@@ -4,6 +4,7 @@
 // click target.
 import type { DashboardEventWithUnknownLane } from "../../lib/route-status/types";
 import { formatPacificTime } from "../../lib/route-status/format-time";
+import { markerPresentationForEvent } from "../../lib/route-status/event-marker";
 import EventDetail from "./EventDetail.astro";
 
 type Props = {
@@ -25,7 +26,13 @@ const { events } = Astro.props;
         <p class="event-card__meta">
           {formatPacificTime(event.reportedAt) ?? "Report time not available"}
         </p>
-        <span class={`tier-badge tier-badge--${event.displayTier}`}>{event.displayTier}</span>
+        <span class={`tier-badge tier-badge--${event.displayTier}`}>
+          <span
+            class={`event-marker-inline ${markerPresentationForEvent(event).cssClass}`}
+            aria-hidden="true"
+          ></span>
+          {event.displayTier}
+        </span>
         {event.riderCanPass && (
           <p class="event-card__meta">
             Can I pass? <strong>{event.riderCanPass === "no" ? "No" : "Unknown"}</strong>

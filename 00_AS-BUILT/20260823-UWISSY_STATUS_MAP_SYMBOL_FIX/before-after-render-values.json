@@ -1,0 +1,21 @@
+{
+  "pre": {
+    "imgAttrs": "<img src=\"https://pub-40b24fc600d44d828529b84a0d97ded7.r2.dev/BTF_LOGO_White_on_Transparent.png\" alt=\"BikeTourFrance.net\" width=\"160\" height=\"40\">",
+    "desktopCss": ".site-header__logo img{width:auto;height:40px;display:block}",
+    "mobileCss": ".site-header__logo img{height:34px}",
+    "statusTextPresent": true
+  },
+  "post": {
+    "imgAttrs": "<img src=\"https://pub-40b24fc600d44d828529b84a0d97ded7.r2.dev/BTF_LOGO_White_on_Transparent.png\" alt=\"BikeTourFrance.net\" width=\"200\" height=\"50\">",
+    "desktopCss": ".site-header__logo img{width:auto;height:50px;display:block}",
+    "mobileCss": ".site-header__logo img{height:42.5px}",
+    "statusTextPresent": true,
+    "routeStyleInBuiltJs": true,
+    "triangleMarkerInBuiltJs": true
+  },
+  "ratio": {
+    "desktopHeight": "50 / 40 = 1.25",
+    "mobileHeight": "42.5 / 34 = 1.25",
+    "intrinsicSize": "200x50 / 160x40 = 1.25"
+  }
+}

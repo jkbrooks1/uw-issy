@@ -7,6 +7,7 @@
 // a stale, failed, or unknown data state can never present as CLEAR.
 import type { RouteWideSummary } from "../../lib/route-status/normalize-dashboard-data";
 import type { DashboardEventWithUnknownLane, SystemHealthFile } from "../../lib/route-status/types";
+import { deriveRiderStateMeta, type RiderState } from "../../lib/route-status/rider-state";
 
 type Props = {
   summary: RouteWideSummary;
@@ -16,47 +17,30 @@ type Props = {
 
 const { summary, systemHealth, events } = Astro.props;
 
-type RiderState = "CLEAR" | "CAUTION" | "MAJOR ISSUE" | "CLOSED" | "DATA STALE";
-
-// Counts the actual rendered `events` list (post dashboard final guard in
-// presentation-eligibility.ts), not the raw dashboardData.activeEventCount —
-// that guard independently re-derives freshness against real wall-clock
-// time and can legitimately exclude events the build-time snapshot judged
-// eligible. Showing a headline count that does not match what the rider
-// can actually see below it would itself be a silent, misleading gap.
-const activeEventCount = events.length;
-
-// A closure/access signal — reuses the same real-field-derived riderCanPass
-// value the build script already computed (never a second invented
-// heuristic; see build-public-package-snapshot.mjs Step 1).
-const closureEvents = events.filter((event) => event.riderCanPass !== null && event.riderCanPass !== undefined);
-const closureCount = closureEvents.length;
-
-const isDataUnavailable = systemHealth === null;
-const isAssemblyFailed = systemHealth?.assemblyState === "failed";
-const failedCount = systemHealth?.failedLaneIds.length ?? 0;
-const degradedCount = systemHealth?.degradedLaneIds.length ?? 0;
-
-function deriveRiderState(): RiderState {
-  if (isDataUnavailable || isAssemblyFailed || summary.displayTier === "unknown") return "DATA STALE";
-  if (closureCount > 0) return "CLOSED";
-  if (summary.displayTier === "alert") return "MAJOR ISSUE";
-  if (summary.displayTier === "watch" || failedCount > 0 || degradedCount > 0) return "CAUTION";
-  return "CLEAR";
-}
-
-const riderState = deriveRiderState();
+const riderStateMeta = deriveRiderStateMeta(summary, systemHealth, events);
+const {
+  riderState,
+  activeEventCount,
+  closureCount,
+  closureScope,
+  statusDetail,
+  hasConfidenceIssue,
+  failedCount,
+  degradedCount,
+  isDataUnavailable,
+  isAssemblyFailed,
+} = riderStateMeta;
 
 const STATE_META: Record<RiderState, { icon: string; label: string; cssClass: string }> = {
   CLEAR: { icon: "✓", label: "Clear", cssClass: "rider-state--clear" },
   CAUTION: { icon: "◯", label: "Caution", cssClass: "rider-state--caution" },
   "MAJOR ISSUE": { icon: "⚠", label: "Major issue", cssClass: "rider-state--major" },
+  "PARTIAL CLOSURE": { icon: "⚠", label: "Partial closure", cssClass: "rider-state--partial-closure" },
   CLOSED: { icon: "✕", label: "Closed", cssClass: "rider-state--closed" },
   "DATA STALE": { icon: "?", label: "Data stale", cssClass: "rider-state--stale" },
 };
 
 const meta = STATE_META[riderState];
-const hasConfidenceIssue = isDataUnavailable || isAssemblyFailed || failedCount > 0 || degradedCount > 0 || summary.displayTier === "unknown";
 ---
 
 <section class="panel route-status-summary" aria-labelledby="route-status-summary-heading">
@@ -65,6 +49,11 @@ const hasConfidenceIssue = isDataUnavailable || isAssemblyFailed || failedCount 
     <span class="route-state__icon" aria-hidden="true">{meta.icon}</span>
     <span>{meta.label}</span>
   </p>
+  {
+    statusDetail && (
+      <p class="route-state__reason route-state__reason--primary">{statusDetail}</p>
+    )
+  }
   {
     summary.overallMessage && (
       <p class="route-state__reason">{summary.overallMessage}</p>
@@ -90,7 +79,7 @@ const hasConfidenceIssue = isDataUnavailable || isAssemblyFailed || failedCount 
       Rider-relevant active issues: <strong>{activeEventCount}</strong>
     </p>
     <p class="route-state__count">
-      Closures reported: <strong>{closureCount}</strong>
+      {closureScope === "full" ? "Route-wide closures reported" : "Localized closures reported"}: <strong>{closureCount}</strong>
     </p>
   </div>
 </section>
