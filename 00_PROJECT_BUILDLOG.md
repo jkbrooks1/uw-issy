@@ -3013,3 +3013,63 @@ Each new file was generated from the verified live post-rename export, and each 
 - Final GitHub Actions/Cloudflare Pages deploy passed for commit `4eec1fb`; Pages URL `https://132badbc.uw-issy.pages.dev` verified 27/27.
 - Targeted Cloudflare cache purge made the plain custom domain serve the corrected shell. Live status is `Partial closure`, full route reported closed = NO, route line is red, incident markers are red triangles, and marker popup click proof passed.
 - Proof folder and final proof ZIP recorded under `00_AS-BUILT/20260823-UWISSY_STATUS_MAP_SYMBOL_FIX/` and `/Users/jkbrookspersonal/Downloads/20260823-UWISSY_STATUS_MAP_SYMBOL_FIX_PROOF.zip`.
+
+## 2026-08-23 18:10 PDT — UW-Issy reportable element registry audit
+
+- Scope: read-only RS/SS classification audit; no workflow logic, n8n state, dashboard code, public data, or deployment changed.
+- Workflows inspected: v03.UWI_LANE01, v02.UWI_LANE02, v02.UWI_LANE03, v02.UWI_LANE04, v02.UWI_LANE05, v02.UWI_LANE06, v02.UWI_LANE07, v01.UWI_LANE08, v04.UWI_LANE20, v03.UWI_LANE30.
+- Current local workflow versions: Lane 01 v03; Lanes 02-07 v02; Lane 08 v01; Lane 20 v04; Lane 30 v03.
+- Total reportable elements found: 123. RS: 31. SS: 85. RS/SS review-required: 7.
+- Technical registry: `00_DOCS/2026-08-23_UWISSY_REPORTABLE_ELEMENT_REGISTRY.md`.
+- Owner review document: `00_DOCS/2026-08-23_UWISSY_RS_SS_OWNER_REVIEW.md`.
+- Proof path: `00_AS-BUILT/20260823-UWISSY_REPORTABLE_ELEMENT_AUDIT/`.
+- Validation: generated registry required-field check passed with 0 blank classification/reason/owner/display/evidence-note rows; JSON proof/public artifacts validated with `jq empty`.
+
+## 2026-08-24 00:00 PDT — UW-Issy owner-approved taxonomy revision
+
+- Owner-approved taxonomy adopted: RS-A / RS-B / RS-C and SS-H / SS-O / SS-A.
+- Classification/visibility separation applied across the 123-row registry.
+- RS corrections applied: REP-005, REP-014, REP-027, REP-087, REP-093, REP-114, REP-122; REP-012, REP-072, and REP-085 moved to SS-A.
+- Lane 30 aliases preserved as physical rows and mapped conceptually: REP-117 -> REP-002, REP-118 -> REP-003, REP-119 -> REP-004, REP-120 -> REP-006.
+- Lane summary correction applied: lanes 02, 03, 04, and 07 now inherit the shared base set instead of appearing empty.
+- Final technical counts: 123 total rows; RS-A 15; RS-B 13; RS-C 3; SS-H 26; SS-O 20; SS-A 46.
+- Final conceptual counts: Route Status 27; System Health 26; System Operations 20; System Assurance 46.
+- Visibility counts: Public-primary 16; Public-secondary 17; Public-bottom 26; Internal-only 64.
+- Document paths: `00_DOCS/2026-08-23_UWISSY_REPORTABLE_ELEMENT_REGISTRY.md`, `00_DOCS/2026-08-23_UWISSY_APPROVED_RS_SS_TAXONOMY.md`, `00_DOCS/2026-08-23_UWISSY_RS_SS_MANAGEMENT_VIEW.md`.
+- Proof path: `00_AS-BUILT/20260823-UWISSY_APPROVED_TAXONOMY_REVISION/`.
+- Validation: final count validation and management-view validation both passed with 0 problems.
+## 2026-08-24 Public Copy Inventory
+- Scanned public page components, route-status helpers, and current public data files.
+- Inventory document: `00_DOCS/2026-08-23_UWISSY_PUBLIC_COPY_INVENTORY.md`
+- Owner review: `00_DOCS/2026-08-23_UWISSY_PUBLIC_COPY_OWNER_REVIEW.md`
+- Proof: `00_AS-BUILT/20260823-UWISSY_PUBLIC_COPY_INVENTORY/`
+- Total copy elements: 118
+- Flagged copy: 24
+- Terminology flags: 4
+- System-centric flags: 15
+- Possible fabrication-risk flags: 4
+- Copy currently live: 44
+- Copy not currently live but reachable: 74
+- No implementation was performed.
+## 2026-08-23 20:06:12 PDT — Complete Route Status remediation deployed
+
+- Implemented owner-approved RS/SS taxonomy in the public dashboard.
+- Removed the overall whole-route `Closed` model and route-wide closure/status public copy.
+- Added supported ELST closure facts to public package and UI: closed section, From, To, closed length, detour, expected reopening, source.
+- Preserved no-fabrication behavior: no unsupported closure hours, detour geometry, endpoint coordinates, route-wide closure, or source-confidence prose invented.
+- Relocated System Health to one bottom section and suppressed SS-O/SS-A public rendering.
+- Remediated map/card/table/detail/popup parity and removed public popup Lane/Summary/Severity/Note/system diagnostics.
+- Preserved CyclOSM, tile attribution, red route line `#C72B20`, semantic triangle markers, BTF header/logo treatment, mobile layout, and absence of unauthorized marketing copy.
+- Created approved-copy registry: `00_DOCS/2026-08-23_UWISSY_APPROVED_PUBLIC_COPY_REGISTRY.md`.
+- Created public-copy allowlist validator: `scripts/validate-public-copy-allowlist.mjs`.
+- Copied helper script to `/Users/jkbrookspersonal/00_SCRIPTS/validate-public-copy-allowlist.mjs`.
+- Added public-copy allowlist validation to GitHub Actions deploy workflow.
+- COPY-048 remains suppressed; no replacement wording was invented.
+- Updated local project rules/wrappers for permanent copy-governance and Route Status/System Health separation.
+- Validation passed: unit tests 8 files / 107 tests, typecheck, build, public-package validation, route source validation, route GeoJSON validation, secret scan, public-copy allowlist.
+- Deployment used existing approved Cloudflare Pages path; final deployed commit `57ba04a`, deployment URL `https://1f0e24cf.uw-issy.pages.dev`, live custom domain `https://uw-issy.biketourfrance.net`.
+- Production verification: Pages URL passed 27/27; custom domain route/data/release checks passed with one documented custom-domain-only email-link verifier failure due Cloudflare email obfuscation rewriting `mailto:`.
+- Proof folder: `00_AS-BUILT/20260823-UWISSY_COMPLETE_ROUTE_STATUS_REMEDIATION/`.
+- Proof ZIP: `/Users/jkbrookspersonal/Downloads/20260823-UWISSY_COMPLETE_ROUTE_STATUS_REMEDIATION_PROOF.zip`.
+- Proof ZIP SHA-256: `87567c90264f9ce2a270f7c78d288f73b4d208d2c783e75bcb1ad8a1a75cac8b`.
+- Commits: `6325a3c`, `57ba04a`.

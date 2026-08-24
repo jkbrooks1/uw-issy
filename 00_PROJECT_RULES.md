@@ -55,6 +55,31 @@ Events must be distinguished as:
 - nearby but not route-impacting
 - irrelevant
 
+## Route Status / System Status rule
+
+Public Route Status must be driven by route condition facts, not monitoring
+machinery. System Health belongs at the bottom of the public page. System
+operations and system assurance details are internal-only unless the owner
+explicitly approves a separate operator view.
+
+The public overall Route Status model must not produce a whole-route
+`Closed` state. Localized closures stay localized and may produce
+`Partial closure` only when supported by evidence.
+
+## Public copy governance rule
+
+Unless public-facing copy is expressly approved by the owner, it is not
+approved and must not render. Approval is exact; no paraphrase, similarity,
+fallback convenience, or prior existence creates approval.
+
+The canonical project allowlist is:
+
+`00_DOCS/2026-08-23_UWISSY_APPROVED_PUBLIC_COPY_REGISTRY.md`
+
+Only rows with `Approval status = APPROVED` may render publicly. Rejected,
+pending, unlisted, unmapped, proposed, paraphrased, or generated substitute
+copy must be suppressed or submitted for owner approval before release.
+
 ## Output rule
 
 Production outputs must use atomic writes and preserve the last known good output when a connector fails.

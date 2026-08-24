@@ -12,3 +12,6 @@ Work only within this project's scope unless explicitly directed otherwise.
 - Validate every generated JSON file.
 - Preserve last-known-good production data.
 - Never commit credentials or secrets.
+- Public Route Status is primary; System Health belongs at the bottom.
+- Do not model or render an overall whole-route `Closed` state.
+- Render only owner-approved public copy from `00_DOCS/2026-08-23_UWISSY_APPROVED_PUBLIC_COPY_REGISTRY.md`.

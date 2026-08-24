@@ -1,4 +1,91 @@
 
+## 2026-08-23 20:06:12 PDT — Complete Route Status remediation deployed
+
+- Project: UW-Issy Route Monitor
+- Scope: Implemented owner-approved Route Status/System Status taxonomy separation, actionable closure display, whole-route closure model removal, System Health bottom placement, map/list/detail parity, no-fabrication handling, and approved-copy allowlist governance.
+- Taxonomy implementation:
+  - RS-A now drives primary `Route status`.
+  - RS-B supports event/location/source context.
+  - RS-C remains contextual for route/facility reference.
+  - SS-H renders only under bottom `System health`.
+  - SS-O and SS-A are not rendered in public UI.
+- Route Status remediation:
+  - Removed overall whole-route `Closed` state from public derivation.
+  - Removed route-wide closure/status copy from public output.
+  - Localized ELST closure renders as `Partial closure`.
+  - `overallMessage` is suppressed from primary Route Status to prevent system-run prose from leading the page.
+- Closure data remediation:
+  - ELST closure shows: Closed section, From, To, Closed length, Detour, Expected reopening, Source.
+  - Closed length: `0.11 mi`, derived from official King County 600 ft source distance, not geometry or visual estimate.
+  - Endpoints: `Louis Thompson Rd NE` and `NE Inglewood Hill Rd`.
+  - Detour: `No`.
+  - Closure hours: not rendered because not supported.
+  - Expected reopening: `End of 2026`.
+- Earliest-correct-layer changes:
+  - Extended `route-events.geojson` event properties and TypeScript types with closure-specific fields.
+  - Updated `scripts/build-public-package-snapshot.mjs` to carry supported closure facts, canonical public lane labels, approved System Health vocabulary, and raw-summary suppression.
+  - Prevented Lane 06 generic infrastructure pages from being treated as passability/closure records.
+- Map/popup remediation:
+  - Map popup now uses approved route-focused closure fields and no longer emits Lane/Summary/Severity/Note/stale/LKG diagnostic rows.
+  - Red route line `#C72B20`, CyclOSM tile layer, and semantic triangle markers preserved.
+- System Health:
+  - Replaced collapsed Monitor Health/Monitoring Sources/System Health Detail duplication with one bottom `System health` section.
+  - Public health vocabulary constrained to approved values.
+- Approved-copy allowlist:
+  - Created `00_DOCS/2026-08-23_UWISSY_APPROVED_PUBLIC_COPY_REGISTRY.md`.
+  - Created `scripts/validate-public-copy-allowlist.mjs`.
+  - Copied helper to `/Users/jkbrookspersonal/00_SCRIPTS/validate-public-copy-allowlist.mjs`.
+  - Added allowlist validation to `.github/workflows/deploy.yml`.
+  - Validation result: 71 approved rows, 0 rejected, 0 pending, 0 unmapped, COPY-048 absent.
+- COPY-048 hold:
+  - Suppressed active-reading count text; no replacement invented.
+  - Underlying lane records are public-package events/observations, but weather/air/smoke count wording remains held pending owner approval.
+- No-fabrication enforcement:
+  - No closure hours invented.
+  - No detour geometry invented.
+  - No endpoint coordinates invented.
+  - No whole-route closure status invented.
+  - Raw scraped source payload summaries suppressed.
+- Files changed:
+  - `.github/workflows/deploy.yml`
+  - `00_DOCS/2026-08-23_UWISSY_APPROVED_PUBLIC_COPY_REGISTRY.md`
+  - `00_PROJECT_RULES.md`
+  - `AGENTS.md`
+  - `CLAUDE.md`
+  - `GEMINI.md`
+  - `public/data/dashboard-data.json`
+  - `public/data/route-events.geojson`
+  - `public/data/system-health.json`
+  - `scripts/build-public-package-snapshot.mjs`
+  - `scripts/validate-public-copy-allowlist.mjs`
+  - route-status components and route-status TypeScript libraries
+  - route-status/ui tests
+- Validation:
+  - Unit tests: PASS, 8 files, 107 tests.
+  - Typecheck: PASS.
+  - Production build: PASS.
+  - Public package validation: PASS.
+  - Route source validation: PASS.
+  - Route GeoJSON validation: PASS.
+  - Secret scan: PASS.
+  - Public-copy allowlist validation: PASS.
+- Deployment:
+  - Existing approved path used: `wrangler pages deploy dist --project-name=uw-issy`.
+  - Final deployed commit: `57ba04a`.
+  - Final Pages deployment URL: `https://1f0e24cf.uw-issy.pages.dev`.
+  - Live custom domain: `https://uw-issy.biketourfrance.net`.
+- Production verification:
+  - Pages deployment verifier: PASS, 27/27.
+  - Custom domain verifier: 26/27 automated checks; route/data/release checks pass. One custom-domain-only verifier failure remains because Cloudflare email obfuscation rewrites the `mailto:` link in served HTML.
+- Proof:
+  - Folder: `00_AS-BUILT/20260823-UWISSY_COMPLETE_ROUTE_STATUS_REMEDIATION/`
+  - ZIP: `/Users/jkbrookspersonal/Downloads/20260823-UWISSY_COMPLETE_ROUTE_STATUS_REMEDIATION_PROOF.zip`
+  - ZIP SHA-256: `87567c90264f9ce2a270f7c78d288f73b4d208d2c783e75bcb1ad8a1a75cac8b`
+  - Screenshots, source trace, closure-length proof, copy manifest, no-fabrication proof, tests, build output, validation output, and production verification output included.
+- Final commits:
+  - `6325a3c` — Remediate UW-Issy route status taxonomy and copy governance.
+  - `57ba04a` — Fix route issue detail closure label parity.
+
 # 2026-08-01 15:00:00 PDT — Wildfire connector workflow JSON authored
 - Project: UW-Issy Route Monitor
 - Lane: `04_WILDFIRE`
@@ -886,3 +973,48 @@ No commit, push, merge, reset, or working-tree clean was performed. All pre-exis
 - Final production verification: `node scripts/verify-production.mjs https://132badbc.uw-issy.pages.dev` PASS 27/27. Custom domain verifier shows 26/27 due only to the known Cloudflare Email Address Obfuscation mailto rewrite; all route/status/data checks passed.
 - Final proof folder: `00_AS-BUILT/20260823-UWISSY_STATUS_MAP_SYMBOL_FIX/`.
 - Final proof ZIP: `/Users/jkbrookspersonal/Downloads/20260823-UWISSY_STATUS_MAP_SYMBOL_FIX_PROOF.zip` (created after this log entry).
+
+## 2026-08-23 17:49:19 PDT — Codex Lane 04/dashboard symbol-fix status check
+- Checked for active Codex process, recent Codex shell history, expected build-log entries, proof folder, proof ZIP, recent project changes, and git state.
+- Read-only diagnostic; no functional project files were changed.
+
+## 2026-08-23 18:03:34 PDT — Codex interactive session launched
+- Project: UW-Issy Route Monitor
+- Working directory: /Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor
+- Mode: approval prompts and sandbox restrictions suppressed
+
+## 2026-08-23 18:10 PDT — UW-Issy reportable element registry audit
+- Scope: read-only RS/SS classification audit; no workflow logic, n8n state, dashboard code, public data, or deployment changed.
+- Workflows inspected: v03.UWI_LANE01, v02.UWI_LANE02, v02.UWI_LANE03, v02.UWI_LANE04, v02.UWI_LANE05, v02.UWI_LANE06, v02.UWI_LANE07, v01.UWI_LANE08, v04.UWI_LANE20, v03.UWI_LANE30.
+- Current local workflow versions: Lane 01 v03; Lanes 02-07 v02; Lane 08 v01; Lane 20 v04; Lane 30 v03.
+- Total reportable elements found: 123. RS: 31. SS: 85. RS/SS review-required: 7.
+- Technical registry: `00_DOCS/2026-08-23_UWISSY_REPORTABLE_ELEMENT_REGISTRY.md`.
+- Owner review document: `00_DOCS/2026-08-23_UWISSY_RS_SS_OWNER_REVIEW.md`.
+- Proof path: `00_AS-BUILT/20260823-UWISSY_REPORTABLE_ELEMENT_AUDIT/`.
+- Validation: generated registry required-field check passed with 0 blank classification/reason/owner/display/evidence-note rows; JSON proof/public artifacts validated with `jq empty`.
+
+## 2026-08-24 00:00 PDT — UW-Issy owner-approved taxonomy revision
+- Owner-approved taxonomy adopted: RS-A / RS-B / RS-C and SS-H / SS-O / SS-A.
+- Classification/visibility separation applied across the 123-row registry.
+- RS corrections applied: REP-005, REP-014, REP-027, REP-087, REP-093, REP-114, REP-122; REP-012, REP-072, and REP-085 moved to SS-A.
+- Lane 30 aliases preserved as physical rows and mapped conceptually: REP-117 -> REP-002, REP-118 -> REP-003, REP-119 -> REP-004, REP-120 -> REP-006.
+- Lane summary correction applied: lanes 02, 03, 04, and 07 now inherit the shared base set instead of appearing empty.
+- Final technical counts: 123 total rows; RS-A 15; RS-B 13; RS-C 3; SS-H 26; SS-O 20; SS-A 46.
+- Final conceptual counts: Route Status 27; System Health 26; System Operations 20; System Assurance 46.
+- Visibility counts: Public-primary 16; Public-secondary 17; Public-bottom 26; Internal-only 64.
+- Document paths: `00_DOCS/2026-08-23_UWISSY_REPORTABLE_ELEMENT_REGISTRY.md`, `00_DOCS/2026-08-23_UWISSY_APPROVED_RS_SS_TAXONOMY.md`, `00_DOCS/2026-08-23_UWISSY_RS_SS_MANAGEMENT_VIEW.md`.
+- Proof path: `00_AS-BUILT/20260823-UWISSY_APPROVED_TAXONOMY_REVISION/`.
+- Validation: final count validation and management-view validation both passed with 0 problems.
+## 2026-08-24 Public Copy Inventory
+- Scanned public page components, route-status helpers, and current public data files.
+- Inventory document: `00_DOCS/2026-08-23_UWISSY_PUBLIC_COPY_INVENTORY.md`
+- Owner review: `00_DOCS/2026-08-23_UWISSY_PUBLIC_COPY_OWNER_REVIEW.md`
+- Proof: `00_AS-BUILT/20260823-UWISSY_PUBLIC_COPY_INVENTORY/`
+- Total copy elements: 118
+- Flagged copy: 24
+- Terminology flags: 4
+- System-centric flags: 15
+- Possible fabrication-risk flags: 4
+- Copy currently live: 44
+- Copy not currently live but reachable: 74
+- No implementation was performed.
