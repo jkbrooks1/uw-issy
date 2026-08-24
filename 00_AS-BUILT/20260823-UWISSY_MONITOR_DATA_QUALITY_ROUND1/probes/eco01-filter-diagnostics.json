@@ -1,0 +1,119 @@
+[
+  {
+    "name": "count all",
+    "status": 200,
+    "count": 3504
+  },
+  {
+    "name": "count HourPriorToLatest 0",
+    "status": 200,
+    "count": 0
+  },
+  {
+    "name": "count HourPriorToLatest 1",
+    "status": 200,
+    "count": 146
+  },
+  {
+    "name": "sample ordered",
+    "status": 200,
+    "features": 8,
+    "attrs": [
+      {
+        "SiteId": 550,
+        "SiteName": "Friday Harbor-2nd St N",
+        "DateTime_PST": 1787544000000,
+        "HourPriorToLatest": 1,
+        "AQIValue": 12,
+        "AQICategory": "Good"
+      },
+      {
+        "SiteId": 549,
+        "SiteName": "Montesano",
+        "DateTime_PST": 1787544000000,
+        "HourPriorToLatest": 1,
+        "AQIValue": 8,
+        "AQICategory": "Good"
+      },
+      {
+        "SiteId": 548,
+        "SiteName": "Belfair",
+        "DateTime_PST": 1787544000000,
+        "HourPriorToLatest": 1,
+        "AQIValue": 7,
+        "AQICategory": "Good"
+      },
+      {
+        "SiteId": 547,
+        "SiteName": "Tacoma-S 35th and Windom St",
+        "DateTime_PST": 1787544000000,
+        "HourPriorToLatest": 1,
+        "AQIValue": 5,
+        "AQICategory": "Good"
+      },
+      {
+        "SiteId": 546,
+        "SiteName": "Tacoma-S 56th St",
+        "DateTime_PST": 1787544000000,
+        "HourPriorToLatest": 1,
+        "AQIValue": 8,
+        "AQICategory": "Good"
+      },
+      {
+        "SiteId": 545,
+        "SiteName": "Tulalip-36th Ave NW",
+        "DateTime_PST": 1787544000000,
+        "HourPriorToLatest": 1,
+        "AQIValue": 9,
+        "AQICategory": "Good"
+      },
+      {
+        "SiteId": 544,
+        "SiteName": "Federal Way-16th Ave S",
+        "DateTime_PST": 1787544000000,
+        "HourPriorToLatest": 1,
+        "AQIValue": 7,
+        "AQICategory": "Good"
+      },
+      {
+        "SiteId": 543,
+        "SiteName": "Seattle-14th Ave S",
+        "DateTime_PST": 1787544000000,
+        "HourPriorToLatest": 1,
+        "AQIValue": 16,
+        "AQICategory": "Good"
+      }
+    ]
+  },
+  {
+    "name": "distinct HPTL",
+    "status": 200,
+    "features": 20,
+    "attrs": [
+      {
+        "HourPriorToLatest": 1
+      },
+      {
+        "HourPriorToLatest": 2
+      },
+      {
+        "HourPriorToLatest": 3
+      },
+      {
+        "HourPriorToLatest": 4
+      },
+      {
+        "HourPriorToLatest": 5
+      },
+      {
+        "HourPriorToLatest": 6
+      },
+      {
+        "HourPriorToLatest": 7
+      },
+      {
+        "HourPriorToLatest": 8
+      }
+    ]
+  }
+]

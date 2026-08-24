@@ -1,0 +1,44 @@
+[
+  [
+    "03_AIR_QUALITY:ECO-01",
+    "failed",
+    "Changed Ecology endpoint to /serverext/rest/services/AQ/... and changed latest-hour filter to HourPriorToLatest=1.",
+    "fresh success: 146 features",
+    "YES"
+  ],
+  [
+    "05_FLOOD_CONDITIONS:KC-ROAD-01",
+    "failed",
+    "Changed RoadAlerts query to outFields=* and added qualified-field parser accessor.",
+    "fresh success: 31 records",
+    "YES"
+  ],
+  [
+    "04_WILDFIRE:NIFC-01",
+    "failed",
+    "Changed WFIGS route-bbox query to valid encoded geometry and outFields=*.",
+    "correct empty: 0 route-bbox incidents, 594 global incidents",
+    "YES"
+  ],
+  [
+    "03_AIR_QUALITY:AIRNOW-01",
+    "failed",
+    "No key present locally; remote n8n API unauthorized, so workflow credential wiring cannot be verified or repaired safely.",
+    "BLOCKER",
+    "NO"
+  ],
+  [
+    "05_FLOOD_CONDITIONS:WSDOT-01",
+    "failed",
+    "No access code present locally; remote n8n API unauthorized, so workflow credential wiring cannot be verified or repaired safely.",
+    "BLOCKER",
+    "NO"
+  ],
+  [
+    "03_AIR_QUALITY:PSCAA-01",
+    "empty_but_valid warning",
+    "Investigated reachable station pages; deterministic station snapshot extraction remains unresolved.",
+    "PARSER / EXTRACTION DEFECT",
+    "PARTIAL"
+  ]
+]

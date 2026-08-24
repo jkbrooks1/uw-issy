@@ -1,0 +1,6 @@
+PASS: 00_WORKFLOWS/v02.UWI_LANE03.json — name "v02.UWI_LANE03", 48 node(s), trigger present, active=false, connector_id/lane/run_id prefix all match "03_AIR_QUALITY", tags: []
+PASS: 00_WORKFLOWS/v02.UWI_LANE04.json — name "v02.UWI_LANE04", 36 node(s), trigger present, active=false, connector_id/lane/run_id prefix all match "04_WILDFIRE", tags: []
+PASS: 00_WORKFLOWS/v02.UWI_LANE05.json — name "v02.UWI_LANE05", 56 node(s), trigger present, active=false, connector_id/lane/run_id prefix all match "05_FLOOD_CONDITIONS", tags: []
+PASS: 00_CONNECTORS/03_AIR_QUALITY/03_AIR_QUALITY_v1.json — name "v0001.03_AirQualityConnector", 48 node(s), trigger present, active=false, connector_id/lane/run_id prefix all match "03_AIR_QUALITY", tags: [uw_issy, connector, lane_03_air_quality, no_direct_deploy]
+PASS: 00_CONNECTORS/04_WILDFIRE/04_WILDFIRE_v1.json — name "v0001.04_WildfireConnector", 36 node(s), trigger present, active=false, connector_id/lane/run_id prefix all match "04_WILDFIRE", tags: [uw_issy, connector, lane_04_wildfire, no_direct_deploy]
+PASS: 00_CONNECTORS/05_FLOOD_CONDITIONS/05_FLOOD_CONDITIONS_v1.json — name "v0001.05_FloodConditionsConnector", 56 node(s), trigger present, active=false, connector_id/lane/run_id prefix all match "05_FLOOD_CONDITIONS", tags: [uw_issy, connector, lane_05_flood_conditions, no_direct_deploy]

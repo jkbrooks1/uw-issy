@@ -3092,3 +3092,27 @@ Each new file was generated from the verified live post-rename export, and each 
 - Proof ZIP: `/Users/jkbrookspersonal/Downloads/20260823-UWISSY_ALERT_QUALIFICATION_GEOMETRY_FIX_PROOF.zip`.
 - Proof ZIP SHA-256: `f108563ac6f012aebac364f1de9f2b1a660c0a48b17caef9f044841dc08b2b9f`.
 - Helper scripts: no persistent helper script was created for this remediation.
+
+## 2026-08-23 22:20 PDT — UW-Issy monitoring data quality Round 1 local repairs completed; remote rerun blocked
+
+- Captured baseline public health and Lane 20 source-health evidence for all 8 monitors.
+- Baseline monitor states: 5 degraded (`01_ROUTE_CONDITIONS`, `03_AIR_QUALITY`, `04_WILDFIRE`, `05_FLOOD_CONDITIONS`, `06_TRAIL_INFRASTRUCTURE_STATUS`) and 3 current (`02_WEATHER`, `07_GOVERNMENT_SAFETY_ALERTS`, `08_ROUTE_FACILITIES`).
+- Repaired ECO-01 in the canonical lane 03 workflow/export files: stale Ecology `/arcgis/rest/...` endpoint replaced with documented `/serverext/rest/services/AQ/...`, and stale `HourPriorToLatest=0` filter replaced with live-supported `HourPriorToLatest=1`.
+- ECO-01 proof: old endpoint returned HTTP 404; repaired query returned HTTP 200 with 146 features.
+- Repaired KC-ROAD-01 in lane 05 workflow/export files: invalid unqualified `outFields` query replaced with `outFields=*`; normalizer now supports fully-qualified ArcGIS field names.
+- KC-ROAD-01 proof: old query returned ArcGIS `Failed to execute query`; repaired query returned HTTP 200 with 31 records and qualified field schema.
+- Repaired NIFC-01 in lane 04 workflow/export files: invalid ArcGIS query parameters replaced with a valid encoded route-bbox query and `outFields=*`.
+- NIFC-01 proof: repaired route-bbox query returned HTTP 200 with 0 route-bbox incidents; global count query returned current WFIGS records, proving correct empty rather than source failure.
+- AIRNOW-01 and WSDOT-01 remain credential/config blockers: required environment variables are not present in local runtime, no secret values were recorded, and no credentials were hard-coded.
+- PSCAA-01 investigated and classified as parser/extraction defect pending Round 2 source/API research.
+- External failures re-probed and remain outside Round 1 repair scope: Redmond ArcGIS network/TLS failure, Issaquah ArcGIS network/TLS failure, Issaquah HTML Cloudflare challenge, Ecology SmokeForecast service not started, PSCAA burn-ban network/TLS failure.
+- Correct-empty classifications recorded for NIFC-02, NWS wildfire, KC wildfire, NWPS-01, NWPS-02, NWS flood, AIRNOW-02, NWS-AQ-01, and KC-04.
+- Health scoring was not changed. Scoring audit finding: current evidence supports that one failed configured source can mark a lane `degraded`; empty_but_valid alone does not automatically degrade a lane.
+- Remote n8n all-8-monitor rerun and Lane 20 publication were blocked: `https://n8n.biketourfrance.net` is reachable, but locally available n8n API keys are unauthorized and no n8n CLI is installed.
+- Projected after-state if repaired workflows are deployed and run: degraded monitor count would likely reduce from 5 to 4, with Wildfire becoming current/complete and Route conditions, Air quality, Flood conditions, and Trail infrastructure still degraded from documented external/credential limitations.
+- Validation passed: n8n workflow validation for edited lane 03/04/05 exports, unit tests 8 files / 110 tests, typecheck, production build, route source validation, route GeoJSON validation, public package validation, copy allowlist validation, proof-folder secret scan.
+- Report path: `00_DOCS/2026-08-23_UWISSY_MONITOR_DATA_QUALITY_ROUND1.md`.
+- Proof path: `00_AS-BUILT/20260823-UWISSY_MONITOR_DATA_QUALITY_ROUND1/`.
+- Proof ZIP: `/Users/jkbrookspersonal/Downloads/20260823-UWISSY_MONITOR_DATA_QUALITY_ROUND1_PROOF.zip`.
+- Proof ZIP SHA-256: `94cb5d82c88b087e9a1878c9b0f63ad15ce95a76f4d81fc9a0715b5c1af017de`.
+- Helper scripts copied to `/Users/jkbrookspersonal/00_SCRIPTS/round1-repair-workflows.mjs`, `/Users/jkbrookspersonal/00_SCRIPTS/round1-monitor-quality-probes.mjs`, and `/Users/jkbrookspersonal/00_SCRIPTS/round1-generate-report.mjs`.

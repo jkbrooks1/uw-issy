@@ -1,0 +1,66 @@
+[
+  {
+    "monitor": "01_ROUTE_CONDITIONS",
+    "lane_label": "Route conditions",
+    "lane_state": "degraded",
+    "freshness_state": "stale",
+    "lkg_use": false,
+    "event_count": 1
+  },
+  {
+    "monitor": "02_WEATHER",
+    "lane_label": "Weather",
+    "lane_state": "ok",
+    "freshness_state": "fresh",
+    "lkg_use": false,
+    "event_count": 1
+  },
+  {
+    "monitor": "03_AIR_QUALITY",
+    "lane_label": "Air quality",
+    "lane_state": "degraded",
+    "freshness_state": "stale",
+    "lkg_use": false,
+    "event_count": 2
+  },
+  {
+    "monitor": "04_WILDFIRE",
+    "lane_label": "Wildfire",
+    "lane_state": "degraded",
+    "freshness_state": "stale",
+    "lkg_use": false,
+    "event_count": 0
+  },
+  {
+    "monitor": "05_FLOOD_CONDITIONS",
+    "lane_label": "Flood conditions",
+    "lane_state": "degraded",
+    "freshness_state": "stale",
+    "lkg_use": false,
+    "event_count": 5
+  },
+  {
+    "monitor": "06_TRAIL_INFRASTRUCTURE_STATUS",
+    "lane_label": "Trail infrastructure",
+    "lane_state": "degraded",
+    "freshness_state": "stale",
+    "lkg_use": false,
+    "event_count": 5
+  },
+  {
+    "monitor": "07_GOVERNMENT_SAFETY_ALERTS",
+    "lane_label": "Government safety alerts",
+    "lane_state": "ok",
+    "freshness_state": "fresh",
+    "lkg_use": false,
+    "event_count": 7
+  },
+  {
+    "monitor": "08_ROUTE_FACILITIES",
+    "lane_label": "Route facilities",
+    "lane_state": "ok",
+    "freshness_state": "fresh",
+    "lkg_use": false,
+    "event_count": 0
+  }
+]

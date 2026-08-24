@@ -1,0 +1,74 @@
+[
+  [
+    "01_ROUTE_CONDITIONS",
+    "degraded",
+    "degraded",
+    3,
+    3,
+    0,
+    "unchanged: REDM/ISS external failures remain"
+  ],
+  [
+    "02_WEATHER",
+    "ok",
+    "ok",
+    0,
+    0,
+    1,
+    "unchanged"
+  ],
+  [
+    "03_AIR_QUALITY",
+    "degraded",
+    "degraded",
+    4,
+    3,
+    3,
+    "ECO-01 fixed; ECO-02, PSCAA-02, AIRNOW-01, PSCAA-01 remain"
+  ],
+  [
+    "04_WILDFIRE",
+    "degraded",
+    "ok/projected",
+    1,
+    0,
+    3,
+    "NIFC-01 fixed to correct empty; warning empties are not failures"
+  ],
+  [
+    "05_FLOOD_CONDITIONS",
+    "degraded",
+    "degraded",
+    4,
+    3,
+    1,
+    "KC-ROAD-01 fixed; ISS/REDM external and WSDOT credential blocker remain"
+  ],
+  [
+    "06_TRAIL_INFRASTRUCTURE_STATUS",
+    "degraded",
+    "degraded",
+    2,
+    2,
+    1,
+    "ISS/REDM external failures remain"
+  ],
+  [
+    "07_GOVERNMENT_SAFETY_ALERTS",
+    "ok",
+    "ok",
+    0,
+    0,
+    7,
+    "unchanged"
+  ],
+  [
+    "08_ROUTE_FACILITIES",
+    "ok",
+    "ok",
+    0,
+    0,
+    0,
+    "unchanged"
+  ]
+]

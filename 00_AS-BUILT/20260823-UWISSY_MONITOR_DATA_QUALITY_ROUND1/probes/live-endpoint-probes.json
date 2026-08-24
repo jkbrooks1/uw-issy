@@ -1,0 +1,385 @@
+[
+  {
+    "name": "ECO-01 old endpoint",
+    "url": "https://gis.ecology.wa.gov/arcgis/rest/services/AirQualityMonitoringHourlyResults/MapServer/0/query?f=json&where=HourPriorToLatest%3D0&outFields=*&returnGeometry=true",
+    "ok": false,
+    "http_status": 404,
+    "content_type": "text/html",
+    "elapsed_ms": 1150,
+    "json_error": null,
+    "text_sample": "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\"> <html xmlns=\"http://www.w3.org/1999/xhtml\"> <head> <meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\"/> <titl"
+  },
+  {
+    "name": "ECO-01 repaired endpoint",
+    "url": "https://gis.ecology.wa.gov/serverext/rest/services/AQ/AirQualityMonitoringHourlyResults/MapServer/0/query?f=json&where=HourPriorToLatest%3D1&outFields=*&returnGeometry=true",
+    "ok": true,
+    "http_status": 200,
+    "content_type": "application/json; charset=UTF-8",
+    "elapsed_ms": 2548,
+    "json_error": null,
+    "feature_count": 146,
+    "field_count": 26,
+    "fields_sample": [
+      "SiteId",
+      "SiteName",
+      "SiteLocation",
+      "DateTime_PST",
+      "HourPriorToLatest",
+      "AQIValue",
+      "AQICategory",
+      "AQI_PM25",
+      "AQI_PM25_Cat",
+      "PM25_Value",
+      "AQI_O3",
+      "AQI_O3_Cat",
+      "O3_Value",
+      "AQI_NO2",
+      "AQI_NO2_Cat",
+      "NO2_Value",
+      "AQI_SO2",
+      "AQI_SO2_Cat",
+      "SO2_Value",
+      "AQI_CO"
+    ],
+    "json_keys": [
+      "displayFieldName",
+      "fieldAliases",
+      "geometryType",
+      "spatialReference",
+      "fields",
+      "features"
+    ]
+  },
+  {
+    "name": "ECO-02 documented endpoint",
+    "url": "https://gis.ecology.wa.gov/serverext/rest/services/AQ/SmokeForecast/MapServer/0/query?f=json&where=1%3D1&outFields=*&returnGeometry=true",
+    "ok": false,
+    "http_status": 200,
+    "content_type": "application/json; charset=UTF-8",
+    "elapsed_ms": 382,
+    "json_error": {
+      "code": 500,
+      "message": "Service AQ/SmokeForecast/MapServer not started ",
+      "details": []
+    },
+    "json_keys": [
+      "error"
+    ]
+  },
+  {
+    "name": "KC-ROAD-01 old query",
+    "url": "https://gismaps.kingcounty.gov/arcgis/rest/services/RoadAlerts/KingCo_Road_Alerts/MapServer/0/query?where=1%3D1&outFields=ClosureName,LocationLimits,Community,ClosureReason,ClosureState,PlannedClosedDate,PlannedOpenDate&returnGeometry=false&f=json",
+    "ok": false,
+    "http_status": 200,
+    "content_type": "application/json;charset=UTF-8",
+    "elapsed_ms": 1553,
+    "json_error": {
+      "code": 400,
+      "message": "Failed to execute query.",
+      "details": []
+    },
+    "json_keys": [
+      "error"
+    ]
+  },
+  {
+    "name": "KC-ROAD-01 repaired query",
+    "url": "https://gismaps.kingcounty.gov/arcgis/rest/services/RoadAlerts/KingCo_Road_Alerts/MapServer/0/query?where=1%3D1&outFields=*&returnGeometry=false&f=json",
+    "ok": true,
+    "http_status": 200,
+    "content_type": "application/json;charset=UTF-8",
+    "elapsed_ms": 581,
+    "json_error": null,
+    "feature_count": 31,
+    "field_count": 37,
+    "fields_sample": [
+      "livegis.ROADS.ClosureSegment.OBJECTID",
+      "livegis.ROADS.ClosureSegment.ClosureID",
+      "livegis.ROADS.ClosureSegment.RouteID",
+      "livegis.ROADS.ClosureSegment.FromMeasure",
+      "livegis.ROADS.ClosureSegment.ToMeasure",
+      "livegis.ROADS.ClosureSegment.DBCreateDate",
+      "livegis.ROADS.ClosureSegment.DBModDate",
+      "livegis.ROADS.ClosureSegment.ModifiedBy",
+      "livegis.ROADS.ClosureSegment.GlobalID",
+      "livegis.roads.CurrentClosures_View.OBJECTID",
+      "livegis.roads.CurrentClosures_View.ClosureID",
+      "livegis.roads.CurrentClosures_View.ClosureName",
+      "livegis.roads.CurrentClosures_View.LocationLimits",
+      "livegis.roads.CurrentClosures_View.RegionID",
+      "livegis.roads.CurrentClosures_View.StatusID",
+      "livegis.roads.CurrentClosures_View.MaintDivID",
+      "livegis.roads.CurrentClosures_View.Community",
+      "livegis.roads.CurrentClosures_View.CityID",
+      "livegis.roads.CurrentClosures_View.ClosureReason",
+      "livegis.roads.CurrentClosures_View.ClosureTypeID"
+    ],
+    "json_keys": [
+      "displayFieldName",
+      "fieldAliases",
+      "fields",
+      "features"
+    ]
+  },
+  {
+    "name": "KC-ROAD-01 schema",
+    "url": "https://gismaps.kingcounty.gov/arcgis/rest/services/RoadAlerts/KingCo_Road_Alerts/MapServer/0?f=json",
+    "ok": true,
+    "http_status": 200,
+    "content_type": "application/json;charset=UTF-8",
+    "elapsed_ms": 331,
+    "json_error": null,
+    "field_count": 38,
+    "fields_sample": [
+      "livegis.ROADS.ClosureSegment.OBJECTID",
+      "livegis.ROADS.ClosureSegment.ClosureID",
+      "livegis.ROADS.ClosureSegment.RouteID",
+      "livegis.ROADS.ClosureSegment.FromMeasure",
+      "livegis.ROADS.ClosureSegment.ToMeasure",
+      "livegis.ROADS.ClosureSegment.DBCreateDate",
+      "livegis.ROADS.ClosureSegment.DBModDate",
+      "livegis.ROADS.ClosureSegment.ModifiedBy",
+      "livegis.ROADS.ClosureSegment.GlobalID",
+      "livegis.roads.CurrentClosures_View.OBJECTID",
+      "livegis.roads.CurrentClosures_View.ClosureID",
+      "livegis.roads.CurrentClosures_View.ClosureName",
+      "livegis.roads.CurrentClosures_View.LocationLimits",
+      "livegis.roads.CurrentClosures_View.RegionID",
+      "livegis.roads.CurrentClosures_View.StatusID",
+      "livegis.roads.CurrentClosures_View.MaintDivID",
+      "livegis.roads.CurrentClosures_View.Community",
+      "livegis.roads.CurrentClosures_View.CityID",
+      "livegis.roads.CurrentClosures_View.ClosureReason",
+      "livegis.roads.CurrentClosures_View.ClosureTypeID"
+    ],
+    "json_keys": [
+      "currentVersion",
+      "id",
+      "name",
+      "type",
+      "description",
+      "geometryType",
+      "sourceSpatialReference",
+      "copyrightText",
+      "parentLayer",
+      "subLayers",
+      "minScale",
+      "maxScale"
+    ]
+  },
+  {
+    "name": "NIFC-01 repaired route bbox query",
+    "url": "https://services3.arcgis.com/T4QMspbfLg3qTGWY/ArcGIS/rest/services/WFIGS_Incident_Locations_Current/FeatureServer/0/query?where=1%3D1&geometry=-122.3057%2C47.55207%2C-122.04414%2C47.75889&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=*&returnGeometry=true&f=json",
+    "ok": true,
+    "http_status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "elapsed_ms": 1307,
+    "json_error": null,
+    "feature_count": 0,
+    "json_keys": [
+      "objectIdFieldName",
+      "uniqueIdField",
+      "globalIdFieldName",
+      "features"
+    ]
+  },
+  {
+    "name": "NIFC-01 global count",
+    "url": "https://services3.arcgis.com/T4QMspbfLg3qTGWY/ArcGIS/rest/services/WFIGS_Incident_Locations_Current/FeatureServer/0/query?where=1%3D1&returnCountOnly=true&f=json",
+    "ok": true,
+    "http_status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "elapsed_ms": 542,
+    "json_error": null,
+    "count": 595,
+    "json_keys": [
+      "count"
+    ]
+  },
+  {
+    "name": "PSCAA-01 station map",
+    "url": "https://map.pscleanair.gov/",
+    "ok": true,
+    "http_status": 200,
+    "content_type": "text/html",
+    "elapsed_ms": 850,
+    "json_error": null,
+    "text_sample": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"/><link rel=\"icon\" href=\"/favicon.ico\"/><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"/><meta name=\"theme-color\" content=\"#000000\"/><meta name=\"description\" conte"
+  },
+  {
+    "name": "PSCAA-01 legacy NetworkMap",
+    "url": "https://secure.pscleanair.org/AirQuality/NetworkMap",
+    "ok": true,
+    "http_status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "elapsed_ms": 1694,
+    "json_error": null,
+    "text_sample": "<!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <link rel=\"stylesheet\" href=\"/AirQuality/css/site.min.css\" /> <link href=\"/AirQuality/lib/jquery-ui/jquery-ui.mi"
+  },
+  {
+    "name": "AIRNOW-01 no-key auth check",
+    "url": "https://www.airnowapi.org/aq/observation/zipCode/current/?format=application/json&zipCode=98027&distance=25&API_KEY=",
+    "ok": false,
+    "http_status": 401,
+    "content_type": "application/json;charset=UTF-8",
+    "elapsed_ms": 1459,
+    "json_error": null,
+    "json_keys": [
+      "WebServiceError"
+    ]
+  },
+  {
+    "name": "WSDOT-01 no-code auth check",
+    "url": "https://wsdot.wa.gov/Traffic/api/HighwayAlerts/HighwayAlertsREST.svc/GetAlertsAsJson?AccessCode=",
+    "ok": false,
+    "http_status": 401,
+    "content_type": "text/html",
+    "elapsed_ms": 1482,
+    "json_error": null,
+    "text_sample": "<!DOCTYPE html> <html> <head> <meta charset=\"utf-8\" /> <title>Unathenticated</title> </head> <body> The supplied access code was missing or invalid. </body> </html>"
+  },
+  {
+    "name": "REDM-01 metadata",
+    "url": "https://gis.redmond.gov/arcgis/rest/services/Traffic/Alerts/FeatureServer?f=json",
+    "ok": false,
+    "elapsed_ms": 10085,
+    "network_error": "TypeError: fetch failed"
+  },
+  {
+    "name": "ISS-03 metadata",
+    "url": "https://apps.issaquahwa.gov/server/rest/services/General_Mapservices/PWProjectsCurrentYearConstructionPublic/MapServer?f=json",
+    "ok": false,
+    "elapsed_ms": 10537,
+    "network_error": "TypeError: fetch failed"
+  },
+  {
+    "name": "ISS-01 CivicAlerts",
+    "url": "https://www.issaquahwa.gov/CivicAlerts.aspx?CID=20",
+    "ok": false,
+    "http_status": 403,
+    "content_type": "text/html; charset=UTF-8",
+    "elapsed_ms": 608,
+    "json_error": null,
+    "text_sample": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><m"
+  },
+  {
+    "name": "ISS-01 flood page",
+    "url": "https://www.issaquahwa.gov/flood",
+    "ok": false,
+    "http_status": 403,
+    "content_type": "text/html; charset=UTF-8",
+    "elapsed_ms": 818,
+    "json_error": null,
+    "text_sample": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><m"
+  },
+  {
+    "name": "PSCAA-02 burn-ban page",
+    "url": "https://www.pscleanair.gov/168/Air-Quality-Burn-Ban-Status",
+    "ok": false,
+    "elapsed_ms": 10179,
+    "network_error": "TypeError: fetch failed"
+  },
+  {
+    "name": "NIFC-02 perimeter route bbox",
+    "url": "https://services3.arcgis.com/T4QMspbfLg3qTGWY/ArcGIS/rest/services/WFIGS_Interagency_Perimeters_Current/FeatureServer/0/query?where=1%3D1&geometry=-122.3057,47.55207,-122.04414,47.75889&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&returnCountOnly=true&f=json",
+    "ok": true,
+    "http_status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "elapsed_ms": 1590,
+    "json_error": null,
+    "count": 0,
+    "json_keys": [
+      "count"
+    ]
+  },
+  {
+    "name": "NWS wildfire WAZ657",
+    "url": "https://api.weather.gov/alerts/active/zone/WAZ657",
+    "ok": true,
+    "http_status": 200,
+    "content_type": "application/geo+json",
+    "elapsed_ms": 951,
+    "json_error": null,
+    "feature_count": 0,
+    "json_keys": [
+      "@context",
+      "type",
+      "features",
+      "title",
+      "updated"
+    ]
+  },
+  {
+    "name": "KC wildfire fire safety",
+    "url": "https://kingcounty.gov/en/dept/local-services/governance-leadership/local-government-for-unincorporated-king-county/fire-safety",
+    "ok": true,
+    "http_status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "elapsed_ms": 1761,
+    "json_error": null,
+    "text_sample": " <!DOCTYPE html> <!--[if IE 9]><html lang=\"en\" class=\"ie9 no-js\"><![endif]--> <!--[if !IE]><!--> <html lang=\"en\"> <!--<![endif]--> <head> <link rel=\"stylesheet\" href=\"https://cds.kingcounty.gov/styles.css\" /> <meta charset=\"utf-8\" /> <meta "
+  },
+  {
+    "name": "NWPS ISSW1",
+    "url": "https://api.water.noaa.gov/nwps/v1/gauges/ISSW1",
+    "ok": true,
+    "http_status": 200,
+    "content_type": "application/json",
+    "elapsed_ms": 1446,
+    "json_error": null,
+    "json_keys": [
+      "lid",
+      "usgsId",
+      "reachId",
+      "name",
+      "description",
+      "rfc",
+      "wfo",
+      "state",
+      "county",
+      "timeZone",
+      "latitude",
+      "longitude"
+    ]
+  },
+  {
+    "name": "NWPS ISQW1",
+    "url": "https://api.water.noaa.gov/nwps/v1/gauges/ISQW1",
+    "ok": true,
+    "http_status": 200,
+    "content_type": "application/json",
+    "elapsed_ms": 1138,
+    "json_error": null,
+    "json_keys": [
+      "lid",
+      "usgsId",
+      "reachId",
+      "name",
+      "description",
+      "rfc",
+      "wfo",
+      "state",
+      "county",
+      "timeZone",
+      "latitude",
+      "longitude"
+    ]
+  },
+  {
+    "name": "NWS flood point",
+    "url": "https://api.weather.gov/alerts/active?point=47.6505,-122.3046",
+    "ok": true,
+    "http_status": 200,
+    "content_type": "application/geo+json",
+    "elapsed_ms": 784,
+    "json_error": null,
+    "feature_count": 0,
+    "json_keys": [
+      "@context",
+      "type",
+      "features",
+      "title",
+      "updated"
+    ]
+  }
+]
