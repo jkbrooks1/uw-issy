@@ -1,6 +1,4 @@
 ---
-// Buildspec section 23.8 / 24 — full detail fields for one event. Omits any
-// field that is null rather than showing a blank or invented value.
 import type { DashboardEventWithUnknownLane } from "../../lib/route-status/types";
 import { formatPacificTime } from "../../lib/route-status/format-time";
 
@@ -13,55 +11,75 @@ const { event } = Astro.props;
 const reportedLabel = formatPacificTime(event.reportedAt);
 const fromLabel = formatPacificTime(event.effectiveFrom);
 const untilLabel = formatPacificTime(event.effectiveUntil);
+const closedLengthLabel =
+  typeof event.closedLengthMiles === "number" ? `${event.closedLengthMiles.toFixed(2)} mi` : null;
 ---
 
 <dl class="map-popup">
-  {event.summary && (
+  {(event.closureName || event.routeSegmentLabel || event.locationLabel) && (
     <>
-      <dt>Summary</dt>
-      <dd>{event.summary}</dd>
+      <dt>Closed section</dt>
+      <dd>{event.closureName ?? event.routeSegmentLabel ?? event.locationLabel}</dd>
+    </>
+  )}
+  {event.closureStartCrossing && (
+    <>
+      <dt>From</dt>
+      <dd>{event.closureStartCrossing}</dd>
+    </>
+  )}
+  {event.closureEndCrossing && (
+    <>
+      <dt>To</dt>
+      <dd>{event.closureEndCrossing}</dd>
+    </>
+  )}
+  {closedLengthLabel && (
+    <>
+      <dt>Closed length</dt>
+      <dd>{closedLengthLabel}</dd>
+    </>
+  )}
+  {typeof event.detourAvailable === "boolean" && (
+    <>
+      <dt>Detour</dt>
+      <dd>{event.detourAvailable ? (event.detourDescription ?? "Yes") : "No"}</dd>
+    </>
+  )}
+  {event.closureHours && (
+    <>
+      <dt>Closure hours</dt>
+      <dd>{event.closureHours}</dd>
+    </>
+  )}
+  {event.projectedEndDate && (
+    <>
+      <dt>Expected reopening</dt>
+      <dd>{event.projectedEndDate}</dd>
     </>
   )}
   {(event.locationLabel || event.routeSegmentLabel || event.routeSegmentId) && (
     <>
-      <dt>Location or route part</dt>
+      <dt>Location</dt>
       <dd>{event.locationLabel ?? event.routeSegmentLabel ?? event.routeSegmentId}</dd>
     </>
   )}
   {event.routeEffect && (
     <>
-      <dt>Route effect</dt>
+      <dt>Route impact</dt>
       <dd>{event.routeEffect}</dd>
-    </>
-  )}
-  {event.geometry === null && (
-    <>
-      <dt>Map location</dt>
-      <dd>Broad area — no exact route point supplied</dd>
-    </>
-  )}
-  {event.severity && (
-    <>
-      <dt>Severity</dt>
-      <dd>{event.severity}</dd>
     </>
   )}
   {event.currentStatus && (
     <>
-      <dt>Current status</dt>
-      <dd>{event.currentStatus}</dd>
+      <dt>Status</dt>
+      <dd>{event.currentStatus === "active" ? "Segment closed" : event.currentStatus}</dd>
     </>
   )}
   {event.riderCanPass && (
     <>
-      <dt>Can riders pass</dt>
+      <dt>Segment passability</dt>
       <dd>{event.riderCanPass === "no" ? "No" : "Unknown"}</dd>
-    </>
-  )}
-  {typeof event.detourAvailable === "boolean" && (
-    <>
-      <dt>Detour available</dt>
-      <dd>{event.detourAvailable ? "Yes" : "No"}</dd>
     </>
   )}
   {reportedLabel && (
@@ -72,9 +90,9 @@ const untilLabel = formatPacificTime(event.effectiveUntil);
   )}
   {(fromLabel || untilLabel) && (
     <>
-      <dt>Effective</dt>
+      <dt>Effective dates</dt>
       <dd>
-        {fromLabel ?? "Unknown start"}
+        {fromLabel ?? "Start date not stated by source"}
         {untilLabel ? ` through ${untilLabel}` : ""}
       </dd>
     </>
@@ -91,18 +109,6 @@ const untilLabel = formatPacificTime(event.effectiveUntil);
           event.sourceName
         )}
       </dd>
-    </>
-  )}
-  {event.isStale && (
-    <>
-      <dt>Note</dt>
-      <dd>Data may be out of date</dd>
-    </>
-  )}
-  {event.isLastKnownGood && (
-    <>
-      <dt>Note</dt>
-      <dd>Showing last known data</dd>
     </>
   )}
 </dl>

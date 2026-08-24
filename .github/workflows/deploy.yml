@@ -97,6 +97,9 @@ jobs:
       - name: Scan built output for secret-like content
         run: node scripts/check-public-output-for-secrets.mjs dist
 
+      - name: Validate approved public copy allowlist
+        run: node scripts/validate-public-copy-allowlist.mjs dist
+
       # 17. Deploy to Cloudflare Pages.
       - name: Deploy to Cloudflare Pages
         id: deploy

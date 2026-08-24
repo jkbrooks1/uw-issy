@@ -5,10 +5,10 @@
   "lanes": [
     {
       "laneId": "01_ROUTE_CONDITIONS",
-      "laneLabel": "Route Conditions",
+      "laneLabel": "Route conditions",
       "available": true,
       "sourceState": "degraded",
-      "publicText": "Partial data",
+      "publicText": "Degraded",
       "freshnessState": "stale",
       "usingLastKnownGood": false,
       "eventCount": 1
@@ -25,10 +25,10 @@
     },
     {
       "laneId": "03_AIR_QUALITY",
-      "laneLabel": "Air Quality",
+      "laneLabel": "Air quality",
       "available": true,
       "sourceState": "degraded",
-      "publicText": "Partial data",
+      "publicText": "Degraded",
       "freshnessState": "stale",
       "usingLastKnownGood": false,
       "eventCount": 2
@@ -38,34 +38,34 @@
       "laneLabel": "Wildfire",
       "available": true,
       "sourceState": "degraded",
-      "publicText": "Partial data",
+      "publicText": "Degraded",
       "freshnessState": "stale",
       "usingLastKnownGood": false,
       "eventCount": 0
     },
     {
       "laneId": "05_FLOOD_CONDITIONS",
-      "laneLabel": "Flood Conditions",
+      "laneLabel": "Flood conditions",
       "available": true,
       "sourceState": "degraded",
-      "publicText": "Partial data",
+      "publicText": "Degraded",
       "freshnessState": "stale",
       "usingLastKnownGood": false,
       "eventCount": 5
     },
     {
       "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
-      "laneLabel": "Trail Infrastructure Status",
+      "laneLabel": "Trail infrastructure",
       "available": true,
       "sourceState": "degraded",
-      "publicText": "Partial data",
+      "publicText": "Degraded",
       "freshnessState": "stale",
       "usingLastKnownGood": false,
       "eventCount": 5
     },
     {
       "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
-      "laneLabel": "Government Safety Alerts",
+      "laneLabel": "Government safety alerts",
       "available": true,
       "sourceState": "ok",
       "publicText": "Current",
@@ -75,7 +75,7 @@
     },
     {
       "laneId": "08_ROUTE_FACILITIES",
-      "laneLabel": "Route Facilities",
+      "laneLabel": "Route facilities",
       "available": true,
       "sourceState": "ok",
       "publicText": "Current",

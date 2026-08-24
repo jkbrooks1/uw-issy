@@ -1,7 +1,4 @@
 ---
-// Buildspec section 24.3 — mobile stacked event list. A real <details>
-// disclosure serves as the "clear detail button" — not a hidden whole-card
-// click target.
 import type { DashboardEventWithUnknownLane } from "../../lib/route-status/types";
 import { formatPacificTime } from "../../lib/route-status/format-time";
 import { markerPresentationForEvent } from "../../lib/route-status/event-marker";
@@ -19,23 +16,22 @@ const { events } = Astro.props;
     events.map((event) => (
       <article class="event-card">
         <h3 class="event-card__title">{event.title}</h3>
-        <p class="event-card__meta">{event.laneLabel}</p>
         <p class="event-card__meta">
-          {event.locationLabel ?? event.routeSegmentLabel ?? event.routeSegmentId ?? "Location not available"}
+          {event.locationLabel ?? event.routeSegmentLabel ?? event.routeSegmentId ?? "Location not stated by source"}
         </p>
         <p class="event-card__meta">
-          {formatPacificTime(event.reportedAt) ?? "Report time not available"}
+          {formatPacificTime(event.reportedAt) ?? "Report time not stated by source"}
         </p>
         <span class={`tier-badge tier-badge--${event.displayTier}`}>
           <span
             class={`event-marker-inline ${markerPresentationForEvent(event).cssClass}`}
             aria-hidden="true"
           ></span>
-          {event.displayTier}
+          {event.currentStatus === "active" ? "Segment closed" : event.displayTier === "normal" ? "Normal" : event.displayTier === "watch" ? "Caution" : event.displayTier === "alert" ? "Major issue" : "Unknown"}
         </span>
         {event.riderCanPass && (
           <p class="event-card__meta">
-            Can I pass? <strong>{event.riderCanPass === "no" ? "No" : "Unknown"}</strong>
+            Segment passability <strong>{event.riderCanPass === "no" ? "No" : "Unknown"}</strong>
           </p>
         )}
         <details>

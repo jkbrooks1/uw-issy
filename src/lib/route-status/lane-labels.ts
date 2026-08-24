@@ -9,6 +9,7 @@ export const LANE_LABELS: Record<MonitoringLaneId, string> = {
   "05_FLOOD_CONDITIONS": "Flood conditions",
   "06_TRAIL_INFRASTRUCTURE_STATUS": "Trail infrastructure",
   "07_GOVERNMENT_SAFETY_ALERTS": "Government safety alerts",
+  "08_ROUTE_FACILITIES": "Route facilities",
 };
 
 /** Buildspec section 34.4 — public label for an event whose lane ID is not one of the seven canonical lanes. */

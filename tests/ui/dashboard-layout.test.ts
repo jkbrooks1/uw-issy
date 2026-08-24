@@ -1,4 +1,4 @@
-// Proves the Round 2 rider-first rebuild's title/layout changes. This
+// Proves the route-first rebuild's title/layout changes. This
 // project has no Astro component-render test harness (no @astrojs/test or
 // container API usage anywhere), and CI runs `npm test` before
 // `astro build`, so these tests read the authoritative source files
@@ -20,11 +20,11 @@ const CURRENT_ROUTE_STATE_ASTRO = readFileSync(
   join(REPO_ROOT, "src", "components", "route-status", "CurrentRouteState.astro"),
   "utf8",
 );
-const RIDER_STATE_TS = readFileSync(join(REPO_ROOT, "src", "lib", "route-status", "rider-state.ts"), "utf8");
+const ROUTE_STATE_TS = readFileSync(join(REPO_ROOT, "src", "lib", "route-status", "rider-state.ts"), "utf8");
 const FOOTER_ASTRO = readFileSync(join(REPO_ROOT, "src", "components", "site", "SiteFooter.astro"), "utf8");
 const CSS = readFileSync(join(REPO_ROOT, "src", "styles", "route-status.css"), "utf8");
 
-describe("title and layout (Round 2 rider-first rebuild)", () => {
+describe("title and layout (route-first rebuild)", () => {
   it("1. the page title is exactly UW-Issaquah BG/SRT/ELST Status", () => {
     expect(HEADING_ASTRO).toMatch(/<h1>UW-Issaquah BG\/SRT\/ELST Status<\/h1>/);
     expect(INDEX_ASTRO).toMatch(/<title>UW-Issaquah BG\/SRT\/ELST Status \| BikeTourFrance\.net<\/title>/);
@@ -33,18 +33,18 @@ describe("title and layout (Round 2 rider-first rebuild)", () => {
   it("2. the Route Status Summary (CurrentRouteState.astro) is wired into index.astro", () => {
     expect(INDEX_ASTRO).toMatch(/CurrentRouteState/);
     expect(INDEX_ASTRO).toMatch(/item-route-status/);
-    // Rider-facing vocabulary must actually be present, not just the tier words.
+    // Route Status vocabulary must actually be present, not just the tier words.
     expect(CURRENT_ROUTE_STATE_ASTRO).toMatch(/CLEAR/);
     expect(CURRENT_ROUTE_STATE_ASTRO).toMatch(/CAUTION/);
     expect(CURRENT_ROUTE_STATE_ASTRO).toMatch(/MAJOR ISSUE/);
     expect(CURRENT_ROUTE_STATE_ASTRO).toMatch(/PARTIAL CLOSURE/);
-    expect(CURRENT_ROUTE_STATE_ASTRO).toMatch(/CLOSED/);
-    expect(CURRENT_ROUTE_STATE_ASTRO).toMatch(/DATA STALE/);
+    expect(CURRENT_ROUTE_STATE_ASTRO).not.toMatch(/CLOSED/);
+    expect(CURRENT_ROUTE_STATE_ASTRO).not.toMatch(/DATA STALE/);
     // Unknown/failed/stale data must never present as CLEAR.
-    expect(RIDER_STATE_TS).toMatch(/isDataUnavailable \|\| isAssemblyFailed \|\| summary\.displayTier === "unknown"/);
+    expect(ROUTE_STATE_TS).toMatch(/isDataUnavailable \|\| isAssemblyFailed \|\| summary\.displayTier === "unknown"/);
   });
 
-  it("3. rider content (status summary, map, issues) renders before the collapsed Monitor Health section", () => {
+  it("3. route content (status summary, map, issues) renders before System health", () => {
     const statusIdx = INDEX_ASTRO.indexOf("item-route-status");
     const mapIdx = INDEX_ASTRO.indexOf("item-route-map");
     const alertsIdx = INDEX_ASTRO.indexOf("item-route-alerts");
@@ -79,14 +79,15 @@ describe("title and layout (Round 2 rider-first rebuild)", () => {
     expect(new Set(values).size).toBe(values.length);
   });
 
-  it("5. the Monitor Health section is a collapsed <details> merging monitoring sources and system health", () => {
+  it("5. the System health section is a single bottom panel", () => {
     const monitorHealthDisclosure = readFileSync(
       join(REPO_ROOT, "src", "components", "route-status", "MonitorHealthDisclosure.astro"),
       "utf8",
     );
-    expect(monitorHealthDisclosure).toMatch(/<details class="monitor-health-disclosure">/);
-    expect(monitorHealthDisclosure).toMatch(/MonitoringSources/);
-    expect(monitorHealthDisclosure).toMatch(/SystemHealthDisclosure/);
+    expect(monitorHealthDisclosure).toMatch(/System health/);
+    expect(monitorHealthDisclosure).not.toMatch(/MonitoringSources/);
+    expect(monitorHealthDisclosure).not.toMatch(/SystemHealthDisclosure/);
+    expect(monitorHealthDisclosure).not.toMatch(/Monitor health/);
   });
 
   it("6. the unauthorized footer marketing line is gone and nothing replaced it", () => {

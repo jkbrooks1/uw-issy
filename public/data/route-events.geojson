@@ -754,7 +754,7 @@
       "properties": {
         "id": "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01",
         "laneId": "01_ROUTE_CONDITIONS",
-        "laneLabel": "Route Conditions",
+        "laneLabel": "Route conditions",
         "title": "East Lake Sammamish Trail closure for George Davis Creek culvert replacement.",
         "summary": "East Lake Sammamish Trail closure for George Davis Creek culvert replacement.",
         "locationLabel": "Between Louis Thompson Rd NE and NE Inglewood Hill Rd.",
@@ -780,6 +780,16 @@
         "severity": "high",
         "currentStatus": "active",
         "detourAvailable": false,
+        "detourDescription": "No",
+        "closureName": "East Lake Sammamish Trail",
+        "closedLengthMiles": 0.11,
+        "closedLengthSource": "official_source_distance",
+        "closureStartCrossing": "Louis Thompson Rd NE",
+        "closureEndCrossing": "NE Inglewood Hill Rd",
+        "closureHours": null,
+        "closureStartDate": "2026-06-01T00:00:00Z",
+        "projectedEndDate": "End of 2026",
+        "routeAction": "No",
         "riderCanPass": "no"
       }
     },
@@ -797,9 +807,9 @@
       "properties": {
         "id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:ae7e8f59",
         "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
-        "laneLabel": "Trail Infrastructure Status",
+        "laneLabel": "Trail infrastructure",
         "title": "Burke-Gilman Trail infrastructure notice",
-        "summary": "{\"data\":\"\\r\\n\\r\\n\\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n \\r\\n\\r\\n\\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n Burke-Gilman Trail - King County, Washington \\r\\n \\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n\\r\\n \\r\\n \\",
+        "summary": null,
         "locationLabel": null,
         "routeSegmentId": "03",
         "routeSegmentLabel": "Burke-Gilman Trail",
@@ -821,9 +831,19 @@
         "duplicateGroupKey": null,
         "lastSourceRefreshAt": "2026-08-23T20:00:00.317Z",
         "severity": "high",
-        "currentStatus": "closed",
+        "currentStatus": null,
         "detourAvailable": null,
-        "riderCanPass": "unknown"
+        "detourDescription": null,
+        "closureName": null,
+        "closedLengthMiles": null,
+        "closedLengthSource": null,
+        "closureStartCrossing": null,
+        "closureEndCrossing": null,
+        "closureHours": null,
+        "closureStartDate": null,
+        "projectedEndDate": null,
+        "routeAction": null,
+        "riderCanPass": null
       }
     },
     {
@@ -840,9 +860,9 @@
       "properties": {
         "id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:ec9a6c33",
         "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
-        "laneLabel": "Trail Infrastructure Status",
+        "laneLabel": "Trail infrastructure",
         "title": "Sammamish River Trail infrastructure notice",
-        "summary": "{\"data\":\"\\r\\n\\r\\n\\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n \\r\\n\\r\\n\\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n Sammamish River Trail - King County, Washington \\r\\n \\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n\\r\\n \\r\\",
+        "summary": null,
         "locationLabel": null,
         "routeSegmentId": "05",
         "routeSegmentLabel": "Sammamish River Trail",
@@ -864,9 +884,19 @@
         "duplicateGroupKey": null,
         "lastSourceRefreshAt": "2026-08-23T20:00:00.317Z",
         "severity": "high",
-        "currentStatus": "closed",
+        "currentStatus": null,
         "detourAvailable": null,
-        "riderCanPass": "unknown"
+        "detourDescription": null,
+        "closureName": null,
+        "closedLengthMiles": null,
+        "closedLengthSource": null,
+        "closureStartCrossing": null,
+        "closureEndCrossing": null,
+        "closureHours": null,
+        "closureStartDate": null,
+        "projectedEndDate": null,
+        "routeAction": null,
+        "riderCanPass": null
       }
     },
     {
@@ -883,9 +913,9 @@
       "properties": {
         "id": "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:b3d1e147",
         "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
-        "laneLabel": "Trail Infrastructure Status",
+        "laneLabel": "Trail infrastructure",
         "title": "George Davis Creek fish-passage and storm improvement project",
-        "summary": "{\"data\":\"\\r\\n \\r\\n \\r\\n \\r\\n George Davis Creek Fish Passage and Storm Improvement Project | City of Sammamish \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n",
+        "summary": null,
         "locationLabel": null,
         "routeSegmentId": "09",
         "routeSegmentLabel": "George Davis Creek",
@@ -911,9 +941,19 @@
         "duplicateGroupKey": "06_TRAIL_INFRASTRUCTURE_STATUS::09",
         "lastSourceRefreshAt": "2026-08-23T20:00:00.317Z",
         "severity": "high",
-        "currentStatus": "closed",
+        "currentStatus": null,
         "detourAvailable": null,
-        "riderCanPass": "unknown"
+        "detourDescription": null,
+        "closureName": null,
+        "closedLengthMiles": null,
+        "closedLengthSource": null,
+        "closureStartCrossing": null,
+        "closureEndCrossing": null,
+        "closureHours": null,
+        "closureStartDate": null,
+        "projectedEndDate": null,
+        "routeAction": null,
+        "riderCanPass": null
       }
     }
   ]

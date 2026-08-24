@@ -1,11 +1,11 @@
 import type { SourceHealthState } from "./types";
 
-/** Buildspec section 10.5 — internal source-health state to public text. */
+/** Approved public SS-H vocabulary only. */
 export const SOURCE_HEALTH_TEXT: Record<SourceHealthState, string> = {
   ok: "Current",
-  degraded: "Partial data",
-  stale: "Data may be out of date",
-  no_relevant_events: "No route-related events",
+  degraded: "Degraded",
+  stale: "Degraded",
+  no_relevant_events: "Current",
   failed_validation: "Source data could not be confirmed",
   failed_fetch: "Source could not be checked",
   blocked: "Source check was blocked",
@@ -27,11 +27,9 @@ const CANONICAL_STATES: readonly SourceHealthState[] = [
   "unknown",
 ];
 
-/** Maps any raw internal state string to one of the canonical source-health states. Unrecognized input becomes "unknown". */
+/** Maps any raw internal state string to one canonical source-health state. */
 export function toSourceHealthState(rawState: string | null | undefined): SourceHealthState {
-  if (typeof rawState !== "string") {
-    return "unknown";
-  }
+  if (typeof rawState !== "string") return "unknown";
   return (CANONICAL_STATES as readonly string[]).includes(rawState)
     ? (rawState as SourceHealthState)
     : "unknown";

@@ -1,13 +1,7 @@
 ---
-// Round 2 rebuild of the top-of-page rider status panel (formerly "Current
-// route state", not wired into index.astro in Round 1 — see notes.md).
-// Rider-facing vocabulary (CLEAR / CAUTION / MAJOR ISSUE / CLOSED / DATA
-// STALE) is derived from the internal displayTier plus real data-confidence
-// signals, extending display-tier.ts's "unknown never becomes normal" rule:
-// a stale, failed, or unknown data state can never present as CLEAR.
 import type { RouteWideSummary } from "../../lib/route-status/normalize-dashboard-data";
 import type { DashboardEventWithUnknownLane, SystemHealthFile } from "../../lib/route-status/types";
-import { deriveRiderStateMeta, type RiderState } from "../../lib/route-status/rider-state";
+import { deriveRouteStatusMeta, type RouteStatusState } from "../../lib/route-status/rider-state";
 
 type Props = {
   summary: RouteWideSummary;
@@ -17,30 +11,18 @@ type Props = {
 
 const { summary, systemHealth, events } = Astro.props;
 
-const riderStateMeta = deriveRiderStateMeta(summary, systemHealth, events);
-const {
-  riderState,
-  activeEventCount,
-  closureCount,
-  closureScope,
-  statusDetail,
-  hasConfidenceIssue,
-  failedCount,
-  degradedCount,
-  isDataUnavailable,
-  isAssemblyFailed,
-} = riderStateMeta;
+const routeStatusMeta = deriveRouteStatusMeta(summary, systemHealth, events);
+const { routeStatus, activeEventCount, closureCount, closureScope } = routeStatusMeta;
 
-const STATE_META: Record<RiderState, { icon: string; label: string; cssClass: string }> = {
-  CLEAR: { icon: "✓", label: "Clear", cssClass: "rider-state--clear" },
-  CAUTION: { icon: "◯", label: "Caution", cssClass: "rider-state--caution" },
-  "MAJOR ISSUE": { icon: "⚠", label: "Major issue", cssClass: "rider-state--major" },
-  "PARTIAL CLOSURE": { icon: "⚠", label: "Partial closure", cssClass: "rider-state--partial-closure" },
-  CLOSED: { icon: "✕", label: "Closed", cssClass: "rider-state--closed" },
-  "DATA STALE": { icon: "?", label: "Data stale", cssClass: "rider-state--stale" },
+const STATE_META: Record<RouteStatusState, { icon: string; label: string; cssClass: string }> = {
+  CLEAR: { icon: "+", label: "Clear", cssClass: "rider-state--clear" },
+  CAUTION: { icon: "!", label: "Caution", cssClass: "rider-state--caution" },
+  "MAJOR ISSUE": { icon: "!", label: "Major issue", cssClass: "rider-state--major" },
+  "PARTIAL CLOSURE": { icon: "!", label: "Partial closure", cssClass: "rider-state--partial-closure" },
+  UNKNOWN: { icon: "?", label: "Unknown", cssClass: "rider-state--stale" },
 };
 
-const meta = STATE_META[riderState];
+const meta = STATE_META[routeStatus];
 ---
 
 <section class="panel route-status-summary" aria-labelledby="route-status-summary-heading">
@@ -49,37 +31,16 @@ const meta = STATE_META[riderState];
     <span class="route-state__icon" aria-hidden="true">{meta.icon}</span>
     <span>{meta.label}</span>
   </p>
-  {
-    statusDetail && (
-      <p class="route-state__reason route-state__reason--primary">{statusDetail}</p>
-    )
-  }
-  {
-    summary.overallMessage && (
-      <p class="route-state__reason">{summary.overallMessage}</p>
-    )
-  }
-  <p class="route-state__meta">
-    Last full route check:{" "}
-    <strong>{summary.lastUpdatedLabel ?? "Not available"}</strong>
-  </p>
-  {
-    hasConfidenceIssue && (
-      <p class="route-state__confidence">
-        {isDataUnavailable || isAssemblyFailed
-          ? "Route data could not be fully assembled — some information below may be incomplete."
-          : summary.displayTier === "unknown"
-            ? "Route-wide status could not be determined from the latest update."
-            : `Data confidence reduced: ${failedCount} source${failedCount === 1 ? "" : "s"} failed, ${degradedCount} degraded.`}
-      </p>
-    )
-  }
   <div class="route-state__counts">
     <p class="route-state__count">
-      Rider-relevant active issues: <strong>{activeEventCount}</strong>
+      Active route issues: <strong>{activeEventCount}</strong>
     </p>
-    <p class="route-state__count">
-      {closureScope === "full" ? "Route-wide closures reported" : "Localized closures reported"}: <strong>{closureCount}</strong>
-    </p>
+    {
+      closureScope === "partial" && (
+        <p class="route-state__count">
+          Localized closures reported: <strong>{closureCount}</strong>
+        </p>
+      )
+    }
   </div>
 </section>

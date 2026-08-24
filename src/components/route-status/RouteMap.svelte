@@ -57,7 +57,7 @@
     latlng: import("leaflet").LatLng,
   ): import("leaflet").Marker {
     const presentation = markerPresentationForEvent(markerPropsForFeature(feature));
-    const title = String((feature.properties ?? {}).title ?? "Route event");
+    const title = String((feature.properties ?? {}).title ?? "");
     const icon = L.divIcon({
       className: `map-marker-triangle ${presentation.cssClass}`,
       html: `<span aria-hidden="true"></span>`,
@@ -68,7 +68,7 @@
     const marker = L.marker(latlng, {
       icon,
       keyboard: true,
-      alt: `${presentation.label}: ${title}`,
+      alt: title ? `${presentation.label}: ${title}` : presentation.label,
     });
     marker.bindPopup(() => buildPopupContent(feature));
     return marker;
@@ -82,7 +82,7 @@
     root.className = "map-popup";
 
     const h3 = document.createElement("h3");
-    h3.textContent = String(props.title ?? props.laneLabel ?? "Route event");
+    h3.textContent = String(props.title ?? "");
     root.appendChild(h3);
 
     const dl = document.createElement("dl");
@@ -96,20 +96,23 @@
       dl.appendChild(dd);
     };
 
-    addRow("Lane", props.laneLabel);
-    addRow("Summary", props.summary);
-    addRow("Location", props.locationLabel ?? props.routeSegmentLabel ?? props.routeSegmentId);
-    addRow("Route effect", props.routeEffect);
-    addRow("State", props.displayTier);
-    addRow("Severity", props.severity);
-    addRow("Current status", props.currentStatus);
-    if (typeof props.detourAvailable === "boolean") {
-      addRow("Detour available", props.detourAvailable ? "Yes" : "No");
+    addRow("Closed section", props.closureName ?? props.routeSegmentLabel ?? props.locationLabel);
+    addRow("From", props.closureStartCrossing);
+    addRow("To", props.closureEndCrossing);
+    if (typeof props.closedLengthMiles === "number") {
+      addRow("Closed length", `${props.closedLengthMiles.toFixed(2)} mi`);
     }
-    if (props.riderCanPass === "no") addRow("Can riders pass", "No");
-    else if (props.riderCanPass === "unknown") addRow("Can riders pass", "Unknown");
-    if (props.isStale) addRow("Note", "Data may be out of date");
-    if (props.isLastKnownGood) addRow("Note", "Showing last known data");
+    if (typeof props.detourAvailable === "boolean") {
+      addRow("Detour", props.detourAvailable ? (props.detourDescription ?? "Yes") : "No");
+    }
+    addRow("Closure hours", props.closureHours);
+    addRow("Expected reopening", props.projectedEndDate);
+    addRow("Location", props.locationLabel ?? props.routeSegmentLabel ?? props.routeSegmentId);
+    addRow("Route impact", props.routeEffect);
+    if (props.currentStatus === "active") addRow("Status", "Segment closed");
+    else addRow("Status", props.currentStatus);
+    if (props.riderCanPass === "no") addRow("Segment passability", "No");
+    else if (props.riderCanPass === "unknown") addRow("Segment passability", "Unknown");
 
     root.appendChild(dl);
 
@@ -245,11 +248,10 @@
     <div class="route-map-status" role="status">Loading route map</div>
   {:else if status === "error"}
     <div class="route-map-status" role="status">
-      The route map could not be loaded. Current route events are still listed below.
+      Route map unavailable.
     </div>
   {/if}
   <p class="route-map-sr-desc">
-    Interactive map showing the UW–Issy cycling route and current route events. A full text
-    list appears below the map.
+    Interactive map of the UW–Issy route and current route issues.
   </p>
 </div>

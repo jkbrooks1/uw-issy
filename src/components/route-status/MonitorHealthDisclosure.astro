@@ -1,16 +1,6 @@
 ---
-// Round 2 — collapsed "Monitor Health" section (matches the collapsed
-// <details> pattern SystemHealthDisclosure.astro already used). Demotes the
-// internal monitoring-lane architecture well below the rider content
-// (route status, map, current issues, closures, weather/air) per the
-// product goal: lead with rider decisions, not internal lane plumbing.
-// Merges MonitoringSources.astro and SystemHealthDisclosure.astro into one
-// collapsed section instead of two separate duplicate disclosures.
 import type { RouteWideSummary } from "../../lib/route-status/normalize-dashboard-data";
 import type { SystemHealthFile } from "../../lib/route-status/types";
-import FreshnessNotice from "./FreshnessNotice.astro";
-import MonitoringSources from "./MonitoringSources.astro";
-import SystemHealthDisclosure from "./SystemHealthDisclosure.astro";
 
 type Props = {
   summary: RouteWideSummary;
@@ -18,11 +8,38 @@ type Props = {
 };
 
 const { summary, systemHealth } = Astro.props;
+
+const hasIncompleteSources =
+  (systemHealth?.failedLaneIds.length ?? 0) > 0 || (systemHealth?.degradedLaneIds.length ?? 0) > 0;
 ---
 
-<details class="monitor-health-disclosure">
-  <summary>Monitor health</summary>
-  <FreshnessNotice summary={summary} systemHealth={systemHealth} />
-  <MonitoringSources laneSummaries={summary.laneSummaries} systemHealth={systemHealth} />
-  <SystemHealthDisclosure systemHealth={systemHealth} />
-</details>
+<section class="panel system-health-panel" aria-labelledby="system-health-heading">
+  <h2 class="panel__heading" id="system-health-heading">System health</h2>
+  {
+    systemHealth === null ? (
+      <p class="empty-note">Current monitoring data is unavailable.</p>
+    ) : (
+      <>
+        <p class="empty-note">
+          {summary.lastUpdatedLabel ? <>Current as of {summary.lastUpdatedLabel}.</> : <>Update time unavailable</>}
+        </p>
+        {hasIncompleteSources && (
+          <p class="empty-note">Some monitoring sources did not return complete data.</p>
+        )}
+        <ul class="lane-list">
+          {systemHealth.lanes.map((lane) => (
+            <li class="lane-row">
+              <span class="lane-row__body">
+                <span class="lane-row__label">{lane.laneLabel}</span>
+                <span class="lane-row__meta">{lane.publicText}</span>
+                {lane.usingLastKnownGood && (
+                  <span class="lane-row__lkg">Showing last known data</span>
+                )}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </>
+    )
+  }
+</section>

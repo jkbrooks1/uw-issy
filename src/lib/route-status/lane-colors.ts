@@ -9,6 +9,7 @@ export const LANE_COLORS: Record<MonitoringLaneId, string> = {
   "05_FLOOD_CONDITIONS": "#8B5C21",
   "06_TRAIL_INFRASTRUCTURE_STATUS": "#168B8C",
   "07_GOVERNMENT_SAFETY_ALERTS": "#C72B20",
+  "08_ROUTE_FACILITIES": "#2D7A30",
 };
 
 export function laneColorFor(laneId: string): string | null {

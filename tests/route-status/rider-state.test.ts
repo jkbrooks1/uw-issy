@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { deriveRiderStateMeta, deriveRouteClosureScope } from "../../src/lib/route-status/rider-state";
+import { deriveRouteStatusMeta, deriveRouteClosureScope } from "../../src/lib/route-status/rider-state";
 import type { DashboardEventWithUnknownLane, SystemHealthFile } from "../../src/lib/route-status/types";
 import type { RouteWideSummary } from "../../src/lib/route-status/normalize-dashboard-data";
 
 function baseSummary(overrides: Partial<RouteWideSummary> = {}): RouteWideSummary {
   return {
     displayTier: "watch",
-    displayTierLabel: "Watch",
+    displayTierLabel: "Caution",
     activeEventCount: 1,
-    overallMessage: "One source degraded.",
+    overallMessage: null,
     lastUpdatedLabel: "Aug 23, 2026",
     laneSummaries: [],
     routeImpacts: null,
@@ -62,34 +62,43 @@ function baseEvent(overrides: Partial<DashboardEventWithUnknownLane> = {}): Dash
     severity: "high",
     currentStatus: "active",
     detourAvailable: false,
+    detourDescription: "No",
+    closureName: "East Lake Sammamish Trail",
+    closedLengthMiles: 0.11,
+    closedLengthSource: "official_source_distance",
+    closureStartCrossing: "Louis Thompson Rd NE",
+    closureEndCrossing: "NE Inglewood Hill Rd",
+    closureHours: null,
+    closureStartDate: "2026-06-01T00:00:00Z",
+    projectedEndDate: "End of 2026",
+    routeAction: "No",
     riderCanPass: "no",
     ...overrides,
   };
 }
 
-describe("rider state derivation", () => {
-  it("classifies localized closures as partial closure, not whole-route closed", () => {
-    const meta = deriveRiderStateMeta(baseSummary(), baseHealth(), [baseEvent()]);
+describe("route status derivation", () => {
+  it("classifies localized closures as partial closure, never whole-route closed", () => {
+    const meta = deriveRouteStatusMeta(baseSummary(), baseHealth(), [baseEvent()]);
 
-    expect(meta.riderState).toBe("PARTIAL CLOSURE");
+    expect(meta.routeStatus).toBe("PARTIAL CLOSURE");
     expect(meta.closureScope).toBe("partial");
     expect(meta.closureCount).toBe(1);
-    expect(meta.statusDetail).toMatch(/full route is not reported closed/i);
   });
 
   it("keeps source degradation distinct from route closure", () => {
-    const meta = deriveRiderStateMeta(
+    const meta = deriveRouteStatusMeta(
       baseSummary({ displayTier: "watch" }),
       baseHealth({ degradedLaneIds: ["01_ROUTE_CONDITIONS", "03_AIR_QUALITY"] }),
       [],
     );
 
-    expect(meta.riderState).toBe("CAUTION");
+    expect(meta.routeStatus).toBe("CAUTION");
     expect(meta.closureScope).toBe("none");
     expect(meta.closureCount).toBe(0);
   });
 
-  it("uses whole-route closed only for explicit route-wide closure language without localized evidence", () => {
+  it("does not generate a full-route closure scope from whole-route language", () => {
     const event = baseEvent({
       title: "Entire route closed",
       locationLabel: null,
@@ -98,7 +107,7 @@ describe("rider state derivation", () => {
       geometry: null,
     });
 
-    expect(deriveRouteClosureScope([event])).toBe("full");
-    expect(deriveRiderStateMeta(baseSummary(), baseHealth(), [event]).riderState).toBe("CLOSED");
+    expect(deriveRouteClosureScope([event])).toBe("partial");
+    expect(deriveRouteStatusMeta(baseSummary(), baseHealth(), [event]).routeStatus).toBe("PARTIAL CLOSURE");
   });
 });

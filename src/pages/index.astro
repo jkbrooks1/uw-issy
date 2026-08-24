@@ -6,10 +6,9 @@
 // buildspec requires the browser to use if it ever needs to re-derive
 // state client-side.
 //
-// Round 2 hierarchy (rider decisions first, monitoring-lane architecture
-// last): SiteHeader -> Route status summary -> Route map -> Current rider
-// issues -> Closures and detours -> Weather/air/smoke -> Route facilities
-// -> Monitor health (collapsed).
+// Route-first hierarchy: SiteHeader -> Route status summary -> Route map
+// -> Current issues -> Closures and detours -> Weather/air/smoke
+// -> Route facilities -> System health.
 import "../styles/route-status.css";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -61,10 +60,9 @@ const { events } = routeEventsFile
   ? normalizeRouteEvents(routeEventsFile)
   : { events: [], gaps: [] };
 
-const hasSourceFailures = (systemHealth?.failedLaneIds.length ?? 0) > 0;
-
 const facilitiesLane = summary.laneSummaries.find((lane) => lane.laneId === "08_ROUTE_FACILITIES") ?? null;
 const facilitiesEvents = events.filter((event) => event.laneId === "08_ROUTE_FACILITIES");
+const facilitiesCurrent = facilitiesLane?.sourceStateText === "Current";
 ---
 
 <html lang="en">
@@ -74,7 +72,7 @@ const facilitiesEvents = events.filter((event) => event.laneId === "08_ROUTE_FAC
     <title>UW-Issaquah BG/SRT/ELST Status | BikeTourFrance.net</title>
     <meta
       name="description"
-      content="Current conditions on the University of Washington to Issaquah cycling route: weather, air quality, wildfire, flood, trail infrastructure, and safety alerts."
+      content="University of Washington to Issaquah"
     />
   </head>
   <body>
@@ -93,7 +91,7 @@ const facilitiesEvents = events.filter((event) => event.laneId === "08_ROUTE_FAC
         </section>
 
         <div class="item-route-alerts">
-          <CurrentRouteAlerts events={events} hasSourceFailures={hasSourceFailures} />
+          <CurrentRouteAlerts events={events} hasSourceFailures={false} />
         </div>
 
         <div class="item-closures">
@@ -112,9 +110,7 @@ const facilitiesEvents = events.filter((event) => event.laneId === "08_ROUTE_FAC
           facilitiesLane && (
             <div class="item-facilities">
               {facilitiesEvents.length === 0 ? (
-                <p class="empty-note">
-                  Route facilities: no facility notices currently reported for this route.
-                </p>
+                facilitiesCurrent && <p class="empty-note">No current facility issues reported.</p>
               ) : (
                 <section class="panel" aria-labelledby="route-facilities-heading">
                   <h2 class="panel__heading" id="route-facilities-heading">Route facilities</h2>
@@ -124,7 +120,7 @@ const facilitiesEvents = events.filter((event) => event.laneId === "08_ROUTE_FAC
                         <span class="lane-row__body">
                           <span class="lane-row__label">{event.title}</span>
                           <span class="lane-row__meta">
-                            {event.locationLabel ?? event.routeSegmentLabel ?? event.routeSegmentId ?? "—"}
+                            {event.locationLabel ?? event.routeSegmentLabel ?? event.routeSegmentId ?? "Location not stated by source"}
                           </span>
                         </span>
                       </li>

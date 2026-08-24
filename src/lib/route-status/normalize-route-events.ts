@@ -80,6 +80,16 @@ export function normalizeRouteEvents(file: RouteEventsFile): NormalizedRouteEven
       severity: props.severity,
       currentStatus: props.currentStatus,
       detourAvailable: props.detourAvailable,
+      detourDescription: props.detourDescription,
+      closureName: props.closureName,
+      closedLengthMiles: props.closedLengthMiles,
+      closedLengthSource: props.closedLengthSource,
+      closureStartCrossing: props.closureStartCrossing,
+      closureEndCrossing: props.closureEndCrossing,
+      closureHours: props.closureHours,
+      closureStartDate: props.closureStartDate,
+      projectedEndDate: props.projectedEndDate,
+      routeAction: props.routeAction,
       riderCanPass: props.riderCanPass,
     };
 

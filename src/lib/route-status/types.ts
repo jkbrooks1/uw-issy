@@ -8,7 +8,8 @@ export type MonitoringLaneId =
   | "04_WILDFIRE"
   | "05_FLOOD_CONDITIONS"
   | "06_TRAIL_INFRASTRUCTURE_STATUS"
-  | "07_GOVERNMENT_SAFETY_ALERTS";
+  | "07_GOVERNMENT_SAFETY_ALERTS"
+  | "08_ROUTE_FACILITIES";
 
 /** Buildspec 10.1 — canonical public route display tiers. */
 export type DisplayTier = "normal" | "watch" | "alert" | "unknown";
@@ -80,6 +81,16 @@ export type DashboardEvent = {
   /** The event's own raw status string as reported by its source lane (e.g. "closed", "planned", "active", "monitoring"). */
   currentStatus: string | null;
   detourAvailable: boolean | null;
+  detourDescription: string | null;
+  closureName: string | null;
+  closedLengthMiles: number | null;
+  closedLengthSource: string | null;
+  closureStartCrossing: string | null;
+  closureEndCrossing: string | null;
+  closureHours: string | null;
+  closureStartDate: string | null;
+  projectedEndDate: string | null;
+  routeAction: string | null;
   /** "no" | "unknown" | null — never "yes" unless a source explicitly says so; null means passability is not a meaningful question for this event (not a closure signal). */
   riderCanPass: "yes" | "no" | "unknown" | null;
 };
@@ -158,6 +169,16 @@ export type RouteEventProperties = {
   severity: string | null;
   currentStatus: string | null;
   detourAvailable: boolean | null;
+  detourDescription: string | null;
+  closureName: string | null;
+  closedLengthMiles: number | null;
+  closedLengthSource: string | null;
+  closureStartCrossing: string | null;
+  closureEndCrossing: string | null;
+  closureHours: string | null;
+  closureStartDate: string | null;
+  projectedEndDate: string | null;
+  routeAction: string | null;
   riderCanPass: "yes" | "no" | "unknown" | null;
 };
 

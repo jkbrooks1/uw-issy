@@ -5,12 +5,12 @@
   "routeId": "UnivWA-Issaquah",
   "routeName": "University of Washington to Issaquah",
   "displayTier": "watch",
-  "overallMessage": "All expected source lanes ran, with one or more degraded, stale, or using last-known-good data.",
+  "overallMessage": null,
   "activeEventCount": 4,
   "laneSummaries": [
     {
       "laneId": "01_ROUTE_CONDITIONS",
-      "laneLabel": "Route Conditions",
+      "laneLabel": "Route conditions",
       "available": true,
       "displayTier": "watch",
       "sourceState": "degraded",
@@ -26,7 +26,7 @@
     },
     {
       "laneId": "03_AIR_QUALITY",
-      "laneLabel": "Air Quality",
+      "laneLabel": "Air quality",
       "available": true,
       "displayTier": "watch",
       "sourceState": "degraded",
@@ -42,7 +42,7 @@
     },
     {
       "laneId": "05_FLOOD_CONDITIONS",
-      "laneLabel": "Flood Conditions",
+      "laneLabel": "Flood conditions",
       "available": true,
       "displayTier": "watch",
       "sourceState": "degraded",
@@ -50,7 +50,7 @@
     },
     {
       "laneId": "06_TRAIL_INFRASTRUCTURE_STATUS",
-      "laneLabel": "Trail Infrastructure Status",
+      "laneLabel": "Trail infrastructure",
       "available": true,
       "displayTier": "watch",
       "sourceState": "degraded",
@@ -58,7 +58,7 @@
     },
     {
       "laneId": "07_GOVERNMENT_SAFETY_ALERTS",
-      "laneLabel": "Government Safety Alerts",
+      "laneLabel": "Government safety alerts",
       "available": true,
       "displayTier": "normal",
       "sourceState": "ok",
@@ -66,7 +66,7 @@
     },
     {
       "laneId": "08_ROUTE_FACILITIES",
-      "laneLabel": "Route Facilities",
+      "laneLabel": "Route facilities",
       "available": true,
       "displayTier": "normal",
       "sourceState": "ok",

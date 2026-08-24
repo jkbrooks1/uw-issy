@@ -1,6 +1,4 @@
 ---
-// Buildspec section 24.1 — desktop event table. Real semantic table with
-// header scope, per buildspec section 26 accessibility requirements.
 import type { DashboardEventWithUnknownLane } from "../../lib/route-status/types";
 import { formatPacificTime } from "../../lib/route-status/format-time";
 import { markerPresentationForEvent } from "../../lib/route-status/event-marker";
@@ -11,19 +9,24 @@ type Props = {
 };
 
 const { events } = Astro.props;
+
+function passabilityLabel(event: DashboardEventWithUnknownLane): string | null {
+  if (event.riderCanPass === "no") return "No";
+  if (event.riderCanPass === "unknown") return "Unknown";
+  return null;
+}
 ---
 
 <div class="event-table-wrap">
   <table class="event-table">
-    <caption class="route-map-sr-desc">Current route events for the UW–Issy route</caption>
+    <caption class="route-map-sr-desc">Current route issues</caption>
     <thead>
       <tr>
         <th scope="col">Event</th>
-        <th scope="col">Source type</th>
-        <th scope="col">Location or route part</th>
-        <th scope="col">Time</th>
-        <th scope="col">State</th>
-        <th scope="col">Can I pass?</th>
+        <th scope="col">Affected section</th>
+        <th scope="col">Reported</th>
+        <th scope="col">Status</th>
+        <th scope="col">Segment passability</th>
       </tr>
     </thead>
     <tbody>
@@ -36,21 +39,18 @@ const { events } = Astro.props;
                 <EventDetail event={event} />
               </details>
             </td>
-            <td>{event.laneLabel}</td>
-            <td>{event.locationLabel ?? event.routeSegmentLabel ?? event.routeSegmentId ?? "—"}</td>
-            <td>{formatPacificTime(event.reportedAt) ?? "—"}</td>
+            <td>{event.locationLabel ?? event.routeSegmentLabel ?? event.routeSegmentId ?? "Location not stated by source"}</td>
+            <td>{formatPacificTime(event.reportedAt) ?? "Report time not stated by source"}</td>
             <td>
               <span class={`tier-badge tier-badge--${event.displayTier}`}>
                 <span
                   class={`event-marker-inline ${markerPresentationForEvent(event).cssClass}`}
                   aria-hidden="true"
                 ></span>
-                {event.displayTier}
+                {event.currentStatus === "active" ? "Segment closed" : event.displayTier === "normal" ? "Normal" : event.displayTier === "watch" ? "Caution" : event.displayTier === "alert" ? "Major issue" : "Unknown"}
               </span>
             </td>
-            <td>
-              {event.riderCanPass === "no" ? "No" : event.riderCanPass === "unknown" ? "Unknown" : "—"}
-            </td>
+            <td>{passabilityLabel(event) ?? "Passability unknown"}</td>
           </tr>
         ))
       }

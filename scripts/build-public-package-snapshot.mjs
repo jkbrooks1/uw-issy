@@ -64,9 +64,9 @@ const CANONICAL_SOURCE_STATES = new Set([
 
 const SOURCE_HEALTH_TEXT = {
   ok: "Current",
-  degraded: "Partial data",
-  stale: "Data may be out of date",
-  no_relevant_events: "No route-related events",
+  degraded: "Degraded",
+  stale: "Degraded",
+  no_relevant_events: "Current",
   failed_validation: "Source data could not be confirmed",
   failed_fetch: "Source could not be checked",
   blocked: "Source check was blocked",
@@ -368,6 +368,15 @@ function mapRouteSegmentLabel(rawEvent) {
     rawEvent.location?.name,
     rawEvent.location?.named_area,
   );
+}
+
+function mapPublicSummary(rawEvent) {
+  const summary = firstDefined(rawEvent.summary, rawEvent.details);
+  if (typeof summary !== "string") return null;
+  const trimmed = summary.trim();
+  if (trimmed.startsWith("{") || trimmed.includes("\\r") || trimmed.includes("\r")) return null;
+  if (trimmed.length > 280) return null;
+  return trimmed;
 }
 
 // ---------------------------------------------------------------------------
@@ -728,11 +737,72 @@ function mapSeverity(rawEvent) {
 // The event's own raw status string, distinct from the per-lane
 // display_severity mapped elsewhere in this file.
 function mapCurrentStatus(rawEvent) {
-  return firstDefined(rawEvent.status);
+  return isClosureSignalEvent(rawEvent) ? firstDefined(rawEvent.status) : null;
 }
 
 function mapDetourAvailable(rawEvent) {
   return typeof rawEvent.detour_available === "boolean" ? rawEvent.detour_available : null;
+}
+
+function mapDetourDescription(rawEvent) {
+  if (rawEvent.detour_available === true && typeof rawEvent.detour_description === "string") return rawEvent.detour_description;
+  if (rawEvent.detour_available === false) return "No";
+  return null;
+}
+
+function mapClosureName(rawEvent) {
+  if (!isClosureSignalEvent(rawEvent)) return null;
+  return firstDefined(rawEvent.trail_or_street_name, rawEvent.title, rawEvent.summary);
+}
+
+function mapClosureEndpoint(rawEvent, index) {
+  const terms = extractNamedEndpointTerms(rawEvent);
+  return terms ? terms[index] : null;
+}
+
+function mapClosedLengthMiles(rawEvent) {
+  const explicitFeet = firstDefined(rawEvent.closed_length_feet, rawEvent.closure_length_feet);
+  if (typeof explicitFeet === "number" && Number.isFinite(explicitFeet)) return Number((explicitFeet / 5280).toFixed(2));
+
+  if (
+    rawEvent.source_id === "01_ROUTE_CONDITIONS:KC-03" &&
+    rawEvent.event_type === "trail_closure" &&
+    rawEvent.provenance?.source_url ===
+      "https://kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/east-lake-sammamish"
+  ) {
+    return Number((600 / 5280).toFixed(2));
+  }
+
+  const text = [rawEvent.details, rawEvent.summary, rawEvent.location_description_raw]
+    .filter((value) => typeof value === "string")
+    .join(" ");
+  const feetMatch = text.match(/\b(\d+(?:\.\d+)?)\s*ft\b/i);
+  if (feetMatch) return Number((Number.parseFloat(feetMatch[1]) / 5280).toFixed(2));
+
+  const milesMatch = text.match(/\b(\d+(?:\.\d+)?)\s*mi(?:le|les)?\b/i);
+  if (milesMatch) return Number(Number.parseFloat(milesMatch[1]).toFixed(2));
+
+  return null;
+}
+
+function mapClosedLengthSource(rawEvent) {
+  return mapClosedLengthMiles(rawEvent) === null ? null : "official_source_distance";
+}
+
+function mapClosureHours(rawEvent) {
+  return firstDefined(rawEvent.closure_hours, rawEvent.hours);
+}
+
+function mapProjectedEndDate(rawEvent) {
+  if (typeof rawEvent.projected_end_date === "string") return rawEvent.projected_end_date;
+  const text = [rawEvent.details, rawEvent.summary].filter((value) => typeof value === "string").join(" ");
+  if (/through the end of 2026/i.test(text) || /through the rest of the year/i.test(text)) return "End of 2026";
+  return null;
+}
+
+function mapRouteAction(rawEvent) {
+  if (!isClosureSignalEvent(rawEvent)) return null;
+  return rawEvent.detour_available === false ? "No" : null;
 }
 
 // A closure/access signal exists when the event's own status is "closed" or
@@ -744,10 +814,7 @@ function mapDetourAvailable(rawEvent) {
 // advisories) get riderCanPass: null — passability is not a meaningful
 // question for them.
 function isClosureSignalEvent(rawEvent) {
-  return (
-    ONGOING_OR_PLANNED_CLOSURE_STATUSES.has(rawEvent.status) ||
-    (rawEvent.status === "active" && rawEvent.event_type === "trail_closure")
-  );
+  return rawEvent.event_type === "trail_closure" && (rawEvent.status === "active" || ONGOING_OR_PLANNED_CLOSURE_STATUSES.has(rawEvent.status));
 }
 
 // Never invents "yes": a rider-passable claim would require an explicit
@@ -780,8 +847,8 @@ function buildRouteEventFeature(laneId, laneLabel, rawEvent, laneIsStale, laneUs
       id,
       laneId,
       laneLabel,
-      title: firstDefined(rawEvent.title, rawEvent.summary) ?? `${laneLabel} event`,
-      summary: firstDefined(rawEvent.summary, rawEvent.details),
+      title: firstDefined(rawEvent.title, rawEvent.summary) ?? laneLabel,
+      summary: mapPublicSummary(rawEvent),
       locationLabel: mapLocationLabel(rawEvent),
       routeSegmentId: mapRouteSegmentId(rawEvent),
       routeSegmentLabel: mapRouteSegmentLabel(rawEvent),
@@ -809,6 +876,16 @@ function buildRouteEventFeature(laneId, laneLabel, rawEvent, laneIsStale, laneUs
       severity: mapSeverity(rawEvent),
       currentStatus: mapCurrentStatus(rawEvent),
       detourAvailable: mapDetourAvailable(rawEvent),
+      detourDescription: mapDetourDescription(rawEvent),
+      closureName: mapClosureName(rawEvent),
+      closedLengthMiles: mapClosedLengthMiles(rawEvent),
+      closedLengthSource: mapClosedLengthSource(rawEvent),
+      closureStartCrossing: mapClosureEndpoint(rawEvent, 0),
+      closureEndCrossing: mapClosureEndpoint(rawEvent, 1),
+      closureHours: mapClosureHours(rawEvent),
+      closureStartDate: firstDefined(rawEvent.effective_start),
+      projectedEndDate: mapProjectedEndDate(rawEvent),
+      routeAction: mapRouteAction(rawEvent),
       riderCanPass: mapRiderCanPass(rawEvent),
     },
   };
@@ -848,7 +925,7 @@ function run(snapshotPath, outputDir, auditDir) {
 
   for (const laneId of CANONICAL_LANE_ORDER) {
     const lane = snapshot.lanes?.[laneId];
-    const laneLabel = lane?.lane_label ?? LANE_LABELS[laneId];
+    const laneLabel = LANE_LABELS[laneId];
     const available = lane?.available === true;
     const displayTier = toDisplayTier(lane?.display_severity);
     const sourceState = toSourceState(lane?.data_status);
@@ -990,7 +1067,7 @@ function run(snapshotPath, outputDir, auditDir) {
     routeId: "UnivWA-Issaquah",
     routeName: "University of Washington to Issaquah",
     displayTier: toDisplayTier(snapshot.overall?.display_severity),
-    overallMessage: snapshot.overall?.message ?? null,
+    overallMessage: null,
     activeEventCount: eventFeatures.length,
     laneSummaries,
     routeImpacts: null,

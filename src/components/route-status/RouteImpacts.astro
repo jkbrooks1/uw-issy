@@ -1,9 +1,4 @@
 ---
-// Buildspec section 21 — route impacts panel. Never invents route parts;
-// only renders what dashboard-data.json actually supplies. Round 2: when
-// there is no real route-part breakdown (routeImpacts is null, as it is in
-// the current regenerated public/data), this renders a compact single line
-// instead of taking prime page space with an empty-looking panel.
 import type { RouteImpact } from "../../lib/route-status/types";
 
 type Props = {
@@ -15,9 +10,7 @@ const hasImpacts = routeImpacts !== null && routeImpacts.length > 0;
 ---
 
 {
-  !hasImpacts ? (
-    <p class="empty-note route-impacts-compact">No route-part breakdown is available in this update.</p>
-  ) : (
+  hasImpacts && (
     <section class="panel" aria-labelledby="route-impacts-heading">
       <h2 class="panel__heading" id="route-impacts-heading">Route impacts</h2>
       <ul class="impact-list">
@@ -26,7 +19,7 @@ const hasImpacts = routeImpacts !== null && routeImpacts.length > 0;
             <div class="impact-row__top">
               <span>{impact.routeSegmentLabel ?? impact.routeSegmentId}</span>
               <span class={`tier-badge tier-badge--${impact.displayTier}`}>
-                {impact.displayTier}
+                {impact.displayTier === "normal" ? "Normal" : impact.displayTier === "watch" ? "Caution" : impact.displayTier === "alert" ? "Major issue" : "Unknown"}
               </span>
             </div>
             {impact.effectNote && <p class="impact-row__note">{impact.effectNote}</p>}

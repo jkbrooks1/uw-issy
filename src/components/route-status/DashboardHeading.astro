@@ -11,15 +11,13 @@ const { summary } = Astro.props;
 <div class="dashboard-heading">
   <h1>UW-Issaquah BG/SRT/ELST Status</h1>
   <p class="dashboard-heading__route-label">University of Washington to Issaquah</p>
-  <p class="dashboard-heading__update">
-    {
-      summary.lastUpdatedLabel ? (
+  {
+    summary.lastUpdatedLabel && (
+      <p class="dashboard-heading__update">
         <span>
-          Latest published update: <strong>{summary.lastUpdatedLabel}</strong>
+          Updated <strong>{summary.lastUpdatedLabel}</strong>
         </span>
-      ) : (
-        <span>Latest published update time is not available.</span>
-      )
-    }
-  </p>
+      </p>
+    )
+  }
 </div>
