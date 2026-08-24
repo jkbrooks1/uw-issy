@@ -1060,5 +1060,5 @@ No commit, push, merge, reset, or working-tree clean was performed. All pre-exis
 - Report path: `00_DOCS/2026-08-23_UWISSY_MONITOR_DATA_QUALITY_ROUND1.md`.
 - Proof path: `00_AS-BUILT/20260823-UWISSY_MONITOR_DATA_QUALITY_ROUND1/`.
 - Proof ZIP: `/Users/jkbrookspersonal/Downloads/20260823-UWISSY_MONITOR_DATA_QUALITY_ROUND1_PROOF.zip`.
-- Proof ZIP SHA-256: `94cb5d82c88b087e9a1878c9b0f63ad15ce95a76f4d81fc9a0715b5c1af017de`.
+- Proof ZIP SHA-256: `9ecb8fe5a9242bd435896aecd25954132e58ca8620d391edf35437289a42179a`.
 - Helper scripts copied to `/Users/jkbrookspersonal/00_SCRIPTS/round1-repair-workflows.mjs`, `/Users/jkbrookspersonal/00_SCRIPTS/round1-monitor-quality-probes.mjs`, and `/Users/jkbrookspersonal/00_SCRIPTS/round1-generate-report.mjs`.
