@@ -16,10 +16,10 @@ const closedLengthLabel =
 ---
 
 <dl class="map-popup">
-  {(event.closureName || event.routeSegmentLabel || event.locationLabel) && (
+  {event.closureName && (
     <>
       <dt>Closed section</dt>
-      <dd>{event.closureName ?? event.routeSegmentLabel ?? event.locationLabel}</dd>
+      <dd>{event.closureName}</dd>
     </>
   )}
   {event.closureStartCrossing && (

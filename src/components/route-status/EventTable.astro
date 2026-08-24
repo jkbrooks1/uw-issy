@@ -50,7 +50,7 @@ function passabilityLabel(event: DashboardEventWithUnknownLane): string | null {
                 {event.currentStatus === "active" ? "Segment closed" : event.displayTier === "normal" ? "Normal" : event.displayTier === "watch" ? "Caution" : event.displayTier === "alert" ? "Major issue" : "Unknown"}
               </span>
             </td>
-            <td>{passabilityLabel(event) ?? "Passability unknown"}</td>
+            <td>{event.riderCanPass ? passabilityLabel(event) : ""}</td>
           </tr>
         ))
       }

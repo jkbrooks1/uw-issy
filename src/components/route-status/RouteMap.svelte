@@ -96,7 +96,7 @@
       dl.appendChild(dd);
     };
 
-    addRow("Closed section", props.closureName ?? props.routeSegmentLabel ?? props.locationLabel);
+    addRow("Closed section", props.closureName);
     addRow("From", props.closureStartCrossing);
     addRow("To", props.closureEndCrossing);
     if (typeof props.closedLengthMiles === "number") {
