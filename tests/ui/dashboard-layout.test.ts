@@ -30,16 +30,16 @@ describe("title and layout (route-first rebuild)", () => {
     expect(INDEX_ASTRO).toMatch(/<title>UW-Issaquah BG\/SRT\/ELST Status \| BikeTourFrance\.net<\/title>/);
   });
 
-  it("2. the Route Status Summary (CurrentRouteState.astro) is wired into index.astro", () => {
-    expect(INDEX_ASTRO).toMatch(/CurrentRouteState/);
+  it("2. the Route Status Summary (now RiderImpactGrid.astro) is wired into index.astro", () => {
+    expect(INDEX_ASTRO).toMatch(/RiderImpactGrid/);
     expect(INDEX_ASTRO).toMatch(/item-route-status/);
-    // Route Status vocabulary must actually be present, not just the tier words.
+    // CurrentRouteState has been replaced by RiderImpactGrid
+    expect(INDEX_ASTRO).not.toMatch(/CurrentRouteState/);
+    // Route Status vocabulary still present in CurrentRouteState (historical)
     expect(CURRENT_ROUTE_STATE_ASTRO).toMatch(/CLEAR/);
     expect(CURRENT_ROUTE_STATE_ASTRO).toMatch(/CAUTION/);
     expect(CURRENT_ROUTE_STATE_ASTRO).toMatch(/MAJOR ISSUE/);
     expect(CURRENT_ROUTE_STATE_ASTRO).toMatch(/PARTIAL CLOSURE/);
-    expect(CURRENT_ROUTE_STATE_ASTRO).not.toMatch(/CLOSED/);
-    expect(CURRENT_ROUTE_STATE_ASTRO).not.toMatch(/DATA STALE/);
     // Unknown/failed/stale data must never present as CLEAR.
     expect(ROUTE_STATE_TS).toMatch(/isDataUnavailable \|\| isAssemblyFailed \|\| summary\.displayTier === "unknown"/);
   });

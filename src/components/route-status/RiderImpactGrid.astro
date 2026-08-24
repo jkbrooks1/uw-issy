@@ -1,0 +1,43 @@
+---
+import type { RouteWideSummary } from "../../lib/route-status/normalize-dashboard-data";
+import { deriveRiderImpactGrid } from "../../lib/route-status/rider-impact-grid";
+
+type Props = {
+  summary: RouteWideSummary;
+};
+
+const { summary } = Astro.props;
+const gridStatus = deriveRiderImpactGrid(summary.laneSummaries);
+
+// Arrange 6 items into 2-column grid:
+// Row 1: 01_ROUTE_CONDITIONS (0), 04_WILDFIRE (3)
+// Row 2: 02_WEATHER (1), 05_FLOOD_CONDITIONS (4)
+// Row 3: 03_AIR_QUALITY (2), 06_TRAIL_INFRASTRUCTURE_STATUS (5)
+const rows = [
+  [gridStatus[0], gridStatus[3]], // Route Conditions, Wildfire
+  [gridStatus[1], gridStatus[4]], // Weather, Flood Conditions
+  [gridStatus[2], gridStatus[5]], // Air Quality, Trail Infrastructure
+];
+---
+
+<section class="panel rider-impact-grid" aria-labelledby="rider-impact-grid-heading">
+  <h2 class="panel__heading" id="rider-impact-grid-heading">Route status</h2>
+  <div class="rider-impact-grid__container">
+    {
+      rows.map((row) => (
+        <div class="rider-impact-grid__row">
+          {row.map((category) => (
+            <div class="rider-impact-grid__cell">
+              <span class="rider-impact-grid__label">{category.label}</span>
+              <div
+                class={`rider-impact-grid__ball rider-impact-grid__ball--${category.color}`}
+                role="img"
+                aria-label={category.ariaLabel}
+              />
+            </div>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</section>

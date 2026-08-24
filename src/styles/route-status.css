@@ -327,6 +327,62 @@ button:focus-visible,
   gap: 2px;
 }
 
+/* Buildspec 18 — rider impact grid (Harvey-ball replacement for route status summary card) */
+.rider-impact-grid__container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 24px;
+  row-gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .rider-impact-grid__container {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+.rider-impact-grid__row {
+  display: contents;
+}
+
+.rider-impact-grid__cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rider-impact-grid__label {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.rider-impact-grid__ball {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.rider-impact-grid__ball--green {
+  background-color: #2D7A30;
+}
+
+.rider-impact-grid__ball--yellow {
+  background-color: #D99100;
+}
+
+.rider-impact-grid__ball--red {
+  background-color: #C72B20;
+}
+
+.rider-impact-grid__ball--unknown {
+  background-color: #D9DED8;
+}
+
 /* Buildspec 20 — monitoring sources */
 .lane-list {
   list-style: none;

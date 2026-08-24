@@ -1,3 +1,70 @@
+## 2026-08-24 21:51:00 UTC — UW-Issy Route Status Card Replaced with Harvey-Ball Rider-Impact Grid — COMPLETE
+
+- Project: UW-Issy Route Status Monitor (Public Dashboard)
+- Task: Replace top-level Route Status summary card with six-category rider-impact Harvey-ball grid
+- Old Card Content Removed:
+  - "Route status" label (e.g., "Partial closure", "Caution")
+  - "Active route issues: X" count
+  - "Localized closures reported: X" count
+- New Grid Design:
+  - 2-column × 3-row layout (desktop); 1-column responsive (mobile ≤600px)
+  - Six rider-facing categories: Route Conditions, Weather, Air Quality, Wildfire, Flood Conditions, Trail Infrastructure
+  - Colors (green/yellow/red/unknown) represent rider impact, not system health
+  - Each ball has aria-label for accessibility
+  - No lane numbers displayed
+- Implementation:
+  - New Component: `src/components/route-status/RiderImpactGrid.astro`
+  - New Utility: `src/lib/route-status/rider-impact-grid.ts` (deriveRiderImpactGrid function)
+  - Styling: Added `.rider-impact-grid__*` classes to route-status.css
+  - Page Update: `src/pages/index.astro` now imports and uses RiderImpactGrid
+  - Test Suite: `tests/ui/rider-impact-grid.test.ts` (15 assertions)
+- Color Semantics:
+  - Green: No active rider-impacting issue (displayTier "normal")
+  - Yellow: Caution — elevated concern (displayTier "watch")
+  - Red: Confirmed rider-impacting condition (displayTier "alert")
+  - Unknown: Status unavailable (displayTier "unknown")
+  - Colors derive from displayTier ONLY; system health and source degradation do NOT affect colors
+- Preserved Content:
+  - Map (CyclOSM tiles, red route line, event markers) — order 2
+  - Current route issues (detailed table) — order 3
+  - Closures and detours section — order 4
+  - Weather/air/smoke summary — order 5
+  - Route impacts — order 6
+  - Route facilities — order 7
+  - System Health (monitoring sources, separate from rider impact) — order 8
+- Test Results: 125/125 tests pass (including 15 new rider-impact-grid tests)
+- Build Output: Astro build clean (442ms), no TypeScript errors, no console warnings
+- Live Verification: ✅ COMPLETE
+  - Grid renders with correct labels and colors
+  - Desktop layout: 2 columns × 3 rows aligned
+  - Mobile layout: 1 column responsive
+  - Old "Partial closure" / "Active issues" text absent
+  - Detailed route information preserved
+  - Map functional
+  - System Health at bottom
+  - No pseudo-events in colors
+  - Accessibility validated (aria-labels, no color-only reliance)
+- Documentation:
+  - 00_DOCS/2026-08-24_UWISSY_HARVEY_GRID_REPLACES_ROUTE_STATUS_CARD.md (design, implementation, validation)
+  - 00_AS-BUILT/20260824-UWISSY_HARVEY_GRID_REPLACES_ROUTE_STATUS_CARD/ (proof materials, screenshots, implementation summary)
+- Deployment: Live at https://uw-issy.biketourfrance.net (verified functioning)
+- Commits: Source changes bundled (grid component, utility, styling, tests, index update)
+- Status: ✅ COMPLETE | TESTED | LIVE | PRODUCTION-READY
+
+## 2026-08-24 23:40:00 UTC — UW-Issy Lane 20 Public Release Regression Gate — DEPLOYED
+
+- Project: UW-Issy Route Monitor (Lane 20 — Status Publisher)
+- Task: Implement hard pre-publication regression gate to prevent recurrence of dashboard defects
+- Regression Incident: Commit 9237026 reverted heading, allowed pseudo-events, exposed internal fields, payload garbage
+- Root Cause: Previous remediation (0367132) not preserved; no validation gate before publication
+- Solution: 7-rule regression gate Code node inserted between "Write Public Status" and "GitHub Release Bridge Gate"
+- Gate Rules: (1) Approved heading, (2) No pseudo-events, (3) No unknown-state records, (4) No payload garbage, (5) No internal fields, (6) Map/list parity, (7) No stale pseudo-events
+- Behavior: FAIL CLOSED — blocks GitHub publication if any rule violated
+- Workflow ID: gp8WlccGwLydNWG7 (v04.UWI_LANE20)
+- Gate Node ID: regression_gate_947f4cf4
+- Backups: v04.UWI_LANE20_PRE-CHANGE.json, v04.UWI_LANE20_POST-CHANGE.json
+- Status: ✅ DEPLOYED | ACTIVE | LIVE | NODES: 52
+
 ## 2026-08-24 09:33:21 UTC — UW-Issy Architecture & Operations Documentation Package Created
 
 - Project: UW-Issy Route Monitor

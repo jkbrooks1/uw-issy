@@ -16,7 +16,7 @@ import { join } from "node:path";
 import SiteHeader from "../components/site/SiteHeader.astro";
 import SiteFooter from "../components/site/SiteFooter.astro";
 import DashboardHeading from "../components/route-status/DashboardHeading.astro";
-import CurrentRouteState from "../components/route-status/CurrentRouteState.astro";
+import RiderImpactGrid from "../components/route-status/RiderImpactGrid.astro";
 import RouteMap from "../components/route-status/RouteMap.svelte";
 import CurrentRouteAlerts from "../components/route-status/CurrentRouteAlerts.astro";
 import ClosuresAndDetours from "../components/route-status/ClosuresAndDetours.astro";
@@ -82,7 +82,7 @@ const facilitiesCurrent = facilitiesLane?.sourceStateText === "Current";
 
       <div class="dashboard-layout">
         <div class="item-route-status">
-          <CurrentRouteState summary={summary} systemHealth={packageAvailable ? systemHealth : null} events={events} />
+          <RiderImpactGrid summary={summary} />
         </div>
 
         <section class="panel item-route-map" aria-labelledby="route-map-heading">
