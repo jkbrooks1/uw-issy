@@ -3073,3 +3073,22 @@ Each new file was generated from the verified live post-rename export, and each 
 - Proof ZIP: `/Users/jkbrookspersonal/Downloads/20260823-UWISSY_COMPLETE_ROUTE_STATUS_REMEDIATION_PROOF.zip`.
 - Proof ZIP SHA-256: `87567c90264f9ce2a270f7c78d288f73b4d208d2c783e75bcb1ad8a1a75cac8b`.
 - Commits: `6325a3c`, `57ba04a`.
+
+## 2026-08-23 21:29 PDT — UW-Issy alert qualification and geometry remediation deployed
+
+- Implemented public alert qualification in `scripts/build-public-package-snapshot.mjs`: public route-alert events now require supported Trail, meaningful Location, and Alert nature.
+- Pseudo-events removed from public Route Status: Burke-Gilman infrastructure notice, Sammamish River Trail infrastructure notice, and George Davis Creek project-only record.
+- Raw candidate records reviewed: 21. Qualified public Route Status issues: 1. Active issue count before/after: 4 -> 1. Public triangle count: 1.
+- Map heading changed to owner-approved `UW-Issaquah Cycling Route`; approved-copy registry and public-copy validator updated.
+- Popup now renders route-useful facts in the approved order and no longer relies on generic/system labels.
+- ELST closure geometry changed from overbroad route-section LineString to a truthful point marker using the King County source-linked closure map coordinate.
+- Closure length provenance: official King County 600 ft statement, shown as `0.11 mi`.
+- Verified source facts: East Lake Sammamish Trail; between Louis Thompson Rd NE and NE Inglewood Hill Rd; no detour; expected reopening `End of 2026`; closure hours unsupported and not rendered.
+- No-fabrication enforcement preserved; no unsupported route facts or detour geometry invented.
+- Validation passed: unit tests 8 files / 110 tests, typecheck, production build, public-package validation, copy allowlist validation, secret scan.
+- Deployment: Cloudflare Pages, commit `839de3a`, deployment URL `https://3dedf177.uw-issy.pages.dev`, custom domain `https://uw-issy.biketourfrance.net`.
+- Production verification: Pages URL passed 27/27; custom domain serves corrected route data/UI with the known Cloudflare email-obfuscation verifier caveat.
+- Proof folder: `00_AS-BUILT/20260823-UWISSY_ALERT_QUALIFICATION_GEOMETRY_FIX/`.
+- Proof ZIP: `/Users/jkbrookspersonal/Downloads/20260823-UWISSY_ALERT_QUALIFICATION_GEOMETRY_FIX_PROOF.zip`.
+- Proof ZIP SHA-256: `f108563ac6f012aebac364f1de9f2b1a660c0a48b17caef9f044841dc08b2b9f`.
+- Helper scripts: no persistent helper script was created for this remediation.

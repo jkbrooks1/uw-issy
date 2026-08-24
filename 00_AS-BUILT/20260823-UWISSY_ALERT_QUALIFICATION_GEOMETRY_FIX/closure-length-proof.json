@@ -1,0 +1,7 @@
+{
+  "eventId": "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01",
+  "shown": "0.11 mi",
+  "provenance": "official_source_distance",
+  "sourceStatement": "King County source states The 600 ft trail closure area is located between Louis Thompson Rd NE and NE Inglewood Hill Rd.",
+  "calculation": "600 ft / 5280 = 0.1136 mi, shown as 0.11 mi preserving source precision."
+}

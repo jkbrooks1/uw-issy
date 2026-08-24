@@ -1,0 +1,22 @@
+[
+  {
+    "id": "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01",
+    "sourceRecord": "King County Parks - East Lake Sammamish Trail page",
+    "trail": "East Lake Sammamish Trail",
+    "location": "Between Louis Thompson Rd NE and NE Inglewood Hill Rd.",
+    "alert": "East Lake Sammamish Trail closure for George Davis Creek culvert replacement.",
+    "routeImpact": "Segment closed",
+    "currentStatus": "active",
+    "effectiveFrom": "2026-06-01T00:00:00Z",
+    "effectiveUntil": "2026-12-31T23:59:59Z",
+    "geometryType": "Point",
+    "coordinateCount": 1,
+    "closedLengthMiles": 0.11,
+    "from": "Louis Thompson Rd NE",
+    "to": "NE Inglewood Hill Rd",
+    "detourAvailable": false,
+    "qualificationResult": "YES",
+    "publicTriangle": "YES",
+    "reason": "eligible"
+  }
+]

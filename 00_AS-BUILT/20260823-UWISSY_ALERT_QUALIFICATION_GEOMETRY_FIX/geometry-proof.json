@@ -1,0 +1,16 @@
+{
+  "eventId": "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -122.06792,
+      47.617432
+    ]
+  },
+  "previousPublicGeometry": {
+    "type": "LineString",
+    "coordinateCount": 148
+  },
+  "correction": "Point marker from official King County source-linked closure map coordinate; no multi-mile fallback LineString displayed as closure geometry.",
+  "officialClosureLength": "600 ft / 0.11 mi"
+}

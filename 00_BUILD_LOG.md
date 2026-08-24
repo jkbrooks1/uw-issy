@@ -1018,3 +1018,23 @@ No commit, push, merge, reset, or working-tree clean was performed. All pre-exis
 - Copy currently live: 44
 - Copy not currently live but reachable: 74
 - No implementation was performed.
+
+## 2026-08-23 21:29 PDT — UW-Issy alert qualification and geometry remediation deployed
+- Implemented public alert qualification in `scripts/build-public-package-snapshot.mjs`: public route-alert events now require supported Trail, meaningful Location, and Alert nature before they can render as public triangles/cards/tables.
+- Removed pseudo-events from public Route Status while preserving them in non-public audit evidence. Current raw candidate records reviewed: 21. Qualified public Route Status issues: 1. Public pseudo-events removed from the pre-change public set: 3.
+- Active issue count changed from 4 to 1; `dashboard-data.json` now counts qualified public route issues only.
+- Map heading changed from `Route map` to owner-approved `UW-Issaquah Cycling Route`; approved-copy registry and allowlist updated with the new heading plus `Trail` and `Alert`.
+- Popup remediation: public map popup now follows the approved route-useful order: Trail, Location, Alert, Route impact, Status, From, To, Closed length, Detour, Closure hours when supported, Expected reopening, Source.
+- Geometry remediation: ELST closure no longer displays the overbroad 148-coordinate route-section LineString. It now displays a point at the King County source-linked closure map coordinate because exact endpoint geometry is not safely published in project data.
+- Closure length provenance: official King County source states 600 ft; public value remains `0.11 mi` from official source distance.
+- Closure endpoints verified from King County source: Louis Thompson Rd NE and NE Inglewood Hill Rd. Detour verified as `No`. Reopening precision preserved as `End of 2026`. Closure hours remain suppressed because unsupported.
+- No-fabrication enforcement: no unsupported detour geometry, closure hours, endpoint coordinates, passability beyond supported closure/detour facts, or severity was invented.
+- Map/list/card/table/popup parity passed: one qualified event appears consistently across the active issue count, table, mobile card, map triangle, popup, and closure/detail section.
+- Existing approved visuals preserved: CyclOSM tiles, required attribution, red route line `#C72B20`, semantic triangle marker, BTF green header/logo treatment, mobile layout, and no unauthorized marketing footer.
+- Validation passed: unit tests 8 files / 110 tests, typecheck, production build, public-package validation, public-copy allowlist validation, secret scan.
+- Deployment used existing Cloudflare Pages path. Final remediation commit: `839de3a`. Deployment URL: `https://3dedf177.uw-issy.pages.dev`. Live custom domain: `https://uw-issy.biketourfrance.net`.
+- Production verification: Pages URL passed 27/27. Custom domain served corrected public data and UI; automated verifier still has the pre-existing custom-domain-only Cloudflare email-obfuscation mailto failure.
+- Proof folder: `00_AS-BUILT/20260823-UWISSY_ALERT_QUALIFICATION_GEOMETRY_FIX/`.
+- Proof ZIP: `/Users/jkbrookspersonal/Downloads/20260823-UWISSY_ALERT_QUALIFICATION_GEOMETRY_FIX_PROOF.zip`.
+- Proof ZIP SHA-256: `f108563ac6f012aebac364f1de9f2b1a660c0a48b17caef9f044841dc08b2b9f`.
+- Helper scripts: no persistent helper script was created for this remediation.

@@ -1,0 +1,2 @@
+PASS: public copy allowlist — 13 file(s), 73 approved rows, 0 rejected, 0 pending, 0 unmapped, COPY-048 absent
+exit_code=0

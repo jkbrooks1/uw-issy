@@ -1,0 +1,9 @@
+{
+  "mapFeatureIds": [
+    "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01"
+  ],
+  "dashboardEventRefs": [
+    "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01"
+  ],
+  "parity": true
+}

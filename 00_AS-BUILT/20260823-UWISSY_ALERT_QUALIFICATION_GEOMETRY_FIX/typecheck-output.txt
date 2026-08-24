@@ -1,0 +1,5 @@
+
+> uw-issy-route-status@0.1.0 typecheck
+> tsc --noEmit -p tsconfig.json
+
+exit_code=0

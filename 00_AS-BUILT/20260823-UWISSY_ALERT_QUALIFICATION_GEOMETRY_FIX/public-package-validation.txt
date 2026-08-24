@@ -1,0 +1,2 @@
+PASS: public/data — all four public package files are valid, release 20_STATUS_PUBLISHER-20260823T201500Z-001
+exit_code=0
