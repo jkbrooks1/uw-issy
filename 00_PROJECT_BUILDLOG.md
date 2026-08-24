@@ -3116,3 +3116,39 @@ Each new file was generated from the verified live post-rename export, and each 
 - Proof ZIP: `/Users/jkbrookspersonal/Downloads/20260823-UWISSY_MONITOR_DATA_QUALITY_ROUND1_PROOF.zip`.
 - Proof ZIP SHA-256: `9ecb8fe5a9242bd435896aecd25954132e58ca8620d391edf35437289a42179a`.
 - Helper scripts copied to `/Users/jkbrookspersonal/00_SCRIPTS/round1-repair-workflows.mjs`, `/Users/jkbrookspersonal/00_SCRIPTS/round1-monitor-quality-probes.mjs`, and `/Users/jkbrookspersonal/00_SCRIPTS/round1-generate-report.mjs`.
+
+## 2026-08-23 22:38 PDT — UW-Issy n8n API authorization diagnosis completed
+- Scope: diagnosis only; no workflows modified, deployed, activated, or executed; no credentials changed or printed.
+- URL tested: `https://n8n.biketourfrance.net/`.
+- API endpoint tested: `GET https://n8n.biketourfrance.net/api/v1/workflows`.
+- Host reachability: PASS, HTTP 200 on `/`.
+- API reachability without auth: PASS/expected auth enforcement, HTTP 401 with `'X-N8N-API-KEY' header required`.
+- Round 1 attempted local process env keys `H_N8N_API_KEY` and `OVH_N8N_API_KEY`; both were present but rejected by the expected BTF n8n API with HTTP 401 `unauthorized`.
+- Additional legacy raw key file `/Users/jkbrookspersonal/.config/n8n/n8n.env` was present but rejected with HTTP 401.
+- Accepted credential source found: `/Users/jkbrookspersonal/.config/ringer/n8n.env`, key name `N8N_API_KEY_v2`; accepted by `GET /api/v1/workflows` with HTTP 200.
+- UWISSY visibility: confirmed with accepted key. `GET /api/v1/workflows?limit=250` returned 154 workflows with expected UWI lane workflows visible; `GET /api/v1/projects/Y0Ygmqe59jevHoeV/folders` returned HTTP 200 and included folder `UWISSY` id `LaS9Q6sil9yCDzrV`, workflow count 10.
+- Root cause: local credential-source selection failure. Round 1 relied on rejected process environment keys instead of loading the valid BTF n8n key from `/Users/jkbrookspersonal/.config/ringer/n8n.env`.
+- Minimal safe fix: for UW-Issy n8n API operations, explicitly load `/Users/jkbrookspersonal/.config/ringer/n8n.env` and use `N8N_API_KEY_v2` as `X-N8N-API-KEY` for `https://n8n.biketourfrance.net/api/v1/...`; do not use `OVH_N8N_API_KEY` / `N8N_KKB_API_KEY` for the BTF n8n instance.
+- Report path: `00_DOCS/2026-08-23_UWISSY_N8N_API_AUTH_DIAGNOSIS.md`.
+- Proof path: `00_AS-BUILT/20260823-UWISSY_N8N_API_AUTH_DIAGNOSIS/`.
+
+## 2026-08-23 23:13 PDT — UW-Issy Monitor Data Quality Round 1B completed
+
+- Restored production n8n API access using `H_N8N_API_KEY` from `~/.config/jb/secrets.env`; secret value was not logged. This supersedes the earlier credential-source diagnosis for this project.
+- Verified UWISSY project `Y0Ygmqe59jevHoeV`, folder `LaS9Q6sil9yCDzrV`, and canonical lane workflows 01-08, 20, and 30.
+- Captured pre-change live workflow backups for all canonical UWISSY workflows.
+- Reconciled and deployed verified Round 1 repairs to Lane 03 ECO-01, Lane 04 NIFC-01, and Lane 05 KC-ROAD-01.
+- Fixed an in-scope Lane 05 KC-ROAD schema issue discovered during live rerun by normalizing numeric `ClosureState` to a valid event `status` while preserving the official code in `official_category`.
+- AIRNOW-01 remains a proven owner/runtime credential blocker for `AIRNOW_API_KEY`.
+- WSDOT-01 remains a proven owner/runtime credential blocker for `WSDOT_TRAVELER_API_ACCESS_CODE`.
+- PSCAA-01 was explicitly deferred to Round 2 source/parser research.
+- All 8 live monitor lanes were executed; Lane 20 was executed afterward and published fresh release `20_STATUS_PUBLISHER-20260824T060529Z-001`.
+- Actual after-state: 3 current monitors, 5 degraded monitors, 0 failed monitors.
+- Source failures eliminated: ECO-01, NIFC-01, KC-ROAD-01.
+- Health scoring thresholds were not changed; current rule still degrades a monitor for any failed/stale/LKG configured source.
+- Validation passed: unit tests 8 files / 110 tests, typecheck, build, workflow validation, public-package validation, copy allowlist, dist secret scan, and proof-folder secret scan.
+- Live custom-domain verification passed for `https://uw-issy.biketourfrance.net`.
+- Report path: `00_DOCS/2026-08-23_UWISSY_MONITOR_DATA_QUALITY_ROUND1B.md`.
+- Proof path: `00_AS-BUILT/20260823-UWISSY_MONITOR_DATA_QUALITY_ROUND1B/`.
+- Proof ZIP: `/Users/jkbrookspersonal/Downloads/20260823-UWISSY_MONITOR_DATA_QUALITY_ROUND1B_PROOF.zip`.
+- Proof ZIP SHA-256: `fb17f2e8538dec5f53d6bc2186feed56772e369da55b4939fbba54709759239a`.
