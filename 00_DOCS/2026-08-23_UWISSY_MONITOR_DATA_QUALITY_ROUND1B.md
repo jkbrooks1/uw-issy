@@ -390,3 +390,11 @@ Proof ZIP:
 SHA-256:
 
 `fb17f2e8538dec5f53d6bc2186feed56772e369da55b4939fbba54709759239a`
+
+Final local commits:
+
+- `4d3a159`
+
+Lane 20 publication commit:
+
+- `ef2067b88b1a91402b072656d07fdd8dc409f777`

@@ -1140,4 +1140,6 @@ No commit, push, merge, reset, or working-tree clean was performed. All pre-exis
 - Proof path: `00_AS-BUILT/20260823-UWISSY_MONITOR_DATA_QUALITY_ROUND1B/`.
 - Proof ZIP: `/Users/jkbrookspersonal/Downloads/20260823-UWISSY_MONITOR_DATA_QUALITY_ROUND1B_PROOF.zip`.
 - Proof ZIP SHA-256: `fb17f2e8538dec5f53d6bc2186feed56772e369da55b4939fbba54709759239a`.
+- Final local commit: `4d3a159`.
+- Lane 20 publication commit: `ef2067b88b1a91402b072656d07fdd8dc409f777`.
 - Helper scripts: no reusable helper script was created for Round 1B.
