@@ -3,14 +3,14 @@
   "connector_id": "20_STATUS_PUBLISHER",
   "connector_version": "v0004",
   "workflow_name": "v04.UWI_LANE20",
-  "generated_at": "2026-08-24T06:01:13.365Z",
-  "run_id": "20_STATUS_PUBLISHER-20260824T060113Z-001",
+  "generated_at": "2026-08-24T06:05:29.026Z",
+  "run_id": "20_STATUS_PUBLISHER-20260824T060529Z-001",
   "current_cycle": {
     "expected_cycle": "13:00",
     "timezone": "America/Los_Angeles",
     "expected_start_local": "2026-08-23T13:00:00",
     "expected_start_utc": "2026-08-23T20:00:00.000Z",
-    "lane20_generated_at": "2026-08-24T06:01:13.365Z"
+    "lane20_generated_at": "2026-08-24T06:05:29.026Z"
   },
   "system_result": "DEGRADED",
   "overall": {
@@ -61,13 +61,13 @@
     },
     {
       "lane_id": "05_FLOOD_CONDITIONS",
-      "latest_run_id": "05_FLOOD_CONDITIONS-20260823T200000Z-001",
+      "latest_run_id": "05_FLOOD_CONDITIONS-20260824T060445Z-001",
       "current_cycle_state": "RAN_CURRENT_CYCLE",
       "ran_current_cycle": true,
-      "latest_execution_or_report_at": "2026-08-23T20:00:00.417Z",
+      "latest_execution_or_report_at": "2026-08-24T06:04:45.892Z",
       "data_status": "degraded",
       "lkg_used": false,
-      "event_count": 5
+      "event_count": 6
     },
     {
       "lane_id": "06_TRAIL_INFRASTRUCTURE_STATUS",
@@ -551,31 +551,31 @@
       "ran_current_cycle": true,
       "expected_cycle": "13:00",
       "expected_start_utc": "2026-08-23T20:00:00.000Z",
-      "latest_run_id": "05_FLOOD_CONDITIONS-20260823T200000Z-001",
-      "latest_execution_or_report_at": "2026-08-23T20:00:00.417Z",
+      "latest_run_id": "05_FLOOD_CONDITIONS-20260824T060445Z-001",
+      "latest_execution_or_report_at": "2026-08-24T06:04:45.892Z",
       "display_severity": "watch",
       "data_status": "degraded",
       "freshness": {
         "overall_state": "stale",
-        "computed_at": "2026-08-23T20:00:35.968Z",
+        "computed_at": "2026-08-24T06:05:22.192Z",
         "oldest_relevant_source_age_minutes": 0,
         "stale_source_ids": []
       },
-      "published_at": "2026-08-23T20:00:35.968Z",
-      "generated_at": "2026-08-23T20:00:00.417Z",
+      "published_at": "2026-08-24T06:05:22.192Z",
+      "generated_at": "2026-08-24T06:04:45.892Z",
       "connector_health": {
         "schema_version": "1.0.0",
         "connector_id": "05_FLOOD_CONDITIONS",
         "status": "degraded",
         "failed_stage": null,
         "warning_count": 3,
-        "error_count": 4,
+        "error_count": 3,
         "used_last_known_good": false,
         "candidate_written": true,
         "published_written": true
       },
       "lkg_used": false,
-      "event_count": 5,
+      "event_count": 6,
       "source_health_summary": [
         {
           "source_id": "05_FLOOD_CONDITIONS:USGS-01",
@@ -627,9 +627,9 @@
         },
         {
           "source_id": "05_FLOOD_CONDITIONS:KC-ROAD-01",
-          "status": "failed",
-          "error_count": 1,
-          "warning_count": 1
+          "status": "ok",
+          "error_count": 0,
+          "warning_count": 0
         },
         {
           "source_id": "05_FLOOD_CONDITIONS:WSDOT-01",
@@ -647,15 +647,15 @@
           "severity": "advisory",
           "route_impact": "elevated_water",
           "title": "Issaquah Creek gauge observation",
-          "summary": "USGS observation | value=20.8 | unit=mixed | 2026-08-23T12:15:00.000-07:00",
+          "summary": "USGS observation | value=18.8 | unit=mixed | 2026-08-23T22:15:00.000-07:00",
           "source_id": "05_FLOOD_CONDITIONS:USGS-01",
           "source_event_ref": "00060",
-          "observed_at": "2026-08-23T12:15:00.000-07:00",
+          "observed_at": "2026-08-23T22:15:00.000-07:00",
           "effective_until": null,
           "official_category": "USGS:12121600:00060:00000",
           "metric": {
             "metric_name": "stage_or_flow",
-            "metric_value": 20.8,
+            "metric_value": 18.8,
             "unit": "mixed"
           },
           "location": {
@@ -674,8 +674,8 @@
           },
           "provenance": {
             "source_url": "https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12121600&parameterCd=00060,00065",
-            "retrieved_at": "2026-08-23T20:00:00.417Z",
-            "source_record_hash": "hash_7c588f18"
+            "retrieved_at": "2026-08-24T06:04:45.892Z",
+            "source_record_hash": "hash_abbe1b0e"
           }
         },
         {
@@ -685,15 +685,15 @@
           "severity": "advisory",
           "route_impact": "elevated_water",
           "title": "Issaquah Creek gauge observation",
-          "summary": "USGS observation | value=10.3 | unit=mixed | 2026-08-23T12:45:00.000-07:00",
+          "summary": "USGS observation | value=10.7 | unit=mixed | 2026-08-23T22:45:00.000-07:00",
           "source_id": "05_FLOOD_CONDITIONS:USGS-02",
           "source_event_ref": "00060",
-          "observed_at": "2026-08-23T12:45:00.000-07:00",
+          "observed_at": "2026-08-23T22:45:00.000-07:00",
           "effective_until": null,
           "official_category": "USGS:12120600:00060:00000",
           "metric": {
             "metric_name": "stage_or_flow",
-            "metric_value": 10.3,
+            "metric_value": 10.7,
             "unit": "mixed"
           },
           "location": {
@@ -712,8 +712,8 @@
           },
           "provenance": {
             "source_url": "https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12120600&parameterCd=00060,00065",
-            "retrieved_at": "2026-08-23T20:00:00.417Z",
-            "source_record_hash": "hash_8a512f10"
+            "retrieved_at": "2026-08-24T06:04:45.892Z",
+            "source_record_hash": "hash_9bef34cc"
           }
         },
         {
@@ -723,10 +723,10 @@
           "severity": "advisory",
           "route_impact": "elevated_water",
           "title": "Lake Sammamish shoreline context observed",
-          "summary": "USGS observation | value=25.72 | unit=ft | 2026-08-23T12:15:00.000-07:00",
+          "summary": "USGS observation | value=25.72 | unit=ft | 2026-08-23T22:15:00.000-07:00",
           "source_id": "05_FLOOD_CONDITIONS:USGS-03",
           "source_event_ref": "62614",
-          "observed_at": "2026-08-23T12:15:00.000-07:00",
+          "observed_at": "2026-08-23T22:15:00.000-07:00",
           "effective_until": null,
           "official_category": "USGS:12122000:62614:00000",
           "metric": {
@@ -752,8 +752,8 @@
           },
           "provenance": {
             "source_url": "https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12122000",
-            "retrieved_at": "2026-08-23T20:00:00.417Z",
-            "source_record_hash": "hash_c9748acb"
+            "retrieved_at": "2026-08-24T06:04:45.892Z",
+            "source_record_hash": "hash_5c33421c"
           }
         },
         {
@@ -766,7 +766,7 @@
           "summary": "Observed stage=n/a | flow=n/a | category=no_flooding | forecast=n/a",
           "source_id": "05_FLOOD_CONDITIONS:NWPS-01",
           "source_event_ref": null,
-          "observed_at": "2026-08-23T18:15:00Z",
+          "observed_at": "2026-08-24T03:15:00Z",
           "effective_until": null,
           "official_category": "no_flooding",
           "metric": {
@@ -792,8 +792,8 @@
           },
           "provenance": {
             "source_url": "https://api.water.noaa.gov/nwps/v1/gauges/ISSW1",
-            "retrieved_at": "2026-08-23T20:00:00.417Z",
-            "source_record_hash": "hash_20a2ea26"
+            "retrieved_at": "2026-08-24T06:04:45.892Z",
+            "source_record_hash": "hash_ca8ddc6b"
           }
         },
         {
@@ -806,7 +806,7 @@
           "summary": "Observed stage=n/a | flow=n/a | category=not_defined | forecast=n/a",
           "source_id": "05_FLOOD_CONDITIONS:NWPS-02",
           "source_event_ref": null,
-          "observed_at": "2026-08-23T18:45:00Z",
+          "observed_at": "2026-08-24T04:45:00Z",
           "effective_until": null,
           "official_category": "not_defined",
           "metric": {
@@ -832,8 +832,47 @@
           },
           "provenance": {
             "source_url": "https://api.water.noaa.gov/nwps/v1/gauges/ISQW1",
-            "retrieved_at": "2026-08-23T20:00:00.417Z",
-            "source_record_hash": "hash_1a439a0b"
+            "retrieved_at": "2026-08-24T06:04:45.892Z",
+            "source_record_hash": "hash_b9767bf9"
+          }
+        },
+        {
+          "event_id": "05_FLOOD_CONDITIONS:KC-ROAD-01:ee031325",
+          "event_type": "closure_confirmation",
+          "status": "active",
+          "severity": "warning",
+          "route_impact": "confirmed_route_closure",
+          "title": "SE May Valley Rd btwn Issaquah-Hobart Rd SE & 233rd Ave SE (Fifteen Mile Creek Bridge #493C) Closure",
+          "summary": "Other",
+          "source_id": "05_FLOOD_CONDITIONS:KC-ROAD-01",
+          "source_event_ref": 733626,
+          "observed_at": "2026-08-24T06:04:45.892Z",
+          "effective_until": 1787702340000,
+          "official_category": 2,
+          "metric": null,
+          "location": {
+            "name": "SE May Valley Rd btwn Issaquah-Hobart Rd SE & 233rd Ave SE (Fifteen Mile Creek Bridge #493C) Closure",
+            "latitude": null,
+            "longitude": null,
+            "route_section_ids": [
+              "05_sammamish_river_trail_bothell_woodinville",
+              "06_sammamish_river_trail_redmond",
+              "07_marymoor_park",
+              "08_east_lake_sammamish_trail_redmond",
+              "09_east_lake_sammamish_trail_sammamish",
+              "10_issaquah_approach_terminus"
+            ]
+          },
+          "route_relevance": {
+            "method": "bbox_prefilter_then_intersection",
+            "distance_km": 0.2,
+            "confidence": "high",
+            "reason": "Low-probability county-road closure supplement, kept as defense in depth."
+          },
+          "provenance": {
+            "source_url": "https://gismaps.kingcounty.gov/arcgis/rest/services/RoadAlerts/KingCo_Road_Alerts/MapServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&f=json",
+            "retrieved_at": "2026-08-24T06:04:45.892Z",
+            "source_record_hash": "hash_8fd5fedc"
           }
         }
       ]
