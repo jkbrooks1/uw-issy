@@ -96,7 +96,12 @@
       dl.appendChild(dd);
     };
 
-    addRow("Closed section", props.closureName);
+    addRow("Trail", props.trailName);
+    addRow("Location", props.locationLabel ?? props.routeSegmentLabel ?? props.routeSegmentId);
+    addRow("Alert", props.alertNature);
+    addRow("Route impact", props.routeEffect);
+    if (props.currentStatus === "active") addRow("Status", "Segment closed");
+    else addRow("Status", props.currentStatus);
     addRow("From", props.closureStartCrossing);
     addRow("To", props.closureEndCrossing);
     if (typeof props.closedLengthMiles === "number") {
@@ -107,24 +112,24 @@
     }
     addRow("Closure hours", props.closureHours);
     addRow("Expected reopening", props.projectedEndDate);
-    addRow("Location", props.locationLabel ?? props.routeSegmentLabel ?? props.routeSegmentId);
-    addRow("Route impact", props.routeEffect);
-    if (props.currentStatus === "active") addRow("Status", "Segment closed");
-    else addRow("Status", props.currentStatus);
-    if (props.riderCanPass === "no") addRow("Segment passability", "No");
-    else if (props.riderCanPass === "unknown") addRow("Segment passability", "Unknown");
-
-    root.appendChild(dl);
 
     if (typeof props.sourceUrl === "string" && props.sourceUrl) {
+      const dt = document.createElement("dt");
+      dt.textContent = "Source";
+      const dd = document.createElement("dd");
       const link = document.createElement("a");
       link.href = props.sourceUrl;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
       link.textContent = typeof props.sourceName === "string" && props.sourceName ? props.sourceName : "Source";
-      root.appendChild(link);
+      dd.appendChild(link);
+      dl.appendChild(dt);
+      dl.appendChild(dd);
+    } else {
+      addRow("Source", props.sourceName);
     }
 
+    root.appendChild(dl);
     return root;
   }
 

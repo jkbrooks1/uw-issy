@@ -5,7 +5,7 @@
 | COPY-001 | `UW-Issaquah BG/SRT/ELST Status` | Page heading renders. | Header | RS-B | Public-primary | APPROVED | Existing approved as-is. |
 | COPY-002 | `University of Washington to Issaquah` | Route subtitle renders. | Header | RS-C | Public-secondary | APPROVED | Existing approved as-is. |
 | COPY-003 | `Updated` | Update timestamp renders. | Header | SS-H | Public-secondary | APPROVED | Replacement approved. |
-| COPY-005 | `Route map` | Map panel renders. | Map | RS-B | Public-secondary | APPROVED | Existing approved as-is. |
+| COPY-005 | `UW-Issaquah Cycling Route` | Map panel renders. | Map | RS-B | Public-secondary | APPROVED | Owner-approved replacement for prior `Route map` heading. |
 | COPY-006 | `No current facility issues reported.` | Facility lane is current and no active facility issue exists. | Facilities | RS-A | Public-secondary | APPROVED | Replacement approved. |
 | COPY-007 | `Email` | Header email link renders. | Header | RS-C | Public-secondary | APPROVED | Existing approved as-is. |
 | COPY-008 | `Main site` | Header main-site link renders. | Header | RS-C | Public-secondary | APPROVED | Existing approved as-is. |
@@ -64,6 +64,8 @@
 | COPY-098 | `through` | Date range connector renders. | Event Detail | RS-B | Public-secondary | APPROVED | Approved connector. |
 | COPY-099 | `Source` | Source link label renders. | Event Detail | RS-B | Public-secondary | APPROVED | Existing approved as-is. |
 | COPY-105 | `Location` | Event detail/popup location label renders. | Event Detail | RS-B | Public-secondary | APPROVED | Existing approved as-is. |
+| COPY-119 | `Trail` | Supported public alert trail label renders. | Event Detail / Map Popup | RS-B | Public-secondary | APPROVED | Owner-approved targeted remediation label. |
+| COPY-120 | `Alert` | Supported public alert nature label renders. | Event Detail / Map Popup | RS-A | Public-primary | APPROVED | Owner-approved targeted remediation label. |
 | COPY-106 | `Fit full route` | Map fit control accessible label renders. | Map | RS-C | Public-secondary | APPROVED | Existing approved as-is. |
 | COPY-107 | `Loading route map` | Map loading status renders. | Map | SS-H | Public-secondary | APPROVED | Existing approved as-is. |
 | COPY-108 | `Route map unavailable.` | Map load error renders. | Map | SS-H | Public-secondary | APPROVED | Replacement approved. |

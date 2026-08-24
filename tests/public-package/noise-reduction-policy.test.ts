@@ -85,6 +85,7 @@ function build(lanes: Record<string, unknown>, runId?: string) {
 function readFeatures(outDir: string) {
   return JSON.parse(readFileSync(join(outDir, "route-events.geojson"), "utf8")).features as Array<{
     id: string;
+    geometry: GeoJSON.Geometry | null;
     properties: Record<string, unknown>;
   }>;
 }
@@ -112,8 +113,9 @@ function floodEvent(overrides: RawEvent = {}): RawEvent {
     summary: "test",
     observed_at: "2026-08-02T10:00:00.000Z",
     official_category: "major",
+    trail_or_street_name: "Test Trail",
     location: {
-      name: "Test Creek",
+      name: "Test Trail at Test Creek",
       latitude: 47.6,
       longitude: -122.1,
       route_section_ids: ["10_issaquah_approach_terminus"],
@@ -255,6 +257,8 @@ describe("health-alert exclusion (tests 13-16)", () => {
           summary: "Public health emergency: evacuation order covering the route corridor",
           route_relevance: { classification: "confirmed_route_impact", method: "named_trail_segment_matching" },
           route_impact_state: "confirmed_route_impact",
+          trail_or_street_name: "Test Trail",
+          location: { name: "Test Trail", route_section_ids: ["09_east_lake_sammamish_trail_sammamish"] },
         }),
       ]),
     );
@@ -278,6 +282,8 @@ function govAlertEvent(overrides: RawEvent = {}): RawEvent {
     severity: "Severe",
     title: "Test government alert",
     summary: "test",
+    trail_or_street_name: "Test Trail",
+    location: { name: "Test Trail", route_section_ids: ["09_east_lake_sammamish_trail_sammamish"] },
     observed_at: "2026-08-02T10:00:00.000Z",
     route_relevance: { method: "named_trail_segment_matching" },
     route_impact_state: "confirmed_route_impact",
@@ -703,7 +709,8 @@ describe("duplicate merging (tests 34-41)", () => {
       effective_end: "2026-12-31T23:59:59Z",
       route_impact_state: "confirmed_route_impact",
       route_relevance: { method: "named_trail_segment_matching" },
-      location: { route_section_ids: ["09_east_lake_sammamish_trail_sammamish"] },
+      trail_or_street_name: "East Lake Sammamish Trail",
+      location: { name: "East Lake Sammamish Trail near Louis Thompson Road", route_section_ids: ["09_east_lake_sammamish_trail_sammamish"] },
     };
     const { result, outDir } = build({
       "01_ROUTE_CONDITIONS": emptyLane({
@@ -763,5 +770,110 @@ describe("public package integrity (tests 42-45)", () => {
     expect(result.status).toBe(0);
     const validated = runValidate(outDir);
     expect(validated.status).toBe(0);
+  });
+});
+
+describe("targeted public alert qualification and geometry remediation", () => {
+  it("requires Trail, Location, and Alert facts before a public triangle can render", () => {
+    const { result, outDir, auditDir } = build({
+      "06_TRAIL_INFRASTRUCTURE_STATUS": emptyLane({
+        event_count: 1,
+        events: [
+          {
+            event_id: "06_TRAIL_INFRASTRUCTURE_STATUS:TEST:pseudo",
+            event_type: "infrastructure_project",
+            status: "active",
+            title: "George Davis Creek fish-passage and storm improvement project",
+            route_relevance: {
+              classification: "confirmed_route_impact",
+              matched_route_sections: ["09_east_lake_sammamish_trail_sammamish"],
+            },
+            location: { route_section_ids: ["09_east_lake_sammamish_trail_sammamish"] },
+            trail_or_street_name: "George Davis Creek",
+            last_verified_at: "2026-08-02T10:00:00.000Z",
+            provenance: { source_url: "https://example.gov/project" },
+          },
+        ],
+      }),
+    });
+    expect(result.status).toBe(0);
+    expect(readFeatures(outDir)).toHaveLength(0);
+    expect(reasonFor(outDir, auditDir, "06_TRAIL_INFRASTRUCTURE_STATUS:TEST:pseudo")).toBe(
+      "public_alert_unqualified",
+    );
+  });
+
+  it("does not use Unknown to qualify an otherwise meaningless public alert", () => {
+    const { result, outDir } = build({
+      "06_TRAIL_INFRASTRUCTURE_STATUS": emptyLane({
+        event_count: 1,
+        events: [
+          {
+            event_id: "06_TRAIL_INFRASTRUCTURE_STATUS:TEST:unknown",
+            event_type: "infrastructure_project",
+            status: "active",
+            title: "Unknown",
+            summary: "Unknown",
+            route_relevance: {
+              classification: "confirmed_route_impact",
+              matched_route_sections: ["03_burke_gilman_trail"],
+            },
+            location: { route_section_ids: ["03_burke_gilman_trail"] },
+            trail_or_street_name: "Burke-Gilman Trail",
+            last_verified_at: "2026-08-02T10:00:00.000Z",
+            provenance: { source_url: "https://example.gov/project" },
+          },
+        ],
+      }),
+    });
+    expect(result.status).toBe(0);
+    expect(readFeatures(outDir)).toHaveLength(0);
+  });
+
+  it("publishes the current ELST closure as one qualified point alert with supported closure facts", () => {
+    const { result, outDir } = build({
+      "01_ROUTE_CONDITIONS": emptyLane({
+        event_count: 1,
+        events: [
+          {
+            event_id:
+              "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01",
+            source_id: "01_ROUTE_CONDITIONS:KC-03",
+            event_type: "trail_closure",
+            status: "active",
+            severity: "high",
+            title: "East Lake Sammamish Trail closure for George Davis Creek culvert replacement.",
+            summary: "East Lake Sammamish Trail closure for George Davis Creek culvert replacement.",
+            trail_or_street_name: "East Lake Sammamish Trail",
+            location_description_raw: "Between Louis Thompson Rd NE and NE Inglewood Hill Rd.",
+            effective_start: "2026-06-01T00:00:00Z",
+            effective_end: "2026-12-31T23:59:59Z",
+            last_verified_at: "2026-08-02T10:00:00.000Z",
+            detour_available: false,
+            route_impact_state: "confirmed_route_impact",
+            route_sections: ["09_east_lake_sammamish_trail_sammamish"],
+            route_relevance: { classification: "confirmed_route_impact", method: "named_trail_segment_matching" },
+            provenance: {
+              source_name: "King County Parks - East Lake Sammamish Trail page",
+              source_url:
+                "https://kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/east-lake-sammamish",
+            },
+          },
+        ],
+      }),
+    });
+    expect(result.status).toBe(0);
+    const features = readFeatures(outDir);
+    expect(features).toHaveLength(1);
+    const feature = features[0]!;
+    expect(feature.geometry).toEqual({ type: "Point", coordinates: [-122.06792, 47.617432] });
+    expect(feature.properties.trailName).toBe("East Lake Sammamish Trail");
+    expect(feature.properties.locationLabel).toBe("Between Louis Thompson Rd NE and NE Inglewood Hill Rd.");
+    expect(feature.properties.alertNature).toBe("East Lake Sammamish Trail closure for George Davis Creek culvert replacement.");
+    expect(feature.properties.routeEffect).toBe("Segment closed");
+    expect(feature.properties.closedLengthMiles).toBe(0.11);
+    expect(feature.properties.closureStartCrossing).toBe("Louis Thompson Rd NE");
+    expect(feature.properties.closureEndCrossing).toBe("NE Inglewood Hill Rd");
+    expect(feature.properties.detourAvailable).toBe(false);
   });
 });

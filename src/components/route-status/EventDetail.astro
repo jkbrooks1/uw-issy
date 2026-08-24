@@ -16,10 +16,34 @@ const closedLengthLabel =
 ---
 
 <dl class="map-popup">
-  {event.closureName && (
+  {event.trailName && (
     <>
-      <dt>Closed section</dt>
-      <dd>{event.closureName}</dd>
+      <dt>Trail</dt>
+      <dd>{event.trailName}</dd>
+    </>
+  )}
+  {(event.locationLabel || event.routeSegmentLabel || event.routeSegmentId) && (
+    <>
+      <dt>Location</dt>
+      <dd>{event.locationLabel ?? event.routeSegmentLabel ?? event.routeSegmentId}</dd>
+    </>
+  )}
+  {event.alertNature && (
+    <>
+      <dt>Alert</dt>
+      <dd>{event.alertNature}</dd>
+    </>
+  )}
+  {event.routeEffect && (
+    <>
+      <dt>Route impact</dt>
+      <dd>{event.routeEffect}</dd>
+    </>
+  )}
+  {event.currentStatus && (
+    <>
+      <dt>Status</dt>
+      <dd>{event.currentStatus === "active" ? "Segment closed" : event.currentStatus}</dd>
     </>
   )}
   {event.closureStartCrossing && (
@@ -56,30 +80,6 @@ const closedLengthLabel =
     <>
       <dt>Expected reopening</dt>
       <dd>{event.projectedEndDate}</dd>
-    </>
-  )}
-  {(event.locationLabel || event.routeSegmentLabel || event.routeSegmentId) && (
-    <>
-      <dt>Location</dt>
-      <dd>{event.locationLabel ?? event.routeSegmentLabel ?? event.routeSegmentId}</dd>
-    </>
-  )}
-  {event.routeEffect && (
-    <>
-      <dt>Route impact</dt>
-      <dd>{event.routeEffect}</dd>
-    </>
-  )}
-  {event.currentStatus && (
-    <>
-      <dt>Status</dt>
-      <dd>{event.currentStatus === "active" ? "Segment closed" : event.currentStatus}</dd>
-    </>
-  )}
-  {event.riderCanPass && (
-    <>
-      <dt>Segment passability</dt>
-      <dd>{event.riderCanPass === "no" ? "No" : "Unknown"}</dd>
     </>
   )}
   {reportedLabel && (

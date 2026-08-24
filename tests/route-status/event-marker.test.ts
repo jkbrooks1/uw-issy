@@ -11,6 +11,8 @@ function event(overrides: Partial<DashboardEventWithUnknownLane>): DashboardEven
     title: "Event",
     summary: null,
     locationLabel: null,
+    trailName: null,
+    alertNature: null,
     routeSegmentId: null,
     routeSegmentLabel: null,
     displayTier: "normal",

@@ -45,7 +45,8 @@ export type PresentationReason =
   | "duplicate_merged"
   | "unknown_or_unusable_location"
   | "expired"
-  | "informational_only";
+  | "informational_only"
+  | "public_alert_unqualified";
 
 /** Buildspec 11.1 — the required normalized UI event type. */
 export type DashboardEvent = {
@@ -55,6 +56,8 @@ export type DashboardEvent = {
   title: string;
   summary: string | null;
   locationLabel: string | null;
+  trailName: string | null;
+  alertNature: string | null;
   routeSegmentId: string | null;
   routeSegmentLabel: string | null;
   displayTier: DisplayTier;
@@ -147,6 +150,8 @@ export type RouteEventProperties = {
   title: string;
   summary: string | null;
   locationLabel: string | null;
+  trailName: string | null;
+  alertNature: string | null;
   routeSegmentId: string | null;
   routeSegmentLabel: string | null;
   displayTier: DisplayTier;

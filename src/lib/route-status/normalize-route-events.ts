@@ -57,6 +57,8 @@ export function normalizeRouteEvents(file: RouteEventsFile): NormalizedRouteEven
       title: props.title,
       summary: props.summary,
       locationLabel: props.locationLabel,
+      trailName: props.trailName,
+      alertNature: props.alertNature,
       routeSegmentId: props.routeSegmentId,
       routeSegmentLabel: props.routeSegmentLabel,
       displayTier: toDisplayTier(props.displayTier),

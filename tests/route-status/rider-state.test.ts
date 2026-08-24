@@ -39,6 +39,8 @@ function baseEvent(overrides: Partial<DashboardEventWithUnknownLane> = {}): Dash
     title: "East Lake Sammamish Trail closure",
     summary: null,
     locationLabel: "Between Louis Thompson Rd NE and NE Inglewood Hill Rd.",
+    trailName: "East Lake Sammamish Trail",
+    alertNature: "East Lake Sammamish Trail closure",
     routeSegmentId: "elst",
     routeSegmentLabel: "East Lake Sammamish Trail",
     displayTier: "unknown",

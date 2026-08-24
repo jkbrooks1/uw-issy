@@ -6,7 +6,7 @@
   "routeName": "University of Washington to Issaquah",
   "displayTier": "watch",
   "overallMessage": null,
-  "activeEventCount": 4,
+  "activeEventCount": 1,
   "laneSummaries": [
     {
       "laneId": "01_ROUTE_CONDITIONS",
@@ -75,9 +75,6 @@
   ],
   "routeImpacts": null,
   "eventRefs": [
-    "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01",
-    "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:ae7e8f59",
-    "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:ec9a6c33",
-    "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:b3d1e147"
+    "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01"
   ]
 }

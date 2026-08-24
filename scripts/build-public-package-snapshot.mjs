@@ -323,6 +323,18 @@ function mapEventGeometry(rawEvent, gaps, eventId) {
     return nativePoint;
   }
 
+  if (
+    rawEvent.source_id === "01_ROUTE_CONDITIONS:KC-03" &&
+    rawEvent.event_type === "trail_closure" &&
+    rawEvent.provenance?.source_url ===
+      "https://kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/east-lake-sammamish"
+  ) {
+    gaps.push(
+      `${eventId}: King County source states a 600 ft ELST closure between Louis Thompson Rd NE and NE Inglewood Hill Rd; exact endpoint coordinates are not published in project data, so used the official source-linked closure map point instead of the overbroad canonical route-section LineString`,
+    );
+    return { type: "Point", coordinates: [-122.06792, 47.617432] };
+  }
+
   const fallbackGeometry = deriveRouteSegmentFallbackGeometry(rawEvent, gaps, eventId);
   if (fallbackGeometry) return fallbackGeometry;
 
@@ -331,6 +343,7 @@ function mapEventGeometry(rawEvent, gaps, eventId) {
 }
 
 function mapRouteEffect(rawEvent) {
+  if (isClosureSignalEvent(rawEvent)) return "Segment closed";
   if (typeof rawEvent.route_impact_state === "string") return rawEvent.route_impact_state;
   if (typeof rawEvent.route_impact === "string") return rawEvent.route_impact;
   if (typeof rawEvent.route_relevant === "boolean") {
@@ -377,6 +390,44 @@ function mapPublicSummary(rawEvent) {
   if (trimmed.startsWith("{") || trimmed.includes("\\r") || trimmed.includes("\r")) return null;
   if (trimmed.length > 280) return null;
   return trimmed;
+}
+
+function mapTrailName(rawEvent) {
+  const trailName = firstDefined(rawEvent.trail_or_street_name, mapRouteSegmentLabel(rawEvent));
+  return typeof trailName === "string" && trailName.trim().length > 0 ? trailName.trim() : null;
+}
+
+function mapMeaningfulLocation(rawEvent) {
+  const location = mapLocationLabel(rawEvent);
+  if (typeof location === "string" && location.trim().length > 0) return location.trim();
+  const endpointTerms = extractNamedEndpointTerms(rawEvent);
+  if (endpointTerms) return `Between ${endpointTerms[0]} and ${endpointTerms[1]}.`;
+  return null;
+}
+
+function mapAlertNature(rawEvent) {
+  if (isClosureSignalEvent(rawEvent)) {
+    return firstDefined(mapPublicSummary(rawEvent), rawEvent.title);
+  }
+  if (typeof rawEvent.route_impact === "string" && rawEvent.route_impact.trim().length > 0) {
+    return firstDefined(mapPublicSummary(rawEvent), rawEvent.title, rawEvent.route_impact);
+  }
+  if (typeof rawEvent.route_impact_state === "string" && DIRECT_ROUTE_IMPACT_STATES.has(rawEvent.route_impact_state)) {
+    return firstDefined(mapPublicSummary(rawEvent), rawEvent.title);
+  }
+  return null;
+}
+
+function qualifyPublicAlert(rawEvent) {
+  const trailName = mapTrailName(rawEvent);
+  const location = mapMeaningfulLocation(rawEvent);
+  const alertNature = mapAlertNature(rawEvent);
+  return {
+    qualified: Boolean(trailName && location && alertNature),
+    trailName,
+    location,
+    alertNature,
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -606,9 +657,10 @@ function evaluateEventEligibility(laneId, rawEvent, buildNowMs) {
   const isHealthAlert = classifyHealthAlert(rawEvent);
   const lastSourceRefreshAt = deriveLastSourceRefreshAt(rawEvent);
   const freshnessState = deriveFreshnessState(laneId, rawEvent, lastSourceRefreshAt, buildNowMs);
+  const publicAlertQualification = qualifyPublicAlert(rawEvent);
 
   if (isHealthAlert && !healthEventCausesRouteClosure(rawEvent)) {
-    return { eligible: false, reason: "health_alert_excluded", routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState };
+    return { eligible: false, reason: "health_alert_excluded", routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState, publicAlertQualification };
   }
 
   if (laneId === "05_FLOOD_CONDITIONS") {
@@ -616,33 +668,37 @@ function evaluateEventEligibility(laneId, rawEvent, buildNowMs) {
       const reason = normalizeFloodCategory(rawEvent.official_category) === "unknown"
         ? "flood_no_active_category"
         : "flood_below_major";
-      return { eligible: false, reason, routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState };
+      return { eligible: false, reason, routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState, publicAlertQualification };
     }
   }
 
   if (laneId === "07_GOVERNMENT_SAFETY_ALERTS" && !isHealthAlert) {
     if (!governmentAlertPassesSeverityRule(rawEvent)) {
-      return { eligible: false, reason: "low_severity_government_alert", routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState };
+      return { eligible: false, reason: "low_severity_government_alert", routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState, publicAlertQualification };
     }
   }
 
   if (!routeRelevant) {
     const reason = mapLocationLabel(rawEvent) || mapRouteSegmentId(rawEvent) ? "off_route" : "unknown_or_unusable_location";
-    return { eligible: false, reason, routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState };
+    return { eligible: false, reason, routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState, publicAlertQualification };
   }
 
   if (!routeImpact) {
-    return { eligible: false, reason: "no_route_impact", routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState };
+    return { eligible: false, reason: "no_route_impact", routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState, publicAlertQualification };
   }
 
   if (freshnessState === "expired") {
-    return { eligible: false, reason: "expired", routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState };
+    return { eligible: false, reason: "expired", routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState, publicAlertQualification };
   }
   if (freshnessState === "stale") {
-    return { eligible: false, reason: "stale_short_lived_alert", routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState };
+    return { eligible: false, reason: "stale_short_lived_alert", routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState, publicAlertQualification };
   }
 
-  return { eligible: true, reason: "eligible", routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState };
+  if (!publicAlertQualification.qualified) {
+    return { eligible: false, reason: "public_alert_unqualified", routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState, publicAlertQualification };
+  }
+
+  return { eligible: true, reason: "eligible", routeRelevant, routeImpact, lastSourceRefreshAt, freshnessState, publicAlertQualification };
 }
 
 // ---------------------------------------------------------------------------
@@ -850,6 +906,8 @@ function buildRouteEventFeature(laneId, laneLabel, rawEvent, laneIsStale, laneUs
       title: firstDefined(rawEvent.title, rawEvent.summary) ?? laneLabel,
       summary: mapPublicSummary(rawEvent),
       locationLabel: mapLocationLabel(rawEvent),
+      trailName: mapTrailName(rawEvent),
+      alertNature: mapAlertNature(rawEvent),
       routeSegmentId: mapRouteSegmentId(rawEvent),
       routeSegmentLabel: mapRouteSegmentLabel(rawEvent),
       // No per-event display tier is published by the Status Publisher today — only a
@@ -1026,6 +1084,7 @@ function run(snapshotPath, outputDir, auditDir) {
       presentationReason: candidate.decision.reason,
       routeRelevant: candidate.decision.routeRelevant,
       routeImpact: candidate.decision.routeImpact,
+      publicAlertQualification: candidate.decision.publicAlertQualification,
       freshnessState: candidate.decision.freshnessState,
       duplicateGroupKey: finalEntry?.duplicateGroupKey ?? null,
     });

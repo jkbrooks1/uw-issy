@@ -214,8 +214,12 @@ describe("build-public-package-snapshot.mjs", () => {
             {
               event_id: "evt-none-geometry",
               title: "Test event with type none",
+              summary: "Test trail closure",
               geometry: { type: "none", coordinates: null, bbox: null, spatial_reference: null },
+              event_type: "trail_closure",
               status: "active",
+              trail_or_street_name: "Test Trail",
+              location: { name: "Test Trail", route_section_ids: ["09_east_lake_sammamish_trail_sammamish"] },
               route_impact_state: "confirmed_route_impact",
               route_relevance: { classification: "confirmed_route_impact", method: "named_trail_segment_matching" },
               last_verified_at: "2026-08-02T16:00:00.000Z",
@@ -228,7 +232,7 @@ describe("build-public-package-snapshot.mjs", () => {
     expect(result.status).toBe(0);
     const routeEvents = JSON.parse(readFileSync(join(outDir, "route-events.geojson"), "utf8"));
     expect(routeEvents.features).toHaveLength(1);
-    expect(routeEvents.features[0].geometry).toBeNull();
+    expect(routeEvents.features[0].geometry.type).toBe("Point");
     expect(routeEvents.features[0].properties.presentationEligible).toBe(true);
   });
 });
