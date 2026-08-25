@@ -1479,3 +1479,25 @@ The repairs are sound and tested for correctness. No secrets were exposed. Deplo
 - Workflow result: success
 - Deploy URL: https://2ae03f25.uw-issy.pages.dev
 - Run: https://github.com/jkbrooks1/uw-issy/actions/runs/32793473638
+
+## 2026-08-24 17:27 PDT — Four-category public Harvey grid deployed and verified live
+
+- Reduced the public Harvey grid from six first-class public categories to four rider-relevant categories: `Trail Conditions`, `Weather`, `Air Quality`, `Safety Alerts`.
+- Removed `Route Conditions`, `Wildfire`, `Flood Conditions`, and `Trail Infrastructure` from the public Harvey grid while preserving the internal monitoring lanes.
+- Implemented Trail Conditions aggregation from qualified public trail-impact events and duplicate real-world issue suppression.
+- Kept Wildfire and Flood Conditions internal-only for the public Harvey grid; rider-facing effects only surface through Air Quality, Trail Conditions, or Safety Alerts when supported by qualified public events.
+- Added Safety Alerts mapping for qualified government/public-safety rider-impact conditions.
+- Fixed label/ball spacing and alignment using compact `max-content 20px max-content 20px` grid columns.
+- Copy governance correction: removed `Air Quality` from the rejected validator list because it is now owner-approved as `COPY-HARVEY-003`.
+- Tests and validation passed: unit tests 9 files / 125 tests, typecheck, production build, public package validation, copy allowlist validation with 77 approved rows, and secret scan.
+- First CI run `32793357862` correctly failed before deployment on the stale rejected-copy rule for `Air Quality`; no deployment occurred from that run.
+- Successful CI/deploy run: `32793473638`, workflow `Build, validate, and deploy`, result success.
+- Cloudflare Pages deployment URL: `https://2ae03f25.uw-issy.pages.dev`.
+- Live custom domain verified: `https://uw-issy.biketourfrance.net` serves exactly four public Harvey categories with live colors Trail Conditions red, Weather green, Air Quality green, Safety Alerts green.
+- Implementation commit: `dd59108483053223dbfd9041de8a0980ac15850f`.
+- Copy-gate correction commit: `eac1a6836c08f843597bc80f13b152766bd81b42`.
+- CI build-log proof commit: `2eec9a2`.
+- Report path: `00_DOCS/2026-08-24_UWISSY_PUBLIC_HARVEY_GRID_FOUR_CATEGORY_MODEL.md`.
+- Proof path: `00_AS-BUILT/20260824-UWISSY_PUBLIC_HARVEY_GRID_FOUR_CATEGORY_MODEL/`.
+- Proof ZIP: `/Users/jkbrookspersonal/Downloads/20260824-UWISSY_PUBLIC_HARVEY_GRID_FOUR_CATEGORY_MODEL_PROOF.zip`.
+- Proof ZIP SHA-256: `24607254ee157f31678abc370b2b91f23f26f1c6695ce4ede318eb29155279de`.

@@ -1,0 +1,21 @@
+PASS: custom domain section exists
+PASS: exactly four Harvey balls
+PASS: label present: Trail Conditions
+PASS: label present: Weather
+PASS: label present: Air Quality
+PASS: label present: Safety Alerts
+PASS: removed from grid: Route Conditions
+PASS: removed from grid: Wildfire
+PASS: removed from grid: Flood Conditions
+PASS: removed from grid: Trail Infrastructure
+PASS: Trail Conditions rendered red
+PASS: Weather rendered green
+PASS: Air Quality rendered green
+PASS: Safety Alerts rendered green
+PASS: Current route issues remains
+PASS: Map remains
+PASS: System Health remains separate
+PASS: no old top route status card value
+Custom domain: https://uw-issy.biketourfrance.net
+Harvey ball class count: 4
+Live colors: Trail Conditions=red; Weather=green; Air Quality=green; Safety Alerts=green

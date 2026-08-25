@@ -1,0 +1,34 @@
+PASS: Main page returns success — HTTP 200
+PASS: Main page contains approved logo URL
+FAIL: Main page email link is correct
+PASS: Main page main-site link is correct
+PASS: main page — no secret-like content
+PASS: main page — no banned mock content
+PASS: Approved logo loads — HTTP 200
+PASS: Route GeoJSON returns success — HTTP 200
+PASS: Route GeoJSON is a FeatureCollection with real geometry
+PASS: route GeoJSON — no secret-like content
+PASS: dashboard-data.json returns success — HTTP 200
+PASS: dashboard-data.json is valid JSON
+PASS: dashboard-data.json — no secret-like content
+PASS: dashboard-data.json — no banned mock content
+PASS: route-events.geojson returns success — HTTP 200
+PASS: route-events.geojson is valid JSON
+PASS: route-events.geojson — no secret-like content
+PASS: route-events.geojson — no banned mock content
+PASS: system-health.json returns success — HTTP 200
+PASS: system-health.json is valid JSON
+PASS: system-health.json — no secret-like content
+PASS: system-health.json — no banned mock content
+PASS: release-manifest.json returns success — HTTP 200
+PASS: release-manifest.json is valid JSON
+PASS: release-manifest.json — no secret-like content
+PASS: release-manifest.json — no banned mock content
+PASS: Release IDs match across all four live public files
+
+NOT checked by this script — requires a real browser, per buildspec 35.3-35.5 and 36:
+  - Map renders the real route (visual)
+  - Mobile layout / reading order
+  - Stale-state and failure-state UI
+  - Reduced motion, 200% zoom, contrast, touch target size
+  - Cross-browser matrix (Chrome, Safari, Firefox, Edge, iOS Safari, Android Chrome)

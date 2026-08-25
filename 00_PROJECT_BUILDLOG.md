@@ -3180,3 +3180,20 @@ Each new file was generated from the verified live post-rename export, and each 
 - Validation passed pre-deploy: unit tests 9 files / 125 tests, typecheck, production build, public package validation, copy allowlist validation, secret scan, and built HTML verification.
 - Report path: `00_DOCS/2026-08-24_UWISSY_PUBLIC_HARVEY_GRID_FOUR_CATEGORY_MODEL.md`.
 - Proof path: `00_AS-BUILT/20260824-UWISSY_PUBLIC_HARVEY_GRID_FOUR_CATEGORY_MODEL/`.
+
+## 2026-08-24 17:27 PDT — Four-category public Harvey grid deployed and verified live
+
+- Deployed the four-category public Harvey grid through the existing GitHub Actions / Cloudflare Pages path.
+- First CI run `32793357862` failed before deploy because the copy validator still treated `Air Quality` as rejected; fixed the validator to align with owner-approved `COPY-HARVEY-003`.
+- Successful CI/deploy run: `32793473638`, result success.
+- Cloudflare Pages deployment URL: `https://2ae03f25.uw-issy.pages.dev`.
+- Live custom domain verified: `https://uw-issy.biketourfrance.net`.
+- Live public Harvey categories are exactly `Trail Conditions`, `Weather`, `Air Quality`, `Safety Alerts`.
+- Live colors are Trail Conditions red, Weather green, Air Quality green, Safety Alerts green.
+- Current route issue detail, map, and separate System Health remain.
+- Tests and validation passed: unit tests 9 files / 125 tests, typecheck, production build, public package validation, copy allowlist validation with 77 approved rows, and secret scan.
+- Implementation commit: `dd59108483053223dbfd9041de8a0980ac15850f`.
+- Copy-gate correction commit: `eac1a6836c08f843597bc80f13b152766bd81b42`.
+- CI build-log proof commit: `2eec9a2`.
+- Proof ZIP: `/Users/jkbrookspersonal/Downloads/20260824-UWISSY_PUBLIC_HARVEY_GRID_FOUR_CATEGORY_MODEL_PROOF.zip`.
+- Proof ZIP SHA-256: `24607254ee157f31678abc370b2b91f23f26f1c6695ce4ede318eb29155279de`.

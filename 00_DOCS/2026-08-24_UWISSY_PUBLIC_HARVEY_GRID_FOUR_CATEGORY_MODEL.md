@@ -132,8 +132,18 @@ Validation:
 
 ## Deployment Result
 
-Deployment is recorded in the build log and proof folder for:
+Deployment completed through the existing canonical GitHub Actions / Cloudflare Pages path.
+
+- Implementation commit: `dd59108483053223dbfd9041de8a0980ac15850f`
+- Copy-gate correction commit: `eac1a6836c08f843597bc80f13b152766bd81b42`
+- CI build-log proof commit: `2eec9a2`
+- Successful GitHub Actions run: `32793473638`
+- Cloudflare Pages deployment: `https://2ae03f25.uw-issy.pages.dev`
+- CI production verification: 27/27 passed on the Pages deployment URL.
+- Live custom domain verified: `https://uw-issy.biketourfrance.net`
+
+Custom-domain verification confirms exactly four public Harvey categories, the approved labels, compact label/ball pairing, live colors of Trail Conditions red and Weather/Air Quality/Safety Alerts green, preserved current issue detail, preserved map, and separate System Health.
+
+Proof is recorded in:
 
 `00_AS-BUILT/20260824-UWISSY_PUBLIC_HARVEY_GRID_FOUR_CATEGORY_MODEL/`
-
-The final live deployment proof records the exact commit, GitHub Actions run, Cloudflare Pages URL, and custom-domain verification.
