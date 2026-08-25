@@ -26,6 +26,7 @@ import MonitorHealthDisclosure from "../components/route-status/MonitorHealthDis
 
 import { normalizeDashboardData } from "../lib/route-status/normalize-dashboard-data";
 import { normalizeRouteEvents } from "../lib/route-status/normalize-route-events";
+import { attachJohnNotes } from "../lib/route-status/attach-john-notes";
 import type { DashboardDataFile, RouteEventsFile, SystemHealthFile } from "../lib/route-status/types";
 
 const publicDataDir = join(process.cwd(), "public", "data");
@@ -56,9 +57,12 @@ const summary = dashboardDataFile
       routeImpacts: null,
     };
 
-const { events } = routeEventsFile
+const { events: baseEvents } = routeEventsFile
   ? normalizeRouteEvents(routeEventsFile)
   : { events: [], gaps: [] };
+
+const notesFilePath = join(process.cwd(), "JOHN_NOTES.json");
+const events = attachJohnNotes(baseEvents, notesFilePath);
 
 const facilitiesLane = summary.laneSummaries.find((lane) => lane.laneId === "08_ROUTE_FACILITIES") ?? null;
 const facilitiesEvents = events.filter((event) => event.laneId === "08_ROUTE_FACILITIES");

@@ -129,6 +129,8 @@
       addRow("Source", props.sourceName);
     }
 
+    addRow("John Note", props.johnNote);
+
     root.appendChild(dl);
     return root;
   }
