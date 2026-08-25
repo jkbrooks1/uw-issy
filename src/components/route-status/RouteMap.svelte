@@ -16,6 +16,7 @@
   export let routeGeoJsonUrl: string = "/routes/UnivWA-Issaquah.geojson";
   export let routeEventsUrl: string = "/data/route-events.geojson";
   export let routeDisplayTier: "normal" | "watch" | "alert" | "unknown" = "unknown";
+  export let johnNotesByTitle: Record<string, string> = {};
 
   let mapEl: HTMLDivElement;
   let map: import("leaflet").Map | undefined;
@@ -129,7 +130,8 @@
       addRow("Source", props.sourceName);
     }
 
-    addRow("John Note", props.johnNote);
+    const title = typeof props.title === "string" ? props.title : "";
+    addRow("John Note", props.johnNote ?? johnNotesByTitle[title]);
 
     root.appendChild(dl);
     return root;

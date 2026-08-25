@@ -1,14 +1,16 @@
 ---
 import type { DashboardEventWithUnknownLane } from "../../lib/route-status/types";
+import type { JohnNote } from "../../lib/route-status/attach-john-notes";
 import EventTable from "./EventTable.astro";
 import EventListMobile from "./EventListMobile.astro";
 
 type Props = {
   events: DashboardEventWithUnknownLane[];
+  johnNotes?: JohnNote[];
   hasSourceFailures: boolean;
 };
 
-const { events } = Astro.props;
+const { events, johnNotes = [] } = Astro.props;
 ---
 
 <section class="panel" aria-labelledby="current-route-alerts-heading">
@@ -21,6 +23,18 @@ const { events } = Astro.props;
         <EventTable events={events} />
         <EventListMobile events={events} />
       </>
+    )
+  }
+  {
+    johnNotes.length > 0 && (
+      <dl class="john-note-list">
+        {johnNotes.map((johnNote) => (
+          <>
+            <dt>John Note</dt>
+            <dd>{johnNote.note}</dd>
+          </>
+        ))}
+      </dl>
     )
   }
 </section>

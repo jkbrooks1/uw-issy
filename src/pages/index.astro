@@ -26,7 +26,7 @@ import MonitorHealthDisclosure from "../components/route-status/MonitorHealthDis
 
 import { normalizeDashboardData } from "../lib/route-status/normalize-dashboard-data";
 import { normalizeRouteEvents } from "../lib/route-status/normalize-route-events";
-import { attachJohnNotes } from "../lib/route-status/attach-john-notes";
+import { attachJohnNotesForPresentation } from "../lib/route-status/attach-john-notes";
 import type { DashboardDataFile, RouteEventsFile, SystemHealthFile } from "../lib/route-status/types";
 
 const publicDataDir = join(process.cwd(), "public", "data");
@@ -62,7 +62,9 @@ const { events: baseEvents } = routeEventsFile
   : { events: [], gaps: [] };
 
 const notesFilePath = join(process.cwd(), "JOHN_NOTES.json");
-const events = attachJohnNotes(baseEvents, notesFilePath);
+const johnNotesPresentation = attachJohnNotesForPresentation(baseEvents, notesFilePath);
+const events = johnNotesPresentation.events;
+const currentRouteIssueJohnNotes = events.length === 0 ? johnNotesPresentation.standaloneNotes : [];
 
 const facilitiesLane = summary.laneSummaries.find((lane) => lane.laneId === "08_ROUTE_FACILITIES") ?? null;
 const facilitiesEvents = events.filter((event) => event.laneId === "08_ROUTE_FACILITIES");
@@ -91,11 +93,11 @@ const facilitiesCurrent = facilitiesLane?.sourceStateText === "Current";
 
         <section class="panel item-route-map" aria-labelledby="route-map-heading">
           <h2 class="panel__heading" id="route-map-heading">UW-Issaquah Cycling Route</h2>
-          <RouteMap client:only="svelte" routeDisplayTier={summary.displayTier} />
+          <RouteMap client:only="svelte" routeDisplayTier={summary.displayTier} johnNotesByTitle={johnNotesPresentation.notesByTitle} />
         </section>
 
         <div class="item-route-alerts">
-          <CurrentRouteAlerts events={events} hasSourceFailures={false} />
+          <CurrentRouteAlerts events={events} johnNotes={currentRouteIssueJohnNotes} hasSourceFailures={false} />
         </div>
 
         <div class="item-closures">

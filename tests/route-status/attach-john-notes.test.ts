@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeEach, afterEach } from "vitest";
 import { writeFileSync, unlinkSync } from "node:fs";
 import { join } from "node:path";
-import { attachJohnNotes } from "../../src/lib/route-status/attach-john-notes";
+import { attachJohnNotes, attachJohnNotesForPresentation } from "../../src/lib/route-status/attach-john-notes";
 import type { DashboardEventWithUnknownLane } from "../../src/lib/route-status/types";
 
 const TEMP_DIR = "/tmp/john-notes-test";
@@ -211,5 +211,50 @@ describe("attach-john-notes", () => {
     expect(note).toBeDefined();
     expect(note).toContain("cross oncoming traffic");
     expect(note).not.toContain("crooss");
+  });
+
+  it("11. returns a standalone note when no reportable route issue matches", () => {
+    const testNote = "Owner-authored context remains visible.";
+    writeFileSync(
+      TEMP_DIR,
+      JSON.stringify({
+        "PushUWIssy unmatched route issue": testNote,
+      }),
+    );
+
+    const result = attachJohnNotesForPresentation([], TEMP_DIR);
+
+    expect(result.events).toHaveLength(0);
+    expect(result.matchedNotes).toHaveLength(0);
+    expect(result.standaloneNotes).toEqual([
+      {
+        matchText: "PushUWIssy unmatched route issue",
+        note: testNote,
+      },
+    ]);
+    expect(result.notesByTitle).toEqual({});
+  });
+
+  it("12. matched John Note stays on the event and is not standalone", () => {
+    const testNote = "Matched owner-authored context.";
+    writeFileSync(
+      TEMP_DIR,
+      JSON.stringify({
+        "Test event title": testNote,
+      }),
+    );
+
+    const result = attachJohnNotesForPresentation([event("Test event title")], TEMP_DIR);
+
+    expect(result.events).toHaveLength(1);
+    expect((result.events[0] as any).johnNote).toBe(testNote);
+    expect(result.matchedNotes).toEqual([
+      {
+        matchText: "Test event title",
+        note: testNote,
+      },
+    ]);
+    expect(result.standaloneNotes).toHaveLength(0);
+    expect(result.notesByTitle).toEqual({ "Test event title": testNote });
   });
 });
