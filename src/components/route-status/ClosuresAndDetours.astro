@@ -92,12 +92,6 @@ function closedLengthLabel(event: DashboardEventWithUnknownLane): string | null 
                   <dd>{formatPacificTime(event.reportedAt)}</dd>
                 </>
               )}
-              {(event as any).johnNote && (
-                <>
-                  <dt>John Note</dt>
-                  <dd>{(event as any).johnNote}</dd>
-                </>
-              )}
             </dl>
           </li>
         ))}

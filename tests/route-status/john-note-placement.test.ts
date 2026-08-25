@@ -8,6 +8,15 @@ const CURRENT_ROUTE_ALERTS_ASTRO = readFileSync(
   join(REPO_ROOT, "src", "components", "route-status", "CurrentRouteAlerts.astro"),
   "utf8",
 );
+const EVENT_TABLE_ASTRO = readFileSync(join(REPO_ROOT, "src", "components", "route-status", "EventTable.astro"), "utf8");
+const EVENT_LIST_MOBILE_ASTRO = readFileSync(
+  join(REPO_ROOT, "src", "components", "route-status", "EventListMobile.astro"),
+  "utf8",
+);
+const CLOSURES_AND_DETOURS_ASTRO = readFileSync(
+  join(REPO_ROOT, "src", "components", "route-status", "ClosuresAndDetours.astro"),
+  "utf8",
+);
 const ROUTE_MAP_SVELTE = readFileSync(join(REPO_ROOT, "src", "components", "route-status", "RouteMap.svelte"), "utf8");
 const RIDER_IMPACT_GRID_TS = readFileSync(
   join(REPO_ROOT, "src", "lib", "route-status", "rider-impact-grid.ts"),
@@ -19,6 +28,9 @@ describe("John Note placement", () => {
     expect(CURRENT_ROUTE_ALERTS_ASTRO).toContain("<EventTable events={events} />");
     expect(CURRENT_ROUTE_ALERTS_ASTRO).toContain("<EventListMobile events={events} />");
     expect(INDEX_ASTRO).toContain("const events = johnNotesPresentation.events;");
+    expect(EVENT_TABLE_ASTRO).toContain('open={Boolean((event as any).johnNote)}');
+    expect(EVENT_LIST_MOBILE_ASTRO).toContain('open={Boolean((event as any).johnNote)}');
+    expect(CLOSURES_AND_DETOURS_ASTRO).not.toContain("<dt>John Note</dt>");
   });
 
   it("2. zero reportable route issues still render standalone John Note in Current route issues", () => {

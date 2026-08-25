@@ -34,7 +34,7 @@ const { events } = Astro.props;
             Segment passability <strong>{event.riderCanPass === "no" ? "No" : "Unknown"}</strong>
           </p>
         )}
-        <details>
+        <details open={Boolean((event as any).johnNote)}>
           <summary class="event-card__link">View details</summary>
           <EventDetail event={event} />
         </details>

@@ -34,7 +34,7 @@ function passabilityLabel(event: DashboardEventWithUnknownLane): string | null {
         events.map((event) => (
           <tr>
             <td>
-              <details>
+              <details open={Boolean((event as any).johnNote)}>
                 <summary>{event.title}</summary>
                 <EventDetail event={event} />
               </details>

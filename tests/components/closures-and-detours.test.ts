@@ -9,38 +9,12 @@ const CLOSURES_ASTRO = readFileSync(
 );
 
 describe("ClosuresAndDetours component", () => {
-  it("1. renders John Note field if event has johnNote", () => {
-    expect(CLOSURES_ASTRO).toMatch(/\(event as any\)\.johnNote/);
-    expect(CLOSURES_ASTRO).toMatch(/<dt>John Note<\/dt>/);
+  it("1. does not render John Note because owner placement is Current route issues", () => {
+    expect(CLOSURES_ASTRO).not.toMatch(/<dt>John Note<\/dt>/);
+    expect(CLOSURES_ASTRO).not.toMatch(/\(event as any\)\.johnNote/);
   });
 
-  it("2. renders John Note after Reported field (source-derived fields come first)", () => {
-    const reportedIndex = CLOSURES_ASTRO.indexOf("<dt>Reported</dt>");
-    const johnNoteIndex = CLOSURES_ASTRO.indexOf("<dt>John Note</dt>");
-    expect(reportedIndex).toBeGreaterThan(0);
-    expect(johnNoteIndex).toBeGreaterThan(reportedIndex);
-  });
-
-  it("3. does not render John Note if event does not have johnNote", () => {
-    expect(CLOSURES_ASTRO).toMatch(
-      /\{\(event as any\)\.johnNote && \(/s,
-    );
-  });
-
-  it("4. uses approved label exactly: 'John Note'", () => {
-    expect(CLOSURES_ASTRO).toMatch(/<dt>John Note<\/dt>/);
-    expect(CLOSURES_ASTRO).not.toMatch(/<dt>John note<\/dt>/);
-    expect(CLOSURES_ASTRO).not.toMatch(/<dt>Owner Note<\/dt>/);
-    expect(CLOSURES_ASTRO).not.toMatch(/<dt>Editorial Note<\/dt>/);
-  });
-
-  it("5. renders the note value without mutation", () => {
-    expect(CLOSURES_ASTRO).toMatch(
-      /<dd>\{.*?\(event as any\)\.johnNote.*?\}<\/dd>/s,
-    );
-  });
-
-  it("6. preserves all source-derived fields (Reported, Source, etc)", () => {
+  it("2. preserves all source-derived closure fields", () => {
     expect(CLOSURES_ASTRO).toMatch(/<dt>Reported<\/dt>/);
     expect(CLOSURES_ASTRO).toMatch(/<dt>Source<\/dt>/);
     expect(CLOSURES_ASTRO).toMatch(/<dt>Closed section<\/dt>/);
@@ -49,9 +23,5 @@ describe("ClosuresAndDetours component", () => {
     expect(CLOSURES_ASTRO).toMatch(/<dt>Closed length<\/dt>/);
     expect(CLOSURES_ASTRO).toMatch(/<dt>Detour<\/dt>/);
     expect(CLOSURES_ASTRO).toMatch(/<dt>Expected reopening<\/dt>/);
-  });
-
-  it("7. John Note is editorial overlay only (conditional rendering means no field if not present)", () => {
-    expect(CLOSURES_ASTRO).toMatch(/\{.*\(event as any\)\.johnNote/);
   });
 });
