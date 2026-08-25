@@ -3154,3 +3154,16 @@ Each new file was generated from the verified live post-rename export, and each 
 - Proof ZIP SHA-256: `fb17f2e8538dec5f53d6bc2186feed56772e369da55b4939fbba54709759239a`.
 - Final local commit: `4d3a159`.
 - Lane 20 publication commit: `ef2067b88b1a91402b072656d07fdd8dc409f777`.
+
+## 2026-08-24 17:07 PDT — Harvey grid custom-domain deployment proof completed
+
+- Corrected prior status: Round 1B is not Harvey-grid deployment proof, and Harvey was not live until the Harvey commit was pushed and deployed.
+- Exact deployed Harvey commit: `03d191e7038fcd31d6c5f6fb84c96bfdeea87a82`.
+- GitHub Actions run: `32792180272`, workflow `Build, validate, and deploy`, result success.
+- Cloudflare Pages deploy URL: `https://b7be2560.uw-issy.pages.dev`.
+- CI Pages verifier: 27/27 passed.
+- Live custom domain verified: `https://uw-issy.biketourfrance.net` now serves the Harvey `rider-impact-grid`; all six labels render; old top-card `route-state__value`, `Active route issues:`, and `Localized closures reported:` are absent.
+- Custom-domain generic verifier caveat remains the known Cloudflare email-obfuscation mailto rewrite only.
+- Proof folder: `00_AS-BUILT/20260824-UWISSY_HARVEY_GRID_DEPLOYMENT_PROOF/`.
+- Proof ZIP: `/Users/jkbrookspersonal/Downloads/20260824-UWISSY_HARVEY_GRID_DEPLOYMENT_PROOF.zip`.
+- Proof ZIP SHA-256: `e4752a2e06b8519ced819b35a45deeb9c53a937f6b65d7e2e30b7649df3fc682`.

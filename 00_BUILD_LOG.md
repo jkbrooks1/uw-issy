@@ -1437,3 +1437,17 @@ The repairs are sound and tested for correctness. No secrets were exposed. Deplo
 - Workflow result: success
 - Deploy URL: https://b7be2560.uw-issy.pages.dev
 - Run: https://github.com/jkbrooks1/uw-issy/actions/runs/32792180272
+
+## 2026-08-24 17:07 PDT — Harvey grid custom-domain deployment proof completed
+
+- Corrected prior status: the Round 1B deliverable pack is not Harvey-grid deployment proof, and the Harvey grid was not live before commit `03d191e7038fcd31d6c5f6fb84c96bfdeea87a82` was pushed.
+- Exact deployed Harvey commit: `03d191e7038fcd31d6c5f6fb84c96bfdeea87a82`.
+- Existing approved deployment path used: GitHub Actions workflow `Build, validate, and deploy`, run `32792180272`, Cloudflare Wrangler Pages deploy.
+- Exact deploy command from CI log: `wrangler pages deploy dist --project-name=uw-issy --commit-hash=03d191e7038fcd31d6c5f6fb84c96bfdeea87a82 --branch=main`.
+- Cloudflare Pages completion: deployment complete at `https://b7be2560.uw-issy.pages.dev`; CI Pages production verification passed 27/27.
+- Live custom domain verified directly after deployment: `https://uw-issy.biketourfrance.net` now serves `rider-impact-grid`, all six category labels, preserved `UW-Issaquah Cycling Route` map heading, and System Health.
+- Live custom domain no longer serves the old top-card strings/classes: `route-state__value`, `Active route issues:`, or `Localized closures reported:` in the top Route status card.
+- Custom-domain generic verifier remains 26/27 only because of the known Cloudflare email-obfuscation mailto rewrite; Harvey-specific custom-domain verification passed.
+- Proof folder: `00_AS-BUILT/20260824-UWISSY_HARVEY_GRID_DEPLOYMENT_PROOF/`.
+- Proof ZIP: `/Users/jkbrookspersonal/Downloads/20260824-UWISSY_HARVEY_GRID_DEPLOYMENT_PROOF.zip`.
+- Proof ZIP SHA-256: `e4752a2e06b8519ced819b35a45deeb9c53a937f6b65d7e2e30b7649df3fc682`.

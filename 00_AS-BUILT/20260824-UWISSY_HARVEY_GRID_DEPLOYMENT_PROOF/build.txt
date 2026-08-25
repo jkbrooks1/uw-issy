@@ -1,0 +1,23 @@
+
+> uw-issy-route-status@0.1.0 build
+> astro build
+
+17:05:01 [vite] Re-optimizing dependencies because vite config has changed
+17:05:01 [types] Generated 185ms
+17:05:01 [build] output: "static"
+17:05:01 [build] mode: "static"
+17:05:01 [build] directory: /Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/dist/
+17:05:01 [build] Collecting build info...
+17:05:01 [build] ✓ Completed in 255ms.
+17:05:01 [build] Building static entrypoints...
+17:05:02 [vite] ✓ built in 132ms
+17:05:02 [vite] ✓ built in 148ms
+17:05:02 [build] Rearranging server assets...
+
+ generating static routes 
+17:05:02   ├─ /index.html (+21ms) 
+17:05:02 ✓ Completed in 54ms.
+
+17:05:02 [build] ✓ Completed in 364ms.
+17:05:02 [build] 1 page(s) built in 622ms
+17:05:02 [build] Complete!
