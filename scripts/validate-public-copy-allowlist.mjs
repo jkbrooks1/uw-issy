@@ -21,7 +21,6 @@ const rejected = [
   "Monitoring sources",
   "Monitor health",
   "Route Conditions",
-  "Air Quality",
   "Flood Conditions",
   "Trail Infrastructure Status",
   "Government Safety Alerts",
