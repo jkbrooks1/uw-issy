@@ -1,3 +1,33 @@
+## 2026-08-24 18:08:00 UTC — UW-Issy John Notes Editorial Overlay Mechanism Implemented — COMPLETE
+
+- Project: UW-Issy Route Status Monitor (Public Dashboard)
+- Task: Implement John Notes mechanism to attach owner editorial notes to events
+- Implementation:
+  - New Utility: `src/lib/route-status/attach-john-notes.ts` — loads JOHN_NOTES.json and attaches notes to events by exact title match
+  - Updated: `src/pages/index.astro` — calls attachJohnNotes during build to attach notes to events
+  - Updated: `src/components/route-status/EventDetail.astro` — renders `johnNote` field in event detail definition lists
+  - Updated: `src/components/route-status/RouteMap.svelte` — renders John Note in map popup content (buildPopupContent)
+  - Test Suite: `tests/route-status/attach-john-notes.test.ts` — 10 comprehensive tests for attachment logic, edge cases, malformed JSON handling
+- Features:
+  - Exact title matching: JOHN_NOTES.json keys must match event title exactly (case-sensitive, no fuzzy matching)
+  - Editorial overlay only: Notes do not modify event source fields, status, display tier, closure dates, geometry, or source attribution
+  - Card/popup parity: Same note renders in both event detail card (desktop/mobile) and map popup
+  - Public label: "John Note" (approved public copy)
+  - Error handling: Malformed JSON fails build (no silent failures)
+  - Empty note handling: Null/empty notes omitted from output
+  - No internal exposure: Lane names, implementation IDs, source health metadata never visible
+- Typo Fix: JOHN_NOTES.json corrected "crooss" → "cross" in East Lake Sammamish Trail note
+- Testing: 135/135 tests pass (including 10 new John Notes attachment tests)
+- Build: Astro build clean (593ms, no errors)
+- Built Output: John Note text with corrected typo present in dist/index.html in both event detail and map popup
+- Verification: "John Note" label appears 2x in built HTML; corrected text "cross oncoming traffic" confirmed in built output
+- Commits: 
+  - SHA: 17bf500 — Implement John Notes mechanism in dashboard
+  - Includes: attach-john-notes.ts, test suite, EventDetail/RouteMap updates, index.astro integration, JOHN_NOTES.json correction
+- Push: Successfully rebased and pushed to origin/main (GitHub Actions will deploy)
+- Live Verification: Pending (awaiting GitHub Actions CI and Cloudflare deployment)
+- Status: ✅ SOURCE IMPLEMENTATION COMPLETE | TESTS PASS | BUILD SUCCEEDS | COMMITTED & PUSHED | AWAITING CI/DEPLOYMENT
+
 ## 2026-08-24 21:51:00 UTC — UW-Issy Route Status Card Replaced with Harvey-Ball Rider-Impact Grid — COMPLETE
 
 - Project: UW-Issy Route Status Monitor (Public Dashboard)
