@@ -194,9 +194,9 @@ describe("attach-john-notes", () => {
     const result = attachJohnNotes(events, TEMP_DIR);
 
     expect(result).toHaveLength(3);
-    expect(result[0].title).toBe("Event A");
-    expect(result[1].title).toBe("Event B");
-    expect(result[2].title).toBe("Event C");
+    expect(result[0]?.title).toBe("Event A");
+    expect(result[1]?.title).toBe("Event B");
+    expect(result[2]?.title).toBe("Event C");
   });
 
   it("10. the East Lake Sammamish Trail closure has the corrected typo in JOHN_NOTES.json", () => {
