@@ -134,6 +134,15 @@ const findings = [];
 for (const file of files) {
   const text = readFileSync(file, "utf8");
   for (const term of rejected) {
+    if (term === "Note") {
+      // COPY-100 rejects the generic public label "Note"; "John Note" is a
+      // separate approved owner-overlay label and must not be caught by the
+      // generic substring scan.
+      if (/(^|[^A-Za-z])Note([^A-Za-z]|$)/.test(text.replaceAll("John Note", ""))) {
+        findings.push({ file, term });
+      }
+      continue;
+    }
     if (text.includes(term)) findings.push({ file, term });
   }
 }
