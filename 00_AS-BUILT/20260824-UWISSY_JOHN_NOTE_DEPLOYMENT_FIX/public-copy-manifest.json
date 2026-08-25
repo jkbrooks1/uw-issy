@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-08-25T01:27:08.512Z",
+  "scannedRoot": "dist",
+  "scannedFileCount": 13,
+  "approvedCopyRowCount": 77,
+  "rejectedCopyCount": 0,
+  "pendingCopyCount": 0,
+  "unmappedPublicCopyCount": 0,
+  "unapprovedGeneratedCopyCount": 0,
+  "paraphrasedUnapprovedCopyCount": 0,
+  "copy048Rendered": false,
+  "rawPayloadSummaryCount": 0,
+  "findings": []
+}

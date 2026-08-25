@@ -1573,3 +1573,15 @@ The repairs are sound and tested for correctness. No secrets were exposed. Deplo
 - Workflow result: success
 - Deploy URL: https://49b172e6.uw-issy.pages.dev
 - Run: https://github.com/jkbrooks1/uw-issy/actions/runs/32797613528
+
+## 2026-08-24 18:29 PDT — John Note placement rule deployed and verified live
+
+- Root cause of missing screenshot note: previous John Notes commits existed but earlier CI runs failed before deployment on public-copy validation; the live custom domain remained on a build without the note.
+- Deployed commit `4a8906f306ec4f1ea73ebaad2769ddb2ab84e30e` through GitHub Actions run `32797613528`; Cloudflare Pages URL `https://49b172e6.uw-issy.pages.dev`.
+- Implemented owner placement rule: matching PushUWIssy note renders inside the matched event detail in `Current route issues`; when there are zero reportable route issues, unmatched owner notes are passed separately and render as standalone editorial notes in `Current route issues`.
+- Preserved no-fabrication boundary: standalone John Notes do not create route events, do not increment active issue counts, do not change Harvey-ball colors, and do not create map markers.
+- Map rule implemented: matched geolocated route issue popups receive `John Note` through a title-to-note lookup; unmatched standalone notes do not produce map markers.
+- Live custom-domain verification passed: `John Note` and owner text containing `cross oncoming traffic twice` appear inside `Current route issues`; route-events feature count remains 1; no note-only feature exists; Harvey colors remain Trail Conditions red, Weather green, Air Quality green, Safety Alerts green.
+- Tests and validation passed locally and in CI: local unit tests 12 files / 149 tests; typecheck, build, public package validation, copy allowlist validation, and secret scan passed. CI deploy run passed production verification on the Pages URL.
+- Known custom-domain generic verifier caveat remains the pre-existing Cloudflare email-obfuscation rewrite of the mailto link; John Note-specific custom-domain verification passed.
+- Proof folder: `00_AS-BUILT/20260824-UWISSY_JOHN_NOTE_DEPLOYMENT_FIX/`.

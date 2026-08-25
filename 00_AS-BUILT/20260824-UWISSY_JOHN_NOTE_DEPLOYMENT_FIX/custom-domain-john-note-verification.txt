@@ -1,0 +1,11 @@
+PASS: John Note appears on live custom domain
+PASS: owner note text appears on live custom domain
+PASS: John Note appears inside Current route issues
+PASS: active issue body row count remains one
+PASS: Harvey Trail Conditions remains red
+PASS: Harvey Weather remains green
+PASS: Harvey Air Quality remains green
+PASS: Harvey Safety Alerts remains green
+PASS: map remains present
+John Note occurrences: 3
+Route issue body rows: 1

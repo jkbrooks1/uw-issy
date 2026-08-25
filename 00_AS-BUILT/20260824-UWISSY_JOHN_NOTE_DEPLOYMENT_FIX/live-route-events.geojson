@@ -1,0 +1,61 @@
+{
+  "type": "FeatureCollection",
+  "releaseId": "20_STATUS_PUBLISHER-20260824T201500Z-001",
+  "generatedAt": "2026-08-24T20:15:00.104Z",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.06792,
+          47.617432
+        ]
+      },
+      "properties": {
+        "id": "01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01",
+        "laneId": "01_ROUTE_CONDITIONS",
+        "laneLabel": "Route conditions",
+        "title": "East Lake Sammamish Trail closure for George Davis Creek culvert replacement.",
+        "summary": "East Lake Sammamish Trail closure for George Davis Creek culvert replacement.",
+        "locationLabel": "Between Louis Thompson Rd NE and NE Inglewood Hill Rd.",
+        "trailName": "East Lake Sammamish Trail",
+        "alertNature": "East Lake Sammamish Trail closure for George Davis Creek culvert replacement.",
+        "routeSegmentId": "09_east_lake_sammamish_trail_sammamish",
+        "routeSegmentLabel": "East Lake Sammamish Trail",
+        "displayTier": "unknown",
+        "routeEffect": "Segment closed",
+        "reportedAt": "2026-08-24T20:00:00.231Z",
+        "effectiveFrom": "2026-06-01T00:00:00Z",
+        "effectiveUntil": "2026-12-31T23:59:59Z",
+        "sourceName": "King County Parks - East Lake Sammamish Trail page",
+        "sourceUrl": "https://kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/east-lake-sammamish",
+        "mergedSourceUrls": null,
+        "confidence": null,
+        "isLastKnownGood": false,
+        "isStale": true,
+        "presentationEligible": true,
+        "presentationReason": "eligible",
+        "routeRelevant": true,
+        "routeImpact": true,
+        "duplicateGroupKey": null,
+        "lastSourceRefreshAt": "2026-08-24T20:00:00.231Z",
+        "severity": "high",
+        "currentStatus": "active",
+        "detourAvailable": false,
+        "detourDescription": "No",
+        "closureName": "East Lake Sammamish Trail",
+        "closedLengthMiles": 0.11,
+        "closedLengthSource": "official_source_distance",
+        "closureStartCrossing": "Louis Thompson Rd NE",
+        "closureEndCrossing": "NE Inglewood Hill Rd",
+        "closureHours": null,
+        "closureStartDate": "2026-06-01T00:00:00Z",
+        "projectedEndDate": "End of 2026",
+        "routeAction": "No",
+        "riderCanPass": "no"
+      }
+    }
+  ]
+}

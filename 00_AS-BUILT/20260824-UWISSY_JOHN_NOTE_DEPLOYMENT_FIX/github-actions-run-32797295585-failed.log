@@ -1,0 +1,495 @@
+build-validate-deploy	Set up job	﻿2026-08-25T01:22:39.3196209Z Current runner version: '2.336.0'
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3223785Z ##[group]Runner Image Provisioner
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3224781Z Hosted Compute Agent
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3225556Z Version: 20260729.566
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3226375Z Commit: cf7153fe6e25b664e8693c24944bf2b00355d109
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3227140Z Build Date: 2026-07-29T19:17:02Z
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3227914Z Worker ID: {1ea3357b-1d43-4b72-afae-248c6fdabebf}
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3228664Z Azure Region: westus
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3229508Z ##[endgroup]
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3231178Z ##[group]Operating System
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3231883Z Ubuntu
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3232508Z 24.04.4
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3233056Z LTS
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3233585Z ##[endgroup]
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3234257Z ##[group]Runner Image
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3234993Z Image: ubuntu-24.04
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3235647Z Version: 20260816.277.1
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3236756Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260816.277/images/ubuntu/Ubuntu2404-Readme.md
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3238569Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260816.277
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3240089Z ##[endgroup]
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3241575Z ##[group]GITHUB_TOKEN Permissions
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3243812Z Contents: write
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3244623Z Metadata: read
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3245465Z ##[endgroup]
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3247707Z Secret source: Actions
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3248857Z Prepare workflow directory
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3660542Z Prepare all required actions
+build-validate-deploy	Set up job	2026-08-25T01:22:39.3708961Z Getting action download info
+build-validate-deploy	Set up job	2026-08-25T01:22:39.7131525Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+build-validate-deploy	Set up job	2026-08-25T01:22:39.8308360Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+build-validate-deploy	Set up job	2026-08-25T01:22:39.9201916Z Download action repository 'cloudflare/wrangler-action@v3' (SHA:9acf94ace14e7dc412b076f2c5c20b8ce93c79cd)
+build-validate-deploy	Set up job	2026-08-25T01:22:40.3186991Z Complete job name: build-validate-deploy
+build-validate-deploy	Check out repo	﻿2026-08-25T01:22:40.4020569Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4029539Z ##[group]Run actions/checkout@v4
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4030396Z with:
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4030869Z   repository: jkbrooks1/uw-issy
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4034482Z   token: ***
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4034940Z   ssh-strict: true
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4035397Z   ssh-user: git
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4035852Z   persist-credentials: true
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4036358Z   clean: true
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4036821Z   sparse-checkout-cone-mode: true
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4037375Z   fetch-depth: 1
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4037818Z   fetch-tags: false
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4038284Z   show-progress: true
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4038745Z   lfs: false
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4039470Z   submodules: false
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4040001Z   set-safe-directory: true
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4040546Z   allow-unsafe-pr-checkout: false
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4041337Z env:
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4041875Z   CLOUDFLARE_ACCOUNT_ID: 84f228323707bc1d08ba30d9f76146be
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4042553Z   PAGES_PROJECT_NAME: uw-issy
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4043122Z   CANONICAL_GPX: data/route/UnivWA-Issaquah.gpx
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4043806Z   ROUTE_GEOJSON: public/routes/UnivWA-Issaquah.geojson
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4044645Z   EVIDENCE_SNAPSHOT: data/connectors/evidence/workflow20-status-latest.json
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4045416Z   PUBLIC_DATA_DIR: public/data
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.4045932Z ##[endgroup]
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5082560Z Syncing repository: jkbrooks1/uw-issy
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5085477Z ##[group]Getting Git version info
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5086681Z Working directory is '/home/runner/work/uw-issy/uw-issy'
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5088451Z [command]/usr/bin/git version
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5153808Z git version 2.55.0
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5176655Z ##[endgroup]
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5193065Z Temporarily overriding HOME='/home/runner/work/_temp/26a1da8b-03d4-4f6c-80a6-a5dd86f9e2a2' before making global git config changes
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5195455Z Adding repository directory to the temporary git global config as a safe directory
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5200260Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/uw-issy/uw-issy
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5263071Z Deleting the contents of '/home/runner/work/uw-issy/uw-issy'
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5267963Z ##[group]Initializing the repository
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5273757Z [command]/usr/bin/git init /home/runner/work/uw-issy/uw-issy
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5411055Z hint: Using 'master' as the name for the initial branch. This default branch name
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5413338Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5415497Z hint: to use in all of your new repositories, which will suppress this warning,
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5417466Z hint: call:
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5418569Z hint:
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5420048Z hint: 	git config --global init.defaultBranch <name>
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5421383Z hint:
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5422787Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5424973Z hint: 'development'. The just-created branch can be renamed via this command:
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5426815Z hint:
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5427907Z hint: 	git branch -m <name>
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5429002Z hint:
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5430600Z hint: Disable this message with "git config set advice.defaultBranchName false"
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5432701Z Initialized empty Git repository in /home/runner/work/uw-issy/uw-issy/.git/
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5462678Z [command]/usr/bin/git remote add origin https://github.com/jkbrooks1/uw-issy
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5518803Z ##[endgroup]
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5520472Z ##[group]Disabling automatic garbage collection
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5524759Z [command]/usr/bin/git config --local gc.auto 0
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5560052Z ##[endgroup]
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5561913Z ##[group]Setting up auth
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5568406Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.5609915Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.6013297Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.6050976Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.6295506Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.6335181Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.6566336Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.6608225Z ##[endgroup]
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.6609562Z ##[group]Fetching the repository
+build-validate-deploy	Check out repo	2026-08-25T01:22:40.6621220Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +d4d6b5619a9a9c1dc2a999db8248648df8b5b1ea:refs/remotes/origin/main
+build-validate-deploy	Check out repo	2026-08-25T01:22:42.2841862Z From https://github.com/jkbrooks1/uw-issy
+build-validate-deploy	Check out repo	2026-08-25T01:22:42.2842882Z  * [new ref]         d4d6b5619a9a9c1dc2a999db8248648df8b5b1ea -> origin/main
+build-validate-deploy	Check out repo	2026-08-25T01:22:42.2856109Z ##[endgroup]
+build-validate-deploy	Check out repo	2026-08-25T01:22:42.2856711Z ##[group]Determining the checkout info
+build-validate-deploy	Check out repo	2026-08-25T01:22:42.2857298Z ##[endgroup]
+build-validate-deploy	Check out repo	2026-08-25T01:22:42.2857661Z [command]/usr/bin/git sparse-checkout disable
+build-validate-deploy	Check out repo	2026-08-25T01:22:42.2912540Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+build-validate-deploy	Check out repo	2026-08-25T01:22:42.2944804Z ##[group]Checking out the ref
+build-validate-deploy	Check out repo	2026-08-25T01:22:42.2949766Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+build-validate-deploy	Check out repo	2026-08-25T01:22:42.6843682Z Switched to a new branch 'main'
+build-validate-deploy	Check out repo	2026-08-25T01:22:42.6870001Z branch 'main' set up to track 'origin/main'.
+build-validate-deploy	Check out repo	2026-08-25T01:22:42.6881064Z ##[endgroup]
+build-validate-deploy	Check out repo	2026-08-25T01:22:42.6930545Z [command]/usr/bin/git log -1 --format=%H
+build-validate-deploy	Check out repo	2026-08-25T01:22:42.6957662Z d4d6b5619a9a9c1dc2a999db8248648df8b5b1ea
+build-validate-deploy	Set up Node	﻿2026-08-25T01:22:42.7221141Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+build-validate-deploy	Set up Node	2026-08-25T01:22:42.7223064Z ##[group]Run actions/setup-node@v4
+build-validate-deploy	Set up Node	2026-08-25T01:22:42.7223382Z with:
+build-validate-deploy	Set up Node	2026-08-25T01:22:42.7223624Z   node-version: 22
+build-validate-deploy	Set up Node	2026-08-25T01:22:42.7223882Z   cache: npm
+build-validate-deploy	Set up Node	2026-08-25T01:22:42.7224130Z   always-auth: false
+build-validate-deploy	Set up Node	2026-08-25T01:22:42.7224417Z   check-latest: false
+build-validate-deploy	Set up Node	2026-08-25T01:22:42.7226868Z   token: ***
+build-validate-deploy	Set up Node	2026-08-25T01:22:42.7227127Z env:
+build-validate-deploy	Set up Node	2026-08-25T01:22:42.7227426Z   CLOUDFLARE_ACCOUNT_ID: 84f228323707bc1d08ba30d9f76146be
+build-validate-deploy	Set up Node	2026-08-25T01:22:42.7227860Z   PAGES_PROJECT_NAME: uw-issy
+build-validate-deploy	Set up Node	2026-08-25T01:22:42.7228198Z   CANONICAL_GPX: data/route/UnivWA-Issaquah.gpx
+build-validate-deploy	Set up Node	2026-08-25T01:22:42.7228598Z   ROUTE_GEOJSON: public/routes/UnivWA-Issaquah.geojson
+build-validate-deploy	Set up Node	2026-08-25T01:22:42.7229270Z   EVIDENCE_SNAPSHOT: data/connectors/evidence/workflow20-status-latest.json
+build-validate-deploy	Set up Node	2026-08-25T01:22:42.7229785Z   PUBLIC_DATA_DIR: public/data
+build-validate-deploy	Set up Node	2026-08-25T01:22:42.7230095Z ##[endgroup]
+build-validate-deploy	Set up Node	2026-08-25T01:22:42.8643391Z Found in cache @ /opt/hostedtoolcache/node/22.23.2/x64
+build-validate-deploy	Set up Node	2026-08-25T01:22:42.8647437Z (node:2134) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+build-validate-deploy	Set up Node	2026-08-25T01:22:42.8648383Z (Use `node --trace-deprecation ...` to show where the warning was created)
+build-validate-deploy	Set up Node	2026-08-25T01:22:42.8650731Z ##[group]Environment details
+build-validate-deploy	Set up Node	2026-08-25T01:22:43.2919885Z node: v22.23.2
+build-validate-deploy	Set up Node	2026-08-25T01:22:43.2920443Z npm: 10.9.8
+build-validate-deploy	Set up Node	2026-08-25T01:22:43.2920698Z yarn: 1.22.22
+build-validate-deploy	Set up Node	2026-08-25T01:22:43.2921445Z ##[endgroup]
+build-validate-deploy	Set up Node	2026-08-25T01:22:43.2983837Z [command]/opt/hostedtoolcache/node/22.23.2/x64/bin/npm config get cache
+build-validate-deploy	Set up Node	2026-08-25T01:22:43.4098447Z /home/runner/.npm
+build-validate-deploy	Set up Node	2026-08-25T01:22:43.6740258Z Cache hit for: node-cache-Linux-x64-npm-40cd14659a76acc26eb4ce498a07639104ba3535c91f6ec62e35f671af1dbb90
+build-validate-deploy	Set up Node	2026-08-25T01:22:43.6861446Z (node:2134) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+build-validate-deploy	Set up Node	2026-08-25T01:22:44.9765174Z Received 0 of 122437262 (0.0%), 0.0 MBs/sec
+build-validate-deploy	Set up Node	2026-08-25T01:22:45.9792001Z Received 114048654 of 122437262 (93.1%), 54.4 MBs/sec
+build-validate-deploy	Set up Node	2026-08-25T01:22:46.0797279Z Received 122437262 of 122437262 (100.0%), 55.5 MBs/sec
+build-validate-deploy	Set up Node	2026-08-25T01:22:46.0798828Z Cache Size: ~117 MB (122437262 B)
+build-validate-deploy	Set up Node	2026-08-25T01:22:46.0835074Z [command]/usr/bin/tar -xf /home/runner/work/_temp/ef80258e-4613-445d-b653-64a5e6f4899d/cache.tzst -P -C /home/runner/work/uw-issy/uw-issy --use-compress-program unzstd
+build-validate-deploy	Set up Node	2026-08-25T01:22:46.4548301Z Cache restored successfully
+build-validate-deploy	Set up Node	2026-08-25T01:22:46.4628907Z Cache restored from key: node-cache-Linux-x64-npm-40cd14659a76acc26eb4ce498a07639104ba3535c91f6ec62e35f671af1dbb90
+build-validate-deploy	Install from lock file	﻿2026-08-25T01:22:46.4816177Z ##[group]Run npm ci
+build-validate-deploy	Install from lock file	2026-08-25T01:22:46.4816502Z [36;1mnpm ci[0m
+build-validate-deploy	Install from lock file	2026-08-25T01:22:46.4864775Z shell: /usr/bin/bash -e {0}
+build-validate-deploy	Install from lock file	2026-08-25T01:22:46.4865078Z env:
+build-validate-deploy	Install from lock file	2026-08-25T01:22:46.4865356Z   CLOUDFLARE_ACCOUNT_ID: 84f228323707bc1d08ba30d9f76146be
+build-validate-deploy	Install from lock file	2026-08-25T01:22:46.4865715Z   PAGES_PROJECT_NAME: uw-issy
+build-validate-deploy	Install from lock file	2026-08-25T01:22:46.4866032Z   CANONICAL_GPX: data/route/UnivWA-Issaquah.gpx
+build-validate-deploy	Install from lock file	2026-08-25T01:22:46.4866403Z   ROUTE_GEOJSON: public/routes/UnivWA-Issaquah.geojson
+build-validate-deploy	Install from lock file	2026-08-25T01:22:46.4866867Z   EVIDENCE_SNAPSHOT: data/connectors/evidence/workflow20-status-latest.json
+build-validate-deploy	Install from lock file	2026-08-25T01:22:46.4867550Z   PUBLIC_DATA_DIR: public/data
+build-validate-deploy	Install from lock file	2026-08-25T01:22:46.4867814Z ##[endgroup]
+build-validate-deploy	Install from lock file	2026-08-25T01:22:50.5537846Z 
+build-validate-deploy	Install from lock file	2026-08-25T01:22:50.5546337Z added 253 packages, and audited 254 packages in 4s
+build-validate-deploy	Install from lock file	2026-08-25T01:22:50.5546915Z 
+build-validate-deploy	Install from lock file	2026-08-25T01:22:50.5547367Z 87 packages are looking for funding
+build-validate-deploy	Install from lock file	2026-08-25T01:22:50.5547991Z   run `npm fund` for details
+build-validate-deploy	Install from lock file	2026-08-25T01:22:50.5565749Z 
+build-validate-deploy	Install from lock file	2026-08-25T01:22:50.5566358Z 1 high severity vulnerability
+build-validate-deploy	Install from lock file	2026-08-25T01:22:50.5566841Z 
+build-validate-deploy	Install from lock file	2026-08-25T01:22:50.5567093Z To address all issues, run:
+build-validate-deploy	Install from lock file	2026-08-25T01:22:50.5567568Z   npm audit fix
+build-validate-deploy	Install from lock file	2026-08-25T01:22:50.5567812Z 
+build-validate-deploy	Install from lock file	2026-08-25T01:22:50.5568043Z Run `npm audit` for details.
+build-validate-deploy	Confirm canonical GPX exists	﻿2026-08-25T01:22:50.6186143Z ##[group]Run test -f "$CANONICAL_GPX"
+build-validate-deploy	Confirm canonical GPX exists	2026-08-25T01:22:50.6186534Z [36;1mtest -f "$CANONICAL_GPX"[0m
+build-validate-deploy	Confirm canonical GPX exists	2026-08-25T01:22:50.6225534Z shell: /usr/bin/bash -e {0}
+build-validate-deploy	Confirm canonical GPX exists	2026-08-25T01:22:50.6225813Z env:
+build-validate-deploy	Confirm canonical GPX exists	2026-08-25T01:22:50.6226083Z   CLOUDFLARE_ACCOUNT_ID: 84f228323707bc1d08ba30d9f76146be
+build-validate-deploy	Confirm canonical GPX exists	2026-08-25T01:22:50.6226429Z   PAGES_PROJECT_NAME: uw-issy
+build-validate-deploy	Confirm canonical GPX exists	2026-08-25T01:22:50.6226741Z   CANONICAL_GPX: data/route/UnivWA-Issaquah.gpx
+build-validate-deploy	Confirm canonical GPX exists	2026-08-25T01:22:50.6227118Z   ROUTE_GEOJSON: public/routes/UnivWA-Issaquah.geojson
+build-validate-deploy	Confirm canonical GPX exists	2026-08-25T01:22:50.6227575Z   EVIDENCE_SNAPSHOT: data/connectors/evidence/workflow20-status-latest.json
+build-validate-deploy	Confirm canonical GPX exists	2026-08-25T01:22:50.6228017Z   PUBLIC_DATA_DIR: public/data
+build-validate-deploy	Confirm canonical GPX exists	2026-08-25T01:22:50.6228270Z ##[endgroup]
+build-validate-deploy	Validate GPX	﻿2026-08-25T01:22:50.6314868Z ##[group]Run node scripts/validate-route-source.mjs "$CANONICAL_GPX"
+build-validate-deploy	Validate GPX	2026-08-25T01:22:50.6315416Z [36;1mnode scripts/validate-route-source.mjs "$CANONICAL_GPX"[0m
+build-validate-deploy	Validate GPX	2026-08-25T01:22:50.6350088Z shell: /usr/bin/bash -e {0}
+build-validate-deploy	Validate GPX	2026-08-25T01:22:50.6350373Z env:
+build-validate-deploy	Validate GPX	2026-08-25T01:22:50.6350648Z   CLOUDFLARE_ACCOUNT_ID: 84f228323707bc1d08ba30d9f76146be
+build-validate-deploy	Validate GPX	2026-08-25T01:22:50.6350997Z   PAGES_PROJECT_NAME: uw-issy
+build-validate-deploy	Validate GPX	2026-08-25T01:22:50.6351296Z   CANONICAL_GPX: data/route/UnivWA-Issaquah.gpx
+build-validate-deploy	Validate GPX	2026-08-25T01:22:50.6351657Z   ROUTE_GEOJSON: public/routes/UnivWA-Issaquah.geojson
+build-validate-deploy	Validate GPX	2026-08-25T01:22:50.6352107Z   EVIDENCE_SNAPSHOT: data/connectors/evidence/workflow20-status-latest.json
+build-validate-deploy	Validate GPX	2026-08-25T01:22:50.6352539Z   PUBLIC_DATA_DIR: public/data
+build-validate-deploy	Validate GPX	2026-08-25T01:22:50.6352790Z ##[endgroup]
+build-validate-deploy	Validate GPX	2026-08-25T01:22:50.6756098Z PASS: data/route/UnivWA-Issaquah.gpx — 1 track(s), 1 segment(s), 1470 point(s), bounds [47.55207, -122.30570] to [47.75889, -122.04414], plausible for UW-Issaquah
+build-validate-deploy	Convert GPX to GeoJSON	﻿2026-08-25T01:22:50.6819819Z ##[group]Run node scripts/convert-route-gpx-to-geojson.mjs "$CANONICAL_GPX" "$ROUTE_GEOJSON"
+build-validate-deploy	Convert GPX to GeoJSON	2026-08-25T01:22:50.6820594Z [36;1mnode scripts/convert-route-gpx-to-geojson.mjs "$CANONICAL_GPX" "$ROUTE_GEOJSON"[0m
+build-validate-deploy	Convert GPX to GeoJSON	2026-08-25T01:22:50.6858340Z shell: /usr/bin/bash -e {0}
+build-validate-deploy	Convert GPX to GeoJSON	2026-08-25T01:22:50.6858613Z env:
+build-validate-deploy	Convert GPX to GeoJSON	2026-08-25T01:22:50.6858880Z   CLOUDFLARE_ACCOUNT_ID: 84f228323707bc1d08ba30d9f76146be
+build-validate-deploy	Convert GPX to GeoJSON	2026-08-25T01:22:50.6859590Z   PAGES_PROJECT_NAME: uw-issy
+build-validate-deploy	Convert GPX to GeoJSON	2026-08-25T01:22:50.6859905Z   CANONICAL_GPX: data/route/UnivWA-Issaquah.gpx
+build-validate-deploy	Convert GPX to GeoJSON	2026-08-25T01:22:50.6860279Z   ROUTE_GEOJSON: public/routes/UnivWA-Issaquah.geojson
+build-validate-deploy	Convert GPX to GeoJSON	2026-08-25T01:22:50.6860760Z   EVIDENCE_SNAPSHOT: data/connectors/evidence/workflow20-status-latest.json
+build-validate-deploy	Convert GPX to GeoJSON	2026-08-25T01:22:50.6861212Z   PUBLIC_DATA_DIR: public/data
+build-validate-deploy	Convert GPX to GeoJSON	2026-08-25T01:22:50.6861465Z ##[endgroup]
+build-validate-deploy	Convert GPX to GeoJSON	2026-08-25T01:22:50.7274363Z PASS: wrote public/routes/UnivWA-Issaquah.geojson — LineString with 1470 point(s)
+build-validate-deploy	Validate route GeoJSON	﻿2026-08-25T01:22:50.7337792Z ##[group]Run node scripts/validate-route-geojson.mjs "$ROUTE_GEOJSON"
+build-validate-deploy	Validate route GeoJSON	2026-08-25T01:22:50.7338340Z [36;1mnode scripts/validate-route-geojson.mjs "$ROUTE_GEOJSON"[0m
+build-validate-deploy	Validate route GeoJSON	2026-08-25T01:22:50.7377612Z shell: /usr/bin/bash -e {0}
+build-validate-deploy	Validate route GeoJSON	2026-08-25T01:22:50.7377893Z env:
+build-validate-deploy	Validate route GeoJSON	2026-08-25T01:22:50.7378167Z   CLOUDFLARE_ACCOUNT_ID: 84f228323707bc1d08ba30d9f76146be
+build-validate-deploy	Validate route GeoJSON	2026-08-25T01:22:50.7378527Z   PAGES_PROJECT_NAME: uw-issy
+build-validate-deploy	Validate route GeoJSON	2026-08-25T01:22:50.7378831Z   CANONICAL_GPX: data/route/UnivWA-Issaquah.gpx
+build-validate-deploy	Validate route GeoJSON	2026-08-25T01:22:50.7379450Z   ROUTE_GEOJSON: public/routes/UnivWA-Issaquah.geojson
+build-validate-deploy	Validate route GeoJSON	2026-08-25T01:22:50.7379906Z   EVIDENCE_SNAPSHOT: data/connectors/evidence/workflow20-status-latest.json
+build-validate-deploy	Validate route GeoJSON	2026-08-25T01:22:50.7380328Z   PUBLIC_DATA_DIR: public/data
+build-validate-deploy	Validate route GeoJSON	2026-08-25T01:22:50.7380756Z ##[endgroup]
+build-validate-deploy	Validate route GeoJSON	2026-08-25T01:22:50.7770993Z PASS: public/routes/UnivWA-Issaquah.geojson — LineString with 1470 coordinate(s), bounds [47.55207, -122.30570] to [47.75889, -122.04414], plausible for UW-Issaquah
+build-validate-deploy	Build public monitoring package	﻿2026-08-25T01:22:50.7857856Z ##[group]Run node scripts/build-public-package-snapshot.mjs "$EVIDENCE_SNAPSHOT" "$PUBLIC_DATA_DIR"
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.7858642Z [36;1mnode scripts/build-public-package-snapshot.mjs "$EVIDENCE_SNAPSHOT" "$PUBLIC_DATA_DIR"[0m
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.7898856Z shell: /usr/bin/bash -e {0}
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.7899421Z env:
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.7899693Z   CLOUDFLARE_ACCOUNT_ID: 84f228323707bc1d08ba30d9f76146be
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.7900049Z   PAGES_PROJECT_NAME: uw-issy
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.7900343Z   CANONICAL_GPX: data/route/UnivWA-Issaquah.gpx
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.7900708Z   ROUTE_GEOJSON: public/routes/UnivWA-Issaquah.geojson
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.7901174Z   EVIDENCE_SNAPSHOT: data/connectors/evidence/workflow20-status-latest.json
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.7901610Z   PUBLIC_DATA_DIR: public/data
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.7901860Z ##[endgroup]
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8300701Z PASS: wrote 4 public package files to public/data (release 20_STATUS_PUBLISHER-20260824T201500Z-001) — 1 of 21 candidate event(s) eligible for public display, 20 excluded, 0 duplicate(s) merged
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8302647Z NOTE: 26 mapping gap(s) logged (buildspec 11.4):
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8305898Z   - 01_ROUTE_CONDITIONS:KC-03:trail_closure:east_lake_sammamish_trail_louis_thompson_to_inglewood_2026-06-01: King County source states a 600 ft ELST closure between Louis Thompson Rd NE and NE Inglewood Hill Rd; exact endpoint coordinates are not published in project data, so used the official source-linked closure map point instead of the overbroad canonical route-section LineString
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8310709Z   - 03_AIR_QUALITY:PSCAA-02:burn-ban:unknown: routeSegmentId "aqp4_issaquah" has no recognizable 01-10 ordinal section number — cannot derive fallback geometry from the canonical route line — geometry left null
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8313784Z   - 03_AIR_QUALITY:PSCAA-02:burn-ban:unknown: no "geometry" field, no usable event.location.{latitude,longitude}, and no resolvable route segment published by its lane — geometry left null
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8317066Z   - 03_AIR_QUALITY:WASMOKE-01:smoke-context:seattle:unhealthy: routeSegmentId "aqp3_bellevue" has no recognizable 01-10 ordinal section number — cannot derive fallback geometry from the canonical route line — geometry left null
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8324062Z   - 03_AIR_QUALITY:WASMOKE-01:smoke-context:seattle:unhealthy: no "geometry" field, no usable event.location.{latitude,longitude}, and no resolvable route segment published by its lane — geometry left null
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8325884Z   - 05_FLOOD_CONDITIONS:USGS-01:gauge-observation:advisory:monitoring: no "geometry" field published by its lane — used real event.location.{latitude,longitude} as a Point instead (source-native, not invented)
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8327653Z   - 05_FLOOD_CONDITIONS:USGS-02:gauge-observation:advisory:monitoring: no "geometry" field published by its lane — used real event.location.{latitude,longitude} as a Point instead (source-native, not invented)
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8329893Z   - 05_FLOOD_CONDITIONS:USGS-03:gauge-observation:advisory:monitoring: no "geometry" field published by its lane — used real event.location.{latitude,longitude} as a Point instead (source-native, not invented)
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8331668Z   - 05_FLOOD_CONDITIONS:NWPS-01:no-flooding:advisory: no "geometry" field published by its lane — used real event.location.{latitude,longitude} as a Point instead (source-native, not invented)
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8333310Z   - 05_FLOOD_CONDITIONS:NWPS-02:not-defined:advisory: no "geometry" field published by its lane — used real event.location.{latitude,longitude} as a Point instead (source-native, not invented)
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8335631Z   - 05_FLOOD_CONDITIONS:KC-ROAD-01:1d9b4036: no raw geometry/location and no two named endpoint terms in its location text — used the real canonical route line's midpoint within section "05_sammamish_river_trail_bothell_woodinville" (ordinal 5 of 10) as a representative Point instead (source-derived from the canonical route, not invented)
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8338596Z   - 06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:18238ab6: no raw geometry/location and no two named endpoint terms in its location text — used the real canonical route line's midpoint within section "03" (ordinal 3 of 10) as a representative Point instead (source-derived from the canonical route, not invented)
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8341912Z   - 06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:76442ed3: no raw geometry/location and no two named endpoint terms in its location text — used the real canonical route line's midpoint within section "05" (ordinal 5 of 10) as a representative Point instead (source-derived from the canonical route, not invented)
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8345231Z   - 06_TRAIL_INFRASTRUCTURE_STATUS:KC-03:4feb9e4d: no raw geometry/location and no two named endpoint terms in its location text — used the real canonical route line's midpoint within section "09" (ordinal 9 of 10) as a representative Point instead (source-derived from the canonical route, not invented)
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8347833Z   - 06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:b3d1e147: no raw geometry/location and no two named endpoint terms in its location text — used the real canonical route line's midpoint within section "09" (ordinal 9 of 10) as a representative Point instead (source-derived from the canonical route, not invented)
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8350522Z   - 06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02:0a230e2c: no raw geometry/location and no two named endpoint terms in its location text — used the real canonical route line's midpoint within section "09" (ordinal 9 of 10) as a representative Point instead (source-derived from the canonical route, not invented)
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8353144Z   - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:08/12/2026|Public Health – Seattle & King County|Health Advisory: Take Steps Now. Measles Stops with Us. (PDF)|: routeSegmentId "WP1_UW" has no recognizable 01-10 ordinal section number — cannot derive fallback geometry from the canonical route line — geometry left null
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8355522Z   - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:08/12/2026|Public Health – Seattle & King County|Health Advisory: Take Steps Now. Measles Stops with Us. (PDF)|: no "geometry" field, no usable event.location.{latitude,longitude}, and no resolvable route segment published by its lane — geometry left null
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8358096Z   - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:08/11/2026|Centers for Disease Control and Prevention|Health Advisory: Risk of Severe Arboviral Disease in Patients Receiving B Cell-Depleting or Modulating Medications|: no "geometry" field, no usable event.location.{latitude,longitude}, and no resolvable route segment published by its lane — geometry left null
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8360916Z   - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:07/23/2026|Yakima Health District|Health Advisory: Potential Exposure to Measles from Visitor at MultiCare Yakima Memorial Hospital|: no "geometry" field, no usable event.location.{latitude,longitude}, and no resolvable route segment published by its lane — geometry left null
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8363449Z   - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:07/14/2026|Centers for Disease Control and Prevention|Health Advisory: Domestically Acquired Cyclosporiasis Cases in Multiple U.S. States, 2026|: no "geometry" field, no usable event.location.{latitude,longitude}, and no resolvable route segment published by its lane — geometry left null
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8366085Z   - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:05/22/2026|Washington State Department of Health|Health Alert: Ebola Outbreak in DRC and Uganda; Public Health Monitoring of Returning Travelers|: routeSegmentId "WP1_UW" has no recognizable 01-10 ordinal section number — cannot derive fallback geometry from the canonical route line — geometry left null
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8368740Z   - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:05/22/2026|Washington State Department of Health|Health Alert: Ebola Outbreak in DRC and Uganda; Public Health Monitoring of Returning Travelers|: no "geometry" field, no usable event.location.{latitude,longitude}, and no resolvable route segment published by its lane — geometry left null
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8372248Z   - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:05/12/2026|Public Health – Seattle & King County|Three King County residents connected to international cruise ship in Public Health monitoring for Hantavirus|: routeSegmentId "WP1_UW" has no recognizable 01-10 ordinal section number — cannot derive fallback geometry from the canonical route line — geometry left null
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8377403Z   - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:05/12/2026|Public Health – Seattle & King County|Three King County residents connected to international cruise ship in Public Health monitoring for Hantavirus|: no "geometry" field, no usable event.location.{latitude,longitude}, and no resolvable route segment published by its lane — geometry left null
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8380996Z   - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:05/08/2026|Centers for Disease Control and Prevention|Health Advisory: 2026 Multi-country Hantavirus Cluster Linked to Cruise Ship|: no "geometry" field, no usable event.location.{latitude,longitude}, and no resolvable route segment published by its lane — geometry left null
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8382410Z NOTE: 20 event(s) excluded from public display:
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8382911Z   - 03_AIR_QUALITY:PSCAA-02:burn-ban:unknown (03_AIR_QUALITY): no_route_impact
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8383556Z   - 03_AIR_QUALITY:WASMOKE-01:smoke-context:seattle:unhealthy (03_AIR_QUALITY): no_route_impact
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8384350Z   - 05_FLOOD_CONDITIONS:USGS-01:gauge-observation:advisory:monitoring (05_FLOOD_CONDITIONS): flood_no_active_category
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8385226Z   - 05_FLOOD_CONDITIONS:USGS-02:gauge-observation:advisory:monitoring (05_FLOOD_CONDITIONS): flood_no_active_category
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8386092Z   - 05_FLOOD_CONDITIONS:USGS-03:gauge-observation:advisory:monitoring (05_FLOOD_CONDITIONS): flood_no_active_category
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8386864Z   - 05_FLOOD_CONDITIONS:NWPS-01:no-flooding:advisory (05_FLOOD_CONDITIONS): flood_below_major
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8387538Z   - 05_FLOOD_CONDITIONS:NWPS-02:not-defined:advisory (05_FLOOD_CONDITIONS): flood_below_major
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8388199Z   - 05_FLOOD_CONDITIONS:KC-ROAD-01:1d9b4036 (05_FLOOD_CONDITIONS): flood_no_active_category
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8388922Z   - 06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:18238ab6 (06_TRAIL_INFRASTRUCTURE_STATUS): public_alert_unqualified
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8389990Z   - 06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:76442ed3 (06_TRAIL_INFRASTRUCTURE_STATUS): public_alert_unqualified
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8390775Z   - 06_TRAIL_INFRASTRUCTURE_STATUS:KC-03:4feb9e4d (06_TRAIL_INFRASTRUCTURE_STATUS): public_alert_unqualified
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8391551Z   - 06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:b3d1e147 (06_TRAIL_INFRASTRUCTURE_STATUS): public_alert_unqualified
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8392350Z   - 06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02:0a230e2c (06_TRAIL_INFRASTRUCTURE_STATUS): public_alert_unqualified
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8393769Z   - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:08/12/2026|Public Health – Seattle & King County|Health Advisory: Take Steps Now. Measles Stops with Us. (PDF)| (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8395490Z   - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:08/11/2026|Centers for Disease Control and Prevention|Health Advisory: Risk of Severe Arboviral Disease in Patients Receiving B Cell-Depleting or Modulating Medications| (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8397261Z   - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:07/23/2026|Yakima Health District|Health Advisory: Potential Exposure to Measles from Visitor at MultiCare Yakima Memorial Hospital| (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8398930Z   - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:07/14/2026|Centers for Disease Control and Prevention|Health Advisory: Domestically Acquired Cyclosporiasis Cases in Multiple U.S. States, 2026| (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8401116Z   - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:05/22/2026|Washington State Department of Health|Health Alert: Ebola Outbreak in DRC and Uganda; Public Health Monitoring of Returning Travelers| (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8403174Z   - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:05/12/2026|Public Health – Seattle & King County|Three King County residents connected to international cruise ship in Public Health monitoring for Hantavirus| (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+build-validate-deploy	Build public monitoring package	2026-08-25T01:22:50.8404885Z   - 07_GOVERNMENT_SAFETY_ALERTS:DOH-02:05/08/2026|Centers for Disease Control and Prevention|Health Advisory: 2026 Multi-country Hantavirus Cluster Linked to Cruise Ship| (07_GOVERNMENT_SAFETY_ALERTS): health_alert_excluded
+build-validate-deploy	Validate public monitoring package (all four files, cross-file IDs, release IDs)	﻿2026-08-25T01:22:50.8432867Z ##[group]Run node scripts/validate-public-package.mjs "$PUBLIC_DATA_DIR"
+build-validate-deploy	Validate public monitoring package (all four files, cross-file IDs, release IDs)	2026-08-25T01:22:50.8433457Z [36;1mnode scripts/validate-public-package.mjs "$PUBLIC_DATA_DIR"[0m
+build-validate-deploy	Validate public monitoring package (all four files, cross-file IDs, release IDs)	2026-08-25T01:22:50.8470477Z shell: /usr/bin/bash -e {0}
+build-validate-deploy	Validate public monitoring package (all four files, cross-file IDs, release IDs)	2026-08-25T01:22:50.8470747Z env:
+build-validate-deploy	Validate public monitoring package (all four files, cross-file IDs, release IDs)	2026-08-25T01:22:50.8471017Z   CLOUDFLARE_ACCOUNT_ID: 84f228323707bc1d08ba30d9f76146be
+build-validate-deploy	Validate public monitoring package (all four files, cross-file IDs, release IDs)	2026-08-25T01:22:50.8471370Z   PAGES_PROJECT_NAME: uw-issy
+build-validate-deploy	Validate public monitoring package (all four files, cross-file IDs, release IDs)	2026-08-25T01:22:50.8471665Z   CANONICAL_GPX: data/route/UnivWA-Issaquah.gpx
+build-validate-deploy	Validate public monitoring package (all four files, cross-file IDs, release IDs)	2026-08-25T01:22:50.8472043Z   ROUTE_GEOJSON: public/routes/UnivWA-Issaquah.geojson
+build-validate-deploy	Validate public monitoring package (all four files, cross-file IDs, release IDs)	2026-08-25T01:22:50.8472517Z   EVIDENCE_SNAPSHOT: data/connectors/evidence/workflow20-status-latest.json
+build-validate-deploy	Validate public monitoring package (all four files, cross-file IDs, release IDs)	2026-08-25T01:22:50.8472930Z   PUBLIC_DATA_DIR: public/data
+build-validate-deploy	Validate public monitoring package (all four files, cross-file IDs, release IDs)	2026-08-25T01:22:50.8473174Z ##[endgroup]
+build-validate-deploy	Validate public monitoring package (all four files, cross-file IDs, release IDs)	2026-08-25T01:22:50.8809331Z PASS: public/data — all four public package files are valid, release 20_STATUS_PUBLISHER-20260824T201500Z-001
+build-validate-deploy	Run unit tests	﻿2026-08-25T01:22:50.8869634Z ##[group]Run npm test
+build-validate-deploy	Run unit tests	2026-08-25T01:22:50.8869956Z [36;1mnpm test[0m
+build-validate-deploy	Run unit tests	2026-08-25T01:22:50.8906237Z shell: /usr/bin/bash -e {0}
+build-validate-deploy	Run unit tests	2026-08-25T01:22:50.8906520Z env:
+build-validate-deploy	Run unit tests	2026-08-25T01:22:50.8906792Z   CLOUDFLARE_ACCOUNT_ID: 84f228323707bc1d08ba30d9f76146be
+build-validate-deploy	Run unit tests	2026-08-25T01:22:50.8907152Z   PAGES_PROJECT_NAME: uw-issy
+build-validate-deploy	Run unit tests	2026-08-25T01:22:50.8907448Z   CANONICAL_GPX: data/route/UnivWA-Issaquah.gpx
+build-validate-deploy	Run unit tests	2026-08-25T01:22:50.8907810Z   ROUTE_GEOJSON: public/routes/UnivWA-Issaquah.geojson
+build-validate-deploy	Run unit tests	2026-08-25T01:22:50.8908282Z   EVIDENCE_SNAPSHOT: data/connectors/evidence/workflow20-status-latest.json
+build-validate-deploy	Run unit tests	2026-08-25T01:22:50.8908703Z   PUBLIC_DATA_DIR: public/data
+build-validate-deploy	Run unit tests	2026-08-25T01:22:50.8908952Z ##[endgroup]
+build-validate-deploy	Run unit tests	2026-08-25T01:22:50.9900326Z 
+build-validate-deploy	Run unit tests	2026-08-25T01:22:50.9900790Z > uw-issy-route-status@0.1.0 test
+build-validate-deploy	Run unit tests	2026-08-25T01:22:50.9901309Z > vitest run
+build-validate-deploy	Run unit tests	2026-08-25T01:22:50.9901503Z 
+build-validate-deploy	Run unit tests	2026-08-25T01:22:51.3054254Z 
+build-validate-deploy	Run unit tests	2026-08-25T01:22:51.3058578Z [1m[30m[46m RUN [49m[39m[22m [36mv4.1.10 [39m[90m/home/runner/work/uw-issy/uw-issy[39m
+build-validate-deploy	Run unit tests	2026-08-25T01:22:51.3059692Z 
+build-validate-deploy	Run unit tests	2026-08-25T01:22:51.6151054Z FAIL: GPX file does not exist: /tmp/does-not-exist.gpx
+build-validate-deploy	Run unit tests	2026-08-25T01:22:51.6562735Z FAIL: Snapshot file does not exist: /tmp/build-pkg-test-x9yzP4/missing.json
+build-validate-deploy	Run unit tests	2026-08-25T01:22:51.6965270Z FAIL: GPX is not valid XML: mismatched closing tag </trk> (expected </name>)
+build-validate-deploy	Run unit tests	2026-08-25T01:22:51.7463665Z FAIL: GPX has no usable route: found 1 track(s) and 0 track point(s); need at least 1 track with at least 2 points
+build-validate-deploy	Run unit tests	2026-08-25T01:22:51.7927509Z FAIL: Track point 0 has invalid latitude: 97
+build-validate-deploy	Run unit tests	2026-08-25T01:22:51.8392292Z FAIL: Track point 0 has invalid longitude: -190.2
+build-validate-deploy	Run unit tests	2026-08-25T01:22:51.8931303Z FAIL: Route bounds are not plausible for the UW-Issaquah route: padded bbox [lat 9.8000..10.2100, lon 9.8000..10.2100] does not contain reference point "UW Seattle" (47.6553, -122.3035)
+build-validate-deploy	Run unit tests	2026-08-25T01:22:52.0291372Z FAIL: GPX is not valid XML: mismatched closing tag </trk> (expected </name>)
+build-validate-deploy	Run unit tests	2026-08-25T01:22:52.0554946Z  [32m✓[39m tests/public-package/build-public-package-snapshot.test.ts [2m([22m[2m9 tests[22m[2m)[22m[33m 439[2mms[22m[39m
+build-validate-deploy	Run unit tests	2026-08-25T01:22:52.0753430Z FAIL: GPX contains no usable track segment (need at least one segment with 2+ points)
+build-validate-deploy	Run unit tests	2026-08-25T01:22:52.2942813Z  [32m✓[39m tests/route/gpx-pipeline.test.ts [2m([22m[2m15 tests[22m[2m)[22m[33m 741[2mms[22m[39m
+build-validate-deploy	Run unit tests	2026-08-25T01:22:52.3950524Z FAIL: Missing required file: /tmp/pkg-test-4IzcsQ/release-manifest.json
+build-validate-deploy	Run unit tests	2026-08-25T01:22:52.4390715Z FAIL: dashboard-data.json is missing required field "routeId"
+build-validate-deploy	Run unit tests	2026-08-25T01:22:52.4784826Z FAIL: Release IDs do not match across the four files: TEST-RELEASE-001, DIFFERENT-RELEASE
+build-validate-deploy	Run unit tests	2026-08-25T01:22:52.5211771Z FAIL: dashboard-data.json references event "evt-does-not-exist" that is missing from route-events.geojson
+build-validate-deploy	Run unit tests	2026-08-25T01:22:52.5213821Z  [32m✓[39m tests/ui/rider-impact-grid.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+build-validate-deploy	Run unit tests	2026-08-25T01:22:52.5661188Z FAIL: route-events.geojson feature "evt-1" has an invalid geometry type
+build-validate-deploy	Run unit tests	2026-08-25T01:22:52.7030965Z  [32m✓[39m tests/ui/dashboard-layout.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+build-validate-deploy	Run unit tests	2026-08-25T01:22:52.7812746Z FAIL: route-events.geojson is not a valid GeoJSON FeatureCollection
+build-validate-deploy	Run unit tests	2026-08-25T01:22:52.8295826Z FAIL: route-events.geojson is missing its own release/generated marker
+build-validate-deploy	Run unit tests	2026-08-25T01:22:52.8336786Z  [32m✓[39m tests/public-package/validate-public-package.test.ts [2m([22m[2m13 tests[22m[2m)[22m[33m 595[2mms[22m[39m
+build-validate-deploy	Run unit tests	2026-08-25T01:22:52.8980385Z  [32m✓[39m tests/route-status/attach-john-notes.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+build-validate-deploy	Run unit tests	2026-08-25T01:22:53.0114013Z  [32m✓[39m tests/route-status/rider-state.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+build-validate-deploy	Run unit tests	2026-08-25T01:22:53.1041751Z  [32m✓[39m tests/route-status/presentation-eligibility.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+build-validate-deploy	Run unit tests	2026-08-25T01:22:53.2097094Z  [32m✓[39m tests/route-status/event-marker.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+build-validate-deploy	Run unit tests	2026-08-25T01:22:53.2805832Z  [32m✓[39m tests/components/closures-and-detours.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+build-validate-deploy	Run unit tests	2026-08-25T01:22:53.8231492Z  [32m✓[39m tests/public-package/noise-reduction-policy.test.ts [2m([22m[2m46 tests[22m[2m)[22m[33m 2196[2mms[22m[39m
+build-validate-deploy	Run unit tests	2026-08-25T01:22:53.8253284Z 
+build-validate-deploy	Run unit tests	2026-08-25T01:22:53.8259767Z [2m Test Files [22m [1m[32m11 passed[39m[22m[90m (11)[39m
+build-validate-deploy	Run unit tests	2026-08-25T01:22:53.8261109Z [2m      Tests [22m [1m[32m142 passed[39m[22m[90m (142)[39m
+build-validate-deploy	Run unit tests	2026-08-25T01:22:53.8261916Z [2m   Start at [22m 01:22:51
+build-validate-deploy	Run unit tests	2026-08-25T01:22:53.8263214Z [2m   Duration [22m 2.50s[2m (transform 261ms, setup 0ms, import 447ms, tests 4.03s, environment 2ms)[22m
+build-validate-deploy	Run unit tests	2026-08-25T01:22:53.8265111Z 
+build-validate-deploy	Type check	﻿2026-08-25T01:22:53.8548925Z ##[group]Run npm run typecheck
+build-validate-deploy	Type check	2026-08-25T01:22:53.8549578Z [36;1mnpm run typecheck[0m
+build-validate-deploy	Type check	2026-08-25T01:22:53.8586362Z shell: /usr/bin/bash -e {0}
+build-validate-deploy	Type check	2026-08-25T01:22:53.8586640Z env:
+build-validate-deploy	Type check	2026-08-25T01:22:53.8586907Z   CLOUDFLARE_ACCOUNT_ID: 84f228323707bc1d08ba30d9f76146be
+build-validate-deploy	Type check	2026-08-25T01:22:53.8587260Z   PAGES_PROJECT_NAME: uw-issy
+build-validate-deploy	Type check	2026-08-25T01:22:53.8587555Z   CANONICAL_GPX: data/route/UnivWA-Issaquah.gpx
+build-validate-deploy	Type check	2026-08-25T01:22:53.8587939Z   ROUTE_GEOJSON: public/routes/UnivWA-Issaquah.geojson
+build-validate-deploy	Type check	2026-08-25T01:22:53.8588395Z   EVIDENCE_SNAPSHOT: data/connectors/evidence/workflow20-status-latest.json
+build-validate-deploy	Type check	2026-08-25T01:22:53.8588825Z   PUBLIC_DATA_DIR: public/data
+build-validate-deploy	Type check	2026-08-25T01:22:53.8589572Z ##[endgroup]
+build-validate-deploy	Type check	2026-08-25T01:22:53.9574064Z 
+build-validate-deploy	Type check	2026-08-25T01:22:53.9574684Z > uw-issy-route-status@0.1.0 typecheck
+build-validate-deploy	Type check	2026-08-25T01:22:53.9575147Z > tsc --noEmit -p tsconfig.json
+build-validate-deploy	Type check	2026-08-25T01:22:53.9575352Z 
+build-validate-deploy	Build app	﻿2026-08-25T01:22:55.9322992Z ##[group]Run npm run build
+build-validate-deploy	Build app	2026-08-25T01:22:55.9323316Z [36;1mnpm run build[0m
+build-validate-deploy	Build app	2026-08-25T01:22:55.9360035Z shell: /usr/bin/bash -e {0}
+build-validate-deploy	Build app	2026-08-25T01:22:55.9360352Z env:
+build-validate-deploy	Build app	2026-08-25T01:22:55.9360668Z   CLOUDFLARE_ACCOUNT_ID: 84f228323707bc1d08ba30d9f76146be
+build-validate-deploy	Build app	2026-08-25T01:22:55.9361027Z   PAGES_PROJECT_NAME: uw-issy
+build-validate-deploy	Build app	2026-08-25T01:22:55.9361329Z   CANONICAL_GPX: data/route/UnivWA-Issaquah.gpx
+build-validate-deploy	Build app	2026-08-25T01:22:55.9361714Z   ROUTE_GEOJSON: public/routes/UnivWA-Issaquah.geojson
+build-validate-deploy	Build app	2026-08-25T01:22:55.9362356Z   EVIDENCE_SNAPSHOT: data/connectors/evidence/workflow20-status-latest.json
+build-validate-deploy	Build app	2026-08-25T01:22:55.9362773Z   PUBLIC_DATA_DIR: public/data
+build-validate-deploy	Build app	2026-08-25T01:22:55.9363031Z ##[endgroup]
+build-validate-deploy	Build app	2026-08-25T01:22:56.0325694Z 
+build-validate-deploy	Build app	2026-08-25T01:22:56.0327165Z > uw-issy-route-status@0.1.0 build
+build-validate-deploy	Build app	2026-08-25T01:22:56.0328134Z > astro build
+build-validate-deploy	Build app	2026-08-25T01:22:56.0328362Z 
+build-validate-deploy	Build app	2026-08-25T01:22:57.2827030Z [2m01:22:57[22m [34m[types][39m Generated [2m156ms[22m
+build-validate-deploy	Build app	2026-08-25T01:22:57.2828663Z [2m01:22:57[22m [34m[build][39m output: [34m"static"[39m
+build-validate-deploy	Build app	2026-08-25T01:22:57.2830179Z [2m01:22:57[22m [34m[build][39m mode: [34m"static"[39m
+build-validate-deploy	Build app	2026-08-25T01:22:57.2831721Z [2m01:22:57[22m [34m[build][39m directory: [34m/home/runner/work/uw-issy/uw-issy/dist/[39m
+build-validate-deploy	Build app	2026-08-25T01:22:57.2833080Z [2m01:22:57[22m [34m[build][39m Collecting build info...
+build-validate-deploy	Build app	2026-08-25T01:22:57.2834292Z [2m01:22:57[22m [34m[build][39m [32m✓ Completed in 195ms.[39m
+build-validate-deploy	Build app	2026-08-25T01:22:57.2845227Z [2m01:22:57[22m [34m[build][39m Building static entrypoints...
+build-validate-deploy	Build app	2026-08-25T01:22:57.4594623Z [2m01:22:57[22m [34m[vite][39m [32m✓ built in 136ms[39m
+build-validate-deploy	Build app	2026-08-25T01:22:57.7057682Z [2m01:22:57[22m [34m[vite][39m [32m✓ built in 244ms[39m
+build-validate-deploy	Build app	2026-08-25T01:22:57.7110572Z [2m01:22:57[22m [34m[build][39m Rearranging server assets...
+build-validate-deploy	Build app	2026-08-25T01:22:57.7542458Z 
+build-validate-deploy	Build app	2026-08-25T01:22:57.7543474Z [42m[30m generating static routes [39m[49m
+build-validate-deploy	Build app	2026-08-25T01:22:57.7735599Z [2m01:22:57[22m   [34m├─[39m [2m/index.html[22m [2m(+19ms)[22m 
+build-validate-deploy	Build app	2026-08-25T01:22:57.7736705Z [2m01:22:57[22m [32m✓ Completed in 62ms.
+build-validate-deploy	Build app	2026-08-25T01:22:57.7737455Z [39m
+build-validate-deploy	Build app	2026-08-25T01:22:57.7751481Z [2m01:22:57[22m [34m[build][39m [32m✓ Completed in 491ms.[39m
+build-validate-deploy	Build app	2026-08-25T01:22:57.7755026Z [2m01:22:57[22m [34m[build][39m 1 page(s) built in [1m687ms[22m
+build-validate-deploy	Build app	2026-08-25T01:22:57.7755780Z [2m01:22:57[22m [34m[build][39m [1mComplete![22m
+build-validate-deploy	Confirm required built assets exist	﻿2026-08-25T01:22:57.8023728Z ##[group]Run set -e
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8024044Z [36;1mset -e[0m
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8024297Z [36;1mtest -f dist/index.html[0m
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8024640Z [36;1mtest -f "dist/routes/UnivWA-Issaquah.geojson"[0m
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8025011Z [36;1mtest -f "dist/data/dashboard-data.json"[0m
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8025365Z [36;1mtest -f "dist/data/route-events.geojson"[0m
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8025706Z [36;1mtest -f "dist/data/system-health.json"[0m
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8026046Z [36;1mtest -f "dist/data/release-manifest.json"[0m
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8026507Z [36;1mtest -n "$(find dist/_astro -maxdepth 1 -iname 'RouteMap.*.js' -print -quit)"[0m
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8027066Z [36;1mtest -n "$(find dist/_astro -maxdepth 1 -iname 'RouteMap.*.css' -print -quit)"[0m
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8027539Z [36;1mecho "PASS: all required built assets present"[0m
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8063777Z shell: /usr/bin/bash -e {0}
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8064039Z env:
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8064301Z   CLOUDFLARE_ACCOUNT_ID: 84f228323707bc1d08ba30d9f76146be
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8064686Z   PAGES_PROJECT_NAME: uw-issy
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8064978Z   CANONICAL_GPX: data/route/UnivWA-Issaquah.gpx
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8065337Z   ROUTE_GEOJSON: public/routes/UnivWA-Issaquah.geojson
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8065785Z   EVIDENCE_SNAPSHOT: data/connectors/evidence/workflow20-status-latest.json
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8066196Z   PUBLIC_DATA_DIR: public/data
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8066445Z ##[endgroup]
+build-validate-deploy	Confirm required built assets exist	2026-08-25T01:22:57.8153258Z PASS: all required built assets present
+build-validate-deploy	Scan built output for secret-like content	﻿2026-08-25T01:22:57.8180031Z ##[group]Run node scripts/check-public-output-for-secrets.mjs dist
+build-validate-deploy	Scan built output for secret-like content	2026-08-25T01:22:57.8180556Z [36;1mnode scripts/check-public-output-for-secrets.mjs dist[0m
+build-validate-deploy	Scan built output for secret-like content	2026-08-25T01:22:57.8212873Z shell: /usr/bin/bash -e {0}
+build-validate-deploy	Scan built output for secret-like content	2026-08-25T01:22:57.8213146Z env:
+build-validate-deploy	Scan built output for secret-like content	2026-08-25T01:22:57.8213414Z   CLOUDFLARE_ACCOUNT_ID: 84f228323707bc1d08ba30d9f76146be
+build-validate-deploy	Scan built output for secret-like content	2026-08-25T01:22:57.8213764Z   PAGES_PROJECT_NAME: uw-issy
+build-validate-deploy	Scan built output for secret-like content	2026-08-25T01:22:57.8214061Z   CANONICAL_GPX: data/route/UnivWA-Issaquah.gpx
+build-validate-deploy	Scan built output for secret-like content	2026-08-25T01:22:57.8214435Z   ROUTE_GEOJSON: public/routes/UnivWA-Issaquah.geojson
+build-validate-deploy	Scan built output for secret-like content	2026-08-25T01:22:57.8215050Z   EVIDENCE_SNAPSHOT: data/connectors/evidence/workflow20-status-latest.json
+build-validate-deploy	Scan built output for secret-like content	2026-08-25T01:22:57.8215468Z   PUBLIC_DATA_DIR: public/data
+build-validate-deploy	Scan built output for secret-like content	2026-08-25T01:22:57.8215715Z ##[endgroup]
+build-validate-deploy	Scan built output for secret-like content	2026-08-25T01:22:57.8601178Z PASS: dist — scanned 13 file(s), no secret-like content found
+build-validate-deploy	Validate approved public copy allowlist	﻿2026-08-25T01:22:57.8688466Z ##[group]Run node scripts/validate-public-copy-allowlist.mjs dist
+build-validate-deploy	Validate approved public copy allowlist	2026-08-25T01:22:57.8689742Z [36;1mnode scripts/validate-public-copy-allowlist.mjs dist[0m
+build-validate-deploy	Validate approved public copy allowlist	2026-08-25T01:22:57.8743313Z shell: /usr/bin/bash -e {0}
+build-validate-deploy	Validate approved public copy allowlist	2026-08-25T01:22:57.8743805Z env:
+build-validate-deploy	Validate approved public copy allowlist	2026-08-25T01:22:57.8744293Z   CLOUDFLARE_ACCOUNT_ID: 84f228323707bc1d08ba30d9f76146be
+build-validate-deploy	Validate approved public copy allowlist	2026-08-25T01:22:57.8744942Z   PAGES_PROJECT_NAME: uw-issy
+build-validate-deploy	Validate approved public copy allowlist	2026-08-25T01:22:57.8745499Z   CANONICAL_GPX: data/route/UnivWA-Issaquah.gpx
+build-validate-deploy	Validate approved public copy allowlist	2026-08-25T01:22:57.8746183Z   ROUTE_GEOJSON: public/routes/UnivWA-Issaquah.geojson
+build-validate-deploy	Validate approved public copy allowlist	2026-08-25T01:22:57.8747022Z   EVIDENCE_SNAPSHOT: data/connectors/evidence/workflow20-status-latest.json
+build-validate-deploy	Validate approved public copy allowlist	2026-08-25T01:22:57.8747922Z   PUBLIC_DATA_DIR: public/data
+build-validate-deploy	Validate approved public copy allowlist	2026-08-25T01:22:57.8748412Z ##[endgroup]
+build-validate-deploy	Validate approved public copy allowlist	2026-08-25T01:22:57.9130900Z FAIL: public copy allowlist rejected 2 string(s); COPY-048 rendered=false; raw payload summaries=0
+build-validate-deploy	Validate approved public copy allowlist	2026-08-25T01:22:57.9170914Z ##[error]Process completed with exit code 1.
+build-validate-deploy	Record build and production proof in project log	﻿2026-08-25T01:22:57.9251338Z ##[group]Run set -e
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9251647Z [36;1mset -e[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9251850Z [36;1m{[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9252050Z [36;1m  echo ""[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9252396Z [36;1m  echo "## $(date -u '+%Y-%m-%d %H:%M:%S UTC') — GitHub Actions run 32797295585"[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9252886Z [36;1m  echo "- Commit: d4d6b5619a9a9c1dc2a999db8248648df8b5b1ea"[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9253277Z [36;1m  echo "- Triggered by: jkbrooks1"[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9253591Z [36;1m  echo "- Workflow result: failure"[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9253893Z [36;1m  echo "- Deploy URL: not reached"[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9254326Z [36;1m  echo "- Run: https://github.com/jkbrooks1/uw-issy/actions/runs/32797295585"[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9254763Z [36;1m} >> 00_BUILD_LOG.md[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9255054Z [36;1mgit config user.name "github-actions[bot]"[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9255495Z [36;1mgit config user.email "github-actions[bot]@users.noreply.github.com"[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9255915Z [36;1mgit add 00_BUILD_LOG.md[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9256229Z [36;1mgit diff --cached --quiet && exit 0[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9256726Z [36;1mgit commit -m "Record CI build/production proof for d4d6b5619a9a9c1dc2a999db8248648df8b5b1ea"[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9257328Z [36;1m# A rerun executes against its original triggering commit, which can[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9257819Z [36;1m# be behind main by the time this step runs (another push, another[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9258294Z [36;1m# run's own log-append). Retry with a rebase onto the current tip[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9258809Z [36;1m# rather than letting a transient push race fail an otherwise[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9259460Z [36;1m# fully green deploy+verify run.[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9259770Z [36;1mfor attempt in 1 2 3 4 5; do[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9260047Z [36;1m  if git push; then[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9260300Z [36;1m    exit 0[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9260513Z [36;1m  fi[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9260876Z [36;1m  echo "push rejected (attempt $attempt) — fetching and rebasing onto origin/main"[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9261343Z [36;1m  git fetch origin main[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9262047Z [36;1m  git rebase origin/main || { echo "::warning::Rebase conflict recording build log; leaving proof unpushed for manual reconciliation"; git rebase --abort; exit 0; }[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9262741Z [36;1mdone[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9263220Z [36;1mecho "::warning::Could not push build-log proof after retries; deploy and verification results above are unaffected"[0m
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9299558Z shell: /usr/bin/bash -e {0}
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9299828Z env:
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9300096Z   CLOUDFLARE_ACCOUNT_ID: 84f228323707bc1d08ba30d9f76146be
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9300457Z   PAGES_PROJECT_NAME: uw-issy
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9300920Z   CANONICAL_GPX: data/route/UnivWA-Issaquah.gpx
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9301283Z   ROUTE_GEOJSON: public/routes/UnivWA-Issaquah.geojson
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9301740Z   EVIDENCE_SNAPSHOT: data/connectors/evidence/workflow20-status-latest.json
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9302170Z   PUBLIC_DATA_DIR: public/data
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:57.9302417Z ##[endgroup]
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:58.3751851Z [main 8a1f61e] Record CI build/production proof for d4d6b5619a9a9c1dc2a999db8248648df8b5b1ea
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:58.3753627Z  1 file changed, 7 insertions(+)
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:59.7013227Z To https://github.com/jkbrooks1/uw-issy
+build-validate-deploy	Record build and production proof in project log	2026-08-25T01:22:59.7013862Z    d4d6b56..8a1f61e  main -> main
+build-validate-deploy	Post Check out repo	﻿2026-08-25T01:22:59.7171431Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+build-validate-deploy	Post Check out repo	2026-08-25T01:22:59.7172775Z Post job cleanup.
+build-validate-deploy	Post Check out repo	2026-08-25T01:22:59.8011436Z [command]/usr/bin/git version
+build-validate-deploy	Post Check out repo	2026-08-25T01:22:59.8052443Z git version 2.55.0
+build-validate-deploy	Post Check out repo	2026-08-25T01:22:59.8099451Z Temporarily overriding HOME='/home/runner/work/_temp/2bdd741c-18ec-4c7b-b9b2-1ceb4ecf777b' before making global git config changes
+build-validate-deploy	Post Check out repo	2026-08-25T01:22:59.8101494Z Adding repository directory to the temporary git global config as a safe directory
+build-validate-deploy	Post Check out repo	2026-08-25T01:22:59.8105321Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/uw-issy/uw-issy
+build-validate-deploy	Post Check out repo	2026-08-25T01:22:59.8144152Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build-validate-deploy	Post Check out repo	2026-08-25T01:22:59.8180707Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build-validate-deploy	Post Check out repo	2026-08-25T01:22:59.8472195Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build-validate-deploy	Post Check out repo	2026-08-25T01:22:59.8503553Z http.https://github.com/.extraheader
+build-validate-deploy	Post Check out repo	2026-08-25T01:22:59.8521334Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+build-validate-deploy	Post Check out repo	2026-08-25T01:22:59.8558504Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build-validate-deploy	Post Check out repo	2026-08-25T01:22:59.8827965Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build-validate-deploy	Post Check out repo	2026-08-25T01:22:59.8873461Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build-validate-deploy	Complete job	﻿2026-08-25T01:22:59.9275752Z Cleaning up orphan processes
+build-validate-deploy	Complete job	2026-08-25T01:22:59.9602661Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

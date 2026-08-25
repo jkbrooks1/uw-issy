@@ -3197,3 +3197,16 @@ Each new file was generated from the verified live post-rename export, and each 
 - CI build-log proof commit: `2eec9a2`.
 - Proof ZIP: `/Users/jkbrookspersonal/Downloads/20260824-UWISSY_PUBLIC_HARVEY_GRID_FOUR_CATEGORY_MODEL_PROOF.zip`.
 - Proof ZIP SHA-256: `24607254ee157f31678abc370b2b91f23f26f1c6695ce4ede318eb29155279de`.
+
+## 2026-08-24 18:29 PDT — John Note placement rule deployed and verified live
+
+- Root cause of missing screenshot note: earlier John Notes runs failed before deployment on public-copy validation, so the custom domain did not yet have the owner note.
+- Deployed commit `4a8906f306ec4f1ea73ebaad2769ddb2ab84e30e` through GitHub Actions run `32797613528`; Cloudflare Pages URL `https://49b172e6.uw-issy.pages.dev`.
+- Matching John Note now renders inside the matched event detail in `Current route issues`.
+- Zero-route-issue fallback now carries unmatched owner notes separately and renders them as standalone editorial notes inside `Current route issues`.
+- Standalone John Notes do not create route events, increment active issue counts, change Harvey-ball state, or create map markers.
+- Matched geolocated route issue map popups receive the same `John Note` through a title-to-note lookup.
+- Live custom-domain verification passed: `John Note` and owner text appear inside `Current route issues`; route-events feature count remains 1; no note-only route-event feature exists; Harvey colors remain unchanged.
+- Tests and validation passed locally and in CI: local unit tests 12 files / 149 tests, typecheck, build, public package validation, copy allowlist validation, and secret scan.
+- Known custom-domain generic verifier caveat remains the pre-existing Cloudflare email-obfuscation rewrite of the mailto link.
+- Proof folder: `00_AS-BUILT/20260824-UWISSY_JOHN_NOTE_DEPLOYMENT_FIX/`.

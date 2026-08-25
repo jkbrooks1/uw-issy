@@ -1,0 +1,6 @@
+PASS: map island receives johnNotesByTitle prop
+PASS: route-events feature count remains one
+PASS: no note-only route-event feature exists
+PASS: matched geolocated issue remains geolocated
+route-events feature count: 1
+note-only feature count: 0
