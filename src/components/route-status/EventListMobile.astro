@@ -2,7 +2,6 @@
 import type { DashboardEventWithUnknownLane } from "../../lib/route-status/types";
 import { formatPacificTime } from "../../lib/route-status/format-time";
 import { markerPresentationForEvent } from "../../lib/route-status/event-marker";
-import EventDetail from "./EventDetail.astro";
 
 type Props = {
   events: DashboardEventWithUnknownLane[];
@@ -34,10 +33,12 @@ const { events } = Astro.props;
             Segment passability <strong>{event.riderCanPass === "no" ? "No" : "Unknown"}</strong>
           </p>
         )}
-        <details open={Boolean((event as any).johnNote)}>
-          <summary class="event-card__link">View details</summary>
-          <EventDetail event={event} />
-        </details>
+        {(event as any).johnNote && (
+          <div class="john-note-block">
+            <strong>John Note</strong>
+            <div>{(event as any).johnNote}</div>
+          </div>
+        )}
       </article>
     ))
   }

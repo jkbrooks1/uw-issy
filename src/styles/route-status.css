@@ -645,6 +645,36 @@ button:focus-visible,
   border-bottom: none;
 }
 
+.john-note-row td,
+.john-note-block {
+  font-size: 13px;
+  color: var(--text-main);
+}
+
+.john-note-row strong,
+.john-note-block strong,
+.john-note-list dt {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.john-note-row td {
+  padding-top: 8px;
+}
+
+.john-note-block {
+  margin-top: 10px;
+}
+
+.john-note-list {
+  margin: 12px 0 0 0;
+}
+
+.john-note-list dd {
+  margin: 0;
+}
+
 .tier-badge {
   display: inline-flex;
   align-items: center;

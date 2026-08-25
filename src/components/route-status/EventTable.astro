@@ -2,7 +2,6 @@
 import type { DashboardEventWithUnknownLane } from "../../lib/route-status/types";
 import { formatPacificTime } from "../../lib/route-status/format-time";
 import { markerPresentationForEvent } from "../../lib/route-status/event-marker";
-import EventDetail from "./EventDetail.astro";
 
 type Props = {
   events: DashboardEventWithUnknownLane[];
@@ -32,26 +31,31 @@ function passabilityLabel(event: DashboardEventWithUnknownLane): string | null {
     <tbody>
       {
         events.map((event) => (
-          <tr>
-            <td>
-              <details open={Boolean((event as any).johnNote)}>
-                <summary>{event.title}</summary>
-                <EventDetail event={event} />
-              </details>
-            </td>
-            <td>{event.locationLabel ?? event.routeSegmentLabel ?? event.routeSegmentId ?? "Location not stated by source"}</td>
-            <td>{formatPacificTime(event.reportedAt) ?? "Report time not stated by source"}</td>
-            <td>
-              <span class={`tier-badge tier-badge--${event.displayTier}`}>
-                <span
-                  class={`event-marker-inline ${markerPresentationForEvent(event).cssClass}`}
-                  aria-hidden="true"
-                ></span>
-                {event.currentStatus === "active" ? "Segment closed" : event.displayTier === "normal" ? "Normal" : event.displayTier === "watch" ? "Caution" : event.displayTier === "alert" ? "Major issue" : "Unknown"}
-              </span>
-            </td>
-            <td>{event.riderCanPass ? passabilityLabel(event) : ""}</td>
-          </tr>
+          <>
+            <tr>
+              <td>{event.title}</td>
+              <td>{event.locationLabel ?? event.routeSegmentLabel ?? event.routeSegmentId ?? "Location not stated by source"}</td>
+              <td>{formatPacificTime(event.reportedAt) ?? "Report time not stated by source"}</td>
+              <td>
+                <span class={`tier-badge tier-badge--${event.displayTier}`}>
+                  <span
+                    class={`event-marker-inline ${markerPresentationForEvent(event).cssClass}`}
+                    aria-hidden="true"
+                  ></span>
+                  {event.currentStatus === "active" ? "Segment closed" : event.displayTier === "normal" ? "Normal" : event.displayTier === "watch" ? "Caution" : event.displayTier === "alert" ? "Major issue" : "Unknown"}
+                </span>
+              </td>
+              <td>{event.riderCanPass ? passabilityLabel(event) : ""}</td>
+            </tr>
+            {(event as any).johnNote && (
+              <tr class="john-note-row">
+                <td colspan="5">
+                  <strong>John Note</strong>
+                  <div>{(event as any).johnNote}</div>
+                </td>
+              </tr>
+            )}
+          </>
         ))
       }
     </tbody>

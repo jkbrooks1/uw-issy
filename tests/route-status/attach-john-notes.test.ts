@@ -209,6 +209,9 @@ describe("attach-john-notes", () => {
 
     const note = (result[0] as any).johnNote;
     expect(note).toBeDefined();
+    expect(note).toBe(
+      "It's possible to pop up onto East Lake Sammamish Parkway to ride around. Less than 1/4 mile. Be conscious that if you're going northbound, you'll need to cross oncoming traffic twice",
+    );
     expect(note).toContain("cross oncoming traffic");
     expect(note).not.toContain("crooss");
   });

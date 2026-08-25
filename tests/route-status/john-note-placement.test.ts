@@ -28,9 +28,23 @@ describe("John Note placement", () => {
     expect(CURRENT_ROUTE_ALERTS_ASTRO).toContain("<EventTable events={events} />");
     expect(CURRENT_ROUTE_ALERTS_ASTRO).toContain("<EventListMobile events={events} />");
     expect(INDEX_ASTRO).toContain("const events = johnNotesPresentation.events;");
-    expect(EVENT_TABLE_ASTRO).toContain('open={Boolean((event as any).johnNote)}');
-    expect(EVENT_LIST_MOBILE_ASTRO).toContain('open={Boolean((event as any).johnNote)}');
+    expect(EVENT_TABLE_ASTRO).toContain('class="john-note-row"');
+    expect(EVENT_TABLE_ASTRO).toContain('colspan="5"');
+    expect(EVENT_TABLE_ASTRO).toContain("<strong>John Note</strong>");
+    expect(EVENT_LIST_MOBILE_ASTRO).toContain('class="john-note-block"');
+    expect(EVENT_LIST_MOBILE_ASTRO).toContain("<strong>John Note</strong>");
     expect(CLOSURES_AND_DETOURS_ASTRO).not.toContain("<dt>John Note</dt>");
+  });
+
+  it("1b. Current route issues keeps the compact five-column row and does not dump EventDetail", () => {
+    expect(EVENT_TABLE_ASTRO).toContain("<th scope=\"col\">Event</th>");
+    expect(EVENT_TABLE_ASTRO).toContain("<th scope=\"col\">Affected section</th>");
+    expect(EVENT_TABLE_ASTRO).toContain("<th scope=\"col\">Reported</th>");
+    expect(EVENT_TABLE_ASTRO).toContain("<th scope=\"col\">Status</th>");
+    expect(EVENT_TABLE_ASTRO).toContain("<th scope=\"col\">Segment passability</th>");
+    expect(EVENT_TABLE_ASTRO).not.toContain("EventDetail");
+    expect(EVENT_TABLE_ASTRO).not.toContain("<details");
+    expect(EVENT_TABLE_ASTRO).not.toContain("<summary");
   });
 
   it("2. zero reportable route issues still render standalone John Note in Current route issues", () => {
