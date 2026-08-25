@@ -1,22 +1,20 @@
 ---
 import type { RouteWideSummary } from "../../lib/route-status/normalize-dashboard-data";
 import { deriveRiderImpactGrid } from "../../lib/route-status/rider-impact-grid";
+import type { DashboardEventWithUnknownLane } from "../../lib/route-status/types";
 
 type Props = {
   summary: RouteWideSummary;
+  events: DashboardEventWithUnknownLane[];
 };
 
-const { summary } = Astro.props;
-const gridStatus = deriveRiderImpactGrid(summary.laneSummaries);
+const { summary, events } = Astro.props;
+const gridStatus = deriveRiderImpactGrid(summary.laneSummaries, events);
 
-// Arrange 6 items into 2-column grid:
-// Row 1: 01_ROUTE_CONDITIONS (0), 04_WILDFIRE (3)
-// Row 2: 02_WEATHER (1), 05_FLOOD_CONDITIONS (4)
-// Row 3: 03_AIR_QUALITY (2), 06_TRAIL_INFRASTRUCTURE_STATUS (5)
+// Arrange four public categories into two tight label/status pairs per row.
 const rows = [
-  [gridStatus[0], gridStatus[3]], // Route Conditions, Wildfire
-  [gridStatus[1], gridStatus[4]], // Weather, Flood Conditions
-  [gridStatus[2], gridStatus[5]], // Air Quality, Trail Infrastructure
+  [gridStatus[0], gridStatus[1]],
+  [gridStatus[2], gridStatus[3]],
 ];
 ---
 

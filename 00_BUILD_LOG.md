@@ -1451,3 +1451,17 @@ The repairs are sound and tested for correctness. No secrets were exposed. Deplo
 - Proof folder: `00_AS-BUILT/20260824-UWISSY_HARVEY_GRID_DEPLOYMENT_PROOF/`.
 - Proof ZIP: `/Users/jkbrookspersonal/Downloads/20260824-UWISSY_HARVEY_GRID_DEPLOYMENT_PROOF.zip`.
 - Proof ZIP SHA-256: `e4752a2e06b8519ced819b35a45deeb9c53a937f6b65d7e2e30b7649df3fc682`.
+
+## 2026-08-24 17:19 PDT — Four-category public Harvey grid implemented and validated pre-deploy
+
+- Reduced the public Harvey grid from six public categories to four owner-approved rider categories: `Trail Conditions`, `Weather`, `Air Quality`, `Safety Alerts`.
+- Removed `Route Conditions`, `Wildfire`, `Flood Conditions`, and `Trail Infrastructure` as first-class public Harvey categories while preserving the internal monitoring lanes.
+- Implemented Trail Conditions aggregation from the qualified public event set for Lane 01 / Lane 06 trail-impact events, with duplicate real-world issue suppression.
+- Kept Wildfire internal-only; wildfire source data affects public Air Quality only when it produces qualified smoke/AQI rider impact.
+- Kept Flood Conditions internal-only; flood data affects public Trail Conditions or Safety Alerts only when it produces qualified route/safety impact.
+- Added Safety Alerts as the public rider-facing category for qualified government/public-safety alerts.
+- Fixed spacing/alignment: desktop grid now uses `max-content 20px max-content 20px`, compact label-to-ball spacing, aligned Harvey-ball columns, and a one-pair-per-row mobile collapse.
+- Updated public-copy allowlist and approved-copy registry for `Trail Conditions`, `Weather`, `Air Quality`, and `Safety Alerts`.
+- Validation passed pre-deploy: unit tests 9 files / 125 tests, typecheck, production build, public package validation, copy allowlist validation, secret scan, and built HTML verification for exactly four Harvey balls.
+- Report path: `00_DOCS/2026-08-24_UWISSY_PUBLIC_HARVEY_GRID_FOUR_CATEGORY_MODEL.md`.
+- Proof path: `00_AS-BUILT/20260824-UWISSY_PUBLIC_HARVEY_GRID_FOUR_CATEGORY_MODEL/`.

@@ -84,3 +84,7 @@
 | COPY-ACT-005 | `Detour` | Supported detour fact renders. | Closures / Event Detail / Map Popup | RS-A | Public-primary | APPROVED | Approved closure detail label. |
 | COPY-ACT-006 | `Closure hours` | Supported closure hours render. | Closures / Event Detail / Map Popup | RS-A | Public-primary | APPROVED | Approved closure detail label. |
 | COPY-ACT-007 | `Expected reopening` | Supported projected reopening renders. | Closures / Event Detail / Map Popup | RS-A | Public-primary | APPROVED | Approved closure detail label. |
+| COPY-HARVEY-001 | `Trail Conditions` | Four-category public Harvey grid renders trail-impact summary. | Harvey Grid | RS-A | Public-primary | APPROVED | Owner-approved four-category Harvey label. |
+| COPY-HARVEY-002 | `Weather` | Four-category public Harvey grid renders weather summary. | Harvey Grid | RS-A | Public-primary | APPROVED | Owner-approved four-category Harvey label. |
+| COPY-HARVEY-003 | `Air Quality` | Four-category public Harvey grid renders air-quality summary. | Harvey Grid | RS-A | Public-primary | APPROVED | Owner-approved four-category Harvey label. |
+| COPY-HARVEY-004 | `Safety Alerts` | Four-category public Harvey grid renders safety-alert summary. | Harvey Grid | RS-A | Public-primary | APPROVED | Owner-approved four-category Harvey label. |

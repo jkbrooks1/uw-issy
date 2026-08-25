@@ -1,0 +1,29 @@
+
+> uw-issy-route-status@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.10 /Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor
+
+FAIL: GPX file does not exist: /var/folders/5g/vs4ywyrn2195wtptbt4m2gz40000gn/T/does-not-exist.gpx
+FAIL: Snapshot file does not exist: /var/folders/5g/vs4ywyrn2195wtptbt4m2gz40000gn/T/build-pkg-test-j0nvi1/missing.json
+FAIL: GPX is not valid XML: mismatched closing tag </trk> (expected </name>)
+FAIL: Missing required file: /var/folders/5g/vs4ywyrn2195wtptbt4m2gz40000gn/T/pkg-test-U0xtdd/release-manifest.json
+FAIL: GPX has no usable route: found 1 track(s) and 0 track point(s); need at least 1 track with at least 2 points
+FAIL: dashboard-data.json is missing required field "routeId"
+FAIL: Track point 0 has invalid latitude: 97
+FAIL: Track point 0 has invalid longitude: -190.2
+FAIL: Release IDs do not match across the four files: TEST-RELEASE-001, DIFFERENT-RELEASE
+FAIL: Route bounds are not plausible for the UW-Issaquah route: padded bbox [lat 9.8000..10.2100, lon 9.8000..10.2100] does not contain reference point "UW Seattle" (47.6553, -122.3035)
+FAIL: dashboard-data.json references event "evt-does-not-exist" that is missing from route-events.geojson
+FAIL: route-events.geojson feature "evt-1" has an invalid geometry type
+FAIL: GPX is not valid XML: mismatched closing tag </trk> (expected </name>)
+FAIL: GPX contains no usable track segment (need at least one segment with 2+ points)
+FAIL: route-events.geojson is not a valid GeoJSON FeatureCollection
+FAIL: route-events.geojson is missing its own release/generated marker
+
+ Test Files  9 passed (9)
+      Tests  125 passed (125)
+   Start at  17:18:32
+   Duration  2.57s (transform 265ms, setup 0ms, import 579ms, tests 4.52s, environment 1ms)
+

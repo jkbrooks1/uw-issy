@@ -1,0 +1,605 @@
+diff --git a/00_DOCS/2026-08-23_UWISSY_APPROVED_PUBLIC_COPY_REGISTRY.md b/00_DOCS/2026-08-23_UWISSY_APPROVED_PUBLIC_COPY_REGISTRY.md
+index e517f80..56d5abb 100644
+--- a/00_DOCS/2026-08-23_UWISSY_APPROVED_PUBLIC_COPY_REGISTRY.md
++++ b/00_DOCS/2026-08-23_UWISSY_APPROVED_PUBLIC_COPY_REGISTRY.md
+@@ -84,3 +84,7 @@
+ | COPY-ACT-005 | `Detour` | Supported detour fact renders. | Closures / Event Detail / Map Popup | RS-A | Public-primary | APPROVED | Approved closure detail label. |
+ | COPY-ACT-006 | `Closure hours` | Supported closure hours render. | Closures / Event Detail / Map Popup | RS-A | Public-primary | APPROVED | Approved closure detail label. |
+ | COPY-ACT-007 | `Expected reopening` | Supported projected reopening renders. | Closures / Event Detail / Map Popup | RS-A | Public-primary | APPROVED | Approved closure detail label. |
++| COPY-HARVEY-001 | `Trail Conditions` | Four-category public Harvey grid renders trail-impact summary. | Harvey Grid | RS-A | Public-primary | APPROVED | Owner-approved four-category Harvey label. |
++| COPY-HARVEY-002 | `Weather` | Four-category public Harvey grid renders weather summary. | Harvey Grid | RS-A | Public-primary | APPROVED | Owner-approved four-category Harvey label. |
++| COPY-HARVEY-003 | `Air Quality` | Four-category public Harvey grid renders air-quality summary. | Harvey Grid | RS-A | Public-primary | APPROVED | Owner-approved four-category Harvey label. |
++| COPY-HARVEY-004 | `Safety Alerts` | Four-category public Harvey grid renders safety-alert summary. | Harvey Grid | RS-A | Public-primary | APPROVED | Owner-approved four-category Harvey label. |
+diff --git a/scripts/validate-public-copy-allowlist.mjs b/scripts/validate-public-copy-allowlist.mjs
+index fdeff2d..2b054ea 100644
+--- a/scripts/validate-public-copy-allowlist.mjs
++++ b/scripts/validate-public-copy-allowlist.mjs
+@@ -47,6 +47,10 @@ const approved = [
+   "BikeTourFrance.net",
+   "Visit BikeTourFrance.net",
+   "Route status",
++  "Trail Conditions",
++  "Weather",
++  "Air Quality",
++  "Safety Alerts",
+   "Clear",
+   "Caution",
+   "Major issue",
+diff --git a/src/components/route-status/RiderImpactGrid.astro b/src/components/route-status/RiderImpactGrid.astro
+index 6481584..3cbf617 100644
+--- a/src/components/route-status/RiderImpactGrid.astro
++++ b/src/components/route-status/RiderImpactGrid.astro
+@@ -1,22 +1,20 @@
+ ---
+ import type { RouteWideSummary } from "../../lib/route-status/normalize-dashboard-data";
+ import { deriveRiderImpactGrid } from "../../lib/route-status/rider-impact-grid";
++import type { DashboardEventWithUnknownLane } from "../../lib/route-status/types";
+ 
+ type Props = {
+   summary: RouteWideSummary;
++  events: DashboardEventWithUnknownLane[];
+ };
+ 
+-const { summary } = Astro.props;
+-const gridStatus = deriveRiderImpactGrid(summary.laneSummaries);
++const { summary, events } = Astro.props;
++const gridStatus = deriveRiderImpactGrid(summary.laneSummaries, events);
+ 
+-// Arrange 6 items into 2-column grid:
+-// Row 1: 01_ROUTE_CONDITIONS (0), 04_WILDFIRE (3)
+-// Row 2: 02_WEATHER (1), 05_FLOOD_CONDITIONS (4)
+-// Row 3: 03_AIR_QUALITY (2), 06_TRAIL_INFRASTRUCTURE_STATUS (5)
++// Arrange four public categories into two tight label/status pairs per row.
+ const rows = [
+-  [gridStatus[0], gridStatus[3]], // Route Conditions, Wildfire
+-  [gridStatus[1], gridStatus[4]], // Weather, Flood Conditions
+-  [gridStatus[2], gridStatus[5]], // Air Quality, Trail Infrastructure
++  [gridStatus[0], gridStatus[1]],
++  [gridStatus[2], gridStatus[3]],
+ ];
+ ---
+ 
+diff --git a/src/lib/route-status/rider-impact-grid.ts b/src/lib/route-status/rider-impact-grid.ts
+index 7900ce9..888d5c0 100644
+--- a/src/lib/route-status/rider-impact-grid.ts
++++ b/src/lib/route-status/rider-impact-grid.ts
+@@ -1,32 +1,15 @@
+-import type { DisplayTier } from "./types";
+ import type { NormalizedLaneSummary } from "./normalize-dashboard-data";
++import type { DashboardEventWithUnknownLane } from "./types";
+ 
+ export type HarveyBallColor = "green" | "yellow" | "red" | "unknown";
+ 
+ export type CategoryStatus = {
+-  laneId: string;
++  categoryId: "trail_conditions" | "weather" | "air_quality" | "safety_alerts";
+   label: string;
+   color: HarveyBallColor;
+   ariaLabel: string;
+ };
+ 
+-/**
+- * Maps display tier to Harvey-ball rider-impact color.
+- * The tier already represents rider impact, not system health.
+- */
+-function tierToColor(tier: DisplayTier): HarveyBallColor {
+-  switch (tier) {
+-    case "normal":
+-      return "green"; // No active rider-impacting issue
+-    case "watch":
+-      return "yellow"; // Caution — elevated concern
+-    case "alert":
+-      return "red"; // Confirmed rider-impacting condition
+-    case "unknown":
+-      return "unknown"; // Status unknown
+-  }
+-}
+-
+ function colorToLabel(color: HarveyBallColor): string {
+   switch (color) {
+     case "green":
+@@ -40,37 +23,148 @@ function colorToLabel(color: HarveyBallColor): string {
+   }
+ }
+ 
++const TRAIL_CONDITION_LANES = new Set(["01_ROUTE_CONDITIONS", "06_TRAIL_INFRASTRUCTURE_STATUS"]);
++const WEATHER_LANES = new Set(["02_WEATHER"]);
++const AIR_QUALITY_LANES = new Set(["03_AIR_QUALITY"]);
++const WILDFIRE_LANES = new Set(["04_WILDFIRE"]);
++const FLOOD_LANES = new Set(["05_FLOOD_CONDITIONS"]);
++const SAFETY_ALERT_LANES = new Set(["07_GOVERNMENT_SAFETY_ALERTS"]);
++
++function severityRank(color: HarveyBallColor): number {
++  switch (color) {
++    case "red":
++      return 3;
++    case "yellow":
++      return 2;
++    case "unknown":
++      return 1;
++    case "green":
++      return 0;
++  }
++}
++
++function highestColor(colors: HarveyBallColor[]): HarveyBallColor {
++  return colors.reduce<HarveyBallColor>(
++    (highest, color) => (severityRank(color) > severityRank(highest) ? color : highest),
++    "green",
++  );
++}
++
++function eventToColor(event: DashboardEventWithUnknownLane): HarveyBallColor {
++  const text = [
++    event.alertNature,
++    event.routeEffect,
++    event.routeAction,
++    event.currentStatus,
++    event.severity,
++    event.title,
++  ]
++    .filter(Boolean)
++    .join(" ")
++    .toLowerCase();
++
++  if (
++    event.riderCanPass === "no" ||
++    event.detourAvailable === false ||
++    event.displayTier === "alert" ||
++    /closed|closure|segment closed|major|severe|unhealthy|hazardous/.test(text)
++  ) {
++    return "red";
++  }
++
++  if (event.displayTier === "watch" || /caution|moderate|advisory|restriction|smoke|aqi|alert/.test(text)) {
++    return "yellow";
++  }
++
++  if (event.displayTier === "unknown") {
++    return "unknown";
++  }
++
++  return "green";
++}
++
++function uniqueRealWorldEvents(events: DashboardEventWithUnknownLane[]): DashboardEventWithUnknownLane[] {
++  const seen = new Set<string>();
++  const unique: DashboardEventWithUnknownLane[] = [];
++  for (const event of events) {
++    const key = event.duplicateGroupKey || [
++      event.trailName,
++      event.locationLabel,
++      event.alertNature,
++      event.routeEffect,
++      event.effectiveFrom,
++      event.effectiveUntil,
++      event.sourceUrl,
++    ].join("|");
++    if (seen.has(key)) continue;
++    seen.add(key);
++    unique.push(event);
++  }
++  return unique;
++}
++
++function trailConditionColor(events: DashboardEventWithUnknownLane[]): HarveyBallColor {
++  const trailEvents = uniqueRealWorldEvents(
++    events.filter((event) => TRAIL_CONDITION_LANES.has(event.rawLaneId) || TRAIL_CONDITION_LANES.has(event.laneId)),
++  );
++  return highestColor(trailEvents.map(eventToColor));
++}
++
++function weatherColor(events: DashboardEventWithUnknownLane[]): HarveyBallColor {
++  return highestColor(events.filter((event) => WEATHER_LANES.has(event.rawLaneId)).map(eventToColor));
++}
++
++function airQualityColor(events: DashboardEventWithUnknownLane[]): HarveyBallColor {
++  const airEvents = events.filter((event) => {
++    if (AIR_QUALITY_LANES.has(event.rawLaneId)) return true;
++    if (!WILDFIRE_LANES.has(event.rawLaneId)) return false;
++    const text = [event.alertNature, event.routeEffect, event.title, event.summary].filter(Boolean).join(" ").toLowerCase();
++    return /smoke|air quality|aqi|particulate|pm2\.?5/.test(text);
++  });
++  return highestColor(airEvents.map(eventToColor));
++}
++
++function safetyAlertColor(events: DashboardEventWithUnknownLane[]): HarveyBallColor {
++  const safetyEvents = events.filter((event) => {
++    if (SAFETY_ALERT_LANES.has(event.rawLaneId)) return true;
++    if (!FLOOD_LANES.has(event.rawLaneId)) return false;
++    const text = [event.alertNature, event.routeEffect, event.title, event.summary].filter(Boolean).join(" ").toLowerCase();
++    return /evacuation|public safety|emergency|closed|closure|flooding on route|trail closed/.test(text);
++  });
++  return highestColor(uniqueRealWorldEvents(safetyEvents).map(eventToColor));
++}
++
++function hasAvailableLane(laneSummaries: NormalizedLaneSummary[], laneIds: string[]): boolean {
++  return laneSummaries.some((lane) => laneIds.includes(lane.laneId) && lane.available);
++}
++
+ /**
+- * Derives the rider-impact status for each of the six rider-facing categories.
+- * Uses lane summaries from the dashboard data, which already encode rider impact via displayTier.
++ * Derives the four public rider-impact categories. Public categories do not
++ * mirror internal lanes: source/system degradation remains in System Health,
++ * while this grid uses qualified public events to represent rider impact.
+  */
+-export function deriveRiderImpactGrid(laneSummaries: NormalizedLaneSummary[]): CategoryStatus[] {
+-  const RIDER_FACING_LANES = [
+-    "01_ROUTE_CONDITIONS",
+-    "02_WEATHER",
+-    "03_AIR_QUALITY",
+-    "04_WILDFIRE",
+-    "05_FLOOD_CONDITIONS",
+-    "06_TRAIL_INFRASTRUCTURE_STATUS",
++export function deriveRiderImpactGrid(
++  laneSummaries: NormalizedLaneSummary[],
++  events: DashboardEventWithUnknownLane[] = [],
++): CategoryStatus[] {
++  const trailAvailable = hasAvailableLane(laneSummaries, ["01_ROUTE_CONDITIONS", "06_TRAIL_INFRASTRUCTURE_STATUS"]);
++  const weatherAvailable = hasAvailableLane(laneSummaries, ["02_WEATHER"]);
++  const airAvailable = hasAvailableLane(laneSummaries, ["03_AIR_QUALITY", "04_WILDFIRE"]);
++  const safetyAvailable = hasAvailableLane(laneSummaries, ["07_GOVERNMENT_SAFETY_ALERTS"]);
++  const trailColor = trailConditionColor(events);
++  const weatherImpactColor = weatherColor(events);
++  const airQualityImpactColor = airQualityColor(events);
++  const safetyImpactColor = safetyAlertColor(events);
++
++  const categories: Array<Omit<CategoryStatus, "ariaLabel">> = [
++    { categoryId: "trail_conditions", label: "Trail Conditions", color: trailAvailable ? trailColor : "unknown" },
++    { categoryId: "weather", label: "Weather", color: weatherAvailable ? weatherImpactColor : "unknown" },
++    { categoryId: "air_quality", label: "Air Quality", color: airAvailable ? airQualityImpactColor : "unknown" },
++    { categoryId: "safety_alerts", label: "Safety Alerts", color: safetyAvailable ? safetyImpactColor : "unknown" },
+   ];
+ 
+-  return RIDER_FACING_LANES.map((laneId) => {
+-    const summary = laneSummaries.find((lane) => lane.laneId === laneId);
+-    if (!summary) {
+-      return {
+-        laneId,
+-        label: laneId,
+-        color: "unknown",
+-        ariaLabel: colorToLabel("unknown"),
+-      };
+-    }
+-
+-    const color = tierToColor(summary.displayTier);
+-    return {
+-      laneId,
+-      label: summary.laneLabel,
+-      color,
+-      ariaLabel: colorToLabel(color),
+-    };
+-  });
++  return categories.map((category) => ({
++    ...category,
++    ariaLabel: colorToLabel(category.color),
++  }));
+ }
+diff --git a/src/pages/index.astro b/src/pages/index.astro
+index c93fb8f..8cacc7b 100644
+--- a/src/pages/index.astro
++++ b/src/pages/index.astro
+@@ -82,7 +82,7 @@ const facilitiesCurrent = facilitiesLane?.sourceStateText === "Current";
+ 
+       <div class="dashboard-layout">
+         <div class="item-route-status">
+-          <RiderImpactGrid summary={summary} />
++          <RiderImpactGrid summary={summary} events={events} />
+         </div>
+ 
+         <section class="panel item-route-map" aria-labelledby="route-map-heading">
+diff --git a/src/styles/route-status.css b/src/styles/route-status.css
+index 6a449f1..9b5e6b1 100644
+--- a/src/styles/route-status.css
++++ b/src/styles/route-status.css
+@@ -330,14 +330,15 @@ button:focus-visible,
+ /* Buildspec 18 — rider impact grid (Harvey-ball replacement for route status summary card) */
+ .rider-impact-grid__container {
+   display: grid;
+-  grid-template-columns: 1fr 1fr;
+-  gap: 16px 24px;
++  grid-template-columns: max-content 20px max-content 20px;
++  column-gap: 14px;
+   row-gap: 12px;
++  align-items: center;
+ }
+ 
+ @media (max-width: 600px) {
+   .rider-impact-grid__container {
+-    grid-template-columns: 1fr;
++    grid-template-columns: max-content 20px;
+     gap: 12px;
+   }
+ }
+@@ -347,16 +348,24 @@ button:focus-visible,
+ }
+ 
+ .rider-impact-grid__cell {
+-  display: flex;
+-  align-items: center;
+-  gap: 12px;
++  display: contents;
+ }
+ 
+ .rider-impact-grid__label {
+-  flex: 1;
+   font-size: 14px;
+   font-weight: 600;
+   color: var(--text-main);
++  white-space: nowrap;
++}
++
++.rider-impact-grid__row .rider-impact-grid__cell:nth-child(2) .rider-impact-grid__label {
++  margin-left: 36px;
++}
++
++@media (max-width: 600px) {
++  .rider-impact-grid__row .rider-impact-grid__cell:nth-child(2) .rider-impact-grid__label {
++    margin-left: 0;
++  }
+ }
+ 
+ .rider-impact-grid__ball {
+@@ -365,6 +374,7 @@ button:focus-visible,
+   border-radius: 50%;
+   flex-shrink: 0;
+   border: 1px solid rgba(0, 0, 0, 0.1);
++  justify-self: start;
+ }
+ 
+ .rider-impact-grid__ball--green {
+diff --git a/tests/ui/rider-impact-grid.test.ts b/tests/ui/rider-impact-grid.test.ts
+index 7b6eb13..27545a6 100644
+--- a/tests/ui/rider-impact-grid.test.ts
++++ b/tests/ui/rider-impact-grid.test.ts
+@@ -2,6 +2,10 @@ import { readFileSync } from "node:fs";
+ import { join } from "node:path";
+ import { describe, expect, it } from "vitest";
+ 
++import { deriveRiderImpactGrid } from "../../src/lib/route-status/rider-impact-grid";
++import type { NormalizedLaneSummary } from "../../src/lib/route-status/normalize-dashboard-data";
++import type { DashboardEventWithUnknownLane, DisplayTier } from "../../src/lib/route-status/types";
++
+ const REPO_ROOT = join(__dirname, "..", "..");
+ const INDEX_ASTRO = readFileSync(join(REPO_ROOT, "src", "pages", "index.astro"), "utf8");
+ const RIDER_IMPACT_GRID_ASTRO = readFileSync(
+@@ -12,91 +16,182 @@ const RIDER_IMPACT_GRID_TS = readFileSync(
+   join(REPO_ROOT, "src", "lib", "route-status", "rider-impact-grid.ts"),
+   "utf8",
+ );
+-const CURRENT_ROUTE_STATE_ASTRO = readFileSync(
+-  join(REPO_ROOT, "src", "components", "route-status", "CurrentRouteState.astro"),
+-  "utf8",
+-);
+ const CSS = readFileSync(join(REPO_ROOT, "src", "styles", "route-status.css"), "utf8");
+ 
+-describe("rider impact grid (Harvey-ball replacement)", () => {
+-  it("1. the old Route status summary card (CurrentRouteState.astro) is no longer imported in index.astro", () => {
+-    expect(INDEX_ASTRO).not.toMatch(/import.*CurrentRouteState/);
+-    expect(INDEX_ASTRO).not.toMatch(/CurrentRouteState/);
++function lane(laneId: string, displayTier: DisplayTier = "normal", available = true): NormalizedLaneSummary {
++  return {
++    laneId,
++    laneLabel: laneId,
++    available,
++    displayTier,
++    displayTierLabel: displayTier,
++    sourceStateText: "Degraded",
++    eventCount: 1,
++  };
++}
++
++const LANES = [
++  lane("01_ROUTE_CONDITIONS", "watch"),
++  lane("02_WEATHER", "normal"),
++  lane("03_AIR_QUALITY", "watch"),
++  lane("04_WILDFIRE", "watch"),
++  lane("05_FLOOD_CONDITIONS", "watch"),
++  lane("06_TRAIL_INFRASTRUCTURE_STATUS", "watch"),
++  lane("07_GOVERNMENT_SAFETY_ALERTS", "normal"),
++];
++
++function event(overrides: Partial<DashboardEventWithUnknownLane>): DashboardEventWithUnknownLane {
++  return {
++    id: "event-1",
++    laneId: "01_ROUTE_CONDITIONS",
++    rawLaneId: "01_ROUTE_CONDITIONS",
++    laneLabel: "Route conditions",
++    title: "Trail event",
++    summary: null,
++    locationLabel: "Trail location",
++    trailName: "East Lake Sammamish Trail",
++    alertNature: "Trail closure",
++    routeSegmentId: null,
++    routeSegmentLabel: null,
++    displayTier: "alert",
++    routeEffect: "Segment closed",
++    reportedAt: null,
++    effectiveFrom: null,
++    effectiveUntil: null,
++    geometry: null,
++    sourceName: null,
++    sourceUrl: "https://example.test/source",
++    mergedSourceUrls: null,
++    confidence: null,
++    isLastKnownGood: false,
++    isStale: false,
++    presentationEligible: true,
++    presentationReason: "eligible",
++    routeRelevant: true,
++    routeImpact: true,
++    duplicateGroupKey: null,
++    lastSourceRefreshAt: null,
++    severity: "high",
++    currentStatus: "active",
++    detourAvailable: null,
++    detourDescription: null,
++    closureName: null,
++    closedLengthMiles: null,
++    closedLengthSource: null,
++    closureStartCrossing: null,
++    closureEndCrossing: null,
++    closureHours: null,
++    closureStartDate: null,
++    projectedEndDate: null,
++    routeAction: null,
++    riderCanPass: "no",
++    ...overrides,
++  };
++}
++
++describe("four-category rider impact grid", () => {
++  it("1. derives exactly four public Harvey categories", () => {
++    expect(deriveRiderImpactGrid(LANES, [])).toHaveLength(4);
+   });
+ 
+-  it("2. the old Route status summary card component content is removed", () => {
+-    expect(CURRENT_ROUTE_STATE_ASTRO).not.toContain("RiderImpactGrid");
++  it("2. uses the exact approved labels", () => {
++    expect(deriveRiderImpactGrid(LANES, []).map((category) => category.label)).toEqual([
++      "Trail Conditions",
++      "Weather",
++      "Air Quality",
++      "Safety Alerts",
++    ]);
+   });
+ 
+-  it("3. the old 'Partial closure' top-card presentation is not in the grid", () => {
+-    expect(RIDER_IMPACT_GRID_ASTRO).not.toMatch(/Partial closure/);
++  it("3-6. does not define removed internal-lane labels as Harvey categories", () => {
++    expect(RIDER_IMPACT_GRID_TS).not.toContain('label: "Route Conditions"');
++    expect(RIDER_IMPACT_GRID_TS).not.toContain('label: "Wildfire"');
++    expect(RIDER_IMPACT_GRID_TS).not.toContain('label: "Flood Conditions"');
++    expect(RIDER_IMPACT_GRID_TS).not.toContain('label: "Trail Infrastructure"');
+   });
+ 
+-  it("4. the old 'Active route issues:' line is not in the grid", () => {
+-    expect(RIDER_IMPACT_GRID_ASTRO).not.toMatch(/Active route issues/);
++  it("7. desktop layout is label, ball, label, ball", () => {
++    expect(CSS).toMatch(
++      /\.rider-impact-grid__container\s*\{[\s\S]*?grid-template-columns:\s*max-content\s+20px\s+max-content\s+20px/,
++    );
+   });
+ 
+-  it("5. the old 'Localized closures reported:' line is not in the grid", () => {
+-    expect(RIDER_IMPACT_GRID_ASTRO).not.toMatch(/Localized closures/);
++  it("8. label-to-ball spacing is compact", () => {
++    expect(CSS).toMatch(/column-gap:\s*14px/);
++    expect(CSS).not.toMatch(/\.rider-impact-grid__label\s*\{[\s\S]*?flex:\s*1/);
+   });
+ 
+-  it("6. six approved labels render in the grid", () => {
+-    expect(RIDER_IMPACT_GRID_TS).toMatch(/01_ROUTE_CONDITIONS/);
+-    expect(RIDER_IMPACT_GRID_TS).toMatch(/02_WEATHER/);
+-    expect(RIDER_IMPACT_GRID_TS).toMatch(/03_AIR_QUALITY/);
+-    expect(RIDER_IMPACT_GRID_TS).toMatch(/04_WILDFIRE/);
+-    expect(RIDER_IMPACT_GRID_TS).toMatch(/05_FLOOD_CONDITIONS/);
+-    expect(RIDER_IMPACT_GRID_TS).toMatch(/06_TRAIL_INFRASTRUCTURE_STATUS/);
++  it("9. Harvey-ball columns remain aligned", () => {
++    expect(CSS).toMatch(/\.rider-impact-grid__cell\s*\{[\s\S]*?display:\s*contents/);
++    expect(CSS).toMatch(/\.rider-impact-grid__ball\s*\{[\s\S]*?justify-self:\s*start/);
+   });
+ 
+-  it("7. the grid uses a 2-column layout", () => {
+-    expect(CSS).toMatch(/\.rider-impact-grid__container\s*\{[\s\S]*?grid-template-columns:\s*1fr\s+1fr/);
++  it("10. Trail Conditions aggregates qualified trail-impact data", () => {
++    const grid = deriveRiderImpactGrid(LANES, [event({ rawLaneId: "06_TRAIL_INFRASTRUCTURE_STATUS" })]);
++    expect(grid.find((category) => category.label === "Trail Conditions")?.color).toBe("red");
+   });
+ 
+-  it("8. on mobile, the grid collapses to 1 column", () => {
+-    expect(CSS).toMatch(/@media.*max-width:\s*600px[\s\S]*?\.rider-impact-grid__container\s*\{[\s\S]*?grid-template-columns:\s*1fr/);
++  it("11. duplicate underlying lane reports do not change the highest real-world issue result", () => {
++    const duplicateA = event({ id: "a", duplicateGroupKey: "same-closure", rawLaneId: "01_ROUTE_CONDITIONS" });
++    const duplicateB = event({ id: "b", duplicateGroupKey: "same-closure", rawLaneId: "06_TRAIL_INFRASTRUCTURE_STATUS" });
++    const grid = deriveRiderImpactGrid(LANES, [duplicateA, duplicateB]);
++    expect(grid.find((category) => category.label === "Trail Conditions")?.color).toBe("red");
+   });
+ 
+-  it("9. Harvey balls render with color classes (green/yellow/red/unknown)", () => {
+-    expect(CSS).toMatch(/\.rider-impact-grid__ball--green/);
+-    expect(CSS).toMatch(/\.rider-impact-grid__ball--yellow/);
+-    expect(CSS).toMatch(/\.rider-impact-grid__ball--red/);
+-    expect(CSS).toMatch(/\.rider-impact-grid__ball--unknown/);
++  it("12. wildfire source data alone does not create a public Harvey warning", () => {
++    const grid = deriveRiderImpactGrid(LANES, [
++      event({
++        rawLaneId: "04_WILDFIRE",
++        laneId: "04_WILDFIRE",
++        title: "Regional fire perimeter",
++        alertNature: "Regional fire perimeter",
++        routeEffect: null,
++        displayTier: "watch",
++        riderCanPass: null,
++      }),
++    ]);
++    expect(grid.find((category) => category.label === "Air Quality")?.color).toBe("green");
+   });
+ 
+-  it("10. Harvey balls have aria-labels for accessibility", () => {
+-    expect(RIDER_IMPACT_GRID_ASTRO).toMatch(/aria-label={category\.ariaLabel}/);
+-    expect(RIDER_IMPACT_GRID_TS).toMatch(/colorToLabel/);
+-    expect(RIDER_IMPACT_GRID_TS).toMatch(/green[\s\S]*?no active rider-impacting issue/);
+-    expect(RIDER_IMPACT_GRID_TS).toMatch(/yellow[\s\S]*?caution/);
+-    expect(RIDER_IMPACT_GRID_TS).toMatch(/red[\s\S]*?confirmed rider-impacting condition/);
++  it("13. flood source data alone does not create a public Harvey warning", () => {
++    const grid = deriveRiderImpactGrid(LANES, [
++      event({
++        rawLaneId: "05_FLOOD_CONDITIONS",
++        laneId: "05_FLOOD_CONDITIONS",
++        title: "Gauge observation",
++        alertNature: "Gauge observation",
++        routeEffect: null,
++        displayTier: "watch",
++        riderCanPass: null,
++      }),
++    ]);
++    expect(grid.find((category) => category.label === "Safety Alerts")?.color).toBe("green");
++    expect(grid.find((category) => category.label === "Trail Conditions")?.color).toBe("green");
+   });
+ 
+-  it("11. no lane numbers (Lane 01, Lane 02, etc.) appear in the grid", () => {
+-    expect(RIDER_IMPACT_GRID_ASTRO).not.toMatch(/Lane \d+/);
+-    expect(RIDER_IMPACT_GRID_ASTRO).not.toMatch(/lane \d+/i);
++  it("14. source/system degradation alone does not change Harvey color", () => {
++    const degradedLanes = LANES.map((sourceLane) => ({ ...sourceLane, displayTier: "watch" as const, sourceStateText: "Degraded" }));
++    const grid = deriveRiderImpactGrid(degradedLanes, []);
++    expect(grid.map((category) => category.color)).toEqual(["green", "green", "green", "green"]);
+   });
+ 
+-  it("12. rider-impact color derives from displayTier (normal->green, watch->yellow, alert->red, unknown->unknown)", () => {
+-    expect(RIDER_IMPACT_GRID_TS).toMatch(/case "normal":\s*return "green"/);
+-    expect(RIDER_IMPACT_GRID_TS).toMatch(/case "watch":\s*return "yellow"/);
+-    expect(RIDER_IMPACT_GRID_TS).toMatch(/case "alert":\s*return "red"/);
+-    expect(RIDER_IMPACT_GRID_TS).toMatch(/case "unknown":\s*return "unknown"/);
++  it("15. Current route issue detail remains below the grid", () => {
++    expect(INDEX_ASTRO).toMatch(/<RiderImpactGrid summary={summary} events={events} \/>[\s\S]*?<CurrentRouteAlerts events={events}/);
+   });
+ 
+-  it("13. the grid utility does not consider sourceState or system health", () => {
+-    expect(RIDER_IMPACT_GRID_TS).not.toMatch(/sourceState/);
+-    expect(RIDER_IMPACT_GRID_TS).not.toMatch(/systemHealth/);
+-    expect(RIDER_IMPACT_GRID_TS).not.toMatch(/degraded/);
+-    expect(RIDER_IMPACT_GRID_TS).not.toMatch(/failed/);
++  it("16. map remains below the grid", () => {
++    expect(INDEX_ASTRO).toMatch(/<RiderImpactGrid summary={summary} events={events} \/>[\s\S]*?<RouteMap/);
+   });
+ 
+-  it("14. RiderImpactGrid is imported and wired into index.astro", () => {
+-    expect(INDEX_ASTRO).toMatch(/import.*RiderImpactGrid/);
+-    expect(INDEX_ASTRO).toMatch(/RiderImpactGrid/);
++  it("17. System Health remains separate", () => {
++    expect(INDEX_ASTRO).toMatch(/<MonitorHealthDisclosure summary={summary} systemHealth={systemHealth} \/>/);
++    expect(RIDER_IMPACT_GRID_ASTRO).not.toMatch(/systemHealth/);
+   });
+ 
+-  it("15. the grid replaces CurrentRouteState in the item-route-status div", () => {
+-    expect(INDEX_ASTRO).toMatch(/<div class="item-route-status">\s*<RiderImpactGrid/);
++  it("18. accessibility labels remain available", () => {
++    expect(RIDER_IMPACT_GRID_ASTRO).toMatch(/aria-label={category\.ariaLabel}/);
++    expect(RIDER_IMPACT_GRID_TS).toMatch(/Green — no active rider-impacting issue reported/);
++    expect(RIDER_IMPACT_GRID_TS).toMatch(/Yellow — caution/);
++    expect(RIDER_IMPACT_GRID_TS).toMatch(/Red — confirmed rider-impacting condition/);
+   });
+ });

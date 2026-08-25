@@ -3167,3 +3167,16 @@ Each new file was generated from the verified live post-rename export, and each 
 - Proof folder: `00_AS-BUILT/20260824-UWISSY_HARVEY_GRID_DEPLOYMENT_PROOF/`.
 - Proof ZIP: `/Users/jkbrookspersonal/Downloads/20260824-UWISSY_HARVEY_GRID_DEPLOYMENT_PROOF.zip`.
 - Proof ZIP SHA-256: `e4752a2e06b8519ced819b35a45deeb9c53a937f6b65d7e2e30b7649df3fc682`.
+
+## 2026-08-24 17:19 PDT — Four-category public Harvey grid implemented and validated pre-deploy
+
+- Reduced the public Harvey grid from six public categories to four owner-approved rider categories: `Trail Conditions`, `Weather`, `Air Quality`, `Safety Alerts`.
+- Removed `Route Conditions`, `Wildfire`, `Flood Conditions`, and `Trail Infrastructure` as first-class public Harvey categories while preserving internal monitoring lanes.
+- Implemented Trail Conditions aggregation from qualified public trail-impact events and duplicate real-world issue suppression.
+- Kept Wildfire and Flood Conditions internal-only for the public Harvey grid; their rider-facing effects only surface through Air Quality, Trail Conditions, or Safety Alerts when supported by qualified public events.
+- Added Safety Alerts mapping for qualified government/public-safety rider-impact conditions.
+- Fixed label/ball spacing and alignment using compact `max-content 20px max-content 20px` grid columns.
+- Updated copy allowlist and approved-copy registry for the four public Harvey labels.
+- Validation passed pre-deploy: unit tests 9 files / 125 tests, typecheck, production build, public package validation, copy allowlist validation, secret scan, and built HTML verification.
+- Report path: `00_DOCS/2026-08-24_UWISSY_PUBLIC_HARVEY_GRID_FOUR_CATEGORY_MODEL.md`.
+- Proof path: `00_AS-BUILT/20260824-UWISSY_PUBLIC_HARVEY_GRID_FOUR_CATEGORY_MODEL/`.
