@@ -1599,3 +1599,18 @@ The repairs are sound and tested for correctness. No secrets were exposed. Deplo
 - Workflow result: success
 - Deploy URL: https://19cc830d.uw-issy.pages.dev
 - Run: https://github.com/jkbrooks1/uw-issy/actions/runs/32798597437
+
+## 2026-08-24 18:45 PDT — Current route issues compact table restored with John Note row
+
+- Repaired the UI regression from the prior John Note placement change: `Current route issues` no longer opens or dumps the full event-detail payload into the Event cell.
+- Restored the compact five-column table: `Event`, `Affected section`, `Reported`, `Status`, `Segment passability`.
+- Added a separate `john-note-row` immediately below the matched event row with `colspan="5"`, containing only `John Note` and the exact owner-authored note text.
+- Updated the mobile card path to render a concise John Note block instead of dumping full event detail.
+- Removed John Note rendering from `Closures and detours`; that section remains source-derived closure detail only.
+- Preserved route-event qualification, active issue count, Harvey-ball state, source-derived facts, map marker behavior, and map-popup John Note parity.
+- Local validation passed: unit tests 12 files / 145 tests, typecheck, production build, public package validation, copy allowlist validation, and secret scan.
+- Deployed implementation commit `d69fbc51e44ab2b05cb0a42f758f421baf50fa0f` through GitHub Actions run `32798597437`; CI deploy and production verification passed.
+- Live custom-domain verification passed: compact table restored, no event-detail dump, John Note full-width row directly below matched event, exact note text visible, and `Closures and detours` does not contain the John Note.
+- Screenshot proof: `00_AS-BUILT/20260824-UWISSY_JOHN_NOTE_TABLE_LAYOUT_REPAIR/live-compact-current-route-issues-john-note.png`.
+- Map popup parity proof: live map island carries the exact note text for the matched geolocated route issue; no note-only route-event feature exists.
+- Proof folder: `00_AS-BUILT/20260824-UWISSY_JOHN_NOTE_TABLE_LAYOUT_REPAIR/`.

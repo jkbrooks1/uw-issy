@@ -1,0 +1,13 @@
+
+> uw-issy-route-status@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.10 /Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor
+
+
+ Test Files  12 passed (12)
+      Tests  145 passed (145)
+   Start at  18:42:07
+   Duration  2.42s (transform 630ms, setup 0ms, import 912ms, tests 4.49s, environment 2ms)
+

@@ -1,0 +1,5 @@
+PASS: map receives John Note lookup prop
+PASS: map island payload includes exact note text
+PASS: matched geolocated route issue exists
+PASS: matched route issue title matches John Note key
+PASS: standalone John Note did not create extra route-event feature

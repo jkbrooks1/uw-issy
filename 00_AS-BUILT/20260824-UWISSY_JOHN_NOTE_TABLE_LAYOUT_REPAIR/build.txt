@@ -1,0 +1,22 @@
+
+> uw-issy-route-status@0.1.0 build
+> astro build
+
+18:42:11 [types] Generated 34ms
+18:42:11 [build] output: "static"
+18:42:11 [build] mode: "static"
+18:42:11 [build] directory: /Users/jkbrookspersonal/LocalSiteBuildFiles/BTF_UW-Issy_Route_Monitor/dist/
+18:42:11 [build] Collecting build info...
+18:42:11 [build] ✓ Completed in 70ms.
+18:42:11 [build] Building static entrypoints...
+18:42:12 [vite] ✓ built in 185ms
+18:42:12 [vite] ✓ built in 176ms
+18:42:12 [build] Rearranging server assets...
+
+ generating static routes 
+18:42:12   ├─ /index.html (+11ms) 
+18:42:12 ✓ Completed in 44ms.
+
+18:42:12 [build] ✓ Completed in 436ms.
+18:42:12 [build] 1 page(s) built in 509ms
+18:42:12 [build] Complete!

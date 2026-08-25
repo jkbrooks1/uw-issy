@@ -1,0 +1,7 @@
+PASS: Current route issues restored to compact five-column layout
+PASS: no event-detail dump in Event column
+PASS: John Note appears as full-width row immediately below matched event
+PASS: exact John Note text visible
+PASS: body has event row plus John Note row only
+PASS: Closures and detours does not contain John Note
+Current route issues body row count: 2

@@ -1,0 +1,8 @@
+PASS: Current route issues section exists
+PASS: compact table headers remain
+PASS: no EventDetail detail dump in event cell
+PASS: John Note row exists
+PASS: John Note row spans five columns
+PASS: exact note text visible
+PASS: body has event row plus note row only
+PASS: Closures and detours no longer contains John Note

@@ -3210,3 +3210,15 @@ Each new file was generated from the verified live post-rename export, and each 
 - Tests and validation passed locally and in CI: local unit tests 12 files / 149 tests, typecheck, build, public package validation, copy allowlist validation, and secret scan.
 - Known custom-domain generic verifier caveat remains the pre-existing Cloudflare email-obfuscation rewrite of the mailto link.
 - Proof folder: `00_AS-BUILT/20260824-UWISSY_JOHN_NOTE_DEPLOYMENT_FIX/`.
+
+## 2026-08-24 18:45 PDT — Current route issues compact table restored with John Note row
+
+- Repaired the John Note UI regression in `Current route issues`: the compact event table row is restored and the event-detail payload is no longer dumped into the Event column.
+- Preserved the five original columns: `Event`, `Affected section`, `Reported`, `Status`, `Segment passability`.
+- Added a full-width `john-note-row` beneath the matched event row with `colspan="5"` and only the `John Note` label plus the exact owner note text.
+- Removed John Note from `Closures and detours`; closure details remain source-derived only.
+- Preserved route-event qualification, active issue count, Harvey-ball state, map marker behavior, and matched map-popup John Note parity.
+- Validation passed: unit tests 12 files / 145 tests, typecheck, production build, public package validation, copy allowlist validation, and secret scan.
+- Deployed implementation commit `d69fbc51e44ab2b05cb0a42f758f421baf50fa0f` through GitHub Actions run `32798597437`.
+- Live custom-domain verification passed with screenshot proof at `00_AS-BUILT/20260824-UWISSY_JOHN_NOTE_TABLE_LAYOUT_REPAIR/live-compact-current-route-issues-john-note.png`.
+- Proof folder: `00_AS-BUILT/20260824-UWISSY_JOHN_NOTE_TABLE_LAYOUT_REPAIR/`.
