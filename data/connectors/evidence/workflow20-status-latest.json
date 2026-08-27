@@ -3,14 +3,14 @@
   "connector_id": "20_STATUS_PUBLISHER",
   "connector_version": "v0004",
   "workflow_name": "v04.UWI_LANE20",
-  "generated_at": "2026-08-27T10:15:00.056Z",
-  "run_id": "20_STATUS_PUBLISHER-20260827T101500Z-001",
+  "generated_at": "2026-08-27T20:15:00.097Z",
+  "run_id": "20_STATUS_PUBLISHER-20260827T201500Z-001",
   "current_cycle": {
-    "expected_cycle": "03:00",
+    "expected_cycle": "13:00",
     "timezone": "America/Los_Angeles",
-    "expected_start_local": "2026-08-27T03:00:00",
-    "expected_start_utc": "2026-08-27T10:00:00.000Z",
-    "lane20_generated_at": "2026-08-27T10:15:00.056Z"
+    "expected_start_local": "2026-08-27T13:00:00",
+    "expected_start_utc": "2026-08-27T20:00:00.000Z",
+    "lane20_generated_at": "2026-08-27T20:15:00.097Z"
   },
   "system_result": "DEGRADED",
   "overall": {
@@ -21,80 +21,80 @@
   "lane_cycle_completeness": [
     {
       "lane_id": "01_ROUTE_CONDITIONS",
-      "latest_run_id": "01_ROUTE_CONDITIONS-20260827T100000Z-001",
+      "latest_run_id": "01_ROUTE_CONDITIONS-20260827T200000Z-001",
       "current_cycle_state": "RAN_CURRENT_CYCLE",
       "ran_current_cycle": true,
-      "latest_execution_or_report_at": "2026-08-27T10:00:00.247Z",
+      "latest_execution_or_report_at": "2026-08-27T20:00:00.352Z",
       "data_status": "degraded",
       "lkg_used": false,
       "event_count": 1
     },
     {
       "lane_id": "02_WEATHER",
-      "latest_run_id": "02_WEATHER-20260827T100000Z-001",
+      "latest_run_id": "02_WEATHER-20260827T200000Z-001",
       "current_cycle_state": "RAN_CURRENT_CYCLE",
       "ran_current_cycle": true,
-      "latest_execution_or_report_at": "2026-08-27T10:00:00.266Z",
+      "latest_execution_or_report_at": "2026-08-27T20:00:00.306Z",
       "data_status": "no_relevant_events",
       "lkg_used": false,
       "event_count": 0
     },
     {
       "lane_id": "03_AIR_QUALITY",
-      "latest_run_id": "03_AIR_QUALITY-20260827T100000Z-001",
+      "latest_run_id": "03_AIR_QUALITY-20260827T200000Z-001",
       "current_cycle_state": "RAN_CURRENT_CYCLE",
       "ran_current_cycle": true,
-      "latest_execution_or_report_at": "2026-08-27T10:00:00.237Z",
+      "latest_execution_or_report_at": "2026-08-27T20:00:00.264Z",
       "data_status": "degraded",
       "lkg_used": false,
       "event_count": 2
     },
     {
       "lane_id": "04_WILDFIRE",
-      "latest_run_id": "04_WILDFIRE-20260827T100000Z-001",
+      "latest_run_id": "04_WILDFIRE-20260827T200000Z-001",
       "current_cycle_state": "RAN_CURRENT_CYCLE",
       "ran_current_cycle": true,
-      "latest_execution_or_report_at": "2026-08-27T10:00:00.278Z",
-      "data_status": "degraded",
-      "lkg_used": true,
+      "latest_execution_or_report_at": "2026-08-27T20:00:00.342Z",
+      "data_status": "no_relevant_events",
+      "lkg_used": false,
       "event_count": 0
     },
     {
       "lane_id": "05_FLOOD_CONDITIONS",
-      "latest_run_id": "05_FLOOD_CONDITIONS-20260827T100000Z-001",
+      "latest_run_id": "05_FLOOD_CONDITIONS-20260827T200000Z-001",
       "current_cycle_state": "RAN_CURRENT_CYCLE",
       "ran_current_cycle": true,
-      "latest_execution_or_report_at": "2026-08-27T10:00:00.243Z",
+      "latest_execution_or_report_at": "2026-08-27T20:00:00.390Z",
       "data_status": "degraded",
       "lkg_used": false,
       "event_count": 5
     },
     {
       "lane_id": "06_TRAIL_INFRASTRUCTURE_STATUS",
-      "latest_run_id": "06_TRAIL_INFRASTRUCTURE_STATUS-20260827T100000Z-001",
+      "latest_run_id": "06_TRAIL_INFRASTRUCTURE_STATUS-20260827T200000Z-001",
       "current_cycle_state": "RAN_CURRENT_CYCLE",
       "ran_current_cycle": true,
-      "latest_execution_or_report_at": "2026-08-27T10:00:00.212Z",
+      "latest_execution_or_report_at": "2026-08-27T20:00:00.379Z",
       "data_status": "degraded",
       "lkg_used": false,
       "event_count": 5
     },
     {
       "lane_id": "07_GOVERNMENT_SAFETY_ALERTS",
-      "latest_run_id": "07_GOVERNMENT_SAFETY_ALERTS-20260827T100000Z-001",
+      "latest_run_id": "07_GOVERNMENT_SAFETY_ALERTS-20260827T200000Z-001",
       "current_cycle_state": "RAN_CURRENT_CYCLE",
       "ran_current_cycle": true,
-      "latest_execution_or_report_at": "2026-08-27T10:00:00.273Z",
+      "latest_execution_or_report_at": "2026-08-27T20:00:00.290Z",
       "data_status": "ok",
       "lkg_used": false,
       "event_count": 7
     },
     {
       "lane_id": "08_ROUTE_FACILITIES",
-      "latest_run_id": "08_ROUTE_FACILITIES-20260827T100000Z-001",
+      "latest_run_id": "08_ROUTE_FACILITIES-20260827T200000Z-001",
       "current_cycle_state": "RAN_CURRENT_CYCLE",
       "ran_current_cycle": true,
-      "latest_execution_or_report_at": "2026-08-27T10:00:00.201Z",
+      "latest_execution_or_report_at": "2026-08-27T20:00:00.368Z",
       "data_status": "ok",
       "lkg_used": false,
       "event_count": 0
@@ -106,20 +106,20 @@
       "available": true,
       "current_cycle_state": "RAN_CURRENT_CYCLE",
       "ran_current_cycle": true,
-      "expected_cycle": "03:00",
-      "expected_start_utc": "2026-08-27T10:00:00.000Z",
-      "latest_run_id": "01_ROUTE_CONDITIONS-20260827T100000Z-001",
-      "latest_execution_or_report_at": "2026-08-27T10:00:00.247Z",
+      "expected_cycle": "13:00",
+      "expected_start_utc": "2026-08-27T20:00:00.000Z",
+      "latest_run_id": "01_ROUTE_CONDITIONS-20260827T200000Z-001",
+      "latest_execution_or_report_at": "2026-08-27T20:00:00.352Z",
       "display_severity": "watch",
       "data_status": "degraded",
       "freshness": {
         "overall_state": "stale",
-        "computed_at": "2026-08-27T10:01:01.967Z",
+        "computed_at": "2026-08-27T20:01:01.833Z",
         "oldest_relevant_source_age_minutes": 0,
         "stale_source_ids": []
       },
-      "published_at": "2026-08-27T10:01:01.967Z",
-      "generated_at": "2026-08-27T10:00:00.247Z",
+      "published_at": "2026-08-27T20:01:01.833Z",
+      "generated_at": "2026-08-27T20:00:00.352Z",
       "connector_health": {
         "schema_version": "1.0.0",
         "connector_id": "01_ROUTE_CONDITIONS",
@@ -182,9 +182,9 @@
           "details": "Official King County page states the trail is closed between Louis Thompson Rd NE and NE Inglewood Hill Rd, starting June 1, 2026 through the end of 2026, with no detour.",
           "effective_start": "2026-06-01T00:00:00Z",
           "effective_end": "2026-12-31T23:59:59Z",
-          "discovered_at": "2026-08-27T10:00:00.247Z",
-          "last_verified_at": "2026-08-27T10:00:00.247Z",
-          "published_observation_at": "2026-08-27T10:00:00.247Z",
+          "discovered_at": "2026-08-27T20:00:00.352Z",
+          "last_verified_at": "2026-08-27T20:00:00.352Z",
+          "published_observation_at": "2026-08-27T20:00:00.352Z",
           "location_description_raw": "Between Louis Thompson Rd NE and NE Inglewood Hill Rd.",
           "trail_or_street_name": "East Lake Sammamish Trail",
           "route_sections": [
@@ -212,9 +212,9 @@
           "provenance": {
             "source_name": "King County Parks - East Lake Sammamish Trail page",
             "source_url": "https://kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/east-lake-sammamish",
-            "retrieved_at": "2026-08-27T10:00:00.247Z",
+            "retrieved_at": "2026-08-27T20:00:00.352Z",
             "retrieval_method": "html_page_fetch",
-            "content_hash": "hash_5b7f52db"
+            "content_hash": "hash_30b62ffc"
           }
         }
       ]
@@ -224,20 +224,20 @@
       "available": true,
       "current_cycle_state": "RAN_CURRENT_CYCLE",
       "ran_current_cycle": true,
-      "expected_cycle": "03:00",
-      "expected_start_utc": "2026-08-27T10:00:00.000Z",
-      "latest_run_id": "02_WEATHER-20260827T100000Z-001",
-      "latest_execution_or_report_at": "2026-08-27T10:00:00.266Z",
+      "expected_cycle": "13:00",
+      "expected_start_utc": "2026-08-27T20:00:00.000Z",
+      "latest_run_id": "02_WEATHER-20260827T200000Z-001",
+      "latest_execution_or_report_at": "2026-08-27T20:00:00.306Z",
       "display_severity": "normal",
       "data_status": "no_relevant_events",
       "freshness": {
         "overall_state": "fresh",
-        "computed_at": "2026-08-27T10:01:13.177Z",
+        "computed_at": "2026-08-27T20:00:42.518Z",
         "oldest_relevant_source_age_minutes": 0,
         "stale_source_ids": []
       },
-      "published_at": "2026-08-27T10:01:13.177Z",
-      "generated_at": "2026-08-27T10:00:00.266Z",
+      "published_at": "2026-08-27T20:00:42.518Z",
+      "generated_at": "2026-08-27T20:00:00.306Z",
       "connector_health": {
         "schema_version": "1.0.0",
         "connector_id": "02_WEATHER",
@@ -297,27 +297,27 @@
       "available": true,
       "current_cycle_state": "RAN_CURRENT_CYCLE",
       "ran_current_cycle": true,
-      "expected_cycle": "03:00",
-      "expected_start_utc": "2026-08-27T10:00:00.000Z",
-      "latest_run_id": "03_AIR_QUALITY-20260827T100000Z-001",
-      "latest_execution_or_report_at": "2026-08-27T10:00:00.237Z",
+      "expected_cycle": "13:00",
+      "expected_start_utc": "2026-08-27T20:00:00.000Z",
+      "latest_run_id": "03_AIR_QUALITY-20260827T200000Z-001",
+      "latest_execution_or_report_at": "2026-08-27T20:00:00.264Z",
       "display_severity": "watch",
       "data_status": "degraded",
       "freshness": {
         "overall_state": "stale",
-        "computed_at": "2026-08-27T10:00:20.460Z",
+        "computed_at": "2026-08-27T20:00:17.531Z",
         "oldest_relevant_source_age_minutes": 0,
         "stale_source_ids": []
       },
-      "published_at": "2026-08-27T10:00:20.460Z",
-      "generated_at": "2026-08-27T10:00:00.237Z",
+      "published_at": "2026-08-27T20:00:17.531Z",
+      "generated_at": "2026-08-27T20:00:00.264Z",
       "connector_health": {
         "schema_version": "1.0.0",
         "connector_id": "03_AIR_QUALITY",
         "status": "degraded",
         "failed_stage": null,
-        "warning_count": 6,
-        "error_count": 8,
+        "warning_count": 2,
+        "error_count": 10,
         "used_last_known_good": false,
         "candidate_written": true,
         "published_written": true
@@ -327,8 +327,8 @@
       "source_health_summary": [
         {
           "source_id": "03_AIR_QUALITY:ECO-01",
-          "status": "failed",
-          "error_count": 1,
+          "status": "empty_but_valid",
+          "error_count": 0,
           "warning_count": 0
         },
         {
@@ -345,9 +345,9 @@
         },
         {
           "source_id": "03_AIR_QUALITY:AIRNOW-02",
-          "status": "empty_but_valid",
-          "error_count": 0,
-          "warning_count": 1
+          "status": "failed",
+          "error_count": 1,
+          "warning_count": 0
         },
         {
           "source_id": "03_AIR_QUALITY:WASMOKE-01",
@@ -363,9 +363,9 @@
         },
         {
           "source_id": "03_AIR_QUALITY:PSCAA-01",
-          "status": "empty_but_valid",
-          "error_count": 0,
-          "warning_count": 1
+          "status": "failed",
+          "error_count": 1,
+          "warning_count": 0
         },
         {
           "source_id": "03_AIR_QUALITY:AIRNOW-01",
@@ -405,7 +405,7 @@
           "status": "forecast",
           "severity": "unhealthy",
           "category_label": "Contextual smoke report",
-          "effective_at": "2026-08-27T10:00:00.237Z",
+          "effective_at": "2026-08-27T20:00:00.264Z",
           "expires_at": null,
           "route_relevant": true,
           "wildfire_smoke_related": true,
@@ -415,7 +415,7 @@
             "Cascade foothills"
           ],
           "source_id": "03_AIR_QUALITY:WASMOKE-01",
-          "source_record_id": "697e4868",
+          "source_record_id": "00f28064",
           "geometry_type": "text_only",
           "manual_review_required": false,
           "route_sections": [
@@ -430,34 +430,32 @@
       "available": true,
       "current_cycle_state": "RAN_CURRENT_CYCLE",
       "ran_current_cycle": true,
-      "expected_cycle": "03:00",
-      "expected_start_utc": "2026-08-27T10:00:00.000Z",
-      "latest_run_id": "04_WILDFIRE-20260827T100000Z-001",
-      "latest_execution_or_report_at": "2026-08-27T10:00:00.278Z",
-      "display_severity": "watch",
-      "data_status": "degraded",
+      "expected_cycle": "13:00",
+      "expected_start_utc": "2026-08-27T20:00:00.000Z",
+      "latest_run_id": "04_WILDFIRE-20260827T200000Z-001",
+      "latest_execution_or_report_at": "2026-08-27T20:00:00.342Z",
+      "display_severity": "normal",
+      "data_status": "no_relevant_events",
       "freshness": {
-        "overall_state": "stale",
-        "computed_at": "2026-08-27T10:00:10.540Z",
+        "overall_state": "fresh",
+        "computed_at": "2026-08-27T20:00:03.056Z",
         "oldest_relevant_source_age_minutes": 0,
-        "stale_source_ids": [
-          "04_WILDFIRE:NOAA-01"
-        ]
+        "stale_source_ids": []
       },
-      "published_at": "2026-08-27T10:00:10.540Z",
-      "generated_at": "2026-08-27T10:00:00.278Z",
+      "published_at": "2026-08-27T20:00:03.056Z",
+      "generated_at": "2026-08-27T20:00:00.342Z",
       "connector_health": {
         "schema_version": "1.0.0",
         "connector_id": "04_WILDFIRE",
-        "status": "degraded",
+        "status": "ok",
         "failed_stage": null,
         "warning_count": 5,
-        "error_count": 1,
-        "used_last_known_good": true,
+        "error_count": 0,
+        "used_last_known_good": false,
         "candidate_written": true,
         "published_written": true
       },
-      "lkg_used": true,
+      "lkg_used": false,
       "event_count": 0,
       "source_health_summary": [
         {
@@ -480,8 +478,8 @@
         },
         {
           "source_id": "04_WILDFIRE:NOAA-01",
-          "status": "using_last_known_good",
-          "error_count": 1,
+          "status": "empty_but_valid",
+          "error_count": 0,
           "warning_count": 1
         },
         {
@@ -499,20 +497,20 @@
       "available": true,
       "current_cycle_state": "RAN_CURRENT_CYCLE",
       "ran_current_cycle": true,
-      "expected_cycle": "03:00",
-      "expected_start_utc": "2026-08-27T10:00:00.000Z",
-      "latest_run_id": "05_FLOOD_CONDITIONS-20260827T100000Z-001",
-      "latest_execution_or_report_at": "2026-08-27T10:00:00.243Z",
+      "expected_cycle": "13:00",
+      "expected_start_utc": "2026-08-27T20:00:00.000Z",
+      "latest_run_id": "05_FLOOD_CONDITIONS-20260827T200000Z-001",
+      "latest_execution_or_report_at": "2026-08-27T20:00:00.390Z",
       "display_severity": "watch",
       "data_status": "degraded",
       "freshness": {
         "overall_state": "stale",
-        "computed_at": "2026-08-27T10:00:36.970Z",
+        "computed_at": "2026-08-27T20:00:41.341Z",
         "oldest_relevant_source_age_minutes": 0,
         "stale_source_ids": []
       },
-      "published_at": "2026-08-27T10:00:36.970Z",
-      "generated_at": "2026-08-27T10:00:00.243Z",
+      "published_at": "2026-08-27T20:00:41.341Z",
+      "generated_at": "2026-08-27T20:00:00.390Z",
       "connector_health": {
         "schema_version": "1.0.0",
         "connector_id": "05_FLOOD_CONDITIONS",
@@ -597,15 +595,15 @@
           "severity": "advisory",
           "route_impact": "elevated_water",
           "title": "Issaquah Creek gauge observation",
-          "summary": "USGS observation | value=18.1 | unit=mixed | 2026-08-27T02:15:00.000-07:00",
+          "summary": "USGS observation | value=19.5 | unit=mixed | 2026-08-27T12:15:00.000-07:00",
           "source_id": "05_FLOOD_CONDITIONS:USGS-01",
           "source_event_ref": "00060",
-          "observed_at": "2026-08-27T02:15:00.000-07:00",
+          "observed_at": "2026-08-27T12:15:00.000-07:00",
           "effective_until": null,
           "official_category": "USGS:12121600:00060:00000",
           "metric": {
             "metric_name": "stage_or_flow",
-            "metric_value": 18.1,
+            "metric_value": 19.5,
             "unit": "mixed"
           },
           "location": {
@@ -624,8 +622,8 @@
           },
           "provenance": {
             "source_url": "https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12121600&parameterCd=00060,00065",
-            "retrieved_at": "2026-08-27T10:00:00.243Z",
-            "source_record_hash": "hash_1b3642a3"
+            "retrieved_at": "2026-08-27T20:00:00.390Z",
+            "source_record_hash": "hash_3fdc5203"
           }
         },
         {
@@ -635,10 +633,10 @@
           "severity": "advisory",
           "route_impact": "elevated_water",
           "title": "Issaquah Creek gauge observation",
-          "summary": "USGS observation | value=10.3 | unit=mixed | 2026-08-27T02:45:00.000-07:00",
+          "summary": "USGS observation | value=10.3 | unit=mixed | 2026-08-27T12:45:00.000-07:00",
           "source_id": "05_FLOOD_CONDITIONS:USGS-02",
           "source_event_ref": "00060",
-          "observed_at": "2026-08-27T02:45:00.000-07:00",
+          "observed_at": "2026-08-27T12:45:00.000-07:00",
           "effective_until": null,
           "official_category": "USGS:12120600:00060:00000",
           "metric": {
@@ -662,8 +660,8 @@
           },
           "provenance": {
             "source_url": "https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12120600&parameterCd=00060,00065",
-            "retrieved_at": "2026-08-27T10:00:00.243Z",
-            "source_record_hash": "hash_db98de78"
+            "retrieved_at": "2026-08-27T20:00:00.390Z",
+            "source_record_hash": "hash_bb284933"
           }
         },
         {
@@ -673,15 +671,15 @@
           "severity": "advisory",
           "route_impact": "elevated_water",
           "title": "Lake Sammamish shoreline context observed",
-          "summary": "USGS observation | value=25.7 | unit=ft | 2026-08-27T02:15:00.000-07:00",
+          "summary": "USGS observation | value=25.68 | unit=ft | 2026-08-27T12:15:00.000-07:00",
           "source_id": "05_FLOOD_CONDITIONS:USGS-03",
           "source_event_ref": "62614",
-          "observed_at": "2026-08-27T02:15:00.000-07:00",
+          "observed_at": "2026-08-27T12:15:00.000-07:00",
           "effective_until": null,
           "official_category": "USGS:12122000:62614:00000",
           "metric": {
             "metric_name": "lake_elevation_ft",
-            "metric_value": 25.7,
+            "metric_value": 25.68,
             "unit": "ft"
           },
           "location": {
@@ -702,8 +700,8 @@
           },
           "provenance": {
             "source_url": "https://waterservices.usgs.gov/nwis/iv/?format=json&sites=12122000",
-            "retrieved_at": "2026-08-27T10:00:00.243Z",
-            "source_record_hash": "hash_95c83948"
+            "retrieved_at": "2026-08-27T20:00:00.390Z",
+            "source_record_hash": "hash_9366b82b"
           }
         },
         {
@@ -716,7 +714,7 @@
           "summary": "Observed stage=n/a | flow=n/a | category=no_flooding | forecast=n/a",
           "source_id": "05_FLOOD_CONDITIONS:NWPS-01",
           "source_event_ref": null,
-          "observed_at": "2026-08-27T08:15:00Z",
+          "observed_at": "2026-08-27T17:15:00Z",
           "effective_until": null,
           "official_category": "no_flooding",
           "metric": {
@@ -742,8 +740,8 @@
           },
           "provenance": {
             "source_url": "https://api.water.noaa.gov/nwps/v1/gauges/ISSW1",
-            "retrieved_at": "2026-08-27T10:00:00.243Z",
-            "source_record_hash": "hash_a29e784d"
+            "retrieved_at": "2026-08-27T20:00:00.390Z",
+            "source_record_hash": "hash_40f35e82"
           }
         },
         {
@@ -756,7 +754,7 @@
           "summary": "Observed stage=n/a | flow=n/a | category=not_defined | forecast=n/a",
           "source_id": "05_FLOOD_CONDITIONS:NWPS-02",
           "source_event_ref": null,
-          "observed_at": "2026-08-27T08:45:00Z",
+          "observed_at": "2026-08-27T18:45:00Z",
           "effective_until": null,
           "official_category": "not_defined",
           "metric": {
@@ -782,8 +780,8 @@
           },
           "provenance": {
             "source_url": "https://api.water.noaa.gov/nwps/v1/gauges/ISQW1",
-            "retrieved_at": "2026-08-27T10:00:00.243Z",
-            "source_record_hash": "hash_fc655086"
+            "retrieved_at": "2026-08-27T20:00:00.390Z",
+            "source_record_hash": "hash_e4441b7b"
           }
         }
       ]
@@ -793,20 +791,20 @@
       "available": true,
       "current_cycle_state": "RAN_CURRENT_CYCLE",
       "ran_current_cycle": true,
-      "expected_cycle": "03:00",
-      "expected_start_utc": "2026-08-27T10:00:00.000Z",
-      "latest_run_id": "06_TRAIL_INFRASTRUCTURE_STATUS-20260827T100000Z-001",
-      "latest_execution_or_report_at": "2026-08-27T10:00:00.212Z",
+      "expected_cycle": "13:00",
+      "expected_start_utc": "2026-08-27T20:00:00.000Z",
+      "latest_run_id": "06_TRAIL_INFRASTRUCTURE_STATUS-20260827T200000Z-001",
+      "latest_execution_or_report_at": "2026-08-27T20:00:00.379Z",
       "display_severity": "watch",
       "data_status": "degraded",
       "freshness": {
         "overall_state": "stale",
-        "computed_at": "2026-08-27T10:01:06.536Z",
+        "computed_at": "2026-08-27T20:01:09.482Z",
         "oldest_relevant_source_age_minutes": 0,
         "stale_source_ids": []
       },
-      "published_at": "2026-08-27T10:01:06.536Z",
-      "generated_at": "2026-08-27T10:00:00.212Z",
+      "published_at": "2026-08-27T20:01:09.482Z",
+      "generated_at": "2026-08-27T20:00:00.379Z",
       "connector_health": {
         "status": "degraded",
         "branches_total": 8,
@@ -869,9 +867,9 @@
       "pointer_or_parse_error": null,
       "events": [
         {
-          "event_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:b5913421",
+          "event_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01:1986b9d1",
           "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01",
-          "source_record_id": "82b6a7e5",
+          "source_record_id": "95b2f675",
           "event_type": "other",
           "status": "closed",
           "severity": "high",
@@ -879,7 +877,7 @@
           "summary": "{\"data\":\"\\r\\n\\r\\n\\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n \\r\\n\\r\\n\\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n Burke-Gilman Trail - King County, Washington \\r\\n \\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n\\r\\n \\r\\n \\",
           "effective_start": null,
           "effective_end": null,
-          "updated_at": "2026-08-27T10:00:00.212Z",
+          "updated_at": "2026-08-27T20:00:00.379Z",
           "route_relevance": {
             "classification": "confirmed_route_impact",
             "method": "text_location_match",
@@ -908,7 +906,7 @@
             "source_name": "King County Parks Burke-Gilman Trail page",
             "agency": "King County",
             "url": "https://cd10-prod.kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/burke-gilman",
-            "retrieved_at": "2026-08-27T10:00:00.212Z",
+            "retrieved_at": "2026-08-27T20:00:00.379Z",
             "published_or_observed_at": null
           },
           "ownership": {
@@ -922,7 +920,7 @@
           "provenance": {
             "source_name": "King County Parks Burke-Gilman Trail page",
             "source_url": "https://cd10-prod.kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/burke-gilman",
-            "retrieved_at": "2026-08-27T10:00:00.212Z",
+            "retrieved_at": "2026-08-27T20:00:00.379Z",
             "source_notes": "HTML lane-06 source parsed from body text.",
             "corroborating_source_ids": [
               "06_TRAIL_INFRASTRUCTURE_STATUS:KC-01"
@@ -930,9 +928,9 @@
           }
         },
         {
-          "event_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:5eb6fccf",
+          "event_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02:4fd1b29c",
           "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02",
-          "source_record_id": "d62098b8",
+          "source_record_id": "bb6672b9",
           "event_type": "other",
           "status": "closed",
           "severity": "high",
@@ -940,7 +938,7 @@
           "summary": "{\"data\":\"\\r\\n\\r\\n\\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n \\r\\n\\r\\n\\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n Sammamish River Trail - King County, Washington \\r\\n \\r\\n\\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n\\r\\n \\r\\",
           "effective_start": null,
           "effective_end": null,
-          "updated_at": "2026-08-27T10:00:00.212Z",
+          "updated_at": "2026-08-27T20:00:00.379Z",
           "route_relevance": {
             "classification": "confirmed_route_impact",
             "method": "text_location_match",
@@ -971,7 +969,7 @@
             "source_name": "King County Parks Sammamish River Trail page",
             "agency": "King County",
             "url": "https://cd10-prod.kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/sammamish-river-trail",
-            "retrieved_at": "2026-08-27T10:00:00.212Z",
+            "retrieved_at": "2026-08-27T20:00:00.379Z",
             "published_or_observed_at": null
           },
           "ownership": {
@@ -986,7 +984,7 @@
           "provenance": {
             "source_name": "King County Parks Sammamish River Trail page",
             "source_url": "https://cd10-prod.kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/sammamish-river-trail",
-            "retrieved_at": "2026-08-27T10:00:00.212Z",
+            "retrieved_at": "2026-08-27T20:00:00.379Z",
             "source_notes": "HTML lane-06 source parsed from body text.",
             "corroborating_source_ids": [
               "06_TRAIL_INFRASTRUCTURE_STATUS:KC-02"
@@ -994,9 +992,9 @@
           }
         },
         {
-          "event_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-03:0a3d6226",
+          "event_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-03:54834e89",
           "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:KC-03",
-          "source_record_id": "ee517503",
+          "source_record_id": "a046ffae",
           "event_type": "culvert",
           "status": "closed",
           "severity": "high",
@@ -1004,7 +1002,7 @@
           "summary": "King County reports the East Lake Sammamish Trail is closed for culvert replacement and related access work.",
           "effective_start": null,
           "effective_end": null,
-          "updated_at": "2026-08-27T10:00:00.212Z",
+          "updated_at": "2026-08-27T20:00:00.379Z",
           "route_relevance": {
             "classification": "confirmed_route_impact",
             "method": "named_trail_match",
@@ -1035,7 +1033,7 @@
             "source_name": "King County Parks East Lake Sammamish Trail page",
             "agency": "King County",
             "url": "https://cd10-prod.kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/east-lake-sammamish",
-            "retrieved_at": "2026-08-27T10:00:00.212Z",
+            "retrieved_at": "2026-08-27T20:00:00.379Z",
             "published_or_observed_at": null
           },
           "ownership": {
@@ -1049,7 +1047,7 @@
           "provenance": {
             "source_name": "King County Parks East Lake Sammamish Trail page",
             "source_url": "https://cd10-prod.kingcounty.gov/en/dept/dnrp/nature-recreation/parks-recreation/king-county-parks/trails/leafline-trails/east-lake-sammamish",
-            "retrieved_at": "2026-08-27T10:00:00.212Z",
+            "retrieved_at": "2026-08-27T20:00:00.379Z",
             "source_notes": "HTML lane-06 source parsed from body text.",
             "corroborating_source_ids": [
               "06_TRAIL_INFRASTRUCTURE_STATUS:KC-03"
@@ -1057,9 +1055,9 @@
           }
         },
         {
-          "event_id": "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:76a254ff",
+          "event_id": "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01:66fe1f79",
           "source_id": "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01",
-          "source_record_id": "81f46146",
+          "source_record_id": "92013c7c",
           "event_type": "fish_passage",
           "status": "closed",
           "severity": "high",
@@ -1067,7 +1065,7 @@
           "summary": "{\"data\":\"\\r\\n \\r\\n \\r\\n \\r\\n George Davis Creek Fish Passage and Storm Improvement Project | City of Sammamish \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n",
           "effective_start": null,
           "effective_end": null,
-          "updated_at": "2026-08-27T10:00:00.212Z",
+          "updated_at": "2026-08-27T20:00:00.379Z",
           "route_relevance": {
             "classification": "confirmed_route_impact",
             "method": "text_location_match",
@@ -1098,7 +1096,7 @@
             "source_name": "City of Sammamish George Davis Creek Fish Passage and Storm Improvement Project page",
             "agency": "City of Sammamish",
             "url": "https://www.sammamish.us/projects/george-davis-creek-fish-passage-and-storm-improvement-project/",
-            "retrieved_at": "2026-08-27T10:00:00.212Z",
+            "retrieved_at": "2026-08-27T20:00:00.379Z",
             "published_or_observed_at": null
           },
           "ownership": {
@@ -1112,7 +1110,7 @@
           "provenance": {
             "source_name": "City of Sammamish George Davis Creek Fish Passage and Storm Improvement Project page",
             "source_url": "https://www.sammamish.us/projects/george-davis-creek-fish-passage-and-storm-improvement-project/",
-            "retrieved_at": "2026-08-27T10:00:00.212Z",
+            "retrieved_at": "2026-08-27T20:00:00.379Z",
             "source_notes": "HTML lane-06 source parsed from body text.",
             "corroborating_source_ids": [
               "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-01"
@@ -1130,7 +1128,7 @@
           "summary": "{\"data\":\"\\r\\n \\r\\n \\r\\n \\r\\n City of Sammamish \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n\\r\\n \\r\\n \\r\\n\\r\\n \\r\\n \\r\\n\\r\\n \\r\\n\\r\\n",
           "effective_start": null,
           "effective_end": null,
-          "updated_at": "2026-08-27T10:00:00.212Z",
+          "updated_at": "2026-08-27T20:00:00.379Z",
           "route_relevance": {
             "classification": "confirmed_route_impact",
             "method": "text_location_match",
@@ -1160,7 +1158,7 @@
             "source_name": "City of Sammamish George Davis Creek project-start update page",
             "agency": "City of Sammamish",
             "url": "https://www.sammamish.us/news/george-davis-creek-project-to-start-this-spring/",
-            "retrieved_at": "2026-08-27T10:00:00.212Z",
+            "retrieved_at": "2026-08-27T20:00:00.379Z",
             "published_or_observed_at": null
           },
           "ownership": {
@@ -1174,7 +1172,7 @@
           "provenance": {
             "source_name": "City of Sammamish George Davis Creek project-start update page",
             "source_url": "https://www.sammamish.us/news/george-davis-creek-project-to-start-this-spring/",
-            "retrieved_at": "2026-08-27T10:00:00.212Z",
+            "retrieved_at": "2026-08-27T20:00:00.379Z",
             "source_notes": "HTML lane-06 source parsed from body text.",
             "corroborating_source_ids": [
               "06_TRAIL_INFRASTRUCTURE_STATUS:SAM-02"
@@ -1188,20 +1186,20 @@
       "available": true,
       "current_cycle_state": "RAN_CURRENT_CYCLE",
       "ran_current_cycle": true,
-      "expected_cycle": "03:00",
-      "expected_start_utc": "2026-08-27T10:00:00.000Z",
-      "latest_run_id": "07_GOVERNMENT_SAFETY_ALERTS-20260827T100000Z-001",
-      "latest_execution_or_report_at": "2026-08-27T10:00:00.273Z",
+      "expected_cycle": "13:00",
+      "expected_start_utc": "2026-08-27T20:00:00.000Z",
+      "latest_run_id": "07_GOVERNMENT_SAFETY_ALERTS-20260827T200000Z-001",
+      "latest_execution_or_report_at": "2026-08-27T20:00:00.290Z",
       "display_severity": "normal",
       "data_status": "ok",
       "freshness": {
         "overall_state": "fresh",
-        "computed_at": "2026-08-27T10:00:06.648Z",
+        "computed_at": "2026-08-27T20:00:07.032Z",
         "oldest_relevant_source_age_minutes": 0,
         "stale_source_ids": []
       },
-      "published_at": "2026-08-27T10:00:06.648Z",
-      "generated_at": "2026-08-27T10:00:00.273Z",
+      "published_at": "2026-08-27T20:00:07.032Z",
+      "generated_at": "2026-08-27T20:00:00.290Z",
       "connector_health": {
         "schema_version": "1.0.0",
         "connector_id": "07_GOVERNMENT_SAFETY_ALERTS",
@@ -1317,7 +1315,7 @@
           },
           "provenance": {
             "source_url": "https://doh.wa.gov/public-health-provider-resources/washington-health-alert-network",
-            "retrieved_at": "2026-08-27T10:00:00.273Z",
+            "retrieved_at": "2026-08-27T20:00:00.290Z",
             "source_record_hash": "hash_c31a0f8a",
             "normalization_version": "v0002"
           }
@@ -1360,7 +1358,7 @@
           },
           "provenance": {
             "source_url": "https://doh.wa.gov/public-health-provider-resources/washington-health-alert-network",
-            "retrieved_at": "2026-08-27T10:00:00.273Z",
+            "retrieved_at": "2026-08-27T20:00:00.290Z",
             "source_record_hash": "hash_29734473",
             "normalization_version": "v0002"
           }
@@ -1403,7 +1401,7 @@
           },
           "provenance": {
             "source_url": "https://doh.wa.gov/public-health-provider-resources/washington-health-alert-network",
-            "retrieved_at": "2026-08-27T10:00:00.273Z",
+            "retrieved_at": "2026-08-27T20:00:00.290Z",
             "source_record_hash": "hash_bf9b0b4d",
             "normalization_version": "v0002"
           }
@@ -1446,7 +1444,7 @@
           },
           "provenance": {
             "source_url": "https://doh.wa.gov/public-health-provider-resources/washington-health-alert-network",
-            "retrieved_at": "2026-08-27T10:00:00.273Z",
+            "retrieved_at": "2026-08-27T20:00:00.290Z",
             "source_record_hash": "hash_f2b6e839",
             "normalization_version": "v0002"
           }
@@ -1500,7 +1498,7 @@
           },
           "provenance": {
             "source_url": "https://doh.wa.gov/public-health-provider-resources/washington-health-alert-network",
-            "retrieved_at": "2026-08-27T10:00:00.273Z",
+            "retrieved_at": "2026-08-27T20:00:00.290Z",
             "source_record_hash": "hash_c29944a0",
             "normalization_version": "v0002"
           }
@@ -1555,7 +1553,7 @@
           },
           "provenance": {
             "source_url": "https://doh.wa.gov/public-health-provider-resources/washington-health-alert-network",
-            "retrieved_at": "2026-08-27T10:00:00.273Z",
+            "retrieved_at": "2026-08-27T20:00:00.290Z",
             "source_record_hash": "hash_dc98040f",
             "normalization_version": "v0002"
           }
@@ -1598,7 +1596,7 @@
           },
           "provenance": {
             "source_url": "https://doh.wa.gov/public-health-provider-resources/washington-health-alert-network",
-            "retrieved_at": "2026-08-27T10:00:00.273Z",
+            "retrieved_at": "2026-08-27T20:00:00.290Z",
             "source_record_hash": "hash_3a69f580",
             "normalization_version": "v0002"
           }
@@ -1610,20 +1608,20 @@
       "available": true,
       "current_cycle_state": "RAN_CURRENT_CYCLE",
       "ran_current_cycle": true,
-      "expected_cycle": "03:00",
-      "expected_start_utc": "2026-08-27T10:00:00.000Z",
-      "latest_run_id": "08_ROUTE_FACILITIES-20260827T100000Z-001",
-      "latest_execution_or_report_at": "2026-08-27T10:00:00.201Z",
+      "expected_cycle": "13:00",
+      "expected_start_utc": "2026-08-27T20:00:00.000Z",
+      "latest_run_id": "08_ROUTE_FACILITIES-20260827T200000Z-001",
+      "latest_execution_or_report_at": "2026-08-27T20:00:00.368Z",
       "display_severity": "normal",
       "data_status": "ok",
       "freshness": {
         "overall_state": "fresh",
-        "computed_at": "2026-08-27T10:00:02.267Z",
+        "computed_at": "2026-08-27T20:00:02.183Z",
         "oldest_relevant_source_age_minutes": 0,
         "stale_source_ids": []
       },
-      "published_at": "2026-08-27T10:00:02.267Z",
-      "generated_at": "2026-08-27T10:00:00.201Z",
+      "published_at": "2026-08-27T20:00:02.183Z",
+      "generated_at": "2026-08-27T20:00:00.368Z",
       "connector_health": {
         "schema_version": "1.0.0",
         "connector_id": "08_ROUTE_FACILITIES",
